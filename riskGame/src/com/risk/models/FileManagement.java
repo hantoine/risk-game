@@ -39,46 +39,44 @@ public class FileManagement {
             linesRead=dataInput.readLine();
             
             while(linesRead!=null){
-                String[] aux=null;
+                String[] aux;
+                
                 switch (linesRead) {
+                    
                     case "[Map]":
-                        System.out.println("File"+linesRead);
                         linesRead=dataInput.readLine();
-                        aux=linesRead.split("=",2);
-                        if("author".equals(aux[0])){
-                            configurationInfo.put(aux[0], aux[1]);
-                        }else{
-                            throw new IOException();
-                        }   linesRead=dataInput.readLine();
-                        aux=linesRead.split("=",2);
-                        if("image".equals(aux[0])){
-                            int pathPos=0;
-                            configurationInfo.put(aux[0], aux[1]);
-                            pathPos=path.lastIndexOf("\\");
-                            BufferedImage image= ImageIO.read(new File(path.substring(0, pathPos)+"\\"+aux[1]));
-                            board.setImage(image);
+                        while(!linesRead.equals("")){                        
+                        System.out.println("lineas leidas" + linesRead);
+                            aux=null;
+                            aux=linesRead.split("=",2);
+                            System.out.println("Campo-valor: "+aux[0]+","+aux[1]);
+                            if("author".equals(aux[0])){
+                                System.out.println("Entro");
+                                configurationInfo.put(aux[0], aux[1]);
+                                
+                            }else if("image".equals(aux[0])){
+                                int pathPos=0;
+                                configurationInfo.put(aux[0], aux[1]);
+                                pathPos=path.lastIndexOf("\\");
+                                BufferedImage image= ImageIO.read(new File(path.substring(0, pathPos)+"\\"+aux[1]));
+                                board.setImage(image);
                             
-                        }else{
-                            throw new IOException();
-                        }   linesRead=dataInput.readLine();
-                        aux=linesRead.split("=",2);
-                        if(("wrap".equals(aux[0])) && (aux[1].equals("no") || aux[1].equals("yes"))){
-                            configurationInfo.put(aux[0], aux[1]);
-                        }else{
-                            throw new IOException();
-                        }   linesRead=dataInput.readLine();
-                        aux=linesRead.split("=",2);
-                        if(("scroll".equals(aux[0])) && (aux[1].equals("horizontal") || aux[1].equals("vertical"))){
-                            configurationInfo.put(aux[0], aux[1]);
-                        }else{
-                            throw new IOException();
-                        }   linesRead=dataInput.readLine();
-                        aux=linesRead.split("=",2);
-                        if((aux[0].equals("warn")) && (aux[1].equals("no") || aux[1].equals("yes"))){
-                            configurationInfo.put(aux[0], aux[1]);
-                        }else{
-                            throw new IOException();
-                        }   break;
+                            }else if(("wrap".equals(aux[0])) && (aux[1].equals("no") || aux[1].equals("yes"))){
+                                configurationInfo.put(aux[0], aux[1]);
+                            
+                            }else if(("scroll".equals(aux[0])) && (aux[1].equals("horizontal") || aux[1].equals("vertical") || aux[1].equals("none"))){
+                                configurationInfo.put(aux[0], aux[1]);
+                            }else if((aux[0].equals("warn")) && (aux[1].equals("no") || aux[1].equals("yes"))){
+                                configurationInfo.put(aux[0], aux[1]);
+                            }else{
+                                throw new IOException();
+                            }
+                        
+                            linesRead=dataInput.readLine();
+                        }
+                        
+                        
+                        break;
                     case "[Continents]":
                         System.out.println("File"+linesRead);
                         linesRead=dataInput.readLine();
@@ -121,9 +119,9 @@ public class FileManagement {
                                 }
                                
                             }
-                                
+                               
                             linesRead=dataInput.readLine();
-                            
+                           
                         }       break;
                     default:
                         linesRead=dataInput.readLine();

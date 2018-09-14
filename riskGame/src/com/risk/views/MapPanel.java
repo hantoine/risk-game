@@ -9,7 +9,8 @@ public class MapPanel extends JPanel{
     private final Board board;
 
     public MapPanel(Board board) {
-        this.board= board;        
+        this.board= board;
+        this.setSize(this.board.getImage().getWidth(null), this.board.getImage().getHeight(null));
     }
     
     @Override
