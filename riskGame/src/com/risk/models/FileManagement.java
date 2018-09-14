@@ -36,11 +36,10 @@ public class FileManagement {
         
             //Reading the information
             String linesRead;
-            String[] aux;
             linesRead=dataInput.readLine();
             
             while(linesRead!=null){
-                
+                String[] aux=null;
                 switch (linesRead) {
                     case "[Map]":
                         System.out.println("File"+linesRead);
@@ -53,8 +52,10 @@ public class FileManagement {
                         }   linesRead=dataInput.readLine();
                         aux=linesRead.split("=",2);
                         if("image".equals(aux[0])){
+                            int pathPos=0;
                             configurationInfo.put(aux[0], aux[1]);
-                            BufferedImage image= ImageIO.read(new File(aux[1]));
+                            pathPos=path.lastIndexOf("\\");
+                            BufferedImage image= ImageIO.read(new File(path.substring(0, pathPos)+"\\"+aux[1]));
                             board.setImage(image);
                             
                         }else{
@@ -79,41 +80,62 @@ public class FileManagement {
                             throw new IOException();
                         }   break;
                     case "[Continents]":
+                        System.out.println("File"+linesRead);
                         linesRead=dataInput.readLine();
                         while(!linesRead.equals("")){
                             aux=linesRead.split("=",2);
                             Continent auxContinent=new Continent(aux[0],Integer.parseInt(aux[1]));
+                            System.out.println("Continent"+aux[0]);
                             graphContinents.put(aux[0], auxContinent);
                             linesRead=dataInput.readLine();
                         }   break;
                     case "[Territories]":
+                        System.out.println("File"+linesRead);
                         linesRead=dataInput.readLine();
-                        while(!linesRead.equals("")){
-                            aux=linesRead.split(",");
-                            int i;
-                            if(aux.length>2){
-                                Country auxCountry = new Country(aux[0],Integer.getInteger(aux[1]),Integer.getInteger(aux[2]));
-                                LinkedList<String> auxAdj=new LinkedList<>();
-                                for(i=0;i<aux.length-3;i++){
-                                    auxAdj.add(aux[i+3]);
+                        while(linesRead!=null){
+                            if(!linesRead.equals("")){
+                                aux=linesRead.split(",");
+                                
+                                int i=0;
+                                if(aux.length>4){
+                                    
+                                    Country auxCountry = new Country(aux[0],Integer.parseInt(aux[1]),Integer.parseInt(aux[2]));
+                                    System.out.println("Country-----------"+aux[0]);
+                                    LinkedList<String> auxAdj=new LinkedList<>();
+                                    System.out.println("CREO EL PAIS");
+                                    for(i=0;i<aux.length-4;i++){
+                                        System.out.println("Adj"+aux[i+4]);
+                                        auxAdj.add(aux[i+4]);
+                                    }
+                                    System.out.println("Continente al que pertenece "+aux[3]);
+                                    auxCountry.setAdj(auxAdj);
+                                    System.out.println("CREO las adj");
+                                   
+                                        graphContinents.get(aux[3]).setMember(auxCountry);
+                                        System.out.println("Lo metio en un continente");
+                                   
+                                    graphTerritories.put(aux[0], auxCountry);
+                                    System.out.println("Lo metio en los paises");
+                                }else{
+                                    throw new IOException();                            
                                 }
-                                auxCountry.setAdj(auxAdj);
-                                graphTerritories.put(aux[0], auxCountry);
-                            }else{
-                                throw new IOException();                            
+                               
                             }
+                                
                             linesRead=dataInput.readLine();
-                        }   break;
+                            
+                        }       break;
                     default:
                         linesRead=dataInput.readLine();
                         break;
                 }
-                board.setConfigurationInfo(configurationInfo);
-                board.setGraphTerritories(graphTerritories);
-                board.setGraphContinents(graphContinents);
-            
+                   
             }
-        
+            
+            System.out.println("Board Created");
+            board.setConfigurationInfo(configurationInfo);
+            board.setGraphTerritories(graphTerritories);
+            board.setGraphContinents(graphContinents);
             dataInput.close(); 
        
         
@@ -123,7 +145,7 @@ public class FileManagement {
             System.err.println("Reading Failure: "+e.getMessage());
         }
         
-        return null;
+        return board;
     }
     
     // New requirement - Discussion

@@ -18,6 +18,7 @@ public class RiskModel {
     private LinkedList<Player> playerList;
 
     public RiskModel() {
+        
     }
 
     public void setPlayerList (String[] playersInfo){
