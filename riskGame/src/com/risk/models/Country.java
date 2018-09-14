@@ -12,14 +12,18 @@ import java.util.LinkedList;
  */
 public class Country {
     
-    private LinkedList<Country> adj;
+    private LinkedList<String> adj;
+    int positionX;
+    int positionY;
     private String continentName;
     private int numArmies;
     private Player owner;
     private String name;
     
-    public Country(String name) {
+    public Country(String name, int positionX, int positionY) {
         this.name=name;
+        this.positionX=positionX;
+        this.positionY=positionY;
         this.numArmies=0;
         this.owner=null;
     }
@@ -27,14 +31,14 @@ public class Country {
     /**
      * @return the adj
      */
-    public LinkedList<Country> getAdj() {
+    public LinkedList<String> getAdj() {
         return adj;
     }
 
     /**
      * @param adj the adj to set
      */
-    public void setAdj(LinkedList<Country> adj) {
+    public void setAdj(LinkedList<String> adj) {
         this.adj = adj;
     }
 

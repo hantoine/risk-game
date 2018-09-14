@@ -14,8 +14,8 @@ import java.util.LinkedList;
 public class RiskModel {
 
  
-    Board board;
-    LinkedList<Player> playerList;
+    private Board board;
+    private LinkedList<Player> playerList;
 
     public RiskModel() {
     }

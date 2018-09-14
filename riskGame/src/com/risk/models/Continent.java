@@ -14,10 +14,12 @@ import java.util.LinkedList;
 public class Continent {
     
     private LinkedList<Country> members;
+    int numberMembers;
     private String name;
 
-    public Continent(String name) {
+    public Continent(String name, int numberMembers) {
         this.name=name;
+        this.numberMembers=numberMembers;
     }
     
     
