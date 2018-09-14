@@ -30,7 +30,7 @@ public class MapPanel extends JPanel{
         
     }
     
-    public void inicializeMap(Board board){
+    public void initializeMap(Board board){
         setLayout(new GridLayout(2,2));
         /**
         for (int i =0; i<4; i++){

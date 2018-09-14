@@ -5,7 +5,6 @@
  */
 package com.risk.views;
 
-import com.risk.models.Board;
 import com.risk.models.RiskModel;
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -75,7 +74,11 @@ public class RiskView extends javax.swing.JFrame {
         cp.add(playersPanel, BorderLayout.SOUTH);
     }
     
+    /**
+     * 
+     * @param riskModel 
+     */
     public void inicializePanels(RiskModel riskModel){
-            mapPanel.inicializeMap(riskModel.getBoard());
+            mapPanel.initializeMap(riskModel.getBoard());
     }
 }
