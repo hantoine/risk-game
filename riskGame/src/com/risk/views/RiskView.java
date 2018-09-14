@@ -35,26 +35,28 @@ public class RiskView extends javax.swing.JFrame {
         
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width/2-this.getSize().width/2, dimension.height/2-this.getSize().height/2);
-        
         Container cp=getContentPane();
         cp.setLayout(new BorderLayout());
-        
-        
         
         // Menu Panel
         this.menuPanel=new JPanel();
         JButton newGame=new JButton("New Game");
-        JButton saveGame=new JButton("Save Game");
-        JButton finishstage=new JButton("Finish stage");
+        JButton saveGame=new JButton("Create Map File");
         
         menuPanel.setLayout(new FlowLayout());
         menuPanel.add(newGame);
         menuPanel.add(saveGame);
-        menuPanel.add(finishstage);
+        
+        cp.add(menuPanel, BorderLayout.NORTH);
+    }
+    
+    public void initializePanels(RiskModel riskModel){       
+        
+        Container cp=getContentPane();
         
         // Map Panel
         
-        mapPanel = new MapPanel("images/mapRisk.gif");
+        mapPanel = new MapPanel(riskModel.getBoard());
         
         
         // Players Panel
@@ -69,16 +71,8 @@ public class RiskView extends javax.swing.JFrame {
         playersPanel.add(playerThree);
         
         //Adding the Panels
-        cp.add(menuPanel, BorderLayout.NORTH);
         cp.add(mapPanel, BorderLayout.CENTER);
         cp.add(playersPanel, BorderLayout.SOUTH);
     }
-    
-    /**
-     * 
-     * @param riskModel 
-     */
-    public void inicializePanels(RiskModel riskModel){
-            mapPanel.initializeMap(riskModel.getBoard());
-    }
+   
 }

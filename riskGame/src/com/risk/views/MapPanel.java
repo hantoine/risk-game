@@ -22,63 +22,16 @@ import javax.swing.border.TitledBorder;
 
 public class MapPanel extends JPanel{
 
-    private final Image image;
+    private final Board board;
 
-    public MapPanel(String imgPath) {
-        image= new ImageIcon(imgPath).getImage();
-        //setBackground(Color.cyan);
-        
-    }
-    
-    public void initializeMap(Board board){
-        setLayout(new GridLayout(2,2));
-        /**
-        for (int i =0; i<4; i++){
-            JLabel continent = new JLabel();
-            continent.setLayout(new GridBagLayout());
-            continent.setBackground(Color.green);
-            continent.setOpaque(true);
-            GridBagConstraints constr = new GridBagConstraints();
-            
-            Border lineBorder=new LineBorder(Color.BLACK);
-            Border matteBorder=new MatteBorder(30, 30, 30, 30, Color.cyan);
-            Border compoundBorder = new CompoundBorder(matteBorder,lineBorder);
-            
-            continent.setBorder(compoundBorder);
-            
-            int[] continentNumContries;
-            continentNumContries = new int[2];
-            continentNumContries[0]=2;
-            continentNumContries[1]=4;
-            
-            
-                for (int j =0; j<continentNumContries[0]; j++){
-                    for(int k=0;k<continentNumContries[1];k++){
-                        if(((k+1)*(j+1))<7){
-                            JButton country= new JButton("*");
-                            constr.gridx = j;
-                            constr.gridy = k;
-                            constr.weightx = 1;
-                            constr.weighty = 1;
-                            country.setOpaque(true);
-                            country.setForeground(Color.blue);
-                            country.setBackground(Color.gray);
-                            //country.setContentAreaFilled(false);
-                            continent.add(country,constr);
-                        }
-                        
-                    }
-                }
-             
-            add(continent);
-        }
-        */
+    public MapPanel(Board board) {
+        this.board= board;        
     }
     
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(this.image, 0, 0,null);        
+        g.drawImage(this.board.getImage(), 0, 0,null);        
     }
 
 }
