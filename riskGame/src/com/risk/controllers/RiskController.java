@@ -20,11 +20,10 @@ public class RiskController {
     public RiskController(RiskView viewRisk, RiskModel modelRisk) {
         this.modelRisk = modelRisk;
         this.viewRisk = viewRisk;
-        
-      // this.modelRisk.setBoard("C:\\Program Files (x86)\\Conquest\\Maps\\World.map");
+        modelRisk.setBoard("C:\\Users\\Nellybett\\Desktop\\World.txt");
+        viewRisk.initialMap(modelRisk);
+        this.viewRisk.setVisible(true);
        
-       this.viewRisk.initializePanels(modelRisk);
-       this.viewRisk.setVisible(true);
     }
     
 }

@@ -38,6 +38,7 @@ public class RiskView extends javax.swing.JFrame {
         Container cp=getContentPane();
         cp.setLayout(new BorderLayout());
         
+        
         // Menu Panel
         this.menuPanel=new JPanel();
         JButton newGame=new JButton("New Game");
@@ -47,16 +48,9 @@ public class RiskView extends javax.swing.JFrame {
         menuPanel.add(newGame);
         menuPanel.add(saveGame);
         
-        cp.add(menuPanel, BorderLayout.NORTH);
-    }
-    
-    public void initializePanels(RiskModel riskModel){       
-        
-        Container cp=getContentPane();
-        
         // Map Panel
         
-        mapPanel = new MapPanel(riskModel.getBoard());
+ 
         
         
         // Players Panel
@@ -71,8 +65,16 @@ public class RiskView extends javax.swing.JFrame {
         playersPanel.add(playerThree);
         
         //Adding the Panels
-        cp.add(mapPanel, BorderLayout.CENTER);
+        //
         cp.add(playersPanel, BorderLayout.SOUTH);
+        cp.add(menuPanel, BorderLayout.NORTH);
+        
     }
-   
+    
+    public void initialMap(RiskModel riskModel){
+        Container cp=getContentPane();
+        mapPanel=new MapPanel(riskModel.getBoard());
+        cp.add(mapPanel, BorderLayout.CENTER);
+    }
+       
 }

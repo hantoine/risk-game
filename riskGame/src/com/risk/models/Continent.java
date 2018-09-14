@@ -12,14 +12,21 @@ import java.util.LinkedList;
  * @author n_irahol
  */
 public class Continent {
-    
     private LinkedList<Country> members;
-    int numberMembers;
+    private final int bonusScore;
     private String name;
+    /**
+     * @return the bonusScore
+     */
+    public int getBonusScore() {
+        return bonusScore;
+    }
+    
 
-    public Continent(String name, int numberMembers) {
+    public Continent(String name, int bonusScore) {
         this.name=name;
-        this.numberMembers=numberMembers;
+        this.bonusScore=bonusScore;
+        this.members=new LinkedList<>();
     }
     
     
@@ -36,7 +43,14 @@ public class Continent {
     public void setMembers(LinkedList<Country> members) {
         this.members = members;
     }
-
+    
+    /**
+     * @param members the members to set
+     */
+    public void setMember(Country member) {
+        this.members.add(member);
+    }
+    
     /**
      * @return the name
      */
