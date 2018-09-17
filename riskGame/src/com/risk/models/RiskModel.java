@@ -22,17 +22,17 @@ public class RiskModel {
 
     }
 
-    public void setPlayerList(String[] playersInfo) {
-        int i;
-        LinkedList<Player> playerListAux = new LinkedList<>();
-        for (i = 0; i < playersInfo.length; i++) {
-            String[] separator = playersInfo[i].split(",");
-            Player auxiliar = new Player(separator[0], separator[1]);
-            playerListAux.add(auxiliar);
-        }
+    //public void setPlayerList(String[] playersInfo) {
+    //    int i;
+    //    LinkedList<Player> playerListAux = new LinkedList<>();
+    //    for (i = 0; i < playersInfo.length; i++) {
+    //        String[] separator = playersInfo[i].split(",");
+    //        Player auxiliar = new Player(separator[0], separator[1]);
+    //        playerListAux.add(auxiliar);
+    //    }
 
-        playerList = playerListAux;
-    }
+    //    playerList = playerListAux;
+    //}
 
     public Player getCurrentPlayer(){
         return currentPlayer;

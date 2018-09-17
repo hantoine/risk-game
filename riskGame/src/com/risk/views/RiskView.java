@@ -31,10 +31,10 @@ public class RiskView extends javax.swing.JFrame {
      * Creates new form MainView
      */
     JPanel menuPanel;
-    JPanel playersPanel;
+    JPanel battlePanel;
     MapPanel mapPanel;
-    PlayerInfoPanel playerInfoPanel;
-    Player currentTurnPlayer = new Player("Tiger", "Red");  // simulate the current turn's player
+    PlayerPanel playerPanel;
+    
 
     public RiskView() {
         super("Risk Game");
@@ -54,48 +54,36 @@ public class RiskView extends javax.swing.JFrame {
         menuPanel.add(saveGame);
 
         // Players Panel
-        this.playersPanel = new PlayerPanel();
-        this.playersPanel.setSize(300, 50);
+        this.battlePanel = new JPanel();
+        this.battlePanel.setSize(300, 50);
         JButton playerOne = new JButton("Player 1");
         JButton playerTwo = new JButton("Player 2");
         JButton playerThree = new JButton("Player 3");
 
-        playersPanel.setLayout(new FlowLayout());
-        playersPanel.add(playerOne);
-        playersPanel.add(playerTwo);
-        playersPanel.add(playerThree);
+        battlePanel.setLayout(new FlowLayout());
+        battlePanel.add(playerOne);
+        battlePanel.add(playerTwo);
+        battlePanel.add(playerThree);
 
-        // Player Information Panel
-    playerInfoPanel = new PlayerInfoPanel(200, 80, currentTurnPlayer);
-        // add some player info for testing
-//        LinkedList<Country> contries = new LinkedList<Country>();
-//        LinkedList<Continent> continents = new LinkedList<Continent>();
-//        LinkedList<Card> cards = new LinkedList<Card>();
-        playerInfoPanel.setSize(playerInfoPanel.getPanelWidth(), playerInfoPanel.getPanelHeight());
-        playerInfoPanel.setLayout(new FlowLayout());
-        playerInfoPanel.setBackground(Color.LIGHT_GRAY);
-        playerInfoPanel.setFontColor(Color.WHITE);
-        playerInfoPanel.addElements();
-        
+      
+     
         //Adding the Panels
-        //
-        cp.add(playersPanel, BorderLayout.SOUTH);
-        cp.add(menuPanel, BorderLayout.NORTH);
-        cp.add(playerInfoPanel, BorderLayout.WEST);
         
+        cp.add(battlePanel, BorderLayout.SOUTH);
+        cp.add(menuPanel, BorderLayout.NORTH);
+                
     }
 
     public void initialMap(RiskModel riskModel) {
         Container cp = getContentPane();
         mapPanel = new MapPanel(riskModel.getBoard());
-        setSize(mapPanel.getWidth() + playerInfoPanel.getPanelWidth(), mapPanel.getHeight() + playersPanel.getHeight() + menuPanel.getHeight());
+        playerPanel = new PlayerPanel(riskModel.getCurrentPlayer());
         cp.add(mapPanel, BorderLayout.CENTER);
+        cp.add(playerPanel, BorderLayout.EAST);
+        this.setSize(mapPanel.getWidth()+playerPanel.getWidth(),  mapPanel.getHeight() + battlePanel.getHeight() + menuPanel.getHeight());
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
     
-    public void initialCurrentPlayer(RiskModel riskModel) {
-        // playersPanel.setCurrentPlayer(riskModel.getCurrentPlayer());
-    }
 
 }
