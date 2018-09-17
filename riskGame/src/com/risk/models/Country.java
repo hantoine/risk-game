@@ -14,6 +14,7 @@ import java.util.LinkedList;
 public class Country {
 
     private LinkedList<String> adj;
+    // why not private too ?
     int positionX;
     int positionY;
     private String continentName;
@@ -27,6 +28,14 @@ public class Country {
         this.positionY = positionY;
         this.numArmies = 0;
         this.owner = null;
+    }
+
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
     }
 
     /**

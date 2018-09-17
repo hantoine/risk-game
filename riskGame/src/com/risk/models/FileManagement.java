@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -56,8 +58,12 @@ public class FileManagement {
                             } else if ("image".equals(aux[0])) {
                                 configurationInfo.put(aux[0], aux[1]);
                                 Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
-                                BufferedImage image = ImageIO.read(new File(imagePath.toString()));
-                                board.setImage(image);
+                                try {
+                                    BufferedImage image = ImageIO.read(new File(imagePath.toString()));
+                                    board.setImage(image);
+                                } catch (IOException e) {
+                                    System.err.println("Cannot read image file: " + e.getMessage());
+                                }
                             } else if (("wrap".equals(aux[0])) && (aux[1].equals("no") || aux[1].equals("yes"))) {
                                 configurationInfo.put(aux[0], aux[1]);
                             } else if (("scroll".equals(aux[0])) && (aux[1].equals("horizontal") || aux[1].equals("vertical") || aux[1].equals("none"))) {
