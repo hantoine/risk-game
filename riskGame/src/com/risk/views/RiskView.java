@@ -71,5 +71,10 @@ public class RiskView extends javax.swing.JFrame {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
+    
+    public void initialCurrentPlayer(RiskModel riskModel) {
+        playersPanel.setCurrentPlayer(riskModel.getCurrentPlayer());
+    }
 
 }
+yer

@@ -5,6 +5,7 @@
  */
 package com.risk.views;
 
+import com.risk.models.Player;
 import javax.swing.JPanel;
 
 /**
@@ -12,7 +13,15 @@ import javax.swing.JPanel;
  * @author Nellybett
  */
 public class PlayerPanel extends JPanel {
+    
+    private Player currentPlayer;
 
     public PlayerPanel() {
     }
+    
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+    
+
 }

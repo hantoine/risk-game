@@ -14,7 +14,7 @@ import java.util.LinkedList;
 public class Player {
 
     private String name;
-    private String color;
+    private String color;//change to color
     private LinkedList<Country> contriesOwned;
     private LinkedList<Continent> continentsOwned;
     private int numArmies;
