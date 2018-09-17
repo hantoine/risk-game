@@ -95,8 +95,7 @@ public class RiskView extends javax.swing.JFrame {
     }
     
     public void initialCurrentPlayer(RiskModel riskModel) {
-        playersPanel.setCurrentPlayer(riskModel.getCurrentPlayer());
+        // playersPanel.setCurrentPlayer(riskModel.getCurrentPlayer());
     }
 
 }
-yer
