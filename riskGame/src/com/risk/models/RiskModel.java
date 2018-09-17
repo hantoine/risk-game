@@ -5,8 +5,7 @@
  */
 package com.risk.models;
 
-import static com.risk.models.FileManagement.createBoard;
-import static com.risk.models.FileManagement.generateBoardFile;
+import com.risk.models.FileManagement;
 import java.util.LinkedList;
 
 /**
@@ -35,11 +34,11 @@ public class RiskModel {
     }
 
     public void setBoard(String path) {
-        board = createBoard(path);
+        board = FileManagement.createBoard(path);
     }
 
     public void createFile(String fileContent) {
-        generateBoardFile(fileContent);
+        FileManagement.generateBoardFile(fileContent);
     }
 
     public Board getBoard() {
