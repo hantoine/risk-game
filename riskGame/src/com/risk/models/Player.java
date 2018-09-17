@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import java.awt.Color;
 import java.util.LinkedList;
 
 /**
@@ -14,7 +15,7 @@ import java.util.LinkedList;
 public class Player {
 
     private String name;
-    private String color;//change to color
+    private Color color;//change to color
     private LinkedList<Country> contriesOwned;
     private LinkedList<Continent> continentsOwned;
     // Question 1: should I need to change the type to List<Card>, create a Class called Card?
@@ -22,9 +23,9 @@ public class Player {
     private LinkedList<Card> cardsOwned;
     private int numArmies;
 
-    public Player(String name, String color) {
+    public Player(String name) {
         this.name = name;
-        this.color = color;
+        this.color = null;
         this.contriesOwned = null;
         this.continentsOwned = null;
         this.cardsOwned = null;
@@ -48,14 +49,14 @@ public class Player {
     /**
      * @return the color
      */
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
     /**
      * @param color the color to set
      */
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
