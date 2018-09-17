@@ -6,22 +6,46 @@
 package com.risk.views;
 
 import com.risk.models.Country;
+import java.awt.Insets;
+import java.awt.datatransfer.Transferable;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.TransferHandler;
+import javax.swing.text.JTextComponent;
 
 /**
  *
  * @author hantoine
  */
-public class CountryButton extends JButton {
-    //Jlabel with JtextField inside or JTextField directly
-    private Country country;
+public class CountryButton extends JTextField {
+    
     private static final int buttonSize = 25;
-
-    public CountryButton(Country country) {
-        super("");
-        this.country = country;
-        this.setLocation(country.getPositionX() - buttonSize / 2, country.getPositionY() - buttonSize / 2);
+    private static int positionX;
+    private static int positionY;
+    
+    public CountryButton(int x,int y) {
+        super("0");
+        
+        
+        this.setEditable(false);
+        this.setDragEnabled(true);
+        //this.setTransferHandler(new TransferHandler("text"));
+        this.positionX=x;
+        this.positionY=y;
+        
+        this.setLocation(positionX- buttonSize / 2, positionY - buttonSize / 2);
         this.setSize(buttonSize, buttonSize);
+    }
+    
+    public void updateArmies(String numberOfArmies){
+        
+    }
+    
+    public void updateLocation(int x, int y){
+        
     }
 
 }

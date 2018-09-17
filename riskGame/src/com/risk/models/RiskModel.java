@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package com.risk.models;
-
 import com.risk.models.FileManagement;
 import java.util.LinkedList;
 
