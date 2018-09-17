@@ -11,7 +11,7 @@ import javax.swing.JPanel;
  *
  * @author Nellybett
  */
-public class PlayerPanel extends JPanel{
+public class PlayerPanel extends JPanel {
 
     public PlayerPanel() {
     }

@@ -12,20 +12,21 @@ import java.util.LinkedList;
  * @author n_irahol
  */
 public class Player {
-     private String name;
+
+    private String name;
     private String color;
     private LinkedList<Country> contriesOwned;
     private LinkedList<Continent> continentsOwned;
     private int numArmies;
 
-    public Player(String name,String color) {
+    public Player(String name, String color) {
         this.name = name;
-        this.color=color;
+        this.color = color;
         this.contriesOwned = null;
         this.continentsOwned = null;
-        this.numArmies =0;
+        this.numArmies = 0;
     }
-    
+
     /**
      * @return the name
      */
@@ -95,8 +96,5 @@ public class Player {
     public void setNumArmies(int numArmies) {
         this.numArmies = numArmies;
     }
-    
-    
-    
-    
+
 }
