@@ -23,55 +23,53 @@ public class RiskView extends javax.swing.JFrame {
     /**
      * Creates new form MainView
      */
-    
     JPanel menuPanel;
     JPanel playersPanel;
     MapPanel mapPanel;
-    
+
     public RiskView() {
         super("Risk Game");
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        
-        Container cp=getContentPane();
+
+        Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
-        
-        
+
         // Menu Panel
-        this.menuPanel=new JPanel();
-        this.menuPanel.setSize(300,50);
-        JButton newGame=new JButton("New Game");
-        JButton saveGame=new JButton("Create Map File");
-        
+        this.menuPanel = new JPanel();
+        this.menuPanel.setSize(300, 50);
+        JButton newGame = new JButton("New Game");
+        JButton saveGame = new JButton("Create Map File");
+
         menuPanel.setLayout(new FlowLayout());
         menuPanel.add(newGame);
         menuPanel.add(saveGame);
-                
+
         // Players Panel
-        this.playersPanel=new PlayerPanel();
-        this.playersPanel.setSize(300,50);
-        JButton playerOne=new JButton("Player 1");
-        JButton playerTwo=new JButton("Player 2");
-        JButton playerThree=new JButton("Player 3");
-        
+        this.playersPanel = new PlayerPanel();
+        this.playersPanel.setSize(300, 50);
+        JButton playerOne = new JButton("Player 1");
+        JButton playerTwo = new JButton("Player 2");
+        JButton playerThree = new JButton("Player 3");
+
         playersPanel.setLayout(new FlowLayout());
         playersPanel.add(playerOne);
         playersPanel.add(playerTwo);
         playersPanel.add(playerThree);
-        
+
         //Adding the Panels
         //
         cp.add(playersPanel, BorderLayout.SOUTH);
         cp.add(menuPanel, BorderLayout.NORTH);
-        
+
     }
-    
-    public void initialMap(RiskModel riskModel){
-        Container cp=getContentPane();
-        mapPanel=new MapPanel(riskModel.getBoard());
-        setSize(mapPanel.getWidth(),mapPanel.getHeight()+playersPanel.getHeight()+menuPanel.getHeight());
+
+    public void initialMap(RiskModel riskModel) {
+        Container cp = getContentPane();
+        mapPanel = new MapPanel(riskModel.getBoard());
+        setSize(mapPanel.getWidth(), mapPanel.getHeight() + playersPanel.getHeight() + menuPanel.getHeight());
         cp.add(mapPanel, BorderLayout.CENTER);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(dimension.width/2-this.getSize().width/2, dimension.height/2-this.getSize().height/2);
+        setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
-       
+
 }
