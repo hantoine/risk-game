@@ -13,7 +13,7 @@ import javax.swing.JButton;
  * @author hantoine
  */
 public class CountryButton extends JButton {
-
+    //Jlabel with JtextField inside or JTextField directly
     private Country country;
     private static final int buttonSize = 25;
 

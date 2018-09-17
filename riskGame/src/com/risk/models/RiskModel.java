@@ -16,6 +16,7 @@ public class RiskModel {
 
     private Board board;
     private LinkedList<Player> playerList;
+    private Player currentPlayer;
 
     public RiskModel() {
 
@@ -33,6 +34,10 @@ public class RiskModel {
         playerList = playerListAux;
     }
 
+    public Player getCurrentPlayer(){
+        return currentPlayer;
+    }
+    
     public void setBoard(String path) {
         board = FileManagement.createBoard(path);
     }
