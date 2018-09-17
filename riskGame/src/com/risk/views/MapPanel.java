@@ -4,7 +4,6 @@ import com.risk.models.Board;
 import com.risk.models.Country;
 import java.awt.Graphics;
 import java.util.Collection;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class MapPanel extends JPanel {
