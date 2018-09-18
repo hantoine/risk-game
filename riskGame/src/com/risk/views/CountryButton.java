@@ -9,6 +9,7 @@ package com.risk.views;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 
 /**
@@ -22,6 +23,7 @@ public class CountryButton extends JLabel {
     private static int positionX;
     private static int positionY;
     private String name;
+    
  
        /**
      * @return the name

@@ -1,21 +1,22 @@
 package com.risk.views;
 
 
-import com.risk.controllers.GameListener;
+import com.risk.controllers.MapListener;
 import com.risk.models.Board;
 import com.risk.models.Country;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseListener;
 import java.util.Collection;
 import java.util.HashMap;
 import javax.swing.JPanel;
-import javax.swing.TransferHandler;
+
 
 
 public class MapPanel extends JPanel {
 
    
-    Board board;
+    Image image;
     private HashMap<String,CountryButton> countriesButtons;
 
     /**
@@ -24,10 +25,10 @@ public class MapPanel extends JPanel {
      */
     public MapPanel(Board board) {
         super(null);
-        this.board = board;
-        this.setSize(this.board.getImage().getWidth(null), this.board.getImage().getHeight(null));
+        this.image = board.getImage();
+        this.setSize(board.getImage().getWidth(null), board.getImage().getHeight(null));
         this.countriesButtons=new HashMap<>();
-        MouseListener countryListener= new GameListener();
+        MouseListener countryListener= new MapListener();
         this.addMouseListener(countryListener);
         
         
@@ -42,7 +43,7 @@ public class MapPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(this.board.getImage(), 0, 0, null);
+        g.drawImage(this.image, 0, 0, null);
     }
     
      /**
