@@ -7,6 +7,7 @@ package com.risk.controllers;
 
 import com.risk.views.CountryButton;
 import com.risk.views.MapPanel;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -35,6 +36,7 @@ public class GameListener extends MouseAdapter{
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
             if(cAux!=null && cAux instanceof CountryButton) {
                 CountryButton source = (CountryButton)cAux;
+                source.setBackground(Color.gray);
                 this.countrySource=source.getName();
                 System.out.println(source.getName());
             }
@@ -51,8 +53,10 @@ public class GameListener extends MouseAdapter{
             mapPanel=(MapPanel) c;
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
             if(cAux!=null && cAux instanceof CountryButton) {
-                CountryButton source = (CountryButton)cAux;
-                System.out.println(source.getName());
+                CountryButton destiny = (CountryButton)cAux;
+                CountryButton source= mapPanel.getCountriesButtons().get(this.countrySource);
+                source.setBackground(Color.white);
+                System.out.println(source.getName()+"--->"+destiny.getName());
                 this.countryReceive=source.getName();
             }
         
@@ -67,9 +71,11 @@ public class GameListener extends MouseAdapter{
             mapPanel=(MapPanel) c;
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
             if(cAux!=null && cAux instanceof CountryButton) {
-                CountryButton source = (CountryButton)cAux;
-                System.out.println(source.getName());
-                this.countryReinforce=source.getName();
+                
+                CountryButton reinforce = (CountryButton)cAux;
+                reinforce.setBackground(Color.white);
+                this.countryReinforce=reinforce.getName();
+                
             }
         
         }
