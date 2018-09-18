@@ -5,22 +5,17 @@
  */
 package com.risk.views;
 
-import com.risk.models.Country;
-import java.awt.Insets;
-import java.awt.datatransfer.Transferable;
+
+import java.awt.Color;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.TransferHandler;
-import javax.swing.text.JTextComponent;
+
 
 /**
  *
  * @author hantoine
  */
-public class CountryButton extends JTextField {
+public class CountryButton extends JLabel {
     
     private static final int buttonSize = 25;
     private static int positionX;
@@ -29,9 +24,11 @@ public class CountryButton extends JTextField {
     public CountryButton(int x,int y) {
         super("0");
         
-        
-        this.setEditable(false);
-        this.setDragEnabled(true);
+        this.setBackground(Color.WHITE);
+        this.setOpaque(true);
+        this.setHorizontalAlignment(JLabel.CENTER);
+        //this.setEditable(false);
+      
         //this.setTransferHandler(new TransferHandler("text"));
         this.positionX=x;
         this.positionY=y;

@@ -5,15 +5,18 @@ import com.risk.models.Country;
 import java.awt.Graphics;
 import java.util.Collection;
 import java.util.HashMap;
-import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+
 
 public class MapPanel extends JPanel {
 
     private final Board board;
     HashMap<String,CountryButton> countriesButtons;
 
+    /**
+     *
+     * @param board
+     */
     public MapPanel(Board board) {
         super(null);
         this.board = board;
