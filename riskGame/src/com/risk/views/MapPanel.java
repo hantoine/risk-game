@@ -34,8 +34,6 @@ public class MapPanel extends JPanel {
         Collection<Country> territories = board.getGraphTerritories().values();
         territories.stream().forEach((currentCountry) -> {
             CountryButton aux=new CountryButton(currentCountry.getPositionX(),currentCountry.getPositionY(),currentCountry.getName());
-            
-            aux.setTransferHandler(new TransferHandler("country"));
             countriesButtons.put(currentCountry.getName(), aux);
             this.add(aux);
         });
