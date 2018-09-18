@@ -16,14 +16,31 @@ import javax.swing.JLabel;
  * @author hantoine
  */
 public class CountryButton extends JLabel {
-    
+
+ 
     private static final int buttonSize = 25;
     private static int positionX;
     private static int positionY;
+    private String name;
+ 
+       /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
     
-    public CountryButton(int x,int y) {
+    
+    public CountryButton(int x,int y, String name) {
         super("0");
-        
+        this.name=name;
         this.setBackground(Color.WHITE);
         this.setOpaque(true);
         this.setHorizontalAlignment(JLabel.CENTER);
