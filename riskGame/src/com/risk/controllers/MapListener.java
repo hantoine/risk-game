@@ -5,6 +5,7 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.RiskModel;
 import com.risk.views.CountryButton;
 import com.risk.views.MapPanel;
 import java.awt.Color;
@@ -25,7 +26,13 @@ public class MapListener extends MouseAdapter{
     String countrySource;
     String countryReceive;
     private String countryReinforce;
+    RiskModel riskModel;
 
+    public MapListener(RiskModel riskModel) {
+        this.riskModel=riskModel;
+    }
+
+    
     @Override
     public void mousePressed(MouseEvent e) {
        MapPanel mapPanel;
