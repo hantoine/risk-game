@@ -12,16 +12,15 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
-import javax.swing.TransferHandler;
+
 
 
 /**
  *
  * @author Nellybett
  */
-public class GameListener extends MouseAdapter{
+public class MapListener extends MouseAdapter{
     
     String countrySource;
     String countryReceive;
@@ -44,7 +43,7 @@ public class GameListener extends MouseAdapter{
         }
         
     }
-    
+     
     @Override
     public void mouseReleased(MouseEvent e) {
         MapPanel mapPanel;
