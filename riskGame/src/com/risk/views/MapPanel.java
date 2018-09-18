@@ -23,12 +23,11 @@ public class MapPanel extends JPanel {
      *
      * @param board
      */
-    public MapPanel(Board board) {
+    public MapPanel(Board board, MouseListener countryListener) {
         super(null);
         this.image = board.getImage();
         this.setSize(board.getImage().getWidth(null), board.getImage().getHeight(null));
         this.countriesButtons=new HashMap<>();
-        MouseListener countryListener= new MapListener();
         this.addMouseListener(countryListener);
         
         

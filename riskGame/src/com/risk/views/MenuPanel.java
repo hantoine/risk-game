@@ -20,8 +20,7 @@ public class MenuPanel extends JPanel {
     JButton cancel;
     
     public MenuPanel() {
-        MouseListener menuListener= new MenuListener();
-        this.addMouseListener(menuListener);
+        
     
     }
     

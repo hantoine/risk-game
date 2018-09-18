@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
+import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -74,9 +75,9 @@ public class RiskView extends javax.swing.JFrame {
                 
     }
 
-    public void initialMap(RiskModel riskModel) {
+    public void initialMap(RiskModel riskModel, MouseListener countryListener) {
         Container cp = getContentPane();
-        mapPanel = new MapPanel(riskModel.getBoard());
+        mapPanel = new MapPanel(riskModel.getBoard(),countryListener);
         playerPanel = new PlayerPanel(riskModel.getCurrentPlayer());
         cp.add(mapPanel, BorderLayout.CENTER);
         cp.add(playerPanel, BorderLayout.EAST);
