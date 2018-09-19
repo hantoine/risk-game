@@ -5,6 +5,7 @@
  */
 package com.risk.views;
 
+import com.risk.controllers.MenuListener;
 import com.risk.models.Card;
 import com.risk.models.Continent;
 import com.risk.models.Country;
@@ -32,10 +33,11 @@ public class RiskView extends javax.swing.JFrame {
      * Creates new form MainView
      */
     
-    JPanel menuPanel;
-    JPanel battlePanel;
-    MapPanel mapPanel;
-    PlayerPanel playerPanel;
+    private StartMenuView menuPanel;
+    private JPanel optionPanel;
+    private JPanel battlePanel;
+    private MapPanel mapPanel;
+    private PlayerPanel playerPanel;
     
 
     public RiskView() {
@@ -44,16 +46,17 @@ public class RiskView extends javax.swing.JFrame {
 
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
+        
      
         // Menu Panel
-        this.menuPanel = new JPanel();
-        this.menuPanel.setSize(300, 50);
+        this.optionPanel = new JPanel();
+        this.optionPanel.setSize(300, 50);
         JButton newGame = new JButton("New Game");
         JButton saveGame = new JButton("Create Map File");
 
-        menuPanel.setLayout(new FlowLayout());
-        menuPanel.add(newGame);
-        menuPanel.add(saveGame);
+        optionPanel.setLayout(new FlowLayout());
+        optionPanel.add(newGame);
+        optionPanel.add(saveGame);
  
         //Battle panel
         this.battlePanel = new JPanel();
@@ -69,22 +72,109 @@ public class RiskView extends javax.swing.JFrame {
 
       
         //Adding Panels
+        optionPanel.setVisible(false);
+        battlePanel.setVisible(false);
         
         cp.add(battlePanel, BorderLayout.SOUTH);
-        cp.add(menuPanel, BorderLayout.NORTH);
-                
+        cp.add(optionPanel, BorderLayout.NORTH);
+             
     }
 
     public void initialMap(RiskModel riskModel, MouseListener countryListener) {
         Container cp = getContentPane();
-        mapPanel = new MapPanel(riskModel.getBoard(),countryListener);
-        playerPanel = new PlayerPanel(riskModel.getCurrentPlayer());
-        cp.add(mapPanel, BorderLayout.CENTER);
-        cp.add(playerPanel, BorderLayout.EAST);
-        this.setSize(mapPanel.getWidth()+playerPanel.getWidth(),  mapPanel.getHeight() + battlePanel.getHeight() + menuPanel.getHeight());
+        this.setMapPanel(new MapPanel(riskModel.getBoard(),countryListener));
+        this.setPlayerPanel(new PlayerPanel(riskModel.getCurrentPlayer()));
+        cp.add(this.getMapPanel(), BorderLayout.CENTER);
+        cp.add(this.getPlayerPanel(), BorderLayout.EAST);
+        this.setSize(this.getMapPanel().getWidth()+this.getPlayerPanel().getWidth(),  this.getMapPanel().getHeight() + this.getBattlePanel().getHeight() + this.getOptionPanel().getHeight());
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
+    
+
+
+    public void initialMenu(RiskModel riskModel, MenuListener menuListener) {
+        Container cp = getContentPane();
+        setMenuPanel(new StartMenuView(riskModel,menuListener));
+        
+        cp.add(getMenuPanel(), BorderLayout.CENTER);
+        
+        this.setSize(300,500);
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
+    }
+   
+        /**
+     * @return the menuPanel
+     */
+    public StartMenuView getMenuPanel() {
+        return menuPanel;
+    }
+
+    /**
+     * @param menuPanel the menuPanel to set
+     */
+    public void setMenuPanel(StartMenuView menuPanel) {
+        this.menuPanel = menuPanel;
+    }
+    
+    
+    /**
+     * @return the optionPanel
+     */
+    public JPanel getOptionPanel() {
+        return optionPanel;
+    }
+
+    /**
+     * @param optionPanel the optionPanel to set
+     */
+    public void setOptionPanel(JPanel optionPanel) {
+        this.optionPanel = optionPanel;
+    }
+
+    /**
+     * @return the battlePanel
+     */
+    public JPanel getBattlePanel() {
+        return battlePanel;
+    }
+
+    /**
+     * @param battlePanel the battlePanel to set
+     */
+    public void setBattlePanel(JPanel battlePanel) {
+        this.battlePanel = battlePanel;
+    }
+
+    /**
+     * @return the mapPanel
+     */
+    public MapPanel getMapPanel() {
+        return mapPanel;
+    }
+
+    /**
+     * @param mapPanel the mapPanel to set
+     */
+    public void setMapPanel(MapPanel mapPanel) {
+        this.mapPanel = mapPanel;
+    }
+
+    /**
+     * @return the playerPanel
+     */
+    public PlayerPanel getPlayerPanel() {
+        return playerPanel;
+    }
+
+    /**
+     * @param playerPanel the playerPanel to set
+     */
+    public void setPlayerPanel(PlayerPanel playerPanel) {
+        this.playerPanel = playerPanel;
+    }
+
     
 
 }

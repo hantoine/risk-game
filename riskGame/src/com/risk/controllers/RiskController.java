@@ -7,6 +7,8 @@ package com.risk.controllers;
 
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
+import com.risk.views.StartMenuView;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.io.File;
 
@@ -24,8 +26,10 @@ public class RiskController {
         this.viewRisk = viewRisk;
         modelRisk.setBoard("C:\\Users\\Nellybett\\Desktop\\Old Yorkshire.map");
         //modelRisk.setBoard("maps"+File.separator+"Old Yorkshire.map");
-        MouseListener countryListener= new MapListener(modelRisk);
-        viewRisk.initialMap(modelRisk, countryListener);
+        MapListener countryListener= new MapListener(modelRisk);
+        MenuListener menuListener=new MenuListener(modelRisk,viewRisk,countryListener);
+        viewRisk.initialMenu(modelRisk, menuListener);
+        //viewRisk.initialMap(modelRisk, countryListener);
         this.viewRisk.setVisible(true);
 
     }
