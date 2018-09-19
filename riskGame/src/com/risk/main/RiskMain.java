@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.risk.main;
+
 import com.risk.controllers.RiskController;
 import com.risk.controllers.RiskController_copy;
 import com.risk.models.RiskModel;
@@ -20,15 +21,9 @@ public class RiskMain {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
-        RiskView riskView=new RiskView();
-        RiskModel riskModel=new RiskModel();
-        StartMenuView menuView = new StartMenuView(riskModel);
-                
-        //tim
-        //RiskController riskController=new RiskController(riskView, riskModel);  
-        if(riskView!=null && menuView!=null && riskModel!=null){
-            RiskController_copy riskController  = new RiskController_copy(riskView, menuView, riskModel);
-        }
+
+        RiskView riskView = new RiskView();
+        RiskModel riskModel = new RiskModel();
+        RiskController riskController = new RiskController(riskView, riskModel);
     }
 }

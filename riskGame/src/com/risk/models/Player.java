@@ -18,17 +18,22 @@ public class Player {
     private Color color;
     private LinkedList<Country> contriesOwned;
     private LinkedList<Continent> continentsOwned;
+    // Question 1: should I need to change the type to List<Card>, create a Class called Card?
+    // Question 2: Should the playerInfoPanel show the number of the cards player owned, or list all cards player owned?
+    private LinkedList<Card> cardsOwned;
     private int numArmies;
 
     public Player(String name, Color color, boolean isHuman) {
         this.name = name;
-        this.color = color;
+        this.color = null;
         this.contriesOwned = null;
         this.continentsOwned = null;
         this.numArmies =0;
         this.isHuman = isHuman;
+        this.cardsOwned = null;
+        this.numArmies = 0;
     }
-    
+
     /**
      * @return the name
      */
@@ -84,6 +89,20 @@ public class Player {
     public void setContinentsOwned(LinkedList<Continent> continentsOwned) {
         this.continentsOwned = continentsOwned;
     }
+    
+    /**
+     * @return the cardsOwned
+     */
+    public LinkedList<Card> getCardsOwned() {
+        return cardsOwned;
+    }
+
+    /**
+     * @param cardsOwned the cardsOwned to set
+     */
+    public void setCardsOwned(LinkedList<Card> cardsOwned) {
+        this.cardsOwned = cardsOwned;
+    }
 
     /**
      * @return the numArmies
@@ -98,8 +117,8 @@ public class Player {
     public void setNumArmies(int numArmies) {
         this.numArmies = numArmies;
     }
+
     
-    //added by tim
     /**
      * @return the numArmies
      */
