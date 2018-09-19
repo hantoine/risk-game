@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import java.awt.Color;
 import java.util.LinkedList;
 
 /**
@@ -12,18 +13,20 @@ import java.util.LinkedList;
  * @author n_irahol
  */
 public class Player {
-     private String name;
-    private String color;
+    private boolean isHuman;
+    private String name;
+    private Color color;
     private LinkedList<Country> contriesOwned;
     private LinkedList<Continent> continentsOwned;
     private int numArmies;
 
-    public Player(String name,String color) {
+    public Player(String name, Color color, boolean isHuman) {
         this.name = name;
-        this.color=color;
+        this.color = color;
         this.contriesOwned = null;
         this.continentsOwned = null;
         this.numArmies =0;
+        this.isHuman = isHuman;
     }
     
     /**
@@ -43,14 +46,14 @@ public class Player {
     /**
      * @return the color
      */
-    public String getColor() {
-        return color;
+    public Color getColor() {
+        return this.color;
     }
 
     /**
      * @param color the color to set
      */
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
@@ -96,7 +99,13 @@ public class Player {
         this.numArmies = numArmies;
     }
     
-    
+    //added by tim
+    /**
+     * @return the numArmies
+     */
+    public boolean getType() {
+        return this.isHuman;
+    }
     
     
 }
