@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 package com.risk.models;
-import static com.risk.models.FileManagement.createBoard;
-import static com.risk.models.FileManagement.generateBoardFile;
+import com.risk.models.FileManagement;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,36 +19,39 @@ import java.util.Random;
  */
 public class RiskModel {
 
- 
     private Board board;
     private LinkedList<Player> playerList;
-    
+    private Player currentPlayer;
 
     public RiskModel() {
-        
+
     }
 
-    public void setPlayerList (String[] playersInfo){
-        int i;
-        LinkedList<Player> playerListAux= new LinkedList<>();
-        for(i=0;i<playersInfo.length;i++){
-            String[] separator=playersInfo[i].split(",");
-            Player auxiliar=new Player(separator[0],separator[1]);
-            playerListAux.add(auxiliar);
-        }
-        
-        playerList=playerListAux;
+    //public void setPlayerList(String[] playersInfo) {
+    //    int i;
+    //    LinkedList<Player> playerListAux = new LinkedList<>();
+    //    for (i = 0; i < playersInfo.length; i++) {
+    //        String[] separator = playersInfo[i].split(",");
+    //        Player auxiliar = new Player(separator[0], separator[1]);
+    //        playerListAux.add(auxiliar);
+    //    }
+
+    //    playerList = playerListAux;
+    //}
+
+    public Player getCurrentPlayer(){
+        return currentPlayer;
     }
     
-    public void setBoard(String path){
-        board=createBoard(path);
+    public void setBoard(String path) {
+        board = FileManagement.createBoard(path);
     }
-    
-    public void createFile(String fileContent){
-        generateBoardFile(fileContent);
+
+    public void createFile(String fileContent) {
+        FileManagement.generateBoardFile(fileContent);
     }
-    
-       public Board getBoard() {
+
+    public Board getBoard() {
         return board;
     }
 /**
