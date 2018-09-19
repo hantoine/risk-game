@@ -5,7 +5,6 @@
  */
 package com.risk.views;
 
-import com.risk.controllers.RiskController_copy;
 import com.risk.models.Player;
 import com.risk.models.RiskModel;
 import java.awt.Color;
@@ -190,12 +189,12 @@ public class PlayerListPanel extends JPanel{
         //finally, add the new player's pane to the player's list
         this.playersListPanel.add(newPlayer,playersListPanel.getComponentCount()-1);
     }
-    /*
-    void addAddPlayerListener(ActionListener listenForCalcButton){
-	playersListPanel.addActionListener(listenForCalcButton);
+    
+    public void addAddPlayerListener(ActionListener addPlayerListener){
+	playersListPanel.addChangeListener(addPlayerListener);
     }
     
-    void addRemovePlayerListener(ActionListener listenForCalcButton){
-	playersListPanel.addActionListener(listenForCalcButton);
-    }*/
+    public void addRemovePlayerListener(ActionListener removePlayerListener){
+	playersListPanel.addActionListener(removePlayerListener);
+    }
 }
