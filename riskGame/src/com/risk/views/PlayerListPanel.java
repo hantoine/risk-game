@@ -5,12 +5,14 @@
  */
 package com.risk.views;
 
+import com.risk.controllers.MenuListener;
 import com.risk.models.Player;
 import com.risk.models.RiskModel;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -25,6 +27,8 @@ import javax.swing.JTextField;
  * @author Nellybett
  */
 public class PlayerListPanel extends JPanel{
+
+      
     private JPanel addPlayerPanel;
     private JPanel playersListPanel;
     int nbBots;
@@ -36,34 +40,31 @@ public class PlayerListPanel extends JPanel{
                             Color.white, 
                             Color.black, 
                             Color.orange};
-    LinkedList<Color> colorUsed;
+    private LinkedList<Color> colorUsed;
+    MenuListener menuListener;
     
-    public PlayerListPanel(RiskModel riskModel) {
+    public PlayerListPanel(RiskModel riskModel, MenuListener menuAction) {
         //setup PlayersPanel panel
+        this.menuListener=menuAction;
         this.setSize(400,300);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.addPlayerPanel = new JPanel();
         this.playersListPanel = new JPanel();
-        this.playersListPanel.setLayout(new BoxLayout(playersListPanel, BoxLayout.Y_AXIS)); 
+        this.playersListPanel.setLayout(new BoxLayout(getPlayersListPanel(), BoxLayout.Y_AXIS)); 
         this.nbBots=1;
         this.uniqueID=0;
         this.maxNbPlayers = riskModel.getMaxNumberOfPlayers();
         this.colorUsed = new LinkedList<Color>();
-        
+        menuAction.setPanel(this);
         JButton addPlayerButton = new JButton("+");
-        addPlayerButton.addActionListener(new ActionListener()
-        {
-          @Override
-          public void actionPerformed(ActionEvent e)
-          {
-            addElement(getNewPlayerName(), getNewColor());
-          }
-        });
+        
         
         BoxLayout layout = new BoxLayout(addPlayerPanel, BoxLayout.X_AXIS);
         addPlayerPanel.setLayout(layout);
         this.addPlayerPanel.add(addPlayerButton);
         
+        
+        addPlayerButton.addMouseListener(menuAction);
         //content
         //initialize players list
         LinkedList<Player> playerList = riskModel.getPlayerList();
@@ -84,11 +85,39 @@ public class PlayerListPanel extends JPanel{
         }
     }
     
+    /**
+     * @return the colorUsed
+     */
+    public LinkedList<Color> getColorUsed() {
+        return colorUsed;
+    }
+
+    /**
+     * @param colorUsed the colorUsed to set
+     */
+    public void setColorUsed(LinkedList<Color> colorUsed) {
+        this.colorUsed = colorUsed;
+    }
+    
+     /**
+     * @return the playersListPanel
+     */
+    public JPanel getPlayersListPanel() {
+        return playersListPanel;
+    }
+
+    /**
+     * @param playersListPanel the playersListPanel to set
+     */
+    public void setPlayersListPanel(JPanel playersListPanel) {
+        this.playersListPanel = playersListPanel;
+    }
+    
     /*
      *
      */
-    protected String getNewPlayerName(){
-        Integer nbPlayers = this.playersListPanel.getComponentCount()-1-this.nbBots; //remove 1 because there is the "+" button
+    public String getNewPlayerName(){
+        Integer nbPlayers = this.getPlayersListPanel().getComponentCount()-1-this.nbBots; //remove 1 because there is the "+" button
         nbPlayers+=1;
         return "Player " + nbPlayers.toString();
     }
@@ -96,12 +125,12 @@ public class PlayerListPanel extends JPanel{
     /*
      *
      */
-    private Color getNewColor(){
+    public Color getNewColor(){
         for(int i =0; i< basicColors.length; i++){
             Color tested = basicColors[i];
             if(!colorUsed.contains(tested))
             {
-                colorUsed.add(tested);
+                getColorUsed().add(tested);
                 return tested;
             }
         }
@@ -112,7 +141,7 @@ public class PlayerListPanel extends JPanel{
      *
      */
     public void addElement(String playerName, Color color) {   
-        if(playersListPanel.getComponentCount()-1==maxNbPlayers){
+        if(getPlayersListPanel().getComponentCount()-1==maxNbPlayers){
             JOptionPane.showMessageDialog(null, "The maximum number of players has been reached.");
             return;
         }
@@ -137,57 +166,21 @@ public class PlayerListPanel extends JPanel{
         
         //add color button
         JButton colorButton = new JButton("    ");
-        colorButton.addActionListener(new ActionListener()
-        {
-          @Override
-          public void actionPerformed(ActionEvent e)
-          {
-            Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
-            
-            if(colorUsed.contains(selectedColor))
-                JOptionPane.showMessageDialog(null, "This color is already used");
-            else
-                colorButton.setBackground(selectedColor);
-          }
-        });
+        colorButton.addMouseListener(this.menuListener);
+        
         colorButton.setBackground(color);
         newPlayer.add(colorButton);
         
         //add del button
         DeletableButton delButton = new DeletableButton("-", this.uniqueID);
         this.uniqueID+=1;
-        delButton.addActionListener(new ActionListener()
-        {
-          @Override
-          public void actionPerformed(ActionEvent e)
-          {
-            if(playersListPanel.getComponentCount()-1<=3)
-                JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
-            else{
-                int IDtoDelete = delButton.getID();
-                int nbPlayers = playersListPanel.getComponentCount()-1;
-                for(int i =0; i< nbPlayers; i++){
-                    JPanel panelToTest = (JPanel)playersListPanel.getComponent(i);
-                    DeletableButton delButtonToTest = (DeletableButton)panelToTest.getComponent(2);
-                    if(delButtonToTest.getID() == IDtoDelete){
-                        Color colorToRemove = ((JButton)panelToTest.getComponent(1)).getBackground();
-                        colorUsed.remove(colorToRemove);
-                        playersListPanel.remove(i);
-                        revalidate();
-                        repaint();
-                        return;
-                    }
-                }
-                JOptionPane.showMessageDialog(null, "Oops... Something went wrong.");
-            }
-          }
-        });
+        delButton.addMouseListener(this.menuListener);
         newPlayer.add(delButton);
         revalidate();
         repaint();
         
         //finally, add the new player's pane to the player's list
-        this.playersListPanel.add(newPlayer,playersListPanel.getComponentCount()-1);
+        this.getPlayersListPanel().add(newPlayer,getPlayersListPanel().getComponentCount()-1);
     }
     
     public void addAddPlayerListener(ActionListener addPlayerListener){
