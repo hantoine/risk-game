@@ -8,6 +8,7 @@ import static com.risk.models.FileManagement.createBoard;
 import static com.risk.models.FileManagement.generateBoardFile;
 import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -60,7 +61,7 @@ public class RiskModel {
     public void assignRandomParams(LinkedList<Player> playerlist){
         //System.out.println("[assinging random countires.....]");
         HashMap<String, Country>temp_contries = board.getGraphTerritories();
-        List<Country> countries = new ArrayList<>();
+        Collection<Country> countries = new ArrayList<>();
         int contr_size = temp_contries.size();
         int player_size = 1;
         
@@ -72,13 +73,7 @@ public class RiskModel {
         }
         
         
-        Iterator iterator2 = temp_contries.keySet().iterator();
-        while (iterator2.hasNext()) {
-           String key = iterator2.next().toString();
-           Country value = temp_contries.get(key);
-           countries.add(value);
-           //System.out.println(key + " ");
-        }
+        countries = temp_contries.values();
         //System.out.println("Original List : \n" + countries);
         
         Collections.shuffle(countries);
