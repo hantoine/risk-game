@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import java.awt.Color;
 import java.util.LinkedList;
 
 /**
@@ -12,20 +13,25 @@ import java.util.LinkedList;
  * @author n_irahol
  */
 public class Player {
-     private String name;
-    private String color;
+
+    private String name;
+    private Color color;//change to color
     private LinkedList<Country> contriesOwned;
     private LinkedList<Continent> continentsOwned;
+    // Question 1: should I need to change the type to List<Card>, create a Class called Card?
+    // Question 2: Should the playerInfoPanel show the number of the cards player owned, or list all cards player owned?
+    private LinkedList<Card> cardsOwned;
     private int numArmies;
 
-    public Player(String name,String color) {
+    public Player(String name) {
         this.name = name;
-        this.color=color;
+        this.color = null;
         this.contriesOwned = null;
         this.continentsOwned = null;
-        this.numArmies =0;
+        this.cardsOwned = null;
+        this.numArmies = 0;
     }
-    
+
     /**
      * @return the name
      */
@@ -43,14 +49,14 @@ public class Player {
     /**
      * @return the color
      */
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
     /**
      * @param color the color to set
      */
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
@@ -81,6 +87,20 @@ public class Player {
     public void setContinentsOwned(LinkedList<Continent> continentsOwned) {
         this.continentsOwned = continentsOwned;
     }
+    
+    /**
+     * @return the cardsOwned
+     */
+    public LinkedList<Card> getCardsOwned() {
+        return cardsOwned;
+    }
+
+    /**
+     * @param cardsOwned the cardsOwned to set
+     */
+    public void setCardsOwned(LinkedList<Card> cardsOwned) {
+        this.cardsOwned = cardsOwned;
+    }
 
     /**
      * @return the numArmies
@@ -95,8 +115,5 @@ public class Player {
     public void setNumArmies(int numArmies) {
         this.numArmies = numArmies;
     }
-    
-    
-    
-    
+
 }

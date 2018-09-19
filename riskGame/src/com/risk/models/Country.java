@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.risk.models;
+
 import java.util.LinkedList;
 
 /**
@@ -11,21 +12,30 @@ import java.util.LinkedList;
  * @author n_irahol
  */
 public class Country {
-    
+
     private LinkedList<String> adj;
+    // why not private too ?
     int positionX;
     int positionY;
     private String continentName;
     private int numArmies;
     private Player owner;
     private String name;
-    
+
     public Country(String name, int positionX, int positionY) {
-        this.name=name;
-        this.positionX=positionX;
-        this.positionY=positionY;
-        this.numArmies=0;
-        this.owner=null;
+        this.name = name;
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.numArmies = 0;
+        this.owner = null;
+    }
+
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
     }
 
     /**
@@ -97,5 +107,5 @@ public class Country {
     public void setContinentName(String continentName) {
         this.continentName = continentName;
     }
-    
+
 }

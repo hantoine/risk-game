@@ -5,15 +5,17 @@
  */
 package com.risk.controllers;
 
-
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
+import java.awt.event.MouseListener;
+import java.io.File;
 
 /**
  *
  * @author Nellybett
  */
 public class RiskController {
+
     RiskView viewRisk;
     RiskModel modelRisk;
 
@@ -21,9 +23,11 @@ public class RiskController {
         this.modelRisk = modelRisk;
         this.viewRisk = viewRisk;
         modelRisk.setBoard("C:\\Users\\Nellybett\\Desktop\\Old Yorkshire.map");
-        viewRisk.initialMap(modelRisk);
+        //modelRisk.setBoard("maps"+File.separator+"Old Yorkshire.map");
+        MouseListener countryListener= new MapListener(modelRisk);
+        viewRisk.initialMap(modelRisk, countryListener);
         this.viewRisk.setVisible(true);
-       
+
     }
-    
+
 }
