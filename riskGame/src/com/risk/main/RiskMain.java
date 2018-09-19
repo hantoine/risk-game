@@ -6,10 +6,10 @@
 package com.risk.main;
 
 import com.risk.controllers.RiskController;
-import com.risk.controllers.RiskController_copy;
+
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
-import com.risk.views.StartMenuView;
+import com.risk.views.menu.StartMenuView;
 
 /**
  *

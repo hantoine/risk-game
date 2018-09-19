@@ -6,10 +6,10 @@
 package com.risk.controllers;
 
 import com.risk.models.RiskModel;
-import com.risk.views.CountryButton;
-import com.risk.views.DeletableButton;
-import com.risk.views.MapPanel;
-import com.risk.views.PlayerListPanel;
+import com.risk.views.map.CountryButton;
+import com.risk.views.menu.DeletableButton;
+import com.risk.views.map.MapPanel;
+import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.RiskView;
 import java.awt.Color;
 import java.awt.Component;
@@ -81,11 +81,12 @@ public class MenuListener extends MouseAdapter{
             
             }else if(addPlayer.getText().equals("    ")){
                  Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
-                if( this.playerList.getColorUsed().contains(selectedColor))
+                if( this.playerList.getColorUsed().contains(selectedColor)){
                     JOptionPane.showMessageDialog(null, "This color is already used");
-                else
+                }else{
                     addPlayer.setBackground(selectedColor);
-            
+                    
+                }
             }else if(addPlayer.getText().equals("PLAY")){
                 
                 this.riskView.remove(this.riskView.getMenuPanel());

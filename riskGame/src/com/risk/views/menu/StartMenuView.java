@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.views;
+package com.risk.views.menu;
 
+import com.risk.views.menu.NewGamePanel;
 import com.risk.controllers.MenuListener;
 import com.risk.models.Player;
 import com.risk.models.RiskModel;

@@ -3,23 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.views;
+package com.risk.views.menu;
 
 import com.risk.controllers.MenuListener;
 import com.risk.models.Player;
 import com.risk.models.RiskModel;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 /**
@@ -48,13 +43,16 @@ public class PlayerListPanel extends JPanel{
         this.menuListener=menuAction;
         this.setSize(400,300);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        
         this.addPlayerPanel = new JPanel();
         this.playersListPanel = new JPanel();
+        
         this.playersListPanel.setLayout(new BoxLayout(getPlayersListPanel(), BoxLayout.Y_AXIS)); 
         this.nbBots=1;
         this.uniqueID=0;
         this.maxNbPlayers = riskModel.getMaxNumberOfPlayers();
         this.colorUsed = new LinkedList<Color>();
+        
         menuAction.setPanel(this);
         JButton addPlayerButton = new JButton("+");
         
@@ -62,10 +60,10 @@ public class PlayerListPanel extends JPanel{
         BoxLayout layout = new BoxLayout(addPlayerPanel, BoxLayout.X_AXIS);
         addPlayerPanel.setLayout(layout);
         this.addPlayerPanel.add(addPlayerButton);
-        
-        
         addPlayerButton.addMouseListener(menuAction);
-        //content
+        
+
+//content
         //initialize players list
         LinkedList<Player> playerList = riskModel.getPlayerList();
         
@@ -80,8 +78,12 @@ public class PlayerListPanel extends JPanel{
      *
      */
     protected void initializePlayers(LinkedList<Player> playerList){
+        int i=0;
         for (Player player : playerList) {
-            addElement(player.getName(), getNewColor());
+            Color aux=getNewColor();
+            addElement(player.getName(),aux );
+            this.colorUsed.add(aux);
+            System.out.println(i);
         }
     }
     
@@ -117,7 +119,7 @@ public class PlayerListPanel extends JPanel{
      *
      */
     public String getNewPlayerName(){
-        Integer nbPlayers = this.getPlayersListPanel().getComponentCount()-1-this.nbBots; //remove 1 because there is the "+" button
+        Integer nbPlayers = this.getPlayersListPanel().getComponentCount()-this.nbBots; //remove 1 because there is the "+" button
         nbPlayers+=1;
         return "Player " + nbPlayers.toString();
     }
@@ -152,7 +154,7 @@ public class PlayerListPanel extends JPanel{
         
         //verify name
         if(playerName.equals("")){
-            playerName = "Bot " + this.nbBots;
+            playerName = "Player " + this.nbBots;
             this.nbBots+=1;
         }
         
@@ -183,7 +185,4 @@ public class PlayerListPanel extends JPanel{
         this.getPlayersListPanel().add(newPlayer,getPlayersListPanel().getComponentCount()-1);
     }
     
-    public void addAddPlayerListener(ActionListener addPlayerListener){
-	((JButton)addPlayerPanel.getComponent(0)).addActionListener(addPlayerListener);
-    }
 }
