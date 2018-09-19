@@ -30,7 +30,7 @@ public class RiskModel {
         this.playerList=new LinkedList<>();
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
-        addPlayerToPlayerList("Bot 1", Color.blue, false);
+        addPlayerToPlayerList("Player 3", Color.blue, false);
     }
 
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman){

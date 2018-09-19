@@ -5,6 +5,9 @@
  */
 package com.risk.views;
 
+import com.risk.views.player.PlayerPanel;
+import com.risk.views.map.MapPanel;
+import com.risk.views.menu.StartMenuView;
 import com.risk.controllers.MenuListener;
 import com.risk.models.Card;
 import com.risk.models.Continent;

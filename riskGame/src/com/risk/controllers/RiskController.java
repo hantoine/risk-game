@@ -7,7 +7,7 @@ package com.risk.controllers;
 
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
-import com.risk.views.StartMenuView;
+import com.risk.views.menu.StartMenuView;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.io.File;

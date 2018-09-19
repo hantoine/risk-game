@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.views;
+package com.risk.views.player;
 
 import com.risk.models.Player;
 import java.awt.BorderLayout;
