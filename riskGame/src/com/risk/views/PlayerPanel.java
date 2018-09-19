@@ -30,10 +30,7 @@ public class PlayerPanel extends JPanel {
         this.setSize(150,200);
         this.playerName=new JButton("Player 1");
         this.add(playerName);
-        
-        Player test=new Player("NELLY");
-        test.setColor(Color.yellow);
-        updatePlayer(test);
+       
         
     }
     

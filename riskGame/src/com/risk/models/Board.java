@@ -20,9 +20,12 @@ public class Board {
     private HashMap<String, Continent> graphContinents;
     private HashMap<String, Country> graphTerritories;
 
+    
+    
     public Board() {
     }
 
+    
     public HashMap<String, Continent> getGraphContinents() {
         return graphContinents;
     }
@@ -61,4 +64,6 @@ public class Board {
         this.image = image;
     }
 
+    
+    
 }
