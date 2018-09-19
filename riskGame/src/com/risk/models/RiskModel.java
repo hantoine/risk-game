@@ -6,6 +6,9 @@
 package com.risk.models;
 import static com.risk.models.FileManagement.createBoard;
 import static com.risk.models.FileManagement.generateBoardFile;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 /**
  *
@@ -16,21 +19,27 @@ public class RiskModel {
  
     private Board board;
     private LinkedList<Player> playerList;
+    
+    static Integer maxNbOfPlayers=6; //tim 
+    
 
     public RiskModel() {
-        
+        playerList= new LinkedList<>();
+        setPlayerList();
     }
 
-    public void setPlayerList (String[] playersInfo){
-        int i;
-        LinkedList<Player> playerListAux= new LinkedList<>();
-        for(i=0;i<playersInfo.length;i++){
-            String[] separator=playersInfo[i].split(",");
-            Player auxiliar=new Player(separator[0],separator[1]);
-            playerListAux.add(auxiliar);
-        }
-        
-        playerList=playerListAux;
+    public void addPlayerToPlayerList(String name, Color color, boolean isHuman){
+        playerList.add(new Player(name, color, isHuman));
+    }
+    
+    public void removePlayer(int index){
+        playerList.remove(index);
+    }
+    
+    public void setPlayerList (){
+        addPlayerToPlayerList("Player 1", Color.red, true);
+        addPlayerToPlayerList("Player 2", Color.green, true);
+        addPlayerToPlayerList("Bot 1", Color.blue, false);
     }
     
     public void setBoard(String path){
@@ -45,4 +54,12 @@ public class RiskModel {
         return board;
     }
 
+    //tim
+    public int getMaxNumberOfPlayers(){
+        return maxNbOfPlayers;
+    }
+    
+    public LinkedList<Player> getPlayerList(){
+        return this.playerList;
+    }
 }

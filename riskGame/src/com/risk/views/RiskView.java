@@ -35,7 +35,6 @@ public class RiskView extends javax.swing.JFrame {
         Container cp=getContentPane();
         cp.setLayout(new BorderLayout());
         
-        
         // Menu Panel
         this.menuPanel=new JPanel();
         this.menuPanel.setSize(300,50);
@@ -47,7 +46,7 @@ public class RiskView extends javax.swing.JFrame {
         menuPanel.add(saveGame);
                 
         // Players Panel
-        this.playersPanel=new PlayerPanel();
+        this.playersPanel=new PlayersPanel();
         this.playersPanel.setSize(300,50);
         JButton playerOne=new JButton("Player 1");
         JButton playerTwo=new JButton("Player 2");
@@ -59,7 +58,6 @@ public class RiskView extends javax.swing.JFrame {
         playersPanel.add(playerThree);
         
         //Adding the Panels
-        //
         cp.add(playersPanel, BorderLayout.SOUTH);
         cp.add(menuPanel, BorderLayout.NORTH);
         

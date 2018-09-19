@@ -16,9 +16,11 @@ import java.util.HashMap;
 public class Board {
     private HashMap<String,String> configurationInfo;
     private BufferedImage image;
-     private HashMap<String,Continent> graphContinents;
+    private HashMap<String,Continent> graphContinents;
     private HashMap<String,Country> graphTerritories;
 
+    
+    
     public Board() {
     }
     
@@ -60,6 +62,7 @@ public class Board {
     public void setImage(BufferedImage image) {
         this.image = image;
     }
+    
     
     
 }
