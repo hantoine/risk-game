@@ -13,9 +13,9 @@ import java.util.LinkedList;
  * @author n_irahol
  */
 public class Player {
-
+    private boolean isHuman;
     private String name;
-    private Color color;//change to color
+    private Color color;
     private LinkedList<Country> contriesOwned;
     private LinkedList<Continent> continentsOwned;
     // Question 1: should I need to change the type to List<Card>, create a Class called Card?
@@ -23,11 +23,13 @@ public class Player {
     private LinkedList<Card> cardsOwned;
     private int numArmies;
 
-    public Player(String name) {
+    public Player(String name, Color color, boolean isHuman) {
         this.name = name;
         this.color = null;
         this.contriesOwned = null;
         this.continentsOwned = null;
+        this.numArmies =0;
+        this.isHuman = isHuman;
         this.cardsOwned = null;
         this.numArmies = 0;
     }
@@ -50,7 +52,7 @@ public class Player {
      * @return the color
      */
     public Color getColor() {
-        return color;
+        return this.color;
     }
 
     /**
@@ -116,4 +118,13 @@ public class Player {
         this.numArmies = numArmies;
     }
 
+    
+    /**
+     * @return the numArmies
+     */
+    public boolean getType() {
+        return this.isHuman;
+    }
+    
+    
 }
