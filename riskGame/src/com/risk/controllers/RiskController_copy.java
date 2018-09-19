@@ -61,6 +61,7 @@ public class RiskController_copy {
         @Override
         public void actionPerformed(ActionEvent e) {
             try{
+                //TODO
                 modelRisk.addPlayerToPlayerList(this.newPlayerName, this.newPlayerColor, this.newPlayerHuman);
             }
             catch(NumberFormatException ex){
@@ -81,6 +82,7 @@ public class RiskController_copy {
         @Override
         public void actionPerformed(ActionEvent e) {
             try{
+                //TODO
                 modelRisk.removePlayer(this.deletedIndex);
             }
             catch(NumberFormatException ex){
