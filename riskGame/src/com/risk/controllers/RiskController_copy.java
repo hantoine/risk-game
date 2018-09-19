@@ -32,9 +32,7 @@ public class RiskController_copy {
         this.menuView = menuView;
         
         this.playerListPanelView = (PlayerListPanel)((NewGamePanel)this.menuView.getComponent(0)).getComponent(1);
-        
         this.playerListPanelView.addAddPlayerListener(new addPlayerListener());
-        this.playerListPanelView.addRemovePlayerListener(new removePlayerListener());
     }
     
     //tim
@@ -43,7 +41,7 @@ public class RiskController_copy {
     }
     
     public void initializeMap(){
-        viewRisk.initialMap(modelRisk);
+        //viewRisk.initialMap(modelRisk);
     }
     
     //listener to add player to players list from view
@@ -69,26 +67,4 @@ public class RiskController_copy {
             }
         }
     }
-    
-    //listener to remove player to players list from view
-    class removePlayerListener implements ActionListener{
-        
-        int deletedIndex;
-        
-        public removePlayerListener(){
-            this.deletedIndex=deletedIndex;
-        }
-        
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try{
-                //TODO
-                modelRisk.removePlayer(this.deletedIndex);
-            }
-            catch(NumberFormatException ex){
-                System.out.println(ex);
-            }
-        }
-    }
-    
 }

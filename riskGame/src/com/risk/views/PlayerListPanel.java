@@ -191,10 +191,6 @@ public class PlayerListPanel extends JPanel{
     }
     
     public void addAddPlayerListener(ActionListener addPlayerListener){
-	playersListPanel.addChangeListener(addPlayerListener);
-    }
-    
-    public void addRemovePlayerListener(ActionListener removePlayerListener){
-	playersListPanel.addActionListener(removePlayerListener);
+	((JButton)addPlayerPanel.getComponent(0)).addActionListener(addPlayerListener);
     }
 }
