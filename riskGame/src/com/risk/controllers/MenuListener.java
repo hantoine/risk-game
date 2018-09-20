@@ -53,23 +53,26 @@ public class MenuListener extends MouseAdapter{
                this.playerList.addElement(this.playerList.getNewPlayerName(), this.playerList.getNewColor());
             
             }else if (addPlayer.getText().equals("-")){
-                if(this.playerList.getPlayersListPanel().getComponentCount()-1<=3)
+                System.out.println("number of players"+this.playerList.getPlayersArray().size());
+                if((this.playerList.getPlayersArray().size())<=3)
                     JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
                 else{
                     DeletableButton buttonToDelete=(DeletableButton) addPlayer;
                     int IDtoDelete = buttonToDelete.getID();
                  
-                    for (Iterator iterator = this.playerList.getPlayersArray().iterator(); iterator.hasNext();) {
-                        PlayerPanel panelToTest = (PlayerPanel) iterator.next();
+                    for (Iterator<PlayerPanel> it = this.playerList.getPlayersArray().iterator(); it.hasNext();) {
+                        PlayerPanel panelToTest = it.next();
+                       
                         if(panelToTest.getDelButton().getID()==IDtoDelete){
+                            System.out.println(panelToTest.getDelButton().getID());
                             Color colorToRemove = panelToTest.getColorButton().getBackground();
                             this.playerList.getColorUsed().remove(colorToRemove);
-                            this.playerList.getPlayersListPanel().remove(panelToTest);
+                            this.playerList.remove(panelToTest);
                             this.playerList.revalidate();
                             this.playerList.repaint();
+                            it.remove();
                         }
                     }
-                    
                     
                 }
                        
