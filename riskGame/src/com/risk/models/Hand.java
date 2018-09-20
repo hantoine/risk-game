@@ -12,6 +12,10 @@ package com.risk.models;
 public class Hand {
     // a group of cards
     
-    private Card[] hand = new Card[5];
+    private Card[] hand;
+    
+    public Hand() {
+        this.hand = new Card[5];
+    }
     
 }
