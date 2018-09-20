@@ -5,20 +5,14 @@
  */
 package com.risk.views.menu;
 
-import com.risk.views.menu.PlayerListPanel;
 import com.risk.controllers.MenuListener;
-import com.risk.models.Player;
 import com.risk.models.RiskModel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
-import java.io.File;
-import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 

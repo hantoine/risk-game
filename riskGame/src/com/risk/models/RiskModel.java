@@ -4,12 +4,7 @@
  * and open the template in the editor.
  */
 package com.risk.models;
-import static com.risk.models.FileManagement.createBoard;
-import static com.risk.models.FileManagement.generateBoardFile;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import com.risk.models.FileManagement;
 import java.util.LinkedList;
 
 /**

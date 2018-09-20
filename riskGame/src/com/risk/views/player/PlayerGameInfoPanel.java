@@ -6,8 +6,6 @@
 package com.risk.views.player;
 
 import com.risk.models.Player;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;

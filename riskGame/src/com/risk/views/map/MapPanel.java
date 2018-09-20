@@ -1,8 +1,5 @@
 package com.risk.views.map;
 
-
-import com.risk.views.map.CountryButton;
-import com.risk.controllers.MapListener;
 import com.risk.models.Board;
 import com.risk.models.Country;
 import java.awt.Graphics;
