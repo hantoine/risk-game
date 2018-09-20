@@ -16,6 +16,25 @@ public class Hand {
     
     public Hand() {
         this.hand = new Card[5];
+        this.hand[0] = new Card("Venezuela", "infantry");
+        this.hand[1] = new Card("France", "infantry");
+        this.hand[2] = new Card("China", "infantry");
     }
+
+    /**
+     * @return the hand
+     */
+    public Card[] getHand() {
+        return hand;
+    }
+
+    /**
+     * @param hand the hand to set
+     */
+    public void setHand(Card[] hand) {
+        this.hand = hand;
+    }
+    
+    
     
 }

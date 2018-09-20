@@ -26,9 +26,9 @@ public class Player {
         this.color = null;
         this.contriesOwned = null;
         this.continentsOwned = null;
-        this.numArmies =0;
+        this.numArmies = 0;
         this.isHuman = isHuman;
-        this.cardsOwned = null;
+        this.cardsOwned = new Hand();
         this.numArmies = 0;
     }
 
@@ -63,7 +63,7 @@ public class Player {
     /**
      * @return the contriesOwned
      */
-    public LinkedList<Country> getContriesOwned() {
+    public LinkedList<Country> getCountriesOwned() {
         return contriesOwned;
     }
 
@@ -102,7 +102,6 @@ public class Player {
         this.numArmies = numArmies;
     }
 
-    
     /**
      * @return the numArmies
      */
