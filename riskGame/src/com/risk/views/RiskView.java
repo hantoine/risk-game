@@ -65,14 +65,15 @@ public class RiskView extends javax.swing.JFrame {
         battlePanel.add(playerOne);
         battlePanel.add(playerTwo);
         battlePanel.add(playerThree);
-
-      
+        
         //Adding Panels
         optionPanel.setVisible(false);
         battlePanel.setVisible(false);
         
         cp.add(battlePanel, BorderLayout.SOUTH);
         cp.add(optionPanel, BorderLayout.NORTH);
+        
+        
              
     }
 
