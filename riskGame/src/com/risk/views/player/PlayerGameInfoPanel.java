@@ -5,6 +5,7 @@
  */
 package com.risk.views.player;
 
+import com.risk.models.Hand;
 import com.risk.models.Player;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
@@ -21,6 +22,9 @@ public class PlayerGameInfoPanel extends JPanel {
     private Player currentPlayer;
     private JButton playerName;
     JLabel numArmies;
+    JLabel numCountries;
+    JLabel numContinents;
+    Hand cards;
     
     public PlayerGameInfoPanel(Player currentPlayer) {
         this.currentPlayer=currentPlayer;
