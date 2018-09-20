@@ -6,18 +6,12 @@
 package com.risk.controllers;
 
 import com.risk.models.RiskModel;
-import com.risk.views.map.CountryButton;
 import com.risk.views.menu.DeletableButton;
-import com.risk.views.map.MapPanel;
 import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.RiskView;
 import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.PlayerPanel;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
@@ -25,8 +19,6 @@ import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  *
