@@ -29,7 +29,8 @@ import javax.swing.JTextField;
 public class NewGamePanel extends JPanel {
     JPanel playersPanel;
     JPanel mapSelector;
-
+    JButton play;
+    JTextField selectFileTextField;
     
     public NewGamePanel(RiskModel riskModel, MenuListener menuAction){
     
@@ -39,9 +40,7 @@ public class NewGamePanel extends JPanel {
         this.mapSelector = new JPanel();
         this.mapSelector.setSize(400,50);
         JButton selectFileButton = new JButton("Select a Map");
-        JTextField selectFileTextField= new JTextField(20);
-        selectFileTextField.setText("No file selected");
-        
+        this.selectFileTextField= new JTextField(" No file selected  ");
         selectFileButton.addActionListener(new ActionListener()
         {
           @Override
@@ -63,18 +62,20 @@ public class NewGamePanel extends JPanel {
         this.mapSelector.setLayout(new FlowLayout());
         this.mapSelector.add(selectFileButton);
         this.mapSelector.add(selectFileTextField);
+        this.mapSelector.add(selectFileTextField);
         
         //players panel
         playersPanel = new PlayerListPanel(riskModel,menuAction);
         
         //start game button
-        JButton startGameButton = new JButton("PLAY");
-        startGameButton.addMouseListener(menuAction);
+        this.play = new JButton("PLAY");
+        play.addMouseListener(menuAction);
         
         //add content to panel
-        this.add(BorderLayout.PAGE_START, mapSelector);
+     
+        this.add(BorderLayout.PAGE_START, mapSelector);   
         this.add(BorderLayout.CENTER, playersPanel);
-        this.add(BorderLayout.PAGE_END, startGameButton);
+        this.add(BorderLayout.PAGE_END, play);
     }
     
 }
