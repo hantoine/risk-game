@@ -22,9 +22,9 @@ import javax.swing.JTextField;
  * @author Nellybett
  */
 public class PlayerListPanel extends JPanel{
-
-      
+  
     private JPanel addPlayerPanel;
+    private LinkedList<PlayerPanel> playersArray;
     private JPanel playersListPanel;
     int nbBots;
     int uniqueID;
@@ -40,6 +40,7 @@ public class PlayerListPanel extends JPanel{
     
     public PlayerListPanel(RiskModel riskModel, MenuListener menuAction) {
         //setup PlayersPanel panel
+        this.playersArray=new LinkedList<>();
         this.menuListener=menuAction;
         this.setSize(400,300);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -81,7 +82,7 @@ public class PlayerListPanel extends JPanel{
         int i=0;
         for (Player player : playerList) {
             Color aux=getNewColor();
-            addElement(player.getName(),aux );
+            this.addElement(player.getName(),aux );
             this.colorUsed.add(aux);
             System.out.println(i);
         }
@@ -148,8 +149,9 @@ public class PlayerListPanel extends JPanel{
             return;
         }
         
+        
         //create new player element
-        JPanel newPlayer = new JPanel();
+        PlayerPanel newPlayer = new PlayerPanel();
         newPlayer.setBackground(Color.white);
         
         //verify name
@@ -162,27 +164,43 @@ public class PlayerListPanel extends JPanel{
         newPlayer.setLayout(new FlowLayout());
         
         //add player's name
-        JTextField playerNameTextField = new JTextField(10);
-        playerNameTextField.setText(playerName);
-        newPlayer.add(playerNameTextField);
+        newPlayer.setPlayerNameTextField(new JTextField(10));
+        newPlayer.getPlayerNameTextField().setText(playerName);
+        newPlayer.add(newPlayer.getPlayerNameTextField());
         
         //add color button
-        JButton colorButton = new JButton("    ");
-        colorButton.addMouseListener(this.menuListener);
+        newPlayer.setColorButton(new JButton("    "));
+        newPlayer.getColorButton().addMouseListener(this.menuListener);
         
-        colorButton.setBackground(color);
-        newPlayer.add(colorButton);
+        newPlayer.getColorButton().setBackground(color);
+        newPlayer.add(newPlayer.getColorButton());
         
         //add del button
-        DeletableButton delButton = new DeletableButton("-", this.uniqueID);
+        newPlayer.setDelButton(new DeletableButton("-", this.uniqueID));
         this.uniqueID+=1;
-        delButton.addMouseListener(this.menuListener);
-        newPlayer.add(delButton);
+        newPlayer.getDelButton().addMouseListener(this.menuListener);
+        newPlayer.add(newPlayer.getDelButton());
+        this.playersListPanel.add(newPlayer);
+        this.playersArray.add(newPlayer);
         revalidate();
         repaint();
         
-        //finally, add the new player's pane to the player's list
-        this.getPlayersListPanel().add(newPlayer,getPlayersListPanel().getComponentCount()-1);
     }
+    
+    
+    /**
+     * @return the playersArray
+     */
+    public LinkedList<PlayerPanel> getPlayersArray() {
+        return playersArray;
+    }
+
+    /**
+     * @param playersArray the playersArray to set
+     */
+    public void setPlayersArray(LinkedList<PlayerPanel> playersArray) {
+        this.playersArray = playersArray;
+    }
+
     
 }

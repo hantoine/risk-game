@@ -17,14 +17,14 @@ import javax.swing.JPanel;
  *
  * @author Nellybett
  */
-public class PlayerPanel extends JPanel {
+public class PlayerGameInfoPanel extends JPanel {
 
 
     private Player currentPlayer;
     private JButton playerName;
     JLabel numArmies;
     
-    public PlayerPanel(Player currentPlayer) {
+    public PlayerGameInfoPanel(Player currentPlayer) {
         this.currentPlayer=currentPlayer;
         this.setLayout(new FlowLayout());
         this.setSize(150,200);
