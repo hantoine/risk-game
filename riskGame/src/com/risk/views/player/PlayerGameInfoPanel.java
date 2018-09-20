@@ -33,7 +33,11 @@ public class PlayerGameInfoPanel extends JPanel {
         this.setSize(150,200);
         this.playerName = new JButton("Player 1");
         this.add(playerName);
-
+        
+        this.numArmies=new JLabel();
+        this.numContinents=new JLabel();
+        this.numCountries=new JLabel();
+        
         this.cards = new JLabel[5];
         this.add(this.numArmies);
         this.add(this.numCountries);
