@@ -83,7 +83,6 @@ public class PlayerListPanel extends JPanel{
         for (Player player : playerList) {
             Color aux=getNewColor();
             this.addElement(player.getName(),aux );
-            this.colorUsed.add(aux);
             System.out.println(i);
         }
     }
