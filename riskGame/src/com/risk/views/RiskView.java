@@ -5,7 +5,7 @@
  */
 package com.risk.views;
 
-import com.risk.views.player.PlayerPanel;
+import com.risk.views.player.PlayerGameInfoPanel;
 import com.risk.views.map.MapPanel;
 import com.risk.views.menu.StartMenuView;
 import com.risk.controllers.MenuListener;
@@ -40,7 +40,7 @@ public class RiskView extends javax.swing.JFrame {
     private JPanel optionPanel;
     private JPanel battlePanel;
     private MapPanel mapPanel;
-    private PlayerPanel playerPanel;
+    private PlayerGameInfoPanel playerPanel;
     
 
     public RiskView() {
@@ -86,7 +86,7 @@ public class RiskView extends javax.swing.JFrame {
     public void initialMap(RiskModel riskModel, MouseListener countryListener) {
         Container cp = getContentPane();
         this.setMapPanel(new MapPanel(riskModel.getBoard(),countryListener));
-        this.setPlayerPanel(new PlayerPanel(riskModel.getCurrentPlayer()));
+        this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
         cp.add(this.getMapPanel(), BorderLayout.CENTER);
         cp.add(this.getPlayerPanel(), BorderLayout.EAST);
         this.setSize(this.getMapPanel().getWidth()+this.getPlayerPanel().getWidth(),  this.getMapPanel().getHeight() + this.getBattlePanel().getHeight() + this.getOptionPanel().getHeight());
@@ -167,14 +167,14 @@ public class RiskView extends javax.swing.JFrame {
     /**
      * @return the playerPanel
      */
-    public PlayerPanel getPlayerPanel() {
+    public PlayerGameInfoPanel getPlayerPanel() {
         return playerPanel;
     }
 
     /**
      * @param playerPanel the playerPanel to set
      */
-    public void setPlayerPanel(PlayerPanel playerPanel) {
+    public void setPlayerPanel(PlayerGameInfoPanel playerPanel) {
         this.playerPanel = playerPanel;
     }
 

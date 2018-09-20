@@ -12,6 +12,7 @@ import com.risk.views.map.MapPanel;
 import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.RiskView;
 import com.risk.views.menu.NewGamePanel;
+import com.risk.views.menu.PlayerPanel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -19,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
@@ -60,31 +62,32 @@ public class MenuListener extends MouseAdapter{
             
             }else if (addPlayer.getText().equals("-")){
                 if(this.playerList.getPlayersListPanel().getComponentCount()-1<=3)
-                JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
+                    JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
                 else{
-                DeletableButton buttonToDelete=(DeletableButton) addPlayer;
-                int IDtoDelete = buttonToDelete.getID();
-                int nbPlayers = this.playerList.getPlayersListPanel().getComponentCount()-1;
-                for(int i =0; i< nbPlayers; i++){
-                    JPanel panelToTest = (JPanel)this.playerList.getPlayersListPanel().getComponent(i);
-                    DeletableButton delButtonToTest = (DeletableButton)panelToTest.getComponent(2);
-                    if(delButtonToTest.getID() == IDtoDelete){
-                        Color colorToRemove = ((JButton)panelToTest.getComponent(1)).getBackground();
-                        this.playerList.getColorUsed().remove(colorToRemove);
-                        this.playerList.getPlayersListPanel().remove(i);
-                        this.playerList.revalidate();
-                        this.playerList.repaint();
-                        return;
+                    DeletableButton buttonToDelete=(DeletableButton) addPlayer;
+                    int IDtoDelete = buttonToDelete.getID();
+                 
+                    for (Iterator iterator = this.playerList.getPlayersArray().iterator(); iterator.hasNext();) {
+                        PlayerPanel panelToTest = (PlayerPanel) iterator.next();
+                        if(panelToTest.getDelButton().getID()==IDtoDelete){
+                            Color colorToRemove = panelToTest.getColorButton().getBackground();
+                            this.playerList.getColorUsed().remove(colorToRemove);
+                            this.playerList.getPlayersListPanel().remove(panelToTest);
+                            this.playerList.revalidate();
+                            this.playerList.repaint();
+                        }
                     }
+                    
+                    
                 }
-                JOptionPane.showMessageDialog(null, "Oops... Something went wrong.");
-            }
-            
+                       
             }else if(addPlayer.getText().equals("    ")){
                  Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
                 if( this.playerList.getColorUsed().contains(selectedColor)){
                     JOptionPane.showMessageDialog(null, "This color is already used");
                 }else{
+                    this.playerList.getColorUsed().remove(addPlayer.getBackground());
+                    this.playerList.getColorUsed().add(selectedColor);
                     addPlayer.setBackground(selectedColor);
                     
                 }
@@ -95,7 +98,7 @@ public class MenuListener extends MouseAdapter{
                 
                 if(!selectedPath.equals(" No file selected  ")){
                     riskModel.setBoard(selectedPath);
-                
+                    
                 
                     this.riskView.remove(this.riskView.getMenuPanel());
                     this.riskView.setMenuPanel(null);
