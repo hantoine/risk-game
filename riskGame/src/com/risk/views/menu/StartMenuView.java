@@ -31,8 +31,10 @@ import javax.swing.JTabbedPane;
  */
 
 public class StartMenuView extends JPanel{
+
+    
     JPanel introPanel;
-    JTabbedPane tabbedPane;
+    private JTabbedPane tabbedPane;
             
     public StartMenuView(RiskModel riskModel, MenuListener menuAction) {
         //JFrame's params
@@ -66,4 +68,17 @@ public class StartMenuView extends JPanel{
         
     }
     
+    /**
+     * @return the tabbedPane
+     */
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
+    }
+
+    /**
+     * @param tabbedPane the tabbedPane to set
+     */
+    public void setTabbedPane(JTabbedPane tabbedPane) {
+        this.tabbedPane = tabbedPane;
+    }
 }

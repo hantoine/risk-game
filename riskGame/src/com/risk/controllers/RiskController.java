@@ -24,7 +24,6 @@ public class RiskController {
     public RiskController(RiskView viewRisk, RiskModel modelRisk) {
         this.modelRisk = modelRisk;
         this.viewRisk = viewRisk;
-        modelRisk.setBoard("C:\\Users\\Nellybett\\Desktop\\Old Yorkshire.map");
         //modelRisk.setBoard("maps"+File.separator+"Old Yorkshire.map");
         MapListener countryListener= new MapListener(modelRisk);
         MenuListener menuListener=new MenuListener(modelRisk,viewRisk,countryListener);

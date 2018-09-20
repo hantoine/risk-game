@@ -27,10 +27,11 @@ import javax.swing.JTextField;
  * @author timot
  */
 public class NewGamePanel extends JPanel {
-    JPanel playersPanel;
-    JPanel mapSelector;
-    JButton play;
-    JTextField selectFileTextField;
+
+    private JPanel playersPanel;
+    private JPanel mapSelector;
+    private JButton play;
+    private JTextField selectFileTextField;
     
     public NewGamePanel(RiskModel riskModel, MenuListener menuAction){
     
@@ -50,11 +51,11 @@ public class NewGamePanel extends JPanel {
             fileChooser = new JFileChooser();
 
             if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
-                String fileName = fileChooser.getSelectedFile().getName();
-                selectFileTextField.setText(fileName);
+                String fileName = fileChooser.getSelectedFile().getAbsolutePath();
+                    getSelectFileTextField().setText(fileName);
             }
             else{
-                selectFileTextField.setText("No file selected");
+                    getSelectFileTextField().setText(" No file selected  ");
             }
           }
         });
@@ -76,6 +77,63 @@ public class NewGamePanel extends JPanel {
         this.add(BorderLayout.PAGE_START, mapSelector);   
         this.add(BorderLayout.CENTER, playersPanel);
         this.add(BorderLayout.PAGE_END, play);
+    }
+    
+    
+    /**
+     * @return the playersPanel
+     */
+    public JPanel getPlayersPanel() {
+        return playersPanel;
+    }
+
+    /**
+     * @param playersPanel the playersPanel to set
+     */
+    public void setPlayersPanel(JPanel playersPanel) {
+        this.playersPanel = playersPanel;
+    }
+
+    /**
+     * @return the mapSelector
+     */
+    public JPanel getMapSelector() {
+        return mapSelector;
+    }
+
+    /**
+     * @param mapSelector the mapSelector to set
+     */
+    public void setMapSelector(JPanel mapSelector) {
+        this.mapSelector = mapSelector;
+    }
+
+    /**
+     * @return the play
+     */
+    public JButton getPlay() {
+        return play;
+    }
+
+    /**
+     * @param play the play to set
+     */
+    public void setPlay(JButton play) {
+        this.play = play;
+    }
+
+    /**
+     * @return the selectFileTextField
+     */
+    public JTextField getSelectFileTextField() {
+        return selectFileTextField;
+    }
+
+    /**
+     * @param selectFileTextField the selectFileTextField to set
+     */
+    public void setSelectFileTextField(JTextField selectFileTextField) {
+        this.selectFileTextField = selectFileTextField;
     }
     
 }

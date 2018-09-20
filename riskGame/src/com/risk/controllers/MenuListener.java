@@ -11,6 +11,7 @@ import com.risk.views.menu.DeletableButton;
 import com.risk.views.map.MapPanel;
 import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.RiskView;
+import com.risk.views.menu.NewGamePanel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -89,12 +90,21 @@ public class MenuListener extends MouseAdapter{
                 }
             }else if(addPlayer.getText().equals("PLAY")){
                 
-                this.riskView.remove(this.riskView.getMenuPanel());
-                this.riskView.setMenuPanel(null);
-                this.riskView.getBattlePanel().setVisible(true);
-                this.riskView.getOptionPanel().setVisible(true);
-                this.riskView.initialMap(riskModel, countryListener);
+                NewGamePanel aux=(NewGamePanel)this.riskView.getMenuPanel().getTabbedPane().getComponent(0);
+                String selectedPath=aux.getSelectFileTextField().getText();
                 
+                if(!selectedPath.equals(" No file selected  ")){
+                    riskModel.setBoard(selectedPath);
+                
+                
+                    this.riskView.remove(this.riskView.getMenuPanel());
+                    this.riskView.setMenuPanel(null);
+                    this.riskView.getBattlePanel().setVisible(true);
+                    this.riskView.getOptionPanel().setVisible(true);
+                    this.riskView.initialMap(riskModel, countryListener);
+                }else{
+                    JOptionPane.showMessageDialog(null, "You have not selected a map");
+                }
             }
             }catch(NumberFormatException ex){
                 System.out.println(ex);
