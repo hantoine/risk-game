@@ -6,6 +6,7 @@
 package com.risk.models;
 
 import java.awt.Color;
+import java.util.Collection;
 import java.util.LinkedList;
 
 /**
@@ -13,11 +14,12 @@ import java.util.LinkedList;
  * @author n_irahol
  */
 public class Player {
+
     private boolean isHuman;
     private String name;
     private Color color;
-    private LinkedList<Country> contriesOwned;
-    private LinkedList<Continent> continentsOwned;
+    private Collection<Country> contriesOwned;
+    private Collection<Continent> continentsOwned;
     private Hand cardsOwned;
     private int numArmies;
 
@@ -63,31 +65,38 @@ public class Player {
     /**
      * @return the contriesOwned
      */
-    public LinkedList<Country> getCountriesOwned() {
+    public Collection<Country> getContriesOwned() {
         return contriesOwned;
     }
 
     /**
      * @param contriesOwned the contriesOwned to set
      */
-    public void setContriesOwned(LinkedList<Country> contriesOwned) {
+    public void setContriesOwned(Collection<Country> contriesOwned) {
         this.contriesOwned = contriesOwned;
+    }
+
+    /**
+     * @param countryOwned the additional country owned by this player
+     */
+    public void addCountryOwned(Country countryOwned) {
+        this.contriesOwned.add(countryOwned);
     }
 
     /**
      * @return the continentsOwned
      */
-    public LinkedList<Continent> getContinentsOwned() {
+    public Collection<Continent> getContinentsOwned() {
         return continentsOwned;
     }
 
     /**
      * @param continentsOwned the continentsOwned to set
      */
-    public void setContinentsOwned(LinkedList<Continent> continentsOwned) {
+    public void setContinentsOwned(Collection<Continent> continentsOwned) {
         this.continentsOwned = continentsOwned;
     }
-    
+
     /**
      * @return the numArmies
      */
@@ -122,6 +131,5 @@ public class Player {
     public void setCardsOwned(Hand cardsOwned) {
         this.cardsOwned = cardsOwned;
     }
-    
-    
+
 }
