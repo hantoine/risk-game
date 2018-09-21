@@ -183,7 +183,7 @@ public class FileManagement {
             throw new IOException("File reading failed");
         }
         //board.printBoard();
-        System.out.println("IS CONNECTED? " + board.connectedGraph());
+       
         return board;
     }
 
