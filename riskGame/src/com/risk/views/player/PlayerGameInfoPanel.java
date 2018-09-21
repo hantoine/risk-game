@@ -9,6 +9,7 @@ import com.risk.models.Card;
 import com.risk.models.Hand;
 import com.risk.models.Player;
 import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,7 +30,7 @@ public class PlayerGameInfoPanel extends JPanel {
     
     public PlayerGameInfoPanel(Player currentPlayer) {
         this.currentPlayer=currentPlayer;
-        this.setLayout(new FlowLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(150,200);
         this.playerName = new JButton("Player 1");
         
@@ -46,6 +47,12 @@ public class PlayerGameInfoPanel extends JPanel {
         
         
         this.cards = new JLabel[5];
+        
+        // work:
+        /*
+        1. make the player panel more beautiful (title, border, card image, fix the width)
+        2. 
+        */
        
     }
     
