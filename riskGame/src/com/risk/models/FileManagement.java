@@ -109,20 +109,26 @@ public class FileManagement {
                                     auxCountry = new Country(aux[0], Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
                                 }
                                 
+                                
                                 System.out.println("Country-----------" + aux[0]);
-                                LinkedList<Country> auxAdj = new LinkedList<>();
+                                Country auxCountryAdj;
                                 System.out.println("CREO EL PAIS");
                                 for (i = 0; i < aux.length - 4; i++) {
                                     if(graphTerritories.keySet().contains(aux[i + 4])){
-                                        auxAdj.add(graphTerritories.get(aux[i + 4]));
+                                        auxCountryAdj=graphTerritories.get(aux[i + 4]);
+                                        
                                     }else{
-                                        auxAdj.add(new Country(aux[i + 4]));
+                                        auxCountryAdj=new Country(aux[i + 4]);
+                                        
                                     }
+                                    
+                                    auxCountry.getAdj().add(auxCountryAdj);
+                                    auxCountryAdj.getAdj().add(auxCountry);
                                     System.out.println("Adj" + aux[i + 4]);
                                     
                                 }
                                 System.out.println("Continente al que pertenece " + aux[3]);
-                                auxCountry.setAdj(auxAdj);
+                               
                                 System.out.println("CREO las adj");
 
                                 graphContinents.get(aux[3]).setMember(auxCountry);
