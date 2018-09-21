@@ -167,10 +167,9 @@ public class FileManagement {
                         }
                         break;
                     default:
-                        linesRead = dataInput.readLine();
-                        break;
+                        throw new FormatException("File Format not valid");
                 }
-
+                linesRead = dataInput.readLine();
             }
 
             board.setConfigurationInfo(configurationInfo);

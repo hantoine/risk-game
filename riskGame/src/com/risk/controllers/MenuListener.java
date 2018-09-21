@@ -99,18 +99,16 @@ public class MenuListener extends MouseAdapter {
                 if(!selectedPath.equals(" No file selected  ")){
                     try {
                         riskModel.setBoard(selectedPath);
-                    } catch (FormatException ex) {
-                        JOptionPane.showMessageDialog(null, ex.getMessage());
-                    } catch (IOException ex) {
+                        this.riskView.remove(this.riskView.getMenuPanel());
+                        this.riskView.setMenuPanel(null);
+                        this.riskView.getBattlePanel().setVisible(true);
+                        this.riskView.getOptionPanel().setVisible(true);
+                        this.riskView.initialMap(riskModel, countryListener);
+                    
+                    } catch (FormatException | IOException ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
                     }
-                    
-
-                    this.riskView.remove(this.riskView.getMenuPanel());
-                    this.riskView.setMenuPanel(null);
-                    this.riskView.getBattlePanel().setVisible(true);
-                    this.riskView.getOptionPanel().setVisible(true);
-                    this.riskView.initialMap(riskModel, countryListener);
+                   
                 } else {
                     JOptionPane.showMessageDialog(null, "You have not selected a map");
                 }
