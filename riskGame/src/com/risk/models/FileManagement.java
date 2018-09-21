@@ -13,7 +13,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.LinkedList;
 import javax.imageio.ImageIO;
 
 /**
@@ -45,13 +44,13 @@ public class FileManagement {
                     case "[Map]":
                         linesRead = dataInput.readLine();
                         while (!linesRead.equals("")) {
-                            System.out.println("lineas leidas" + linesRead);
+                            
                             aux = linesRead.split("=", 2);
-                            System.out.println("Campo-valor: " + aux[0] + "," + aux[1]);
+                            
                             //maybe we could use switch case here ? https://www.geeksforgeeks.org/string-in-switch-case-in-java/
 
                             if ("author".equals(aux[0])) {
-                                System.out.println("Entro");
+                                
                                 configurationInfo.put(aux[0], aux[1]);
                             } else if ("image".equals(aux[0])) {
                                 configurationInfo.put(aux[0], aux[1]);
@@ -77,12 +76,11 @@ public class FileManagement {
 
                         break;
                     case "[Continents]":
-                        System.out.println("File" + linesRead);
+                     
                         linesRead = dataInput.readLine();
                         while (!linesRead.equals("")) {
                             aux = linesRead.split("=", 2);
                             Continent auxContinent = new Continent(aux[0], Integer.parseInt(aux[1]));
-                            System.out.println("Continent" + aux[0]);
                             graphContinents.put(aux[0], auxContinent);
                             linesRead = dataInput.readLine();
                         }
@@ -128,7 +126,7 @@ public class FileManagement {
                                     }
                                     //Adds the adj
                                     auxCountry.getAdj().add(auxCountryAdj);
-    
+                                    graphTerritories.put(aux[i+4], auxCountryAdj);
                                 }
                                 
                                 graphContinents.get(aux[3]).setMember(auxCountry);
@@ -158,7 +156,8 @@ public class FileManagement {
         } catch (IOException e) {
             System.err.println("Reading Failure: " + e.getMessage());
         }
-
+        //board.printBoard();
+        System.out.println("IS CONNECTED? "+board.connectedGraph());
         return board;
     }
 
