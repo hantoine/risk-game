@@ -1,5 +1,6 @@
 - Let's try not to commit code without tests
 - Let's try not to commit code without comments
+- All committed code should be properly formated. The function Source/Format should be used on every modified file before commiting.
 - After refactoring, lets try to  always do peer programming
 - Code in master should always be running. Always work on a dedicated branch. (The branch can stay local if only one laptop is working on it)
 
