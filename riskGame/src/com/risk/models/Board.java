@@ -63,7 +63,6 @@ public class Board {
         for (Country c : aux) {
             
             if(!(visited.containsKey(c.getName()))){   
-                System.out.println(c.getName());
                 dfsConnected(c, visited);
             }
         }
