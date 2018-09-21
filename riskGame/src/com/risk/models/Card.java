@@ -10,9 +10,10 @@ package com.risk.models;
  * @author l_yixu
  */
 public class Card {
+
     private String countryName;
     private String typeOfArmie;
-    
+
     public Card(String countryName, String typeOfArmies) {
         this.countryName = countryName;
         this.typeOfArmie = typeOfArmies;
@@ -45,7 +46,5 @@ public class Card {
     public void setTypeOfArmie(String typeOfArmie) {
         this.typeOfArmie = typeOfArmie;
     }
-    
-    
-    
+
 }

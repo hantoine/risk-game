@@ -8,7 +8,6 @@ package com.risk.controllers;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 
-
 /**
  *
  * @author Nellybett
@@ -22,8 +21,8 @@ public class RiskController {
         this.modelRisk = modelRisk;
         this.viewRisk = viewRisk;
         //modelRisk.setBoard("maps"+File.separator+"Old Yorkshire.map");
-        MapListener countryListener= new MapListener(modelRisk);
-        MenuListener menuListener=new MenuListener(modelRisk,viewRisk,countryListener);
+        MapListener countryListener = new MapListener(modelRisk);
+        MenuListener menuListener = new MenuListener(modelRisk, viewRisk, countryListener);
         viewRisk.initialMenu(modelRisk, menuListener);
         //viewRisk.initialMap(modelRisk, countryListener);
         this.viewRisk.setVisible(true);

@@ -26,54 +26,49 @@ public class NewGamePanel extends JPanel {
     private JPanel mapSelector;
     private JButton play;
     private JTextField selectFileTextField;
-    
-    public NewGamePanel(RiskModel riskModel, MenuListener menuAction){
-    
+
+    public NewGamePanel(RiskModel riskModel, MenuListener menuAction) {
+
         this.setLayout(new BorderLayout());
-        
+
         //map selector
         this.mapSelector = new JPanel();
-        this.mapSelector.setSize(400,50);
+        this.mapSelector.setSize(400, 50);
         JButton selectFileButton = new JButton("Select a Map");
-        this.selectFileTextField= new JTextField(" No file selected  ");
-        selectFileButton.addActionListener(new ActionListener()
-        {
-          @Override
-          public void actionPerformed(ActionEvent e)
-          {
-            JFileChooser fileChooser;
-            fileChooser = new JFileChooser();
+        this.selectFileTextField = new JTextField(" No file selected  ");
+        selectFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser;
+                fileChooser = new JFileChooser();
 
-            if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
-                String fileName = fileChooser.getSelectedFile().getAbsolutePath();
+                if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                    String fileName = fileChooser.getSelectedFile().getAbsolutePath();
                     getSelectFileTextField().setText(fileName);
-            }
-            else{
+                } else {
                     getSelectFileTextField().setText(" No file selected  ");
+                }
             }
-          }
         });
-        
+
         this.mapSelector.setLayout(new FlowLayout());
         this.mapSelector.add(selectFileButton);
         this.mapSelector.add(selectFileTextField);
         this.mapSelector.add(selectFileTextField);
-        
+
         //players panel
-        playersPanel = new PlayerListPanel(riskModel,menuAction);
-        
+        playersPanel = new PlayerListPanel(riskModel, menuAction);
+
         //start game button
         this.play = new JButton("PLAY");
         play.addMouseListener(menuAction);
-        
+
         //add content to panel
-     
-        this.add(BorderLayout.PAGE_START, mapSelector);   
+        this.add(BorderLayout.PAGE_START, mapSelector);
         this.add(BorderLayout.CENTER, playersPanel);
         this.add(BorderLayout.PAGE_END, play);
     }
-    
-    
+
     /**
      * @return the playersPanel
      */
@@ -129,5 +124,5 @@ public class NewGamePanel extends JPanel {
     public void setSelectFileTextField(JTextField selectFileTextField) {
         this.selectFileTextField = selectFileTextField;
     }
-    
+
 }
