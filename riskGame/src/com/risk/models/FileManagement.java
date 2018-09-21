@@ -122,11 +122,11 @@ public class FileManagement {
 
                                     } else {
                                         auxCountryAdj = new Country(aux[i + 4]);
-
+                                        graphTerritories.put(aux[i+4], auxCountryAdj);
                                     }
                                     //Adds the adj
                                     auxCountry.getAdj().add(auxCountryAdj);
-                                    graphTerritories.put(aux[i+4], auxCountryAdj);
+                                   
                                 }
                                 
                                 graphContinents.get(aux[3]).setMember(auxCountry);
