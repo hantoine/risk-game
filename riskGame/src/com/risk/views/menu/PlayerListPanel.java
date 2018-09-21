@@ -46,11 +46,10 @@ public class PlayerListPanel extends JPanel{
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         
         this.addPlayerPanel = new JPanel();
-        this.playersListPanel = new JPanel();
-        
-        this.playersListPanel.setLayout(new BoxLayout(getPlayersListPanel(), BoxLayout.Y_AXIS)); 
-        this.nbBots=1;
-        this.uniqueID=0;
+   
+      
+        this.nbBots=0;
+        this.uniqueID=1;
         this.maxNbPlayers = riskModel.getMaxNumberOfPlayers();
         this.colorUsed = new LinkedList<Color>();
         
@@ -69,21 +68,20 @@ public class PlayerListPanel extends JPanel{
         LinkedList<Player> playerList = riskModel.getPlayerList();
         
         //add content to panel
-        this.playersListPanel.add(addPlayerPanel);
+        this.add(addPlayerPanel);
         this.initializePlayers(playerList);
-        this.add(playersListPanel);
-        this.playersListPanel.setBackground(Color.white);
+        this.setBackground(Color.white);
     }
     
     /*
      *
      */
     protected void initializePlayers(LinkedList<Player> playerList){
-        int i=0;
+      
         for (Player player : playerList) {
             Color aux=getNewColor();
             this.addElement(player.getName(),aux );
-            System.out.println(i);
+            
         }
     }
     
@@ -101,25 +99,13 @@ public class PlayerListPanel extends JPanel{
         this.colorUsed = colorUsed;
     }
     
-     /**
-     * @return the playersListPanel
-     */
-    public JPanel getPlayersListPanel() {
-        return playersListPanel;
-    }
-
-    /**
-     * @param playersListPanel the playersListPanel to set
-     */
-    public void setPlayersListPanel(JPanel playersListPanel) {
-        this.playersListPanel = playersListPanel;
-    }
+ 
     
     /*
      *
      */
     public String getNewPlayerName(){
-        Integer nbPlayers = this.getPlayersListPanel().getComponentCount()-this.nbBots; //remove 1 because there is the "+" button
+        Integer nbPlayers = this.getPlayersArray().size()-this.nbBots; //remove 1 because there is the "+" button
         nbPlayers+=1;
         return "Player " + nbPlayers.toString();
     }
@@ -143,7 +129,7 @@ public class PlayerListPanel extends JPanel{
      *
      */
     public void addElement(String playerName, Color color) {   
-        if(getPlayersListPanel().getComponentCount()-1==maxNbPlayers){
+        if(this.getPlayersArray().size()==maxNbPlayers){
             JOptionPane.showMessageDialog(null, "The maximum number of players has been reached.");
             return;
         }
@@ -157,6 +143,7 @@ public class PlayerListPanel extends JPanel{
         if(playerName.equals("")){
             playerName = "Player " + this.nbBots;
             this.nbBots+=1;
+           
         }
         
         //add player to the players' list
@@ -179,8 +166,10 @@ public class PlayerListPanel extends JPanel{
         this.uniqueID+=1;
         newPlayer.getDelButton().addMouseListener(this.menuListener);
         newPlayer.add(newPlayer.getDelButton());
-        this.playersListPanel.add(newPlayer);
-        this.playersArray.add(newPlayer);
+        this.getPlayersArray().add(newPlayer);
+        System.out.println("Players name: "+newPlayer.getName());
+        this.add(newPlayer);
+        
         revalidate();
         repaint();
         

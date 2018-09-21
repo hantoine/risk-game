@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public class Country {
 
-    private LinkedList<String> adj;
+    private LinkedList<Country> adj;
     // why not private too ?
     int positionX;
     int positionY;
@@ -24,11 +24,30 @@ public class Country {
 
     public Country(String name, int positionX, int positionY) {
         this.name = name;
+        this.adj=new LinkedList();
         this.positionX = positionX;
         this.positionY = positionY;
         this.numArmies = 0;
         this.owner = null;
     }
+
+
+    public Country(String name) {
+        this.name = name;
+        this.numArmies = 0;
+        this.owner = null;
+        this.adj=new LinkedList();
+    }
+    
+    
+    public void countrySetter(int positionX, int positionY) {
+        
+        this.positionX = positionX;
+        this.positionY = positionY;
+    
+    }
+    
+    
 
     public int getPositionX() {
         return positionX;
@@ -41,14 +60,14 @@ public class Country {
     /**
      * @return the adj
      */
-    public LinkedList<String> getAdj() {
+    public LinkedList<Country> getAdj() {
         return adj;
     }
 
     /**
      * @param adj the adj to set
      */
-    public void setAdj(LinkedList<String> adj) {
+    public void setAdj(LinkedList<Country> adj) {
         this.adj = adj;
     }
 
