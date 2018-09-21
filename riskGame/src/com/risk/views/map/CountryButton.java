@@ -7,12 +7,10 @@ package com.risk.views.map;
 
 import com.risk.models.Board;
 import com.risk.models.Country;
-import com.risk.views.menu.PlayerPanel;
 import java.awt.Color;
 import java.awt.geom.Line2D;
 import java.util.LinkedList;
 import javax.swing.JLabel;
-
 
 /**
  *
@@ -29,7 +27,7 @@ public class CountryButton extends JLabel {
     public void uploadAdj(Board b) {
 
         for (Country c : b.getGraphTerritories().values()) {
-            
+
         }
 
     }
