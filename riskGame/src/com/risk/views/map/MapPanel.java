@@ -1,7 +1,5 @@
-package com.risk.views;
+package com.risk.views.map;
 
-
-import com.risk.controllers.MapListener;
 import com.risk.models.Board;
 import com.risk.models.Country;
 import java.awt.Graphics;
@@ -11,13 +9,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import javax.swing.JPanel;
 
-
-
 public class MapPanel extends JPanel {
 
-   
     Image image;
-    private HashMap<String,CountryButton> countriesButtons;
+    private HashMap<String, CountryButton> countriesButtons;
 
     /**
      *
@@ -27,13 +22,12 @@ public class MapPanel extends JPanel {
         super(null);
         this.image = board.getImage();
         this.setSize(board.getImage().getWidth(null), board.getImage().getHeight(null));
-        this.countriesButtons=new HashMap<>();
+        this.countriesButtons = new HashMap<>();
         this.addMouseListener(countryListener);
-        
-        
+
         Collection<Country> territories = board.getGraphTerritories().values();
         territories.stream().forEach((currentCountry) -> {
-            CountryButton aux=new CountryButton(currentCountry.getPositionX(),currentCountry.getPositionY(),currentCountry.getName());
+            CountryButton aux = new CountryButton(currentCountry.getPositionX(), currentCountry.getPositionY(), currentCountry.getName());
             countriesButtons.put(currentCountry.getName(), aux);
             this.add(aux);
         });
@@ -44,18 +38,18 @@ public class MapPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(this.image, 0, 0, null);
     }
-    
-     /**
+
+    /**
      * @return the countriesButtons
      */
-    public HashMap<String,CountryButton> getCountriesButtons() {
+    public HashMap<String, CountryButton> getCountriesButtons() {
         return countriesButtons;
     }
 
     /**
      * @param countriesButtons the countriesButtons to set
      */
-    public void setCountriesButtons(HashMap<String,CountryButton> countriesButtons) {
+    public void setCountriesButtons(HashMap<String, CountryButton> countriesButtons) {
         this.countriesButtons = countriesButtons;
     }
 

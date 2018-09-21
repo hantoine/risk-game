@@ -6,8 +6,8 @@
 package com.risk.controllers;
 
 import com.risk.models.RiskModel;
-import com.risk.views.CountryButton;
-import com.risk.views.MapPanel;
+import com.risk.views.map.CountryButton;
+import com.risk.views.map.MapPanel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;

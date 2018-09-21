@@ -13,9 +13,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -47,13 +44,13 @@ public class FileManagement {
                     case "[Map]":
                         linesRead = dataInput.readLine();
                         while (!linesRead.equals("")) {
-                            System.out.println("lineas leidas" + linesRead);
+                            
                             aux = linesRead.split("=", 2);
-                            System.out.println("Campo-valor: " + aux[0] + "," + aux[1]);
+                            
                             //maybe we could use switch case here ? https://www.geeksforgeeks.org/string-in-switch-case-in-java/
 
                             if ("author".equals(aux[0])) {
-                                System.out.println("Entro");
+                                
                                 configurationInfo.put(aux[0], aux[1]);
                             } else if ("image".equals(aux[0])) {
                                 configurationInfo.put(aux[0], aux[1]);
@@ -79,46 +76,62 @@ public class FileManagement {
 
                         break;
                     case "[Continents]":
-                        System.out.println("File" + linesRead);
+                     
                         linesRead = dataInput.readLine();
                         while (!linesRead.equals("")) {
                             aux = linesRead.split("=", 2);
                             Continent auxContinent = new Continent(aux[0], Integer.parseInt(aux[1]));
-                            System.out.println("Continent" + aux[0]);
                             graphContinents.put(aux[0], auxContinent);
                             linesRead = dataInput.readLine();
                         }
                         break;
                     case "[Territories]":
-                        System.out.println("File" + linesRead);
+                        
                         linesRead = dataInput.readLine();
+                        
+                        //Reads until the end of the file
                         while (linesRead != null) {
+                            
+                            //In case of space between countries
                             if (linesRead.equals("")) {
                                 linesRead = dataInput.readLine();
                                 continue;
                             }
-
+                            
+                            //Splits the country information
                             aux = linesRead.split(",");
 
                             int i = 0;
+                            //The information has to be bigger first country second and third position 4th continent
                             if (aux.length > 4) {
-                                Country auxCountry = new Country(aux[0], Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
-                                System.out.println("Country-----------" + aux[0]);
-                                LinkedList<String> auxAdj = new LinkedList<>();
-                                System.out.println("CREO EL PAIS");
-                                for (i = 0; i < aux.length - 4; i++) {
-                                    System.out.println("Adj" + aux[i + 4]);
-                                    auxAdj.add(aux[i + 4]);
+                                // Creates de Country in the file
+                                Country auxCountry;
+                                if (graphTerritories.keySet().contains(aux[0])) {
+                                    auxCountry = graphTerritories.get(aux[0]);
+                                    auxCountry.countrySetter(Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
+                                } else {
+                                    auxCountry = new Country(aux[0], Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
                                 }
-                                System.out.println("Continente al que pertenece " + aux[3]);
-                                auxCountry.setAdj(auxAdj);
-                                System.out.println("CREO las adj");
 
+                                //Creates adj country
+                                Country auxCountryAdj;
+      
+                                for (i = 0; i < aux.length - 4; i++) {
+                                    if (graphTerritories.keySet().contains(aux[i + 4])) {
+                                        auxCountryAdj = graphTerritories.get(aux[i + 4]);
+
+                                    } else {
+                                        auxCountryAdj = new Country(aux[i + 4]);
+                                        graphTerritories.put(aux[i+4], auxCountryAdj);
+                                    }
+                                    //Adds the adj
+                                    auxCountry.getAdj().add(auxCountryAdj);
+                                   
+                                }
+                                
                                 graphContinents.get(aux[3]).setMember(auxCountry);
-                                System.out.println("Lo metio en un continente");
-
                                 graphTerritories.put(aux[0], auxCountry);
-                                System.out.println("Lo metio en los paises");
+
                             } else {
                                 throw new IOException();
                             }
@@ -143,7 +156,8 @@ public class FileManagement {
         } catch (IOException e) {
             System.err.println("Reading Failure: " + e.getMessage());
         }
-
+        //board.printBoard();
+        System.out.println("IS CONNECTED? "+board.connectedGraph());
         return board;
     }
 
