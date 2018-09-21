@@ -32,31 +32,38 @@ public class PlayerGameInfoPanel extends JPanel {
         this.setLayout(new FlowLayout());
         this.setSize(150,200);
         this.playerName = new JButton("Player 1");
-        this.add(playerName);
+        
+        
         
         this.numArmies=new JLabel();
         this.numContinents=new JLabel();
         this.numCountries=new JLabel();
         
-        this.cards = new JLabel[5];
+        this.add(playerName);
         this.add(this.numArmies);
         this.add(this.numCountries);
         this.add(this.numContinents);
+        
+        
+        this.cards = new JLabel[5];
+       
     }
     
     public void updatePlayer(Player currentPlayer){
-        playerName.setText("Player "+currentPlayer.getName());
+        this.currentPlayer=currentPlayer;
+        playerName.setText(this.currentPlayer.getName());
         playerName.setBackground(currentPlayer.getColor());
         this.numArmies.setText(Integer.toString(currentPlayer.getNumArmies()));
         this.numCountries.setText(Integer.toString(currentPlayer.getCountriesOwned().size()));
         this.numContinents.setText(Integer.toString(currentPlayer.getContinentsOwned().size()));
-        for (int i = 0; i < this.cards.length; i++) {
+        for (Card hand : this.currentPlayer.getCardsOwned().getHand()) {
             JLabel aux = new JLabel();
-            Card aux1 = currentPlayer.getCardsOwned().getHand()[i];
-            aux.setText(aux1.getCountryName() + "  " + aux1.getTypeOfArmie());
-            this.cards[i] = aux;
+            System.out.println(hand.getCountryName() + "  " + hand.getTypeOfArmie());
+            aux.setText(hand.getCountryName() + "  " + hand.getTypeOfArmie());
             this.add(aux);
         }
+        
+        
     }
     
     public void setCurrentPlayer(Player currentPlayer) {

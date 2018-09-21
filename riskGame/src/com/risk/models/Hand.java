@@ -5,6 +5,8 @@
  */
 package com.risk.models;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author l_yixu
@@ -12,29 +14,31 @@ package com.risk.models;
 public class Hand {
     // a group of cards
     
-    private Card[] hand;
+    private LinkedList<Card> hand;
     
     public Hand() {
-        this.hand = new Card[5];
-        this.hand[0] = new Card("Venezuela", "infantry");
-        this.hand[1] = new Card("France", "infantry");
-        this.hand[2] = new Card("China", "infantry");
+        this.hand = new LinkedList();
+        this.hand.add(new Card("Venezuela", "infantry"));
+        this.hand.add(new Card("France", "infantry"));
+        this.hand.add(new Card("China", "infantry"));
+     
     }
 
     /**
      * @return the hand
      */
-    public Card[] getHand() {
+    public LinkedList<Card> getHand() {
         return hand;
     }
 
     /**
      * @param hand the hand to set
      */
-    public void setHand(Card[] hand) {
+    public void setHand(LinkedList<Card> hand) {
         this.hand = hand;
     }
-    
+
+   
     
     
 }

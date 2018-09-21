@@ -27,7 +27,10 @@ public class RiskModel {
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, false);
+        
+        
         this.currentPlayer=this.playerList.getFirst();
+        
     }
 
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman){

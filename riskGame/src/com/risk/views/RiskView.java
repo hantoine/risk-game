@@ -81,6 +81,7 @@ public class RiskView extends javax.swing.JFrame {
         Container cp = getContentPane();
         this.setMapPanel(new MapPanel(riskModel.getBoard(),countryListener));
         this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
+        this.getPlayerPanel().updatePlayer(riskModel.getCurrentPlayer());
         cp.add(this.getMapPanel(), BorderLayout.CENTER);
         cp.add(this.getPlayerPanel(), BorderLayout.EAST);
         this.setSize(this.getMapPanel().getWidth()+this.getPlayerPanel().getWidth(),  this.getMapPanel().getHeight() + this.getBattlePanel().getHeight() + this.getOptionPanel().getHeight());
