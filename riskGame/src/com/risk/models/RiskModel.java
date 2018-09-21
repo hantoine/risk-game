@@ -4,6 +4,11 @@
  * and open the template in the editor.
  */
 package com.risk.models;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.awt.Color;
 import java.util.LinkedList;
 
@@ -13,54 +18,39 @@ import java.util.LinkedList;
  */
 public class RiskModel {
 
-    
     private Board board;
-    private LinkedList<Player> playerList;
-    
-    static Integer maxNbOfPlayers=6; //tim 
+    private LinkedList<Player> players;
+
+    static Integer maxNbOfPlayers = 6;
     private Player currentPlayer;
 
-    
     public RiskModel() {
-        this.playerList=new LinkedList<>();
-        
+        this.players = new LinkedList<>();
+
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, false);
-        
-        
-        this.currentPlayer=this.playerList.getFirst();
-        
+
+        this.currentPlayer = this.players.getFirst();
+
     }
 
-    public void addPlayerToPlayerList(String name, Color color, boolean isHuman){
-        playerList.add(new Player(name, color, isHuman));
-    }
-    
-    public void removePlayer(int index){
-        playerList.remove(index);
-    }
-    
-    public void setPlayerList (LinkedList<Player> playerList){
-        this.playerList=playerList;
+    public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
+        players.add(new Player(name, color, isHuman));
     }
 
-    //public void setPlayerList(String[] playersInfo) {
-    //    int i;
-    //    LinkedList<Player> playerListAux = new LinkedList<>();
-    //    for (i = 0; i < playersInfo.length; i++) {
-    //        String[] separator = playersInfo[i].split(",");
-    //        Player auxiliar = new Player(separator[0], separator[1]);
-    //        playerListAux.add(auxiliar);
-    //    }
+    public void removePlayer(int index) {
+        players.remove(index);
+    }
 
-    //    playerList = playerListAux;
-    //}
+    public void setPlayerList(LinkedList<Player> playerList) {
+        this.players = playerList;
+    }
 
-    public Player getCurrentPlayer(){
+    public Player getCurrentPlayer() {
         return currentPlayer;
     }
-    
+
     public void setBoard(String path) {
         board = FileManagement.createBoard(path);
     }
@@ -73,12 +63,37 @@ public class RiskModel {
         return board;
     }
 
-    //tim
-    public int getMaxNumberOfPlayers(){
+    /**
+     * Assigns random countries to players
+     */
+    public void assignCoutriesToPlayers() {
+        if (players == null) {
+            throw new IllegalArgumentException();
+        }
+
+        List<Country> countriesLeft = new ArrayList<>(board.getGraphTerritories().values());
+        Collections.shuffle(countriesLeft);
+
+        int countriesPerPlayer = (countriesLeft.size() / players.size());
+
+        players.stream().forEach((player) -> {
+            List<Country> ownedCountries = countriesLeft.subList(0, countriesPerPlayer);
+            player.setContriesOwned(ownedCountries);
+            countriesLeft.removeAll(ownedCountries);
+        });
+
+        Random rnd = new Random();
+        while (!countriesLeft.isEmpty()) {
+            int playerIndex = rnd.nextInt(players.size());
+            players.get(playerIndex).addCountryOwned(countriesLeft.remove(0));
+        }
+    }
+
+    public int getMaxNumberOfPlayers() {
         return maxNbOfPlayers;
     }
-    
-    public LinkedList<Player> getPlayerList(){
-        return this.playerList;
+
+    public LinkedList<Player> getPlayerList() {
+        return this.players;
     }
 }
