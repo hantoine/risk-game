@@ -24,46 +24,46 @@ import javax.swing.JOptionPane;
  *
  * @author Nellybett
  */
-public class MenuListener extends MouseAdapter{
-    
-        RiskModel riskModel;
-        RiskView riskView;
-        PlayerListPanel playerList;
-        MapListener countryListener;
-        
-        public MenuListener(RiskModel riskModel, RiskView riskView, MapListener countryListener){
-            this.riskModel=riskModel;
-            this.riskView=riskView;
-            this.countryListener=countryListener;
-            
-        }
-              
-        public void setPanel(PlayerListPanel playerList){
-            this.playerList=playerList;
-            
-        }
-        
-        @Override
-        public void mousePressed(MouseEvent e) {
-            try{
-            
+public class MenuListener extends MouseAdapter {
+
+    RiskModel riskModel;
+    RiskView riskView;
+    PlayerListPanel playerList;
+    MapListener countryListener;
+
+    public MenuListener(RiskModel riskModel, RiskView riskView, MapListener countryListener) {
+        this.riskModel = riskModel;
+        this.riskView = riskView;
+        this.countryListener = countryListener;
+
+    }
+
+    public void setPanel(PlayerListPanel playerList) {
+        this.playerList = playerList;
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        try {
+
             JComponent c = (JComponent) e.getSource();
-            JButton addPlayer= (JButton)c;
+            JButton addPlayer = (JButton) c;
             if (addPlayer.getText().equals("+")) {
-               this.playerList.addElement(this.playerList.getNewPlayerName(), this.playerList.getNewColor());
-            
-            }else if (addPlayer.getText().equals("-")){
-                System.out.println("number of players"+this.playerList.getPlayersArray().size());
-                if((this.playerList.getPlayersArray().size())<=3)
+                this.playerList.addElement(this.playerList.getNewPlayerName(), this.playerList.getNewColor());
+
+            } else if (addPlayer.getText().equals("-")) {
+                System.out.println("number of players" + this.playerList.getPlayersArray().size());
+                if ((this.playerList.getPlayersArray().size()) <= 3) {
                     JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
-                else{
-                    DeletableButton buttonToDelete=(DeletableButton) addPlayer;
+                } else {
+                    DeletableButton buttonToDelete = (DeletableButton) addPlayer;
                     int IDtoDelete = buttonToDelete.getID();
-                 
+
                     for (Iterator<PlayerPanel> it = this.playerList.getPlayersArray().iterator(); it.hasNext();) {
                         PlayerPanel panelToTest = it.next();
-                       
-                        if(panelToTest.getDelButton().getID()==IDtoDelete){
+
+                        if (panelToTest.getDelButton().getID() == IDtoDelete) {
                             System.out.println(panelToTest.getDelButton().getID());
                             Color colorToRemove = panelToTest.getColorButton().getBackground();
                             this.playerList.getColorUsed().remove(colorToRemove);
@@ -73,40 +73,39 @@ public class MenuListener extends MouseAdapter{
                             it.remove();
                         }
                     }
-                    
+
                 }
-                       
-            }else if(addPlayer.getText().equals("    ")){
-                 Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
-                if( this.playerList.getColorUsed().contains(selectedColor)){
+
+            } else if (addPlayer.getText().equals("    ")) {
+                Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
+                if (this.playerList.getColorUsed().contains(selectedColor)) {
                     JOptionPane.showMessageDialog(null, "This color is already used");
-                }else{
+                } else {
                     this.playerList.getColorUsed().remove(addPlayer.getBackground());
                     this.playerList.getColorUsed().add(selectedColor);
                     addPlayer.setBackground(selectedColor);
-                    
+
                 }
-            }else if(addPlayer.getText().equals("PLAY")){
-                
-                NewGamePanel aux=(NewGamePanel)this.riskView.getMenuPanel().getTabbedPane().getComponent(0);
-                String selectedPath=aux.getSelectFileTextField().getText();
-                
-                if(!selectedPath.equals(" No file selected  ")){
+            } else if (addPlayer.getText().equals("PLAY")) {
+
+                NewGamePanel aux = (NewGamePanel) this.riskView.getMenuPanel().getTabbedPane().getComponent(0);
+                String selectedPath = aux.getSelectFileTextField().getText();
+
+                if (!selectedPath.equals(" No file selected  ")) {
                     riskModel.setBoard(selectedPath);
-                    
-                
+
                     this.riskView.remove(this.riskView.getMenuPanel());
                     this.riskView.setMenuPanel(null);
                     this.riskView.getBattlePanel().setVisible(true);
                     this.riskView.getOptionPanel().setVisible(true);
                     this.riskView.initialMap(riskModel, countryListener);
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "You have not selected a map");
                 }
             }
-            }catch(NumberFormatException ex){
-                System.out.println(ex);
-            }
+        } catch (NumberFormatException ex) {
+            System.out.println(ex);
         }
-    
+    }
+
 }

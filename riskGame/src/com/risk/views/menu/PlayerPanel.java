@@ -14,6 +14,7 @@ import javax.swing.JTextField;
  * @author Nellybett
  */
 public class PlayerPanel extends JPanel {
+
     private String name;
     private JTextField playerNameTextField;
     private JButton colorButton;

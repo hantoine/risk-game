@@ -12,14 +12,15 @@ import javax.swing.JButton;
  * @author timot
  */
 public class DeletableButton extends JButton {
+
     int ID;
-    
-    public DeletableButton(String text, int ID){
+
+    public DeletableButton(String text, int ID) {
         this.ID = ID;
         this.setText(text);
     }
-    
-    public int getID(){
+
+    public int getID() {
         return this.ID;
     }
 }
