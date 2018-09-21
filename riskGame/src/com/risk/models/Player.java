@@ -6,7 +6,7 @@
 package com.risk.models;
 
 import java.awt.Color;
-import java.util.LinkedList;
+import java.util.Collection;
 
 /**
  *
@@ -16,11 +16,9 @@ public class Player {
 
     private String name;
     private Color color;//change to color
-    private LinkedList<Country> contriesOwned;
-    private LinkedList<Continent> continentsOwned;
-    // Question 1: should I need to change the type to List<Card>, create a Class called Card?
-    // Question 2: Should the playerInfoPanel show the number of the cards player owned, or list all cards player owned?
-    private LinkedList<Card> cardsOwned;
+    private Collection<Country> contriesOwned;
+    private Collection<Continent> continentsOwned;
+    private Collection<Card> cardsOwned;
     private int numArmies;
 
     public Player(String name) {
@@ -63,42 +61,49 @@ public class Player {
     /**
      * @return the contriesOwned
      */
-    public LinkedList<Country> getContriesOwned() {
+    public Collection<Country> getContriesOwned() {
         return contriesOwned;
     }
 
     /**
      * @param contriesOwned the contriesOwned to set
      */
-    public void setContriesOwned(LinkedList<Country> contriesOwned) {
+    public void setContriesOwned(Collection<Country> contriesOwned) {
         this.contriesOwned = contriesOwned;
+    }
+    
+    /**
+     * @param countryOwned the additional country owned by this player
+     */
+    public void addCountryOwned(Country countryOwned) {
+        this.contriesOwned.add(countryOwned);
     }
 
     /**
      * @return the continentsOwned
      */
-    public LinkedList<Continent> getContinentsOwned() {
+    public Collection<Continent> getContinentsOwned() {
         return continentsOwned;
     }
 
     /**
      * @param continentsOwned the continentsOwned to set
      */
-    public void setContinentsOwned(LinkedList<Continent> continentsOwned) {
+    public void setContinentsOwned(Collection<Continent> continentsOwned) {
         this.continentsOwned = continentsOwned;
     }
-    
+
     /**
      * @return the cardsOwned
      */
-    public LinkedList<Card> getCardsOwned() {
+    public Collection<Card> getCardsOwned() {
         return cardsOwned;
     }
 
     /**
      * @param cardsOwned the cardsOwned to set
      */
-    public void setCardsOwned(LinkedList<Card> cardsOwned) {
+    public void setCardsOwned(Collection<Card> cardsOwned) {
         this.cardsOwned = cardsOwned;
     }
 
