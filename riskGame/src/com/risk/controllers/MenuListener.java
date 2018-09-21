@@ -96,7 +96,7 @@ public class MenuListener extends MouseAdapter {
                 NewGamePanel aux=(NewGamePanel)this.riskView.getMenuPanel().getTabbedPane().getComponent(0);
                 String selectedPath=aux.getSelectFileTextField().getText();
                 
-                if(!selectedPath.equals(" No file selected  ")){
+                if(!selectedPath.equals("")){
                     try {
                         riskModel.setBoard(selectedPath);
                         
