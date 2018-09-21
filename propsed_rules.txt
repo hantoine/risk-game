@@ -10,3 +10,5 @@
 	- variable name:	should start with lowercase letter e.g. firstName, orderNumber etc.
 	- package name:		should be in lowercase letter e.g. java, lang, sql, util etc.
 	- constants name:	should be in uppercase letter. e.g. RED, YELLOW, MAX_PRIORITY etc.
+
+- A method should not be longer than 30 lines.
