@@ -99,11 +99,16 @@ public class MenuListener extends MouseAdapter {
                 if(!selectedPath.equals(" No file selected  ")){
                     try {
                         riskModel.setBoard(selectedPath);
-                        this.riskView.remove(this.riskView.getMenuPanel());
-                        this.riskView.setMenuPanel(null);
-                        this.riskView.getBattlePanel().setVisible(true);
-                        this.riskView.getOptionPanel().setVisible(true);
-                        this.riskView.initialMap(riskModel, countryListener);
+                        
+                        if(riskModel.getBoard().connectedGraph()){
+                            this.riskView.remove(this.riskView.getMenuPanel());
+                            this.riskView.setMenuPanel(null);
+                            this.riskView.getBattlePanel().setVisible(true);
+                            this.riskView.getOptionPanel().setVisible(true);
+                            this.riskView.initialMap(riskModel, countryListener);
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Countries are not connected. please selected a new file");
+                        }
                     
                     } catch (FormatException | IOException ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
