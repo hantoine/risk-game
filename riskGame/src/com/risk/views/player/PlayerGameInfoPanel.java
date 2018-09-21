@@ -60,7 +60,7 @@ public class PlayerGameInfoPanel extends JPanel {
         playerName.setText(this.currentPlayer.getName());
         playerName.setBackground(currentPlayer.getColor());
         this.numArmies.setText(Integer.toString(currentPlayer.getNumArmies()));
-        this.numCountries.setText(Integer.toString(currentPlayer.getCountriesOwned().size()));
+        this.numCountries.setText(Integer.toString(currentPlayer.getContriesOwned().size()));
         this.numContinents.setText(Integer.toString(currentPlayer.getContinentsOwned().size()));
         for (Card hand : this.currentPlayer.getCardsOwned().getHand()) {
             JLabel aux = new JLabel();

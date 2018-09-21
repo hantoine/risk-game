@@ -5,7 +5,6 @@
  */
 package com.risk.models;
 
-import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,48 +12,45 @@ import java.util.Random;
 import java.awt.Color;
 import java.util.LinkedList;
 
-
 /**
  *
  * @author Nellybett
  */
 public class RiskModel {
-   
+
     private Board board;
-    private LinkedList<Player> playerList;
-    
+    private LinkedList<Player> players;
+
     static Integer maxNbOfPlayers = 6;
     private Player currentPlayer;
 
-    
     public RiskModel() {
-        this.playerList=new LinkedList<>();
-        
+        this.players = new LinkedList<>();
+
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, false);
-        
-        
-        this.currentPlayer=this.playerList.getFirst();
-        
+
+        this.currentPlayer = this.players.getFirst();
+
     }
 
-    public void addPlayerToPlayerList(String name, Color color, boolean isHuman){
-        playerList.add(new Player(name, color, isHuman));
-    }
-    
-    public void removePlayer(int index){
-        playerList.remove(index);
-    }
-    
-    public void setPlayerList (LinkedList<Player> playerList){
-        this.playerList=playerList;
+    public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
+        players.add(new Player(name, color, isHuman));
     }
 
-    public Player getCurrentPlayer(){
+    public void removePlayer(int index) {
+        players.remove(index);
+    }
+
+    public void setPlayerList(LinkedList<Player> playerList) {
+        this.players = playerList;
+    }
+
+    public Player getCurrentPlayer() {
         return currentPlayer;
     }
-    
+
     public void setBoard(String path) {
         board = FileManagement.createBoard(path);
     }
@@ -93,11 +89,11 @@ public class RiskModel {
         }
     }
 
-    public int getMaxNumberOfPlayers(){
+    public int getMaxNumberOfPlayers() {
         return maxNbOfPlayers;
     }
-    
-    public LinkedList<Player> getPlayerList(){
-        return this.playerList;
+
+    public LinkedList<Player> getPlayerList() {
+        return this.players;
     }
 }
