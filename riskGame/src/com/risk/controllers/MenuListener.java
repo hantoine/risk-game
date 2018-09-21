@@ -6,6 +6,7 @@
 package com.risk.controllers;
 
 import com.risk.models.RiskModel;
+import com.risk.models.exceptions.FormatException;
 import com.risk.views.menu.DeletableButton;
 import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.RiskView;
@@ -14,7 +15,10 @@ import com.risk.views.menu.PlayerPanel;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
@@ -92,7 +96,13 @@ public class MenuListener extends MouseAdapter{
                 String selectedPath=aux.getSelectFileTextField().getText();
                 
                 if(!selectedPath.equals(" No file selected  ")){
-                    riskModel.setBoard(selectedPath);
+                    try {
+                        riskModel.setBoard(selectedPath);
+                    } catch (FormatException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
                     
                 
                     this.riskView.remove(this.riskView.getMenuPanel());

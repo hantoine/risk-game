@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import com.risk.models.exceptions.FormatException;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,7 +22,7 @@ import javax.imageio.ImageIO;
  */
 public class FileManagement {
 
-    public static Board createBoard(String path) {
+    public static Board createBoard(String path) throws FormatException, IOException {
 
         Board board = new Board();
         HashMap<String, String> configurationInfo = new HashMap();
@@ -47,29 +48,48 @@ public class FileManagement {
                             
                             aux = linesRead.split("=", 2);
                             
-                            //maybe we could use switch case here ? https://www.geeksforgeeks.org/string-in-switch-case-in-java/
-
-                            if ("author".equals(aux[0])) {
-                                
-                                configurationInfo.put(aux[0], aux[1]);
-                            } else if ("image".equals(aux[0])) {
-                                configurationInfo.put(aux[0], aux[1]);
-                                Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
-                                try {
-                                    BufferedImage image = ImageIO.read(new File(imagePath.toString()));
-                                    board.setImage(image);
-                                } catch (IOException e) {
-                                    System.err.println("Cannot read image file: " + e.getMessage());
-                                }
-                            } else if (("wrap".equals(aux[0])) && (aux[1].equals("no") || aux[1].equals("yes"))) {
-                                configurationInfo.put(aux[0], aux[1]);
-                            } else if (("scroll".equals(aux[0])) && (aux[1].equals("horizontal") || aux[1].equals("vertical") || aux[1].equals("none"))) {
-                                configurationInfo.put(aux[0], aux[1]);
-                            } else if ((aux[0].equals("warn")) && (aux[1].equals("no") || aux[1].equals("yes"))) {
-                                configurationInfo.put(aux[0], aux[1]);
-                            } else {
-                                throw new IOException();
-                            }
+                            switch(aux[0]){
+                                case "author":
+                                    configurationInfo.put(aux[0], aux[1]);
+                                    break;
+                                case "image":
+                                    configurationInfo.put(aux[0], aux[1]);
+                                    Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
+                                    try {
+                                        BufferedImage image = ImageIO.read(new File(imagePath.toString()));
+                                        board.setImage(image);
+                                    } catch (FileNotFoundException e) {
+                                        throw new FileNotFoundException("Image not found");
+                                    } catch (IOException e) {
+                                        throw new IOException("Image error");
+                                    }
+                                    break;
+                                case "wrap":
+                                    if((aux[1].equals("no") || aux[1].equals("yes"))) {
+                                        configurationInfo.put(aux[0], aux[1]);
+                                    }else{
+                                        throw new FormatException("Parameter wrap not valid");
+                                    }
+                                    break;
+                                case "scroll":
+                                    if((aux[1].equals("horizontal") || aux[1].equals("vertical") || aux[1].equals("none"))) {
+                                        configurationInfo.put(aux[0], aux[1]);
+                                    }else{
+                                        throw new FormatException("Parameter scroll not valid");
+                                    }
+                                    break;
+                                case "warn":
+                                    if((aux[1].equals("no") || aux[1].equals("yes"))) {
+                                        configurationInfo.put(aux[0], aux[1]);
+                                    }else{
+                                        throw new FormatException("Parameter warn not valid");
+                                    }
+                                    break;
+                                default:
+                                    throw new FormatException("File format error, parameter not known");
+                                    
+                            }    
+                            
 
                             linesRead = dataInput.readLine();
                         }
@@ -80,8 +100,13 @@ public class FileManagement {
                         linesRead = dataInput.readLine();
                         while (!linesRead.equals("")) {
                             aux = linesRead.split("=", 2);
-                            Continent auxContinent = new Continent(aux[0], Integer.parseInt(aux[1]));
-                            graphContinents.put(aux[0], auxContinent);
+                            if(aux.length>1){
+                                Continent auxContinent = new Continent(aux[0], Integer.parseInt(aux[1]));
+                                graphContinents.put(aux[0], auxContinent);
+                            
+                            }else{
+                                throw new FormatException("Continent without correct delimiter");
+                            }
                             linesRead = dataInput.readLine();
                         }
                         break;
@@ -122,18 +147,18 @@ public class FileManagement {
 
                                     } else {
                                         auxCountryAdj = new Country(aux[i + 4]);
-                                        graphTerritories.put(aux[i+4], auxCountryAdj);
+
                                     }
                                     //Adds the adj
                                     auxCountry.getAdj().add(auxCountryAdj);
-                                   
+                                    graphTerritories.put(aux[i+4], auxCountryAdj);
                                 }
                                 
                                 graphContinents.get(aux[3]).setMember(auxCountry);
                                 graphTerritories.put(aux[0], auxCountry);
 
                             } else {
-                                throw new IOException();
+                                throw new FormatException("Country without adjacencies");
                             }
 
                             linesRead = dataInput.readLine();
@@ -147,14 +172,15 @@ public class FileManagement {
 
             }
 
-            System.out.println("Board Created");
             board.setConfigurationInfo(configurationInfo);
             board.setGraphTerritories(graphTerritories);
             board.setGraphContinents(graphContinents);
+            System.out.println("Board Created");
+        
         } catch (FileNotFoundException e) {
-            System.err.println("File not Found: " + e.getMessage());
+            throw new FileNotFoundException("File not found");
         } catch (IOException e) {
-            System.err.println("Reading Failure: " + e.getMessage());
+            throw new IOException("File reading failed");
         }
         //board.printBoard();
         System.out.println("IS CONNECTED? "+board.connectedGraph());
