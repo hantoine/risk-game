@@ -13,15 +13,15 @@ import java.util.LinkedList;
  */
 public class Hand {
     // a group of cards
-    
+
     private LinkedList<Card> hand;
-    
+
     public Hand() {
         this.hand = new LinkedList();
         this.hand.add(new Card("Venezuela", "infantry"));
         this.hand.add(new Card("France", "infantry"));
         this.hand.add(new Card("China", "infantry"));
-     
+
     }
 
     /**
@@ -38,7 +38,4 @@ public class Hand {
         this.hand = hand;
     }
 
-   
-    
-    
 }

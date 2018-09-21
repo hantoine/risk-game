@@ -45,7 +45,7 @@ public class FileManagement {
                     case "[Map]":
                         linesRead = dataInput.readLine();
                         while (!linesRead.equals("")) {
-                            
+                           
                             aux = linesRead.split("=", 2);
                             
                             switch(aux[0]){
@@ -88,15 +88,15 @@ public class FileManagement {
                                 default:
                                     throw new FormatException("File format error, parameter not known");
                                     
-                            }    
-                            
+                            }                                
+
 
                             linesRead = dataInput.readLine();
                         }
 
                         break;
                     case "[Continents]":
-                     
+
                         linesRead = dataInput.readLine();
                         while (!linesRead.equals("")) {
                             aux = linesRead.split("=", 2);
@@ -111,18 +111,18 @@ public class FileManagement {
                         }
                         break;
                     case "[Territories]":
-                        
+
                         linesRead = dataInput.readLine();
-                        
+
                         //Reads until the end of the file
                         while (linesRead != null) {
-                            
+
                             //In case of space between countries
                             if (linesRead.equals("")) {
                                 linesRead = dataInput.readLine();
                                 continue;
                             }
-                            
+
                             //Splits the country information
                             aux = linesRead.split(",");
 
@@ -140,7 +140,7 @@ public class FileManagement {
 
                                 //Creates adj country
                                 Country auxCountryAdj;
-      
+
                                 for (i = 0; i < aux.length - 4; i++) {
                                     if (graphTerritories.keySet().contains(aux[i + 4])) {
                                         auxCountryAdj = graphTerritories.get(aux[i + 4]);
@@ -152,8 +152,9 @@ public class FileManagement {
                                     //Adds the adj
                                     auxCountry.getAdj().add(auxCountryAdj);
                                     graphTerritories.put(aux[i+4], auxCountryAdj);
+
                                 }
-                                
+
                                 graphContinents.get(aux[3]).setMember(auxCountry);
                                 graphTerritories.put(aux[0], auxCountry);
 
@@ -183,7 +184,7 @@ public class FileManagement {
             throw new IOException("File reading failed");
         }
         //board.printBoard();
-        System.out.println("IS CONNECTED? "+board.connectedGraph());
+        System.out.println("IS CONNECTED? " + board.connectedGraph());
         return board;
     }
 

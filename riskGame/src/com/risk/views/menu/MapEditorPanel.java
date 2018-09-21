@@ -13,8 +13,9 @@ import javax.swing.JPanel;
  * @author timot
  */
 public class MapEditorPanel extends JPanel {
-    public MapEditorPanel(){
-        JButton test= new JButton("button");
+
+    public MapEditorPanel() {
+        JButton test = new JButton("button");
         this.add(test);
     }
 }
