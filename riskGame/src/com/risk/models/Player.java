@@ -18,19 +18,17 @@ public class Player {
     private Color color;
     private LinkedList<Country> contriesOwned;
     private LinkedList<Continent> continentsOwned;
-    // Question 1: should I need to change the type to List<Card>, create a Class called Card?
-    // Question 2: Should the playerInfoPanel show the number of the cards player owned, or list all cards player owned?
-    private LinkedList<Card> cardsOwned;
+    private Hand cardsOwned;
     private int numArmies;
 
     public Player(String name, Color color, boolean isHuman) {
         this.name = name;
         this.color = null;
-        this.contriesOwned = null;
-        this.continentsOwned = null;
-        this.numArmies =0;
+        this.contriesOwned = new LinkedList<>();
+        this.continentsOwned = new LinkedList<>();
+        this.numArmies = 0;
         this.isHuman = isHuman;
-        this.cardsOwned = null;
+        this.cardsOwned = new Hand();
         this.numArmies = 0;
     }
 
@@ -65,7 +63,7 @@ public class Player {
     /**
      * @return the contriesOwned
      */
-    public LinkedList<Country> getContriesOwned() {
+    public LinkedList<Country> getCountriesOwned() {
         return contriesOwned;
     }
 
@@ -91,20 +89,6 @@ public class Player {
     }
     
     /**
-     * @return the cardsOwned
-     */
-    public LinkedList<Card> getCardsOwned() {
-        return cardsOwned;
-    }
-
-    /**
-     * @param cardsOwned the cardsOwned to set
-     */
-    public void setCardsOwned(LinkedList<Card> cardsOwned) {
-        this.cardsOwned = cardsOwned;
-    }
-
-    /**
      * @return the numArmies
      */
     public int getNumArmies() {
@@ -118,12 +102,25 @@ public class Player {
         this.numArmies = numArmies;
     }
 
-    
     /**
      * @return the numArmies
      */
     public boolean getType() {
         return this.isHuman;
+    }
+
+    /**
+     * @return the cardsOwned
+     */
+    public Hand getCardsOwned() {
+        return cardsOwned;
+    }
+
+    /**
+     * @param cardsOwned the cardsOwned to set
+     */
+    public void setCardsOwned(Hand cardsOwned) {
+        this.cardsOwned = cardsOwned;
     }
     
     
