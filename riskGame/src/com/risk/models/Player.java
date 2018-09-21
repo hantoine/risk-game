@@ -13,20 +13,22 @@ import java.util.Collection;
  * @author n_irahol
  */
 public class Player {
-
+    private boolean isHuman;
     private String name;
-    private Color color;//change to color
+    private Color color;
     private Collection<Country> contriesOwned;
     private Collection<Continent> continentsOwned;
-    private Collection<Card> cardsOwned;
+    private Hand cardsOwned;
     private int numArmies;
 
-    public Player(String name) {
+    public Player(String name, Color color, boolean isHuman) {
         this.name = name;
         this.color = null;
-        this.contriesOwned = null;
-        this.continentsOwned = null;
-        this.cardsOwned = null;
+        this.contriesOwned = new LinkedList<>();
+        this.continentsOwned = new LinkedList<>();
+        this.numArmies = 0;
+        this.isHuman = isHuman;
+        this.cardsOwned = new Hand();
         this.numArmies = 0;
     }
 
@@ -48,7 +50,7 @@ public class Player {
      * @return the color
      */
     public Color getColor() {
-        return color;
+        return this.color;
     }
 
     /**
@@ -94,20 +96,6 @@ public class Player {
     }
 
     /**
-     * @return the cardsOwned
-     */
-    public Collection<Card> getCardsOwned() {
-        return cardsOwned;
-    }
-
-    /**
-     * @param cardsOwned the cardsOwned to set
-     */
-    public void setCardsOwned(Collection<Card> cardsOwned) {
-        this.cardsOwned = cardsOwned;
-    }
-
-    /**
      * @return the numArmies
      */
     public int getNumArmies() {
@@ -121,4 +109,26 @@ public class Player {
         this.numArmies = numArmies;
     }
 
+    /**
+     * @return the numArmies
+     */
+    public boolean getType() {
+        return this.isHuman;
+    }
+
+    /**
+     * @return the cardsOwned
+     */
+    public Hand getCardsOwned() {
+        return cardsOwned;
+    }
+
+    /**
+     * @param cardsOwned the cardsOwned to set
+     */
+    public void setCardsOwned(Hand cardsOwned) {
+        this.cardsOwned = cardsOwned;
+    }
+    
+    
 }
