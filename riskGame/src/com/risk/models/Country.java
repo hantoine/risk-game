@@ -24,26 +24,28 @@ public class Country {
 
     public Country(String name, int positionX, int positionY) {
         this.name = name;
+        this.adj=new LinkedList();
         this.positionX = positionX;
         this.positionY = positionY;
         this.numArmies = 0;
         this.owner = null;
     }
 
+
+    public Country(String name) {
+        this.name = name;
+        this.numArmies = 0;
+        this.owner = null;
+        this.adj=new LinkedList();
+    }
+    
+    
     public void countrySetter(int positionX, int positionY) {
         
         this.positionX = positionX;
         this.positionY = positionY;
     
     }
-
-    public Country(String name) {
-        this.name = name;
-        this.numArmies = 0;
-        this.owner = null;
-    }
-    
-    
     
     
 
