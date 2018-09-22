@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 /**
- * Class created to load or download information to a file
+ * Class created to load or download information (using a file)
  * @author Nellybett
  */
 public class FileManagement {
@@ -211,6 +211,10 @@ public class FileManagement {
      */
     public HashMap<String, Country> countryCreator(String info, HashMap<String, Continent> graphContinents ) throws FormatException{
         HashMap<String, Country> graphTerritories = new HashMap();
+        
+        if(graphContinents==null){
+            throw new FormatException("No continents provided");
+        }
         
         if(!info.equals("")){
             String[] linesInfo=info.split(System.getProperty("line.separator"));
