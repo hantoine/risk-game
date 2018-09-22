@@ -35,13 +35,12 @@ public class MenuListener extends MouseAdapter {
     RiskView riskView;
     PlayerListPanel playerList;
     MapListener countryListener;
-    private BarListener barListener;
+    
 
     public MenuListener(RiskModel riskModel, RiskView riskView, MapListener countryListener) {
         this.riskModel = riskModel;
         this.riskView = riskView;
         this.countryListener = countryListener;
-        this.barListener = new BarListener(riskModel, riskView,this);
 
     }
 
@@ -110,7 +109,7 @@ public class MenuListener extends MouseAdapter {
                                 this.riskView.setMenuPanel(null);
                             
                             
-                            this.riskView.initialMap(riskModel, countryListener,barListener);
+                            this.riskView.initialMap(riskModel, countryListener);
                         }else{
                             JOptionPane.showMessageDialog(null, "Countries are not connected. please selected a new file");
                         }

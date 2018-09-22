@@ -5,11 +5,12 @@
  */
 package com.risk.views;
 
-import com.risk.controllers.BarListener;
+
 import com.risk.views.player.PlayerGameInfoPanel;
 import com.risk.views.map.MapPanel;
 import com.risk.views.menu.StartMenuView;
 import com.risk.controllers.MenuListener;
+import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
 import com.risk.views.menu.MenuView;
 import java.awt.BorderLayout;
@@ -44,18 +45,22 @@ public class RiskView extends javax.swing.JFrame {
     private JPanel battlePanel;
     private MapPanel mapPanel;
     private PlayerGameInfoPanel playerPanel;
-   
-    public RiskView() {
+    private RiskController riskController;
+    
+    public RiskView(RiskController riskController) {
         super("Risk Game");
+        this.riskController=riskController;
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
-       
+        
+        this.addMenuBar();
+        this.getJMenuBar().setVisible(true);
         this.setVisible(true);
         
     }
     
-    public void initialMap(RiskModel riskModel, MouseListener countryListener, BarListener barListener) {
+    public void initialMap(RiskModel riskModel, MouseListener countryListener) {
         if(this.getMapPanel()!=null && this.getPlayerPanel()!=null){
             this.remove(this.getMapPanel());
             this.remove(this.getPlayerPanel());
@@ -69,8 +74,6 @@ public class RiskView extends javax.swing.JFrame {
         cp.add(this.getMapPanel(), BorderLayout.CENTER);
         cp.add(this.getPlayerPanel(), BorderLayout.EAST);
        
-        this.addMenuBar(barListener);
-        this.getJMenuBar().setVisible(true);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
        
@@ -90,7 +93,7 @@ public class RiskView extends javax.swing.JFrame {
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
     
-    public void addMenuBar(BarListener barListener){
+    public void addMenuBar(){
         JMenuBar menuBar;
         JMenu menuFile,menuOption;
         JMenuItem menuItem;
@@ -109,7 +112,7 @@ public class RiskView extends javax.swing.JFrame {
         menuItem = new JMenuItem("New Game");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Show New Game");
-        menuItem.addActionListener(barListener);
+        menuItem.addActionListener(riskController);
         menuFile.add(menuItem);
         
                 
