@@ -12,6 +12,7 @@ import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.RiskView;
 import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.PlayerPanel;
+import com.risk.views.menu.StartMenuView;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -34,11 +35,13 @@ public class MenuListener extends MouseAdapter {
     RiskView riskView;
     PlayerListPanel playerList;
     MapListener countryListener;
+    private BarListener barListener;
 
     public MenuListener(RiskModel riskModel, RiskView riskView, MapListener countryListener) {
         this.riskModel = riskModel;
         this.riskView = riskView;
         this.countryListener = countryListener;
+        this.barListener = new BarListener(riskModel, riskView,this);
 
     }
 
@@ -93,7 +96,8 @@ public class MenuListener extends MouseAdapter {
 
             }else if(addPlayer.getText().equals("PLAY")){
                 
-                NewGamePanel aux=(NewGamePanel)this.riskView.getMenuPanel().getTabbedPane().getComponent(0);
+                StartMenuView aux1=(StartMenuView)this.riskView.getMenuPanel().getStartMenu();
+                NewGamePanel aux=(NewGamePanel) aux1.getTabbedPane().getComponent(0);
                 String selectedPath=aux.getSelectFileTextField().getText();
                 
                 if(!selectedPath.equals("")){
@@ -101,8 +105,12 @@ public class MenuListener extends MouseAdapter {
                         riskModel.setBoard(selectedPath);
                         
                         if(riskModel.getBoard().connectedGraph()){
-                            this.riskView.remove(this.riskView.getMenuPanel());
-                            this.riskView.initialMap(riskModel, countryListener);
+                                this.riskView.getMenuPanel().setVisible(false);
+                                this.riskView.remove(this.riskView.getMenuPanel());
+                                this.riskView.setMenuPanel(null);
+                            
+                            
+                            this.riskView.initialMap(riskModel, countryListener,barListener);
                         }else{
                             JOptionPane.showMessageDialog(null, "Countries are not connected. please selected a new file");
                         }

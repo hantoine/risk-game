@@ -23,6 +23,9 @@ public class RiskController {
         //modelRisk.setBoard("maps"+File.separator+"Old Yorkshire.map");
         MapListener countryListener = new MapListener(modelRisk);
         MenuListener menuListener = new MenuListener(modelRisk, viewRisk, countryListener);
+      
+        
+       
         viewRisk.initialMenu(modelRisk, menuListener);
         //viewRisk.initialMap(modelRisk, countryListener);
         
