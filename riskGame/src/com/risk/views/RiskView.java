@@ -15,9 +15,17 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -37,39 +45,12 @@ public class RiskView extends javax.swing.JFrame {
     public RiskView() {
         super("Risk Game");
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
-
-        // Menu Panel
-        this.optionPanel = new JPanel();
-        this.optionPanel.setSize(300, 50);
-        JButton newGame = new JButton("New Game");
-        JButton saveGame = new JButton("Create Map File");
-
-        optionPanel.setLayout(new FlowLayout());
-        optionPanel.add(newGame);
-        optionPanel.add(saveGame);
-
-        //Battle panel
-        this.battlePanel = new JPanel();
-        this.battlePanel.setSize(300, 50);
-        JButton playerOne = new JButton("Player 1");
-        JButton playerTwo = new JButton("Player 2");
-        JButton playerThree = new JButton("Player 3");
-
-        battlePanel.setLayout(new FlowLayout());
-        battlePanel.add(playerOne);
-        battlePanel.add(playerTwo);
-        battlePanel.add(playerThree);
-
-        //Adding Panels
-        optionPanel.setVisible(false);
-        battlePanel.setVisible(false);
-
-        cp.add(battlePanel, BorderLayout.SOUTH);
-        cp.add(optionPanel, BorderLayout.NORTH);
-
+        this.addMenuBar();
+        this.getJMenuBar().setVisible(false);
+        this.setVisible(true);
+        
     }
 
     public void initialMap(RiskModel riskModel, MouseListener countryListener) {
@@ -77,9 +58,10 @@ public class RiskView extends javax.swing.JFrame {
         this.setMapPanel(new MapPanel(riskModel.getBoard(), countryListener));
         this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
         this.getPlayerPanel().updatePlayer(riskModel.getCurrentPlayer());
+        this.setSize(new Dimension(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth(), this.getMapPanel().getHeight()+50));
         cp.add(this.getMapPanel(), BorderLayout.CENTER);
         cp.add(this.getPlayerPanel(), BorderLayout.EAST);
-        this.setSize(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth(), this.getMapPanel().getHeight() + this.getBattlePanel().getHeight() + this.getOptionPanel().getHeight());
+        this.getJMenuBar().setVisible(true);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
@@ -94,7 +76,37 @@ public class RiskView extends javax.swing.JFrame {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
+    
+    public void addMenuBar(){
+        JMenuBar menuBar;
+        JMenu menuFile,menuOption;
+        JMenuItem menuItem;
+      
+        
+        //Create the menu bar.
+        menuBar = new JMenuBar();
+        menuBar.setLayout(new FlowLayout(FlowLayout.LEFT));
+        //Build the first menu.
+        menuFile = new JMenu("File");
+        menuFile.setMnemonic(KeyEvent.VK_A);
+        menuFile.getAccessibleContext().setAccessibleDescription("File");
+        menuBar.add(menuFile,BorderLayout.NORTH);
 
+        //a group of JMenuItems
+        menuFile.setLayout(new BoxLayout(menuFile, BoxLayout.Y_AXIS));
+        menuItem = new JMenuItem("New Game",KeyEvent.VK_T);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+        menuItem.getAccessibleContext().setAccessibleDescription("Show New Game");
+        menuFile.add(menuItem);
+        
+        //Build 2do menu
+        menuOption = new JMenu("Options");
+        menuOption.setMnemonic(KeyEvent.VK_A);
+        menuOption.getAccessibleContext().setAccessibleDescription("Options");
+        menuBar.add(menuOption,BorderLayout.NORTH);
+        
+        this.setJMenuBar(menuBar);
+    }
     /**
      * @return the menuPanel
      */

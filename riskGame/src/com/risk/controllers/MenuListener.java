@@ -102,9 +102,6 @@ public class MenuListener extends MouseAdapter {
                         
                         if(riskModel.getBoard().connectedGraph()){
                             this.riskView.remove(this.riskView.getMenuPanel());
-                            this.riskView.setMenuPanel(null);
-                            this.riskView.getBattlePanel().setVisible(true);
-                            this.riskView.getOptionPanel().setVisible(true);
                             this.riskView.initialMap(riskModel, countryListener);
                         }else{
                             JOptionPane.showMessageDialog(null, "Countries are not connected. please selected a new file");
