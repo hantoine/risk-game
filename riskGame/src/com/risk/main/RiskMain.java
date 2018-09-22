@@ -21,8 +21,6 @@ public class RiskMain {
      */
     public static void main(String args[]) {
 
-        RiskView riskView = new RiskView();
-        RiskModel riskModel = new RiskModel();
-        RiskController riskController = new RiskController(riskView, riskModel);
+        RiskController riskController = new RiskController();
     }
 }
