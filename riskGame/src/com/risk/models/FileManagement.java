@@ -141,6 +141,10 @@ public class FileManagement {
                 
         }
         
+        if(board.getImage()==null){
+            throw new FormatException("Image loading failure");
+        }
+        
         return configurationInfo;
     }
     
