@@ -57,7 +57,8 @@ public class RiskModel {
 
     public void setBoard(String path) throws FormatException, IOException {
         try {
-            board = FileManagement.createBoard(path);
+            FileManagement aux=new FileManagement();
+            board = aux.createBoard(path);
         } catch (FormatException ex) {
             throw new FormatException(ex.getMessage());
         } catch (IOException ex) {
