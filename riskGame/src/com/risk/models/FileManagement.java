@@ -18,11 +18,18 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 /**
- *
+ * Class created to load or download information to a file
  * @author Nellybett
  */
 public class FileManagement {
     
+    /**
+     * It creates a board from a file
+     * @param path
+     * @return
+     * @throws FormatException
+     * @throws IOException 
+     */
     public Board createBoard(String path) throws FormatException, IOException {
         Board board = new Board();
         HashMap<String, Continent> graphContinents = new HashMap();
@@ -34,7 +41,7 @@ public class FileManagement {
             fileRead = readFile(path);
             
             String[] stringSplit=fileRead.split(Pattern.quote("[Continents]"), 2);
-            System.out.println(stringSplit.length);
+      
             if(stringSplit.length==2){
                 try {
                     configurationInfo=configurationInf(stringSplit[0],path, board);
@@ -65,8 +72,14 @@ public class FileManagement {
         
     }    
     
-    
-        public String readFile(String path) throws FileNotFoundException, IOException{  
+    /**
+     * It reads a file and creates a String with it content
+     * @param path
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+    public String readFile(String path) throws FileNotFoundException, IOException{  
         String linesRead="";
         try {
             linesRead = new String(Files.readAllBytes(Paths.get(path)));
@@ -79,6 +92,15 @@ public class FileManagement {
         return linesRead;  
     }
     
+    /**
+     * It returns information to configurate the board (author, image, and others) using a String
+     * @param info
+     * @param path
+     * @param board
+     * @return
+     * @throws FormatException
+     * @throws IOException 
+     */
     public HashMap<String, String> configurationInf(String info, String path, Board board) throws FormatException, IOException{
         
         String[] linesInfo;
@@ -91,7 +113,7 @@ public class FileManagement {
             if(linesInfo[0].equals("[Map]")){
                 for(int i=1;i<linesInfo.length && !linesInfo[i].equals("");i++){
                     aux = linesInfo[i].split("=", 2);
-                    System.out.println("Conf tamano"+linesInfo.length);
+                    
                             switch(aux[0]){
                                 case "author":
                                     configurationInfo.put(aux[0], aux[1]);
@@ -148,6 +170,12 @@ public class FileManagement {
         return configurationInfo;
     }
     
+    /**
+     * It returns the continents for the board from a String
+     * @param info
+     * @return
+     * @throws FormatException 
+     */
     public HashMap<String, Continent> continentCreator(String info) throws FormatException{
         HashMap<String, Continent> graphContinents = new HashMap();
         
@@ -174,6 +202,13 @@ public class FileManagement {
         return graphContinents;
     }
  
+    /**
+     * It returns the countries for the board from a String. It also puts them in a Continent.
+     * @param info
+     * @param graphContinents
+     * @return
+     * @throws FormatException 
+     */
     public HashMap<String, Country> countryCreator(String info, HashMap<String, Continent> graphContinents ) throws FormatException{
         HashMap<String, Country> graphTerritories = new HashMap();
         
