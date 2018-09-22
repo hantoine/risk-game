@@ -51,7 +51,7 @@ public class NewGamePanel extends JPanel {
                     String fileName = fileChooser.getSelectedFile().getAbsolutePath();
                     getSelectFileTextField().setText(fileName);
                 } else {
-                    getSelectFileTextField().setText(" No file selected  ");
+                    getSelectFileTextField().setText("");
                 }
             }
         });

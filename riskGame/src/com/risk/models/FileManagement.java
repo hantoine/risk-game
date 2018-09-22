@@ -78,11 +78,19 @@ public class FileManagement {
      * @return
      * @throws FileNotFoundException
      * @throws IOException 
+     * @throws com.risk.models.exceptions.FormatException 
      */
-    public String readFile(String path) throws FileNotFoundException, IOException{  
+    public String readFile(String path) throws FileNotFoundException, IOException, FormatException{  
         String linesRead="";
         try {
-            linesRead = new String(Files.readAllBytes(Paths.get(path)));
+            Path aux=null;
+            try{
+                aux=Paths.get(path);
+                
+            }catch(Exception ex){
+                throw new FormatException("Path format error");
+            }
+            linesRead = new String(Files.readAllBytes(aux));
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("File not found");
         } catch (IOException e) {
