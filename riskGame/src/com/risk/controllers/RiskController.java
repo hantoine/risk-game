@@ -25,7 +25,7 @@ public class RiskController {
         MenuListener menuListener = new MenuListener(modelRisk, viewRisk, countryListener);
         viewRisk.initialMenu(modelRisk, menuListener);
         //viewRisk.initialMap(modelRisk, countryListener);
-        this.viewRisk.setVisible(true);
+        
 
     }
 
