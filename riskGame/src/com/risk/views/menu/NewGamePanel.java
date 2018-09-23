@@ -11,10 +11,12 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -40,8 +42,12 @@ public class NewGamePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser;
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                        "Conquest Map file", "map");
                 fileChooser = new JFileChooser();
-
+                fileChooser.setFileFilter(filter);
+                fileChooser.setCurrentDirectory(new File("."+File.separator+"maps"));
+                
                 if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     String fileName = fileChooser.getSelectedFile().getAbsolutePath();
                     getSelectFileTextField().setText(fileName);
