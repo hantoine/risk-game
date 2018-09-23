@@ -53,7 +53,7 @@ public class RiskView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
-        
+        this.setResizable(false);
         this.addMenuBar();
         this.getJMenuBar().setVisible(true);
         this.setVisible(true);
