@@ -24,7 +24,10 @@ public class Board {
 
     public Board() {
     }
-
+    
+    /**
+     * It prints the countries and relationships between them
+     */
     public void printBoard() {
         if (this.getGraphTerritories().keySet().size() > 0) {
             System.out.println("Number of countries: " + this.getGraphTerritories().keySet().size());
@@ -38,6 +41,10 @@ public class Board {
         }
     }
 
+    /**
+     * It calls dfsConnected to validate if the countries in the board represent a connected graph 
+     * @return 
+     */
     public boolean connectedGraph() {
         int size = this.getGraphTerritories().keySet().size();
         HashMap<String, Boolean> visited = new HashMap();
@@ -53,7 +60,12 @@ public class Board {
         return (visited.size() == size);
 
     }
-
+    
+    /**
+     * It uses dfs algorithm to validate that you can reach any country from another country
+     * @param v
+     * @param visited 
+     */
     public void dfsConnected(Country v, HashMap<String, Boolean> visited) {
         visited.put(v.getName(), Boolean.TRUE);
         LinkedList<Country> aux = new LinkedList();

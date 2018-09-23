@@ -9,6 +9,7 @@ import com.risk.models.Board;
 import com.risk.models.Country;
 import java.awt.Color;
 import java.awt.geom.Line2D;
+import java.util.HashMap;
 import java.util.LinkedList;
 import javax.swing.JLabel;
 
@@ -18,20 +19,13 @@ import javax.swing.JLabel;
  */
 public class CountryButton extends JLabel {
 
-    LinkedList<Line2D> adj;
+    
     private static final int buttonSize = 25;
     private static int positionX;
     private static int positionY;
     private String name;
 
-    public void uploadAdj(Board b) {
-
-        for (Country c : b.getGraphTerritories().values()) {
-
-        }
-
-    }
-
+ 
     /**
      * @return the name
      */

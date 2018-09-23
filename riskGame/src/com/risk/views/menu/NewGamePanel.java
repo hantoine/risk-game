@@ -8,6 +8,7 @@ package com.risk.views.menu;
 import com.risk.controllers.MenuListener;
 import com.risk.models.RiskModel;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,9 +36,13 @@ public class NewGamePanel extends JPanel {
 
         //map selector
         this.mapSelector = new JPanel();
-        this.mapSelector.setSize(400, 50);
+        this.mapSelector.setSize(4000, 50);
+        this.selectFileTextField = new JTextField("");
+        Dimension d= new Dimension(100, 20);
+        this.selectFileTextField.setPreferredSize(d);
         JButton selectFileButton = new JButton("Select a Map");
-        this.selectFileTextField = new JTextField(" No file selected  ");
+        
+        
         selectFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -52,7 +57,7 @@ public class NewGamePanel extends JPanel {
                     String fileName = fileChooser.getSelectedFile().getAbsolutePath();
                     getSelectFileTextField().setText(fileName);
                 } else {
-                    getSelectFileTextField().setText(" No file selected  ");
+                    getSelectFileTextField().setText("");
                 }
             }
         });
