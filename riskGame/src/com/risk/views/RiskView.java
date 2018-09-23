@@ -5,19 +5,31 @@
  */
 package com.risk.views;
 
+
 import com.risk.views.player.PlayerGameInfoPanel;
 import com.risk.views.map.MapPanel;
 import com.risk.views.menu.StartMenuView;
 import com.risk.controllers.MenuListener;
+import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
+import com.risk.views.menu.MenuView;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -28,84 +40,102 @@ public class RiskView extends javax.swing.JFrame {
     /**
      * Creates new form MainView
      */
-    private StartMenuView menuPanel;
+    private MenuView menuPanel;
     private JPanel optionPanel;
     private JPanel battlePanel;
     private MapPanel mapPanel;
     private PlayerGameInfoPanel playerPanel;
-
-    public RiskView() {
+    private RiskController riskController;
+    
+    public RiskView(RiskController riskController) {
         super("Risk Game");
+        this.riskController=riskController;
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
-
-        // Menu Panel
-        this.optionPanel = new JPanel();
-        this.optionPanel.setSize(300, 50);
-        JButton newGame = new JButton("New Game");
-        JButton saveGame = new JButton("Create Map File");
-
-        optionPanel.setLayout(new FlowLayout());
-        optionPanel.add(newGame);
-        optionPanel.add(saveGame);
-
-        //Battle panel
-        this.battlePanel = new JPanel();
-        this.battlePanel.setSize(300, 50);
-        JButton playerOne = new JButton("Player 1");
-        JButton playerTwo = new JButton("Player 2");
-        JButton playerThree = new JButton("Player 3");
-
-        battlePanel.setLayout(new FlowLayout());
-        battlePanel.add(playerOne);
-        battlePanel.add(playerTwo);
-        battlePanel.add(playerThree);
-
-        //Adding Panels
-        optionPanel.setVisible(false);
-        battlePanel.setVisible(false);
-
-        cp.add(battlePanel, BorderLayout.SOUTH);
-        cp.add(optionPanel, BorderLayout.NORTH);
-
+        this.setResizable(false);
+        this.addMenuBar();
+        this.getJMenuBar().setVisible(true);
+        this.setVisible(true);
+        
     }
-
+    
     public void initialMap(RiskModel riskModel, MouseListener countryListener) {
+        if(this.getMapPanel()!=null && this.getPlayerPanel()!=null){
+            this.remove(this.getMapPanel());
+            this.remove(this.getPlayerPanel());
+        }
         Container cp = getContentPane();
+
         this.setMapPanel(new MapPanel(riskModel.getBoard(), countryListener));
         this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
         this.getPlayerPanel().updatePlayer(riskModel.getCurrentPlayer());
+        this.setSize(new Dimension(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth(), this.getMapPanel().getHeight()+70));
         cp.add(this.getMapPanel(), BorderLayout.CENTER);
         cp.add(this.getPlayerPanel(), BorderLayout.EAST);
-        this.setSize(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth(), this.getMapPanel().getHeight() + this.getBattlePanel().getHeight() + this.getOptionPanel().getHeight());
+       
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
+       
     }
 
     public void initialMenu(RiskModel riskModel, MenuListener menuListener) {
-        Container cp = getContentPane();
-        setMenuPanel(new StartMenuView(riskModel, menuListener));
-
-        cp.add(getMenuPanel(), BorderLayout.CENTER);
-
-        this.setSize(300, 500);
+       
+        StartMenuView start= new StartMenuView(riskModel, menuListener);
+        MenuView aux=new MenuView(start,this,"New Game");
+        this.setMenuPanel(aux);
+        aux.add(start);
+        aux.setVisible(true);
+        aux.setSize(300, 500);
+        this.setSize(800, 600);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        aux.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
+    
+    public void addMenuBar(){
+        JMenuBar menuBar;
+        JMenu menuFile,menuOption;
+        JMenuItem menuItem;
+       
+        //Create the menu bar.
+        menuBar = new JMenuBar();
+        menuBar.setLayout(new FlowLayout(FlowLayout.LEFT));
+        //Build the first menu.
+        menuFile = new JMenu("File");
+        menuFile.setMnemonic(KeyEvent.VK_A);
+        menuFile.getAccessibleContext().setAccessibleDescription("File");
+        menuBar.add(menuFile,BorderLayout.NORTH);
 
+        //a group of JMenuItems
+        menuFile.setLayout(new BoxLayout(menuFile, BoxLayout.Y_AXIS));
+        menuItem = new JMenuItem("New Game");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+        menuItem.getAccessibleContext().setAccessibleDescription("Show New Game");
+        menuItem.addActionListener(riskController);
+        menuFile.add(menuItem);
+        
+                
+        
+        //Build 2do menu
+        menuOption = new JMenu("Options");
+        menuOption.setMnemonic(KeyEvent.VK_A);
+        menuOption.getAccessibleContext().setAccessibleDescription("Options");
+        menuBar.add(menuOption,BorderLayout.NORTH);
+        
+        this.setJMenuBar(menuBar);
+    }
     /**
      * @return the menuPanel
      */
-    public StartMenuView getMenuPanel() {
+    public MenuView getMenuPanel() {
         return menuPanel;
     }
 
     /**
      * @param menuPanel the menuPanel to set
      */
-    public void setMenuPanel(StartMenuView menuPanel) {
+    public void setMenuPanel(MenuView menuPanel) {
         this.menuPanel = menuPanel;
     }
 
@@ -164,5 +194,6 @@ public class RiskView extends javax.swing.JFrame {
     public void setPlayerPanel(PlayerGameInfoPanel playerPanel) {
         this.playerPanel = playerPanel;
     }
+
 
 }

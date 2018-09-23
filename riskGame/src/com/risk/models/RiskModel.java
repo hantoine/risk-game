@@ -5,12 +5,16 @@
  */
 package com.risk.models;
 
+import com.risk.models.exceptions.FormatException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.awt.Color;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -51,8 +55,15 @@ public class RiskModel {
         return currentPlayer;
     }
 
-    public void setBoard(String path) {
-        board = FileManagement.createBoard(path);
+    public void setBoard(String path) throws FormatException, IOException {
+        try {
+            FileManagement aux=new FileManagement();
+            board = aux.createBoard(path);
+        } catch (FormatException ex) {
+            throw new FormatException(ex.getMessage());
+        } catch (IOException ex) {
+            throw new IOException(ex.getMessage());
+        }
     }
 
     public void createFile(String fileContent) {

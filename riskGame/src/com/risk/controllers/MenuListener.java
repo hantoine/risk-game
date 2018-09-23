@@ -6,15 +6,20 @@
 package com.risk.controllers;
 
 import com.risk.models.RiskModel;
+import com.risk.models.exceptions.FormatException;
 import com.risk.views.menu.DeletableButton;
 import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.RiskView;
 import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.PlayerPanel;
+import com.risk.views.menu.StartMenuView;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
@@ -30,6 +35,7 @@ public class MenuListener extends MouseAdapter {
     RiskView riskView;
     PlayerListPanel playerList;
     MapListener countryListener;
+    
 
     public MenuListener(RiskModel riskModel, RiskView riskView, MapListener countryListener) {
         this.riskModel = riskModel;
@@ -86,19 +92,32 @@ public class MenuListener extends MouseAdapter {
                     addPlayer.setBackground(selectedColor);
 
                 }
-            } else if (addPlayer.getText().equals("PLAY")) {
 
-                NewGamePanel aux = (NewGamePanel) this.riskView.getMenuPanel().getTabbedPane().getComponent(0);
-                String selectedPath = aux.getSelectFileTextField().getText();
-
-                if (!selectedPath.equals(" No file selected  ")) {
-                    riskModel.setBoard(selectedPath);
-
-                    this.riskView.remove(this.riskView.getMenuPanel());
-                    this.riskView.setMenuPanel(null);
-                    this.riskView.getBattlePanel().setVisible(true);
-                    this.riskView.getOptionPanel().setVisible(true);
-                    this.riskView.initialMap(riskModel, countryListener);
+            }else if(addPlayer.getText().equals("PLAY")){
+                
+                StartMenuView aux1=(StartMenuView)this.riskView.getMenuPanel().getStartMenu();
+                NewGamePanel aux=(NewGamePanel) aux1.getTabbedPane().getComponent(0);
+                String selectedPath=aux.getSelectFileTextField().getText();
+                
+                if(!selectedPath.equals("")){
+                    try {
+                        riskModel.setBoard(selectedPath);
+                        
+                        if(riskModel.getBoard().connectedGraph()){
+                                this.riskView.getMenuPanel().setVisible(false);
+                                this.riskView.remove(this.riskView.getMenuPanel());
+                                this.riskView.setMenuPanel(null);
+                            
+                            
+                            this.riskView.initialMap(riskModel, countryListener);
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Countries are not connected. please selected a new file");
+                        }
+                    
+                    } catch (FormatException | IOException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                   
                 } else {
                     JOptionPane.showMessageDialog(null, "You have not selected a map");
                 }

@@ -5,161 +5,281 @@
  */
 package com.risk.models;
 
+import com.risk.models.exceptions.FormatException;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 /**
- *
+ * Class created to load or download information (using a file)
  * @author Nellybett
  */
 public class FileManagement {
-
-    public static Board createBoard(String path) {
-
+    
+    /**
+     * It creates a board from a file
+     * @param path
+     * @return
+     * @throws FormatException
+     * @throws IOException 
+     */
+    public Board createBoard(String path) throws FormatException, IOException {
         Board board = new Board();
-        HashMap<String, String> configurationInfo = new HashMap();
         HashMap<String, Continent> graphContinents = new HashMap();
         HashMap<String, Country> graphTerritories = new HashMap();
-
-        File fileRead = new File(path);
-
-        //Reading the information
-        //Use BufferedRead and FileReader
-        try (BufferedReader dataInput = new BufferedReader(new FileReader(fileRead))) {
-            String linesRead;
-            linesRead = dataInput.readLine();
-
-            while (linesRead != null) {
-                String[] aux;
-
-                switch (linesRead) {
-
-                    case "[Map]":
-                        linesRead = dataInput.readLine();
-                        while (!linesRead.equals("")) {
-
-                            aux = linesRead.split("=", 2);
-
-                            //maybe we could use switch case here ? https://www.geeksforgeeks.org/string-in-switch-case-in-java/
-                            if ("author".equals(aux[0])) {
-
-                                configurationInfo.put(aux[0], aux[1]);
-                            } else if ("image".equals(aux[0])) {
-                                configurationInfo.put(aux[0], aux[1]);
-                                Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
-                                try {
-                                    BufferedImage image = ImageIO.read(new File(imagePath.toString()));
-                                    board.setImage(image);
-                                } catch (IOException e) {
-                                    System.err.println("Cannot read image file: " + e.getMessage());
-                                }
-                            } else if (("wrap".equals(aux[0])) && (aux[1].equals("no") || aux[1].equals("yes"))) {
-                                configurationInfo.put(aux[0], aux[1]);
-                            } else if (("scroll".equals(aux[0])) && (aux[1].equals("horizontal") || aux[1].equals("vertical") || aux[1].equals("none"))) {
-                                configurationInfo.put(aux[0], aux[1]);
-                            } else if ((aux[0].equals("warn")) && (aux[1].equals("no") || aux[1].equals("yes"))) {
-                                configurationInfo.put(aux[0], aux[1]);
-                            } else {
-                                throw new IOException();
-                            }
-
-                            linesRead = dataInput.readLine();
-                        }
-
-                        break;
-                    case "[Continents]":
-
-                        linesRead = dataInput.readLine();
-                        while (!linesRead.equals("")) {
-                            aux = linesRead.split("=", 2);
-                            Continent auxContinent = new Continent(aux[0], Integer.parseInt(aux[1]));
-                            graphContinents.put(aux[0], auxContinent);
-                            linesRead = dataInput.readLine();
-                        }
-                        break;
-                    case "[Territories]":
-
-                        linesRead = dataInput.readLine();
-
-                        //Reads until the end of the file
-                        while (linesRead != null) {
-
-                            //In case of space between countries
-                            if (linesRead.equals("")) {
-                                linesRead = dataInput.readLine();
-                                continue;
-                            }
-
-                            //Splits the country information
-                            aux = linesRead.split(",");
-
-                            int i = 0;
-                            //The information has to be bigger first country second and third position 4th continent
-                            if (aux.length > 4) {
-                                // Creates de Country in the file
-                                Country auxCountry;
-                                if (graphTerritories.keySet().contains(aux[0])) {
-                                    auxCountry = graphTerritories.get(aux[0]);
-                                    auxCountry.countrySetter(Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
-                                } else {
-                                    auxCountry = new Country(aux[0], Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
-                                }
-
-                                //Creates adj country
-                                Country auxCountryAdj;
-
-                                for (i = 0; i < aux.length - 4; i++) {
-                                    if (graphTerritories.keySet().contains(aux[i + 4])) {
-                                        auxCountryAdj = graphTerritories.get(aux[i + 4]);
-
-                                    } else {
-                                        auxCountryAdj = new Country(aux[i + 4]);
-                                        graphTerritories.put(aux[i + 4], auxCountryAdj);
-                                    }
-                                    //Adds the adj
-                                    auxCountry.getAdj().add(auxCountryAdj);
-
-                                }
-
-                                graphContinents.get(aux[3]).setMember(auxCountry);
-                                graphTerritories.put(aux[0], auxCountry);
-
-                            } else {
-                                throw new IOException();
-                            }
-
-                            linesRead = dataInput.readLine();
-
-                        }
-                        break;
-                    default:
-                        linesRead = dataInput.readLine();
-                        break;
+        HashMap<String, String> configurationInfo=new HashMap<>();
+        String fileRead;
+        
+        try {
+            fileRead = readFile(path);
+            
+            String[] stringSplit=fileRead.split(Pattern.quote("[Continents]"), 2);
+      
+            if(stringSplit.length==2){
+                try {
+                    configurationInfo=configurationInf(stringSplit[0],path, board);
+                    String[] stringSplit1=stringSplit[1].split(Pattern.quote("[Territories]"), 2);
+                    if(stringSplit1.length==2){
+                        graphContinents=continentCreator(stringSplit1[0]);
+                        graphTerritories=countryCreator(stringSplit1[1], graphContinents);
+                        board.setConfigurationInfo(configurationInfo);
+                        board.setGraphTerritories(graphTerritories);
+                        board.setGraphContinents(graphContinents);
+                        System.out.println("Board Created");
+                    
+                    }else{
+                        throw new FormatException("File Format not valid");
+                    }
+                } catch (Exception ex) {
+                    throw new FormatException(ex.getMessage());
                 }
-
+                
+            }else{
+                throw new FormatException("File Format not valid");
             }
-
-            System.out.println("Board Created");
-            board.setConfigurationInfo(configurationInfo);
-            board.setGraphTerritories(graphTerritories);
-            board.setGraphContinents(graphContinents);
-        } catch (FileNotFoundException e) {
-            System.err.println("File not Found: " + e.getMessage());
-        } catch (IOException e) {
-            System.err.println("Reading Failure: " + e.getMessage());
+            
+        } catch (IOException ex) {
+            throw new IOException("Reading Error");
         }
-        //board.printBoard();
-        System.out.println("IS CONNECTED? " + board.connectedGraph());
-        return board;
+        return board; 
+        
+    }    
+    
+    /**
+     * It reads a file and creates a String with it content
+     * @param path
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException 
+     * @throws com.risk.models.exceptions.FormatException 
+     */
+    public String readFile(String path) throws FileNotFoundException, IOException, FormatException{  
+        String linesRead="";
+        try {
+            Path aux=null;
+            try{
+                aux=Paths.get(path);
+                
+            }catch(Exception ex){
+                throw new FormatException("Path format error");
+            }
+            linesRead = new String(Files.readAllBytes(aux));
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("File not found");
+        } catch (IOException e) {
+            throw new IOException("File reading failed");
+        }
+        
+        return linesRead;  
     }
+    
+    /**
+     * It returns information to configurate the board (author, image, and others) using a String
+     * @param info
+     * @param path
+     * @param board
+     * @return
+     * @throws FormatException
+     * @throws IOException 
+     */
+    public HashMap<String, String> configurationInf(String info, String path, Board board) throws FormatException, IOException{
+        
+        String[] linesInfo;
+        HashMap<String, String> configurationInfo = new HashMap();
+        String[] aux;
+        File fileRead = new File(path);
+        
+        if(!info.equals("")){
+            linesInfo=info.split(System.getProperty("line.separator"));
+            if(linesInfo[0].equals("[Map]")){
+                for(int i=1;i<linesInfo.length && !linesInfo[i].equals("");i++){
+                    aux = linesInfo[i].split("=", 2);
+                    
+                            switch(aux[0]){
+                                case "author":
+                                    configurationInfo.put(aux[0], aux[1]);
+                                    break;
+                                case "image":
+                                    configurationInfo.put(aux[0], aux[1]);
+                                    Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
+                                    try {
+                                        BufferedImage image = ImageIO.read(new File(imagePath.toString()));
+                                        board.setImage(image);
+                                    } catch (FileNotFoundException e) {
+                                        throw new FileNotFoundException("Image not found");
+                                    } catch (IOException e) {
+                                        throw new IOException("Image error");
+                                    }
+                                    break;
+                                case "wrap":
+                                    if((aux[1].equals("no") || aux[1].equals("yes"))) {
+                                        configurationInfo.put(aux[0], aux[1]);
+                                    }else{
+                                        throw new FormatException("Parameter wrap not valid");
+                                    }
+                                    break;
+                                case "scroll":
+                                    if((aux[1].equals("horizontal") || aux[1].equals("vertical") || aux[1].equals("none"))) {
+                                        configurationInfo.put(aux[0], aux[1]);
+                                    }else{
+                                        throw new FormatException("Parameter scroll not valid");
+                                    }
+                                    break;
+                                case "warn":
+                                    if((aux[1].equals("no") || aux[1].equals("yes"))) {
+                                        configurationInfo.put(aux[0], aux[1]);
+                                    }else{
+                                        throw new FormatException("Parameter warn not valid");
+                                    }
+                                    break;
+                                default:
+                                    throw new FormatException("File format error, parameter not known");
+                                      
+                            }
+                         
+                }
+            }else{
+                throw new FormatException("Invalid file format");
+            }
+                
+        }
+        
+        if(board.getImage()==null){
+            throw new FormatException("Image loading failure");
+        }
+        
+        return configurationInfo;
+    }
+    
+    /**
+     * It returns the continents for the board from a String
+     * @param info
+     * @return
+     * @throws FormatException 
+     */
+    public HashMap<String, Continent> continentCreator(String info) throws FormatException{
+        HashMap<String, Continent> graphContinents = new HashMap();
+        
+        if(!info.equals("")){
+            String[] linesInfo=info.split(System.getProperty("line.separator"));
+            int i=0;
+            String aux[];
+            while (i<linesInfo.length) {
+                if(!linesInfo[i].equals("")){
+                    aux = linesInfo[i].split("=", 2);
+                    if(aux.length>1){
+                        Continent auxContinent = new Continent(aux[0], Integer.parseInt(aux[1]));
+                        graphContinents.put(aux[0], auxContinent);
+                            
+                    }else{
+                        throw new FormatException("Continent without correct delimiter");
+                    }
+                }
+                i++;
+            }
+        }else{
+            throw new FormatException("Invalid file format");
+        }
+        return graphContinents;
+    }
+ 
+    /**
+     * It returns the countries for the board from a String. It also puts them in a Continent.
+     * @param info
+     * @param graphContinents
+     * @return
+     * @throws FormatException 
+     */
+    public HashMap<String, Country> countryCreator(String info, HashMap<String, Continent> graphContinents ) throws FormatException{
+        HashMap<String, Country> graphTerritories = new HashMap();
+        
+        if(graphContinents==null){
+            throw new FormatException("No continents provided");
+        }
+        
+        if(!info.equals("")){
+            String[] linesInfo=info.split(System.getProperty("line.separator"));
+            int i=0;
+            String aux[];
+            while (i<linesInfo.length) {
+               
+                if(!linesInfo[i].equals("")){
+                  
+                    //Splits the country information
+                    aux = linesInfo[i].split(",");
+                    int j = 0;
+                            
+                    //The information has to be bigger first country second and third position 4th continent
+                    if (aux.length > 4) {
+                        // Creates de Country in the file
+                        Country auxCountry;
+                        if (graphTerritories.keySet().contains(aux[0])) {
+                            auxCountry = graphTerritories.get(aux[0]);
+                            auxCountry.countrySetter(Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
+                        } else {
+                            auxCountry = new Country(aux[0], Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
+                        }
 
+                        //Creates adj country
+                        Country auxCountryAdj;
+
+                        for (j = 0; j < aux.length - 4; j++) {
+                            if (graphTerritories.keySet().contains(aux[j + 4])) {
+                                auxCountryAdj = graphTerritories.get(aux[j + 4]);
+
+                            } else {
+                                auxCountryAdj = new Country(aux[j + 4]);
+                            }
+                            //Adds the adj
+                            auxCountry.getAdj().add(auxCountryAdj);
+                            graphTerritories.put(aux[j+4], auxCountryAdj);
+                        }
+
+                        graphContinents.get(aux[3]).setMember(auxCountry);
+                        graphTerritories.put(aux[0], auxCountry);
+
+                    } else {
+                        throw new FormatException("Country without adjacencies");
+                    }             
+                }
+                i++;
+            }
+            
+        }else{
+            throw new FormatException("Invalid file format");
+        }
+        
+        return graphTerritories;
+    }
+    
+    
     // New requirement - Discussion
     public static Board generateBoardFile(String path) {
         return null;
