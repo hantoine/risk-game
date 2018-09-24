@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
  * Class created to load or download information (using a file)
  * @author Nellybett
  */
-public class FileManagement {
+public class MapFileManagement {
     
     /**
      * It creates a board from a file
@@ -30,10 +30,10 @@ public class FileManagement {
      * @throws FormatException
      * @throws IOException 
      */
-    public Board createBoard(String path) throws FormatException, IOException {
-        Board board = new Board();
-        HashMap<String, Continent> graphContinents = new HashMap();
-        HashMap<String, Country> graphTerritories = new HashMap();
+    public MapModel createBoard(String path) throws FormatException, IOException {
+        MapModel board = new MapModel();
+        HashMap<String, ContinentModel> graphContinents = new HashMap();
+        HashMap<String, TerritoryModel> graphTerritories = new HashMap();
         HashMap<String, String> configurationInfo=new HashMap<>();
         String fileRead;
         
@@ -109,7 +109,7 @@ public class FileManagement {
      * @throws FormatException
      * @throws IOException 
      */
-    public HashMap<String, String> configurationInf(String info, String path, Board board) throws FormatException, IOException{
+    public HashMap<String, String> configurationInf(String info, String path, MapModel board) throws FormatException, IOException{
         
         String[] linesInfo;
         HashMap<String, String> configurationInfo = new HashMap();
@@ -117,7 +117,7 @@ public class FileManagement {
         File fileRead = new File(path);
         
         if(!info.equals("")){
-            linesInfo=info.split(System.getProperty("line.separator"));
+            linesInfo=info.split("\\r?\\n");
             if(linesInfo[0].equals("[Map]")){
                 for(int i=1;i<linesInfo.length && !linesInfo[i].equals("");i++){
                     aux = linesInfo[i].split("=", 2);
@@ -184,8 +184,8 @@ public class FileManagement {
      * @return
      * @throws FormatException 
      */
-    public HashMap<String, Continent> continentCreator(String info) throws FormatException{
-        HashMap<String, Continent> graphContinents = new HashMap();
+    public HashMap<String, ContinentModel> continentCreator(String info) throws FormatException{
+        HashMap<String, ContinentModel> graphContinents = new HashMap();
         
         if(!info.equals("")){
             String[] linesInfo=info.split(System.getProperty("line.separator"));
@@ -195,7 +195,7 @@ public class FileManagement {
                 if(!linesInfo[i].equals("")){
                     aux = linesInfo[i].split("=", 2);
                     if(aux.length>1){
-                        Continent auxContinent = new Continent(aux[0], Integer.parseInt(aux[1]));
+                        ContinentModel auxContinent = new ContinentModel(aux[0], Integer.parseInt(aux[1]));
                         graphContinents.put(aux[0], auxContinent);
                             
                     }else{
@@ -217,8 +217,8 @@ public class FileManagement {
      * @return
      * @throws FormatException 
      */
-    public HashMap<String, Country> countryCreator(String info, HashMap<String, Continent> graphContinents ) throws FormatException{
-        HashMap<String, Country> graphTerritories = new HashMap();
+    public HashMap<String, TerritoryModel> countryCreator(String info, HashMap<String, ContinentModel> graphContinents ) throws FormatException{
+        HashMap<String, TerritoryModel> graphTerritories = new HashMap();
         
         if(graphContinents==null){
             throw new FormatException("No continents provided");
@@ -239,23 +239,23 @@ public class FileManagement {
                     //The information has to be bigger first country second and third position 4th continent
                     if (aux.length > 4) {
                         // Creates de Country in the file
-                        Country auxCountry;
+                        TerritoryModel auxCountry;
                         if (graphTerritories.keySet().contains(aux[0])) {
                             auxCountry = graphTerritories.get(aux[0]);
                             auxCountry.countrySetter(Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
                         } else {
-                            auxCountry = new Country(aux[0], Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
+                            auxCountry = new TerritoryModel(aux[0], Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
                         }
 
                         //Creates adj country
-                        Country auxCountryAdj;
+                        TerritoryModel auxCountryAdj;
 
                         for (j = 0; j < aux.length - 4; j++) {
                             if (graphTerritories.keySet().contains(aux[j + 4])) {
                                 auxCountryAdj = graphTerritories.get(aux[j + 4]);
 
                             } else {
-                                auxCountryAdj = new Country(aux[j + 4]);
+                                auxCountryAdj = new TerritoryModel(aux[j + 4]);
                             }
                             //Adds the adj
                             auxCountry.getAdj().add(auxCountryAdj);
@@ -281,7 +281,7 @@ public class FileManagement {
     
     
     // New requirement - Discussion
-    public static Board generateBoardFile(String path) {
+    public static MapModel generateBoardFile(String path) {
         return null;
     }
 }

@@ -22,11 +22,11 @@ import java.util.logging.Logger;
  */
 public class RiskModel {
 
-    private Board board;
-    private LinkedList<Player> players;
+    private MapModel board;
+    private LinkedList<PlayerModel> players;
 
     static Integer maxNbOfPlayers = 6;
-    private Player currentPlayer;
+    private PlayerModel currentPlayer;
 
     public RiskModel() {
         this.players = new LinkedList<>();
@@ -40,24 +40,24 @@ public class RiskModel {
     }
 
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
-        players.add(new Player(name, color, isHuman));
+        players.add(new PlayerModel(name, color, isHuman));
     }
 
     public void removePlayer(int index) {
         players.remove(index);
     }
 
-    public void setPlayerList(LinkedList<Player> playerList) {
+    public void setPlayerList(LinkedList<PlayerModel> playerList) {
         this.players = playerList;
     }
 
-    public Player getCurrentPlayer() {
+    public PlayerModel getCurrentPlayer() {
         return currentPlayer;
     }
 
     public void setBoard(String path) throws FormatException, IOException {
         try {
-            FileManagement aux=new FileManagement();
+            MapFileManagement aux=new MapFileManagement();
             board = aux.createBoard(path);
         } catch (FormatException ex) {
             throw new FormatException(ex.getMessage());
@@ -67,10 +67,10 @@ public class RiskModel {
     }
 
     public void createFile(String fileContent) {
-        FileManagement.generateBoardFile(fileContent);
+        MapFileManagement.generateBoardFile(fileContent);
     }
 
-    public Board getBoard() {
+    public MapModel getBoard() {
         return board;
     }
 
@@ -82,13 +82,13 @@ public class RiskModel {
             throw new IllegalArgumentException();
         }
 
-        List<Country> countriesLeft = new ArrayList<>(board.getGraphTerritories().values());
+        List<TerritoryModel> countriesLeft = new ArrayList<>(board.getGraphTerritories().values());
         Collections.shuffle(countriesLeft);
 
         int countriesPerPlayer = (countriesLeft.size() / players.size());
 
         players.stream().forEach((player) -> {
-            List<Country> ownedCountries = countriesLeft.subList(0, countriesPerPlayer);
+            List<TerritoryModel> ownedCountries = countriesLeft.subList(0, countriesPerPlayer);
             player.setContriesOwned(ownedCountries);
             countriesLeft.removeAll(ownedCountries);
         });
@@ -104,7 +104,7 @@ public class RiskModel {
         return maxNbOfPlayers;
     }
 
-    public LinkedList<Player> getPlayerList() {
+    public LinkedList<PlayerModel> getPlayerList() {
         return this.players;
     }
 }

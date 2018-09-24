@@ -5,9 +5,9 @@
  */
 package com.risk.views.player;
 
-import com.risk.models.Card;
-import com.risk.models.Hand;
-import com.risk.models.Player;
+import com.risk.models.CardModel;
+import com.risk.models.HandModel;
+import com.risk.models.PlayerModel;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -20,14 +20,14 @@ import javax.swing.JPanel;
  */
 public class PlayerGameInfoPanel extends JPanel {
 
-    private Player currentPlayer;
+    private PlayerModel currentPlayer;
     private JButton playerName;
     JLabel numArmies;
     JLabel numCountries;
     JLabel numContinents;
     JLabel[] cards;
     
-    public PlayerGameInfoPanel(Player currentPlayer) {
+    public PlayerGameInfoPanel(PlayerModel currentPlayer) {
         this.currentPlayer=currentPlayer;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(150,200);
@@ -55,14 +55,14 @@ public class PlayerGameInfoPanel extends JPanel {
        
     }
     
-    public void updatePlayer(Player currentPlayer){
+    public void updatePlayer(PlayerModel currentPlayer){
         this.currentPlayer=currentPlayer;
         playerName.setText(this.currentPlayer.getName());
         playerName.setBackground(currentPlayer.getColor());
         this.numArmies.setText(Integer.toString(currentPlayer.getNumArmies()));
         this.numCountries.setText(Integer.toString(currentPlayer.getContriesOwned().size()));
         this.numContinents.setText(Integer.toString(currentPlayer.getContinentsOwned().size()));
-        for (Card hand : this.currentPlayer.getCardsOwned().getHand()) {
+        for (CardModel hand : this.currentPlayer.getCardsOwned().getHand()) {
             JLabel aux = new JLabel();
             System.out.println(hand.getCountryName() + "  " + hand.getTypeOfArmie());
             aux.setText(hand.getCountryName() + "  " + hand.getTypeOfArmie());
@@ -72,7 +72,7 @@ public class PlayerGameInfoPanel extends JPanel {
         
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
+    public void setCurrentPlayer(PlayerModel currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 

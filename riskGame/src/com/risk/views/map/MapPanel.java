@@ -1,7 +1,7 @@
 package com.risk.views.map;
 
-import com.risk.models.Board;
-import com.risk.models.Country;
+import com.risk.models.MapModel;
+import com.risk.models.TerritoryModel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -21,20 +21,20 @@ public class MapPanel extends JPanel {
      *
      * @param board
      */
-    public MapPanel(Board board, MouseListener countryListener) {
+    public MapPanel(MapModel board, MouseListener countryListener) {
         super(null);
         this.image = board.getImage();
         this.setSize(board.getImage().getWidth(null), board.getImage().getHeight(null));
         this.countriesButtons = new HashMap<>();
         this.addMouseListener(countryListener);
 
-        Collection<Country> territories = board.getGraphTerritories().values();
+        Collection<TerritoryModel> territories = board.getGraphTerritories().values();
         territories.stream().forEach((currentCountry) -> {
             CountryButton aux = new CountryButton(currentCountry.getPositionX(), currentCountry.getPositionY(), currentCountry.getName());
             countriesButtons.put(currentCountry.getName(), aux);
             this.add(aux);
         
-            for(Country d:currentCountry.getAdj()){
+            for(TerritoryModel d:currentCountry.getAdj()){
                 Line2D adje=new Line2D.Double();
                 adje.setLine(Double.valueOf(currentCountry.getPositionX()), Double.valueOf(currentCountry.getPositionY()),Double.valueOf(d.getPositionX()),Double.valueOf(d.getPositionY()));
                 adj.put(currentCountry.getName()+"-"+d.getName(),adje);

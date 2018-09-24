@@ -11,9 +11,9 @@ import java.util.LinkedList;
  *
  * @author n_irahol
  */
-public class Continent {
+public class ContinentModel {
 
-    private LinkedList<Country> members;
+    private LinkedList<TerritoryModel> members;
     private final int bonusScore;
     private String name;
 
@@ -24,7 +24,7 @@ public class Continent {
         return bonusScore;
     }
 
-    public Continent(String name, int bonusScore) {
+    public ContinentModel(String name, int bonusScore) {
         this.name = name;
         this.bonusScore = bonusScore;
         this.members = new LinkedList<>();
@@ -33,21 +33,21 @@ public class Continent {
     /**
      * @return the members
      */
-    public LinkedList<Country> getMembers() {
+    public LinkedList<TerritoryModel> getMembers() {
         return members;
     }
 
     /**
      * @param members the members to set
      */
-    public void setMembers(LinkedList<Country> members) {
+    public void setMembers(LinkedList<TerritoryModel> members) {
         this.members = members;
     }
 
     /**
      * @param members the members to set
      */
-    public void setMember(Country member) {
+    public void setMember(TerritoryModel member) {
         this.members.add(member);
     }
 

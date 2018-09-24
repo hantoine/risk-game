@@ -46,9 +46,9 @@ public class FileManagementTest {
     public void testCreateBoard() throws Exception {
         System.out.println("createBoard");
         String path = "";
-        FileManagement instance = new FileManagement();
-        Board expResult = null;
-        Board result = instance.createBoard(path);
+        MapFileManagement instance = new MapFileManagement();
+        MapModel expResult = null;
+        MapModel result = instance.createBoard(path);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -62,7 +62,7 @@ public class FileManagementTest {
     public void testReadFile() throws Exception {
         System.out.println("readFile");
         String path = "";
-        FileManagement instance = new FileManagement();
+        MapFileManagement instance = new MapFileManagement();
         String expResult = "";
         String result = instance.readFile(path);
         assertEquals(expResult, result);
@@ -79,8 +79,8 @@ public class FileManagementTest {
         System.out.println("configurationInf");
         String info = "";
         String path = "";
-        Board board = null;
-        FileManagement instance = new FileManagement();
+        MapModel board = null;
+        MapFileManagement instance = new MapFileManagement();
         HashMap<String, String> expResult = null;
         HashMap<String, String> result = instance.configurationInf(info, path, board);
         assertEquals(expResult, result);
@@ -96,9 +96,9 @@ public class FileManagementTest {
     public void testContinentCreator() throws Exception {
         System.out.println("continentCreator");
         String info = "";
-        FileManagement instance = new FileManagement();
-        HashMap<String, Continent> expResult = null;
-        HashMap<String, Continent> result = instance.continentCreator(info);
+        MapFileManagement instance = new MapFileManagement();
+        HashMap<String, ContinentModel> expResult = null;
+        HashMap<String, ContinentModel> result = instance.continentCreator(info);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -112,10 +112,10 @@ public class FileManagementTest {
     public void testCountryCreator() throws Exception {
         System.out.println("countryCreator");
         String info = "";
-        HashMap<String, Continent> graphContinents = null;
-        FileManagement instance = new FileManagement();
-        HashMap<String, Country> expResult = null;
-        HashMap<String, Country> result = instance.countryCreator(info, graphContinents);
+        HashMap<String, ContinentModel> graphContinents = null;
+        MapFileManagement instance = new MapFileManagement();
+        HashMap<String, TerritoryModel> expResult = null;
+        HashMap<String, TerritoryModel> result = instance.countryCreator(info, graphContinents);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

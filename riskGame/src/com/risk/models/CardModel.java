@@ -9,12 +9,12 @@ package com.risk.models;
  *
  * @author l_yixu
  */
-public class Card {
+public class CardModel {
 
     private String countryName;
     private String typeOfArmie;
 
-    public Card(String countryName, String typeOfArmies) {
+    public CardModel(String countryName, String typeOfArmies) {
         this.countryName = countryName;
         this.typeOfArmie = typeOfArmies;
     }

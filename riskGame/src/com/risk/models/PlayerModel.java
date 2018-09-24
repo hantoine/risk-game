@@ -13,24 +13,24 @@ import java.util.LinkedList;
  *
  * @author n_irahol
  */
-public class Player {
+public class PlayerModel {
 
     private boolean isHuman;
     private String name;
     private Color color;
-    private Collection<Country> contriesOwned;
-    private Collection<Continent> continentsOwned;
-    private Hand cardsOwned;
+    private Collection<TerritoryModel> contriesOwned;
+    private Collection<ContinentModel> continentsOwned;
+    private HandModel cardsOwned;
     private int numArmies;
 
-    public Player(String name, Color color, boolean isHuman) {
+    public PlayerModel(String name, Color color, boolean isHuman) {
         this.name = name;
         this.color = null;
         this.contriesOwned = new LinkedList<>();
         this.continentsOwned = new LinkedList<>();
         this.numArmies = 0;
         this.isHuman = isHuman;
-        this.cardsOwned = new Hand();
+        this.cardsOwned = new HandModel();
         this.numArmies = 0;
     }
 
@@ -65,35 +65,35 @@ public class Player {
     /**
      * @return the contriesOwned
      */
-    public Collection<Country> getContriesOwned() {
+    public Collection<TerritoryModel> getContriesOwned() {
         return contriesOwned;
     }
 
     /**
      * @param contriesOwned the contriesOwned to set
      */
-    public void setContriesOwned(Collection<Country> contriesOwned) {
+    public void setContriesOwned(Collection<TerritoryModel> contriesOwned) {
         this.contriesOwned = contriesOwned;
     }
 
     /**
      * @param countryOwned the additional country owned by this player
      */
-    public void addCountryOwned(Country countryOwned) {
+    public void addCountryOwned(TerritoryModel countryOwned) {
         this.contriesOwned.add(countryOwned);
     }
 
     /**
      * @return the continentsOwned
      */
-    public Collection<Continent> getContinentsOwned() {
+    public Collection<ContinentModel> getContinentsOwned() {
         return continentsOwned;
     }
 
     /**
      * @param continentsOwned the continentsOwned to set
      */
-    public void setContinentsOwned(Collection<Continent> continentsOwned) {
+    public void setContinentsOwned(Collection<ContinentModel> continentsOwned) {
         this.continentsOwned = continentsOwned;
     }
 
@@ -121,14 +121,14 @@ public class Player {
     /**
      * @return the cardsOwned
      */
-    public Hand getCardsOwned() {
+    public HandModel getCardsOwned() {
         return cardsOwned;
     }
 
     /**
      * @param cardsOwned the cardsOwned to set
      */
-    public void setCardsOwned(Hand cardsOwned) {
+    public void setCardsOwned(HandModel cardsOwned) {
         this.cardsOwned = cardsOwned;
     }
 
