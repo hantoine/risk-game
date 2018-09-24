@@ -65,6 +65,8 @@ public class RiskController implements ActionListener{
 
     void initGame() {
         
+        this.viewRisk.initialPlayer(modelRisk);
         this.viewRisk.initialMap(modelRisk, countryListener);
+        
     }
 }

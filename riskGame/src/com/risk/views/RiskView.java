@@ -66,19 +66,14 @@ public class RiskView extends javax.swing.JFrame {
     
     
     public void initialMap(RiskModel riskModel, MouseListener countryListener) {
-        if(this.getMapPanel()!=null && this.getPlayerPanel()!=null){
+        if(this.getMapPanel()!=null){
             this.remove(this.getMapPanel());
-            this.remove(this.getPlayerPanel());
         }
-        Container cp = getContentPane();
 
         this.setMapPanel(new MapPanel(riskModel.getBoard(), countryListener));
-        this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
-        this.getPlayerPanel().updatePlayer(riskModel.getCurrentPlayer());
+        Container cp = getContentPane();
         this.setSize(new Dimension(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth(), this.getMapPanel().getHeight()+80));
         cp.add(this.getMapPanel(), BorderLayout.CENTER);
-        cp.add(this.getPlayerPanel(), BorderLayout.EAST);
-       
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
        
@@ -96,6 +91,17 @@ public class RiskView extends javax.swing.JFrame {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         aux.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
+    }
+    
+    public void initialPlayer(RiskModel riskModel) {
+        if(this.getPlayerPanel()!=null){
+            this.remove(this.getPlayerPanel());
+        }
+        Container cp = getContentPane();
+        this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
+        this.getPlayerPanel().updatePlayer(riskModel.getCurrentPlayer());
+        cp.add(this.getPlayerPanel(), BorderLayout.EAST);
+       
     }
     
     public void addMenuBar(){
