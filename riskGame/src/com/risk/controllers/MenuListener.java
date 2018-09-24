@@ -18,8 +18,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
@@ -34,14 +32,14 @@ public class MenuListener extends MouseAdapter {
     RiskModel riskModel;
     RiskView riskView;
     PlayerListPanel playerList;
-    MapListener countryListener;
+    RiskController riskController;
+   
     
 
-    public MenuListener(RiskModel riskModel, RiskView riskView, MapListener countryListener) {
+    public MenuListener(RiskModel riskModel, RiskView riskView, RiskController riskController) {
         this.riskModel = riskModel;
         this.riskView = riskView;
-        this.countryListener = countryListener;
-
+        this.riskController=riskController;
     }
 
     public void setPanel(PlayerListPanel playerList) {
@@ -107,9 +105,9 @@ public class MenuListener extends MouseAdapter {
                                 this.riskView.getMenuPanel().setVisible(false);
                                 this.riskView.remove(this.riskView.getMenuPanel());
                                 this.riskView.setMenuPanel(null);
+                                this.riskView.getPhase().setVisible(true);
+                                this.riskController.initGame();
                             
-                            
-                            this.riskView.initialMap(riskModel, countryListener);
                         }else{
                             JOptionPane.showMessageDialog(null, "Countries are not connected. please selected a new file");
                         }

@@ -25,16 +25,18 @@ public class RiskController implements ActionListener{
     RiskView viewRisk;
     RiskModel modelRisk;
     MenuListener menuListener;
+    MapListener countryListener;
     
-    public RiskController() {
-        this.modelRisk = new RiskModel();
-        this.viewRisk = new RiskView(this);
-        MapListener countryListener = new MapListener(modelRisk);
-        this.menuListener = new MenuListener(modelRisk, viewRisk, countryListener);
-      
-        
-       
+    public RiskController(RiskModel riskModel,RiskView riskView) {
+        this.modelRisk=riskModel;
+        this.viewRisk = riskView;
+        this.viewRisk.setRiskController(this);
+        this.countryListener = new MapListener(modelRisk);
+        this.menuListener = new MenuListener(modelRisk, viewRisk, this); 
         viewRisk.initialMenu(modelRisk, menuListener);
+        viewRisk.addMenuBar();
+        viewRisk.initStagePanel();
+        viewRisk.setVisible(true);
         //viewRisk.initialMap(modelRisk, countryListener);
         
 
@@ -42,6 +44,7 @@ public class RiskController implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println("hola llegue");
         JComponent c = (JComponent) e.getSource();
         
         if (c != null && c instanceof JMenuItem) {
@@ -61,4 +64,8 @@ public class RiskController implements ActionListener{
         }
     }
 
+    void initGame() {
+        
+        this.viewRisk.initialMap(modelRisk, countryListener);
+    }
 }
