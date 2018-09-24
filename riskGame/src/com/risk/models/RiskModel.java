@@ -13,8 +13,6 @@ import java.util.Random;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
