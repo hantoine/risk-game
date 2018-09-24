@@ -5,7 +5,7 @@
  */
 package com.risk.views.menu;
 
-import java.awt.Dialog;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 

@@ -6,9 +6,7 @@
 package com.risk.views.player;
 
 import com.risk.models.CardModel;
-import com.risk.models.HandModel;
 import com.risk.models.PlayerModel;
-import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
