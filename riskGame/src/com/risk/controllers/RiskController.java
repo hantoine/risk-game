@@ -44,7 +44,6 @@ public class RiskController implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("hola llegue");
         JComponent c = (JComponent) e.getSource();
         
         if (c != null && c instanceof JMenuItem) {
