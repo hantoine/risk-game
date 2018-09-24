@@ -132,4 +132,8 @@ public class PlayerModel {
         this.cardsOwned = cardsOwned;
     }
 
+    public void initializeNumArmies(int numPlayerInGame) {
+        this.numArmies = 0;
+        //TODO
+    }
 }
