@@ -20,7 +20,8 @@ public class RiskMain {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-
-        RiskController riskController = new RiskController();
+        RiskModel riskModel = new RiskModel();
+        RiskView riskView=new RiskView();
+        RiskController riskController = new RiskController(riskModel,riskView);
     }
 }

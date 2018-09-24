@@ -26,9 +26,10 @@ public class RiskController implements ActionListener{
     RiskModel modelRisk;
     MenuListener menuListener;
     
-    public RiskController() {
-        this.modelRisk = new RiskModel();
-        this.viewRisk = new RiskView(this);
+    public RiskController(RiskModel riskModel,RiskView riskView) {
+        this.modelRisk=riskModel;
+        this.viewRisk = riskView;
+        this.viewRisk.setRiskController(this);
         MapListener countryListener = new MapListener(modelRisk);
         this.menuListener = new MenuListener(modelRisk, viewRisk, countryListener);
       

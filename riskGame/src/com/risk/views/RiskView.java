@@ -47,9 +47,9 @@ public class RiskView extends javax.swing.JFrame {
     private PlayerGameInfoPanel playerPanel;
     private RiskController riskController;
     
-    public RiskView(RiskController riskController) {
+    public RiskView() {
         super("Risk Game");
-        this.riskController=riskController;
+     
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
@@ -59,6 +59,7 @@ public class RiskView extends javax.swing.JFrame {
         this.setVisible(true);
         
     }
+    
     
     public void initialMap(RiskModel riskModel, MouseListener countryListener) {
         if(this.getMapPanel()!=null && this.getPlayerPanel()!=null){
@@ -193,6 +194,13 @@ public class RiskView extends javax.swing.JFrame {
      */
     public void setPlayerPanel(PlayerGameInfoPanel playerPanel) {
         this.playerPanel = playerPanel;
+    }
+
+    /**
+     * @param riskController the riskController to set
+     */
+    public void setRiskController(RiskController riskController) {
+        this.riskController = riskController;
     }
 
 
