@@ -135,7 +135,7 @@ public class MapFileManagement {
                                     } catch (FileNotFoundException e) {
                                         throw new FileNotFoundException("Image not found");
                                     } catch (IOException e) {
-                                        throw new IOException("Image error");
+                                        throw new IOException("Error while reading image file");
                                     }
                                     break;
                                 case "wrap":
@@ -188,7 +188,7 @@ public class MapFileManagement {
         HashMap<String, ContinentModel> graphContinents = new HashMap();
         
         if(!info.equals("")){
-            String[] linesInfo=info.split(System.getProperty("line.separator"));
+            String[] linesInfo=info.split("\\r?\\n");
             int i=0;
             String aux[];
             while (i<linesInfo.length) {
@@ -225,7 +225,7 @@ public class MapFileManagement {
         }
         
         if(!info.equals("")){
-            String[] linesInfo=info.split(System.getProperty("line.separator"));
+            String[] linesInfo=info.split("\\r?\\n");
             int i=0;
             String aux[];
             while (i<linesInfo.length) {

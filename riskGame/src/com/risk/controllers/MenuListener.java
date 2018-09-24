@@ -103,7 +103,7 @@ public class MenuListener extends MouseAdapter {
                     try {
                         riskModel.setBoard(selectedPath);
                         
-                        if(riskModel.getBoard().connectedGraph()){
+                        if((riskModel.getBoard()).connectedGraph()){
                                 this.riskView.getMenuPanel().setVisible(false);
                                 this.riskView.remove(this.riskView.getMenuPanel());
                                 this.riskView.setMenuPanel(null);
