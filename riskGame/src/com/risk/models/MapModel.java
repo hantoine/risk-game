@@ -15,14 +15,14 @@ import java.util.Map;
  *
  * @author n_irahol
  */
-public class Board {
+public class MapModel {
 
     private HashMap<String, String> configurationInfo;
     private BufferedImage image;
-    private HashMap<String, Continent> graphContinents;
-    private HashMap<String, Country> graphTerritories;
+    private HashMap<String, ContinentModel> graphContinents;
+    private HashMap<String, TerritoryModel> graphTerritories;
 
-    public Board() {
+    public MapModel() {
     }
     
     /**
@@ -33,8 +33,8 @@ public class Board {
             System.out.println("Number of countries: " + this.getGraphTerritories().keySet().size());
             for (String country : this.getGraphTerritories().keySet()) {
                 System.out.println(country);
-                Country auxCountry = this.getGraphTerritories().get(country);
-                for (Country c : auxCountry.getAdj()) {
+                TerritoryModel auxCountry = this.getGraphTerritories().get(country);
+                for (TerritoryModel c : auxCountry.getAdj()) {
                     System.out.println(country + "->" + c.getName());
                 }
             }
@@ -48,9 +48,9 @@ public class Board {
     public boolean connectedGraph() {
         int size = this.getGraphTerritories().keySet().size();
         HashMap<String, Boolean> visited = new HashMap();
-        HashMap<String, Country> map = this.getGraphTerritories();
-        Map.Entry<String, Country> entry = map.entrySet().iterator().next();
-        Country value = entry.getValue();
+        HashMap<String, TerritoryModel> map = this.getGraphTerritories();
+        Map.Entry<String, TerritoryModel> entry = map.entrySet().iterator().next();
+        TerritoryModel value = entry.getValue();
 
         if (size > 0) {
             visited.put(value.getName(), Boolean.TRUE);
@@ -66,12 +66,12 @@ public class Board {
      * @param v
      * @param visited 
      */
-    public void dfsConnected(Country v, HashMap<String, Boolean> visited) {
+    public void dfsConnected(TerritoryModel v, HashMap<String, Boolean> visited) {
         visited.put(v.getName(), Boolean.TRUE);
-        LinkedList<Country> aux = new LinkedList();
+        LinkedList<TerritoryModel> aux = new LinkedList();
         aux = v.getAdj();
 
-        for (Country c : aux) {
+        for (TerritoryModel c : aux) {
 
             if (!(visited.containsKey(c.getName()))) {
                 dfsConnected(c, visited);
@@ -79,19 +79,19 @@ public class Board {
         }
     }
 
-    public HashMap<String, Continent> getGraphContinents() {
+    public HashMap<String, ContinentModel> getGraphContinents() {
         return graphContinents;
     }
 
-    public void setGraphContinents(HashMap<String, Continent> graphContinents) {
+    public void setGraphContinents(HashMap<String, ContinentModel> graphContinents) {
         this.graphContinents = graphContinents;
     }
 
-    public HashMap<String, Country> getGraphTerritories() {
+    public HashMap<String, TerritoryModel> getGraphTerritories() {
         return graphTerritories;
     }
 
-    public void setGraphTerritories(HashMap<String, Country> graphTerritories) {
+    public void setGraphTerritories(HashMap<String, TerritoryModel> graphTerritories) {
         this.graphTerritories = graphTerritories;
     }
 

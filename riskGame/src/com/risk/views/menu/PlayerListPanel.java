@@ -6,7 +6,7 @@
 package com.risk.views.menu;
 
 import com.risk.controllers.MenuListener;
-import com.risk.models.Player;
+import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -62,7 +62,7 @@ public class PlayerListPanel extends JPanel {
 
 //content
         //initialize players list
-        LinkedList<Player> playerList = riskModel.getPlayerList();
+        LinkedList<PlayerModel> playerList = riskModel.getPlayerList();
 
         //add content to panel
         this.add(addPlayerPanel);
@@ -73,9 +73,9 @@ public class PlayerListPanel extends JPanel {
     /*
      *
      */
-    protected void initializePlayers(LinkedList<Player> playerList) {
+    protected void initializePlayers(LinkedList<PlayerModel> playerList) {
 
-        for (Player player : playerList) {
+        for (PlayerModel player : playerList) {
             Color aux = getNewColor();
             this.addElement(player.getName(), aux);
 

@@ -5,8 +5,8 @@
  */
 package com.risk.views.map;
 
-import com.risk.models.Board;
-import com.risk.models.Country;
+import com.risk.models.MapModel;
+import com.risk.models.TerritoryModel;
 import java.awt.Color;
 import java.awt.geom.Line2D;
 import java.util.HashMap;

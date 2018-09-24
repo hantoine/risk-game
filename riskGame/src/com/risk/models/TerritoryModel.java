@@ -11,18 +11,18 @@ import java.util.LinkedList;
  *
  * @author n_irahol
  */
-public class Country {
+public class TerritoryModel {
 
-    private LinkedList<Country> adj;
+    private LinkedList<TerritoryModel> adj;
     // why not private too ?
     int positionX;
     int positionY;
     private String continentName;
     private int numArmies;
-    private Player owner;
+    private PlayerModel owner;
     private String name;
 
-    public Country(String name, int positionX, int positionY) {
+    public TerritoryModel(String name, int positionX, int positionY) {
         this.name = name;
         this.adj = new LinkedList();
         this.positionX = positionX;
@@ -31,7 +31,7 @@ public class Country {
         this.owner = null;
     }
 
-    public Country(String name) {
+    public TerritoryModel(String name) {
         this.name = name;
         this.numArmies = 0;
         this.owner = null;
@@ -56,14 +56,14 @@ public class Country {
     /**
      * @return the adj
      */
-    public LinkedList<Country> getAdj() {
+    public LinkedList<TerritoryModel> getAdj() {
         return adj;
     }
 
     /**
      * @param adj the adj to set
      */
-    public void setAdj(LinkedList<Country> adj) {
+    public void setAdj(LinkedList<TerritoryModel> adj) {
         this.adj = adj;
     }
 
@@ -84,14 +84,14 @@ public class Country {
     /**
      * @return the owner
      */
-    public Player getOwner() {
+    public PlayerModel getOwner() {
         return owner;
     }
 
     /**
      * @param owner the owner to set
      */
-    public void setOwner(Player owner) {
+    public void setOwner(PlayerModel owner) {
         this.owner = owner;
     }
 

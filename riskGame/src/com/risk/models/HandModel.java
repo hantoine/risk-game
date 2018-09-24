@@ -11,30 +11,30 @@ import java.util.LinkedList;
  *
  * @author l_yixu
  */
-public class Hand {
+public class HandModel {
     // a group of cards
 
-    private LinkedList<Card> hand;
+    private LinkedList<CardModel> hand;
 
-    public Hand() {
+    public HandModel() {
         this.hand = new LinkedList();
-        this.hand.add(new Card("Venezuela", "infantry"));
-        this.hand.add(new Card("France", "infantry"));
-        this.hand.add(new Card("China", "infantry"));
+        this.hand.add(new CardModel("Venezuela", "infantry"));
+        this.hand.add(new CardModel("France", "infantry"));
+        this.hand.add(new CardModel("China", "infantry"));
 
     }
 
     /**
      * @return the hand
      */
-    public LinkedList<Card> getHand() {
+    public LinkedList<CardModel> getHand() {
         return hand;
     }
 
     /**
      * @param hand the hand to set
      */
-    public void setHand(LinkedList<Card> hand) {
+    public void setHand(LinkedList<CardModel> hand) {
         this.hand = hand;
     }
 
