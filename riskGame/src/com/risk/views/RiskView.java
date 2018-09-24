@@ -86,8 +86,10 @@ public class RiskView extends javax.swing.JFrame {
         this.setMenuPanel(aux);
         aux.add(start);
         aux.setVisible(true);
+        if(this.getMapPanel()==null){
+            this.setSize(800, 600);
+        }
         aux.setSize(300, 500);
-        this.setSize(800, 600);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         aux.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
