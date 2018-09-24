@@ -46,18 +46,24 @@ public class RiskView extends javax.swing.JFrame {
     private MapPanel mapPanel;
     private PlayerGameInfoPanel playerPanel;
     private RiskController riskController;
+    private JButton phase;
     
     public RiskView() {
         super("Risk Game");
-     
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
         this.setResizable(false);
-        this.addMenuBar();
-        this.getJMenuBar().setVisible(true);
-        this.setVisible(true);
+    
         
+    }
+    
+    public void initStagePanel(){
+        this.phase=new JButton("Change Stage");
+        this.phase.setVisible(false);
+        Container cp = getContentPane();
+        cp.add(this.phase,BorderLayout.NORTH);
     }
     
     
@@ -71,7 +77,7 @@ public class RiskView extends javax.swing.JFrame {
         this.setMapPanel(new MapPanel(riskModel.getBoard(), countryListener));
         this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
         this.getPlayerPanel().updatePlayer(riskModel.getCurrentPlayer());
-        this.setSize(new Dimension(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth(), this.getMapPanel().getHeight()+70));
+        this.setSize(new Dimension(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth(), this.getMapPanel().getHeight()+80));
         cp.add(this.getMapPanel(), BorderLayout.CENTER);
         cp.add(this.getPlayerPanel(), BorderLayout.EAST);
        
@@ -125,6 +131,7 @@ public class RiskView extends javax.swing.JFrame {
         menuBar.add(menuOption,BorderLayout.NORTH);
         
         this.setJMenuBar(menuBar);
+        this.getJMenuBar().setVisible(true);
     }
     /**
      * @return the menuPanel
@@ -201,6 +208,20 @@ public class RiskView extends javax.swing.JFrame {
      */
     public void setRiskController(RiskController riskController) {
         this.riskController = riskController;
+    }
+
+    /**
+     * @return the phase
+     */
+    public JButton getPhase() {
+        return phase;
+    }
+
+    /**
+     * @param phase the phase to set
+     */
+    public void setPhase(JButton phase) {
+        this.phase = phase;
     }
 
 
