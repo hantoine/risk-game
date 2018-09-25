@@ -5,7 +5,6 @@
  */
 package com.risk.views.menu;
 
-import utils.DeletableButton;
 import com.risk.controllers.MenuListener;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
