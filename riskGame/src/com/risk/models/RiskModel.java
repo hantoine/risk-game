@@ -109,8 +109,15 @@ public class RiskModel {
     }
     
     public void nextTurn(){
-        this.setTurn(this.getTurn() + 1);
-        this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
+        
+        if(this.getTurn()+1<this.maxNbOfPlayers){
+            this.setTurn(this.getTurn() + 1);
+            this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
+        }else{
+            nextStage();
+            this.setTurn(-1);
+        }
+        
     }
 
     public void nextStage(){

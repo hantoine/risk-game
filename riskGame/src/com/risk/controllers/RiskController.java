@@ -55,12 +55,16 @@ public class RiskController implements ActionListener{
         }
     }
 
-    void initGame() {
-        
-        this.modelRisk.nextTurn();
-        this.modelRisk.nextStage();
-        this.viewRisk.initialPlayer(modelRisk);
-        this.viewRisk.initialMap(modelRisk, countryListener);
-        
+    void playGame() {
+      
+        if(this.modelRisk.getStage()==-1){
+            //Start phase assign territories
+            this.modelRisk.nextTurn();
+            this.viewRisk.initialPlayer(modelRisk);
+            this.viewRisk.initialMap(modelRisk, countryListener);
+        }if(this.modelRisk.getStage()==0){
+            //Reinforcement phase create function
+            this.modelRisk.nextTurn();
+        }
     }
 }
