@@ -117,7 +117,7 @@ public class MenuListener extends MouseAdapter {
                                 }
                                 
                                 this.riskModel.setPlayerList(listPlayers);
-                                this.riskController.initGame();
+                                this.riskController.playGame();
                             
                         }else{
                             JOptionPane.showMessageDialog(null, "Countries are not connected. please selected a new file");
