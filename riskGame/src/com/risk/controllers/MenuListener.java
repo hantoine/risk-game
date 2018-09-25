@@ -5,6 +5,7 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.exceptions.FormatException;
 import com.risk.views.menu.DeletableButton;
@@ -18,6 +19,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
@@ -105,6 +107,16 @@ public class MenuListener extends MouseAdapter {
                                 this.riskView.remove(this.riskView.getMenuPanel());
                                 this.riskView.setMenuPanel(null);
                                 this.riskView.getPhase().setVisible(true);
+                                LinkedList<PlayerPanel> aux2=aux.getPlayersPanel().getPlayersArray();
+                                LinkedList<PlayerModel> listPlayers=new LinkedList<>();
+                                for(int i=0; i<aux2.size();i++){
+                                    PlayerPanel player=aux2.get(i);
+                                    PlayerModel playerGame=new PlayerModel(player.getPlayerNameTextField().getText(),player.getColorButton().getBackground(),true);
+                                    listPlayers.add(playerGame);
+                                    i++;
+                                }
+                                
+                                this.riskModel.setPlayerList(listPlayers);
                                 this.riskController.initGame();
                             
                         }else{

@@ -25,7 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class NewGamePanel extends JPanel {
 
-    private JPanel playersPanel;
+    private PlayerListPanel playersPanel;
     private JPanel mapSelector;
     private JButton play;
     private JTextField selectFileTextField;
@@ -83,14 +83,14 @@ public class NewGamePanel extends JPanel {
     /**
      * @return the playersPanel
      */
-    public JPanel getPlayersPanel() {
+    public PlayerListPanel getPlayersPanel() {
         return playersPanel;
     }
 
     /**
      * @param playersPanel the playersPanel to set
      */
-    public void setPlayersPanel(JPanel playersPanel) {
+    public void setPlayersPanel(PlayerListPanel playersPanel) {
         this.playersPanel = playersPanel;
     }
 

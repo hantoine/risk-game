@@ -25,7 +25,6 @@ public class PlayerListPanel extends JPanel {
 
     private JPanel addPlayerPanel;
     private LinkedList<PlayerPanel> playersArray;
-    private JPanel playersListPanel;
     int nbBots;
     int uniqueID;
     int maxNbPlayers;
