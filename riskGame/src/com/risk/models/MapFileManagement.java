@@ -269,8 +269,12 @@ public class MapFileManagement {
                             auxCountry.getAdj().add(auxCountryAdj);
                             graphTerritories.put(aux[j+4], auxCountryAdj);
                         }
-
-                        graphContinents.get(aux[3]).setMember(auxCountry);
+                        
+                        if(graphContinents.containsKey(aux[3])){
+                            graphContinents.get(aux[3]).setMember(auxCountry);
+                        }else{
+                            throw new FormatException("The country does not belong to an existing continent");
+                        }
                         graphTerritories.put(aux[0], auxCountry);
 
                     } else {
