@@ -196,8 +196,11 @@ public class MapFileManagement {
                     aux = linesInfo[i].split("=", 2);
                     if(aux.length>1){
                         ContinentModel auxContinent = new ContinentModel(aux[0], Integer.parseInt(aux[1]));
-                        graphContinents.put(aux[0], auxContinent);
-                            
+                        if(graphContinents.containsKey(aux[0])){
+                            throw new FormatException("Duplicate continent");
+                        }else{
+                            graphContinents.put(aux[0], auxContinent);
+                        }
                     }else{
                         throw new FormatException("Continent without correct delimiter");
                     }
@@ -242,7 +245,12 @@ public class MapFileManagement {
                         TerritoryModel auxCountry;
                         if (graphTerritories.keySet().contains(aux[0])) {
                             auxCountry = graphTerritories.get(aux[0]);
-                            auxCountry.countrySetter(Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
+                            if(auxCountry.getPositionX()==-1 && auxCountry.getPositionY()==-1){
+                                auxCountry.countrySetter(Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
+                            }else{
+                                throw new FormatException("Duplicate country");
+                            }
+                            
                         } else {
                             auxCountry = new TerritoryModel(aux[0], Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
                         }
