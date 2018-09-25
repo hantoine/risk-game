@@ -22,13 +22,15 @@ public class RiskModel {
 
     private MapModel board;
     private LinkedList<PlayerModel> players;
-
+    private int turn;
+    private int stage;
     static Integer maxNbOfPlayers = 6;
     private PlayerModel currentPlayer;
 
     public RiskModel() {
         this.players = new LinkedList<>();
-
+        this.turn=-1;
+        this.stage=-1;
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, false);
@@ -104,5 +106,50 @@ public class RiskModel {
 
     public LinkedList<PlayerModel> getPlayerList() {
         return this.players;
+    }
+    
+    public void nextTurn(){
+        this.setTurn(this.getTurn() + 1);
+        this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
+    }
+
+    public void nextStage(){
+        this.setStage(this.getStage()+ 1);
+    }
+    
+    
+    /**
+     * @return the turn
+     */
+    public int getTurn() {
+        return turn;
+    }
+
+    /**
+     * @param turn the turn to set
+     */
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    /**
+     * @param currentPlayer the currentPlayer to set
+     */
+    public void setCurrentPlayer(PlayerModel currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    /**
+     * @return the stage
+     */
+    public int getStage() {
+        return stage;
+    }
+
+    /**
+     * @param stage the stage to set
+     */
+    public void setStage(int stage) {
+        this.stage = stage;
     }
 }

@@ -5,7 +5,6 @@
  */
 package com.risk.views.menu;
 
-import utils.DeletableButton;
 import com.risk.controllers.MenuListener;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
@@ -26,7 +25,6 @@ public class PlayerListPanel extends JPanel {
 
     private JPanel addPlayerPanel;
     private LinkedList<PlayerPanel> playersArray;
-    private JPanel playersListPanel;
     int nbBots;
     int uniqueID;
     int maxNbPlayers;
