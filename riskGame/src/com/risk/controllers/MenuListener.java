@@ -108,10 +108,8 @@ public class MenuListener extends MouseAdapter {
                             LinkedList<PlayerModel> listPlayers=new LinkedList<>();
                             for(int i=0; i<aux2.size();i++){
                                 PlayerPanel player=aux2.get(i);
-                                
                                 PlayerModel playerGame=new HumanPlayerModel(player.getPlayerNameTextField().getText(),player.getColorButton().getBackground(),true);
                                 listPlayers.add(playerGame);
-                                i++;
                             }
                             
                             this.riskModel.setPlayerList(listPlayers);

@@ -46,7 +46,7 @@ public class RiskModel {
         }else{
             players.add(new AIPlayerModel(name, color, isHuman));
         }
-        
+      
     }
 
     public void removePlayer(int index) {
