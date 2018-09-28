@@ -57,14 +57,25 @@ public class RiskController implements ActionListener{
 
     void playGame() {
       
-        if(this.modelRisk.getStage()==-1){
-            //Start phase assign territories
-            this.modelRisk.nextTurn();
-            this.viewRisk.initialPlayer(modelRisk);
-            this.viewRisk.initialMap(modelRisk, countryListener);
-        }if(this.modelRisk.getStage()==0){
-            //Reinforcement phase create function
-            this.modelRisk.nextTurn();
+        while(!this.modelRisk.getCurrentPlayer().getContriesOwned().containsAll(this.modelRisk.getBoard().getGraphTerritories().values())){
+            if(this.modelRisk.getStage()==-1){
+                //Start phase assign territories
+                this.modelRisk.nextTurn();
+                this.viewRisk.initialPlayer(modelRisk);
+                this.viewRisk.initialMap(modelRisk, countryListener);
+            }if(this.modelRisk.getStage()==0){
+                //Reinforcement phase create function
+                modelRisk.getCurrentPlayer().reinforcement();
+                this.modelRisk.nextStage();
+            }if(this.modelRisk.getStage()==1){
+                //Attack phase
+            }if(this.modelRisk.getStage()==2){
+                //Fortification phase
+                
+                this.modelRisk.nextStage();
+                this.modelRisk.nextTurn();
+            }
+        
         }
     }
 }

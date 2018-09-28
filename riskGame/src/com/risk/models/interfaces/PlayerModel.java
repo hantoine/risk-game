@@ -38,11 +38,11 @@ public abstract class PlayerModel {
         this.numArmies = 0;
     }
     
-    public abstract void reinforcement(RiskModel riskModel);
+    public abstract void reinforcement();
     
-    public abstract void fortification(RiskModel riskModel);
+    public abstract void fortification();
     
-    public abstract void attack(RiskModel riskModel);
+    public abstract void attack();
     /**
      * @return the name
      */
