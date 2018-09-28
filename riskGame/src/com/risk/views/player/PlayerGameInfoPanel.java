@@ -146,6 +146,10 @@ public class PlayerGameInfoPanel extends JPanel {
         // 
     }
     
+    /**
+     * 
+     * @param currentPlayer 
+     */
     public void updatePlayer(PlayerModel currentPlayer){
         this.currentPlayer = currentPlayer;
         
