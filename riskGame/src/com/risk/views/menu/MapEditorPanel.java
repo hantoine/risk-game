@@ -9,11 +9,14 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
- *
+ * It represents the map editor panel in the menu
  * @author timot
  */
 public class MapEditorPanel extends JPanel {
 
+    /**
+     * Constructor
+     */
     public MapEditorPanel() {
         JButton test = new JButton("button");
         this.add(test);

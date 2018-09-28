@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 /**
- *
+ * View that contains the different tabs of the menu
  * @author timot
  */
 public class StartMenuView extends JPanel {
@@ -24,6 +24,11 @@ public class StartMenuView extends JPanel {
     JPanel introPanel;
     private JTabbedPane tabbedPane;
 
+    /**
+     * Constructor
+     * @param riskModel model of the game
+     * @param menuAction mouse event listener 
+     */
     public StartMenuView(RiskModel riskModel, MenuListener menuAction) {
         //JFrame's params
 
@@ -57,6 +62,7 @@ public class StartMenuView extends JPanel {
     }
 
     /**
+     * Getter of the tabbedPane attribute
      * @return the tabbedPane
      */
     public JTabbedPane getTabbedPane() {
@@ -64,6 +70,7 @@ public class StartMenuView extends JPanel {
     }
 
     /**
+     * Setter of the tabbedPane attribute
      * @param tabbedPane the tabbedPane to set
      */
     public void setTabbedPane(JTabbedPane tabbedPane) {
