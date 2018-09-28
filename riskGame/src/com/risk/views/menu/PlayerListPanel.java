@@ -51,7 +51,7 @@ public class PlayerListPanel extends JPanel {
         this.maxNbPlayers = riskModel.getMaxNumberOfPlayers();
         this.colorUsed = new LinkedList<Color>();
 
-        menuAction.setPanel(this);
+        menuAction.setPlayerList(this);
         JButton addPlayerButton = new JButton("+");
 
         BoxLayout layout = new BoxLayout(addPlayerPanel, BoxLayout.X_AXIS);

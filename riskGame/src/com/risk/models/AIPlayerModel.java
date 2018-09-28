@@ -9,11 +9,17 @@ import com.risk.models.interfaces.PlayerModel;
 import java.awt.Color;
 
 /**
- *
+ * It represents an AI player
  * @author Nellybett
  */
 public class AIPlayerModel extends PlayerModel{
 
+    /**
+     * Constructor from Player Model
+     * @param name name of the player
+     * @param color color of the player
+     * @param isHuman true if it is human
+     */
     public AIPlayerModel(String name, Color color, boolean isHuman) {
         super(name, color, isHuman);
     }
