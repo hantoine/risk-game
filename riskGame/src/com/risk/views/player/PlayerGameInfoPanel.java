@@ -221,8 +221,7 @@ public class PlayerGameInfoPanel extends JPanel {
                     artilleryCardBox.add(aux);
                     break;
             }
-//            System.out.println(hand.getCountryName() + "  " + hand.getTypeOfArmie());
-//            aux.setText(hand.getCountryName() + "  " + hand.getTypeOfArmie());
+            aux.setBackground(this.currentPlayer.getColor());
         }
         cardBox.removeAll();
         cardBox.add(infantryCardBox);
