@@ -9,7 +9,7 @@ import com.risk.models.interfaces.PlayerModel;
 import java.awt.Color;
 
 /**
- * It represents an human player
+ * It represents an human player (child of PlayerModel)
  * @author Nellybett
  */
 public class HumanPlayerModel extends PlayerModel{

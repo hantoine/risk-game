@@ -9,7 +9,7 @@ import com.risk.models.interfaces.PlayerModel;
 import java.awt.Color;
 
 /**
- * It represents an AI player
+ * It represents an AI player (child of PlayerModel)
  * @author Nellybett
  */
 public class AIPlayerModel extends PlayerModel{
