@@ -5,7 +5,6 @@
  */
 package com.risk.models;
 
-import com.risk.models.exceptions.FormatException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,49 +25,50 @@ public class MapFileManagement {
     /**
      * It creates a board from a file
      * @param path
+     * @param board
      * @return
-     * @throws FormatException
-     * @throws IOException 
      */
-    public MapModel createBoard(String path) throws FormatException, IOException {
-        MapModel board = new MapModel();
-        HashMap<String, ContinentModel> graphContinents = new HashMap();
-        HashMap<String, TerritoryModel> graphTerritories = new HashMap();
-        HashMap<String, String> configurationInfo=new HashMap<>();
+    public int createBoard(String path, MapModel board){
+        
+        int errorConfigurationInfo;
         String fileRead;
         
-        try {
-            fileRead = readFile(path);
+        
+        fileRead = readFile(path);
+        if (fileRead.equals("-1")){
+            return -1;
+        }
             
             String[] stringSplit=fileRead.split(Pattern.quote("[Continents]"), 2);
       
             if(stringSplit.length==2){
-                try {
-                    configurationInfo=configurationInf(stringSplit[0],path, board);
+                    errorConfigurationInfo=configurationInf(stringSplit[0],path, board);
+                    if(errorConfigurationInfo!=0){
+                        return -2;
+                    }
+                    
                     String[] stringSplit1=stringSplit[1].split(Pattern.quote("[Territories]"), 2);
                     if(stringSplit1.length==2){
-                        graphContinents=continentCreator(stringSplit1[0]);
-                        graphTerritories=countryCreator(stringSplit1[1], graphContinents);
-                        board.setConfigurationInfo(configurationInfo);
-                        board.setGraphTerritories(graphTerritories);
-                        board.setGraphContinents(graphContinents);
+                        
+                        errorConfigurationInfo=continentCreator(stringSplit1[0], board);
+                        if(errorConfigurationInfo!=0){
+                        return -3;
+                        }
+                        errorConfigurationInfo=countryCreator(stringSplit1[1], board);
+                        if(errorConfigurationInfo!=0){
+                        return -4;
+                        }
+                        
                         System.out.println("Board Created");
                     
                     }else{
-                        throw new FormatException("File Format not valid");
+                        return -5;
                     }
-                } catch (Exception ex) {
-                    throw new FormatException(ex.getMessage());
-                }
-                
             }else{
-                throw new FormatException("File Format not valid");
+                return -6;
             }
             
-        } catch (IOException ex) {
-            throw new IOException("Reading Error");
-        }
-        return board; 
+        return 0; 
         
     }    
     
@@ -76,25 +76,22 @@ public class MapFileManagement {
      * It reads a file and creates a String with it content
      * @param path
      * @return
-     * @throws FileNotFoundException
-     * @throws IOException 
-     * @throws com.risk.models.exceptions.FormatException 
      */
-    public String readFile(String path) throws FileNotFoundException, IOException, FormatException{  
-        String linesRead="";
+    public String readFile(String path){  
+        String linesRead;
+        Path aux;
         try {
-            Path aux=null;
+            
             try{
-                aux=Paths.get(path);
-                
+                aux=Paths.get(path);        
             }catch(Exception ex){
-                throw new FormatException("Path format error");
+                return "-1";
             }
             linesRead = new String(Files.readAllBytes(aux));
         } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("File not found");
+            return "-1";
         } catch (IOException e) {
-            throw new IOException("File reading failed");
+            return "-1";
         }
         
         return linesRead;  
@@ -106,10 +103,8 @@ public class MapFileManagement {
      * @param path
      * @param board
      * @return
-     * @throws FormatException
-     * @throws IOException 
      */
-    public HashMap<String, String> configurationInf(String info, String path, MapModel board) throws FormatException, IOException{
+    public int configurationInf(String info, String path, MapModel board){
         
         String[] linesInfo;
         HashMap<String, String> configurationInfo = new HashMap();
@@ -133,58 +128,61 @@ public class MapFileManagement {
                                         BufferedImage image = ImageIO.read(new File(imagePath.toString()));
                                         board.setImage(image);
                                     } catch (FileNotFoundException e) {
-                                        throw new FileNotFoundException("Image not found");
+                                        return -1;
                                     } catch (IOException e) {
-                                        throw new IOException("Error while reading image file");
+                                        return-1;
                                     }
                                     break;
                                 case "wrap":
                                     if((aux[1].equals("no") || aux[1].equals("yes"))) {
                                         configurationInfo.put(aux[0], aux[1]);
                                     }else{
-                                        throw new FormatException("Parameter wrap not valid");
+                                        return -1;
                                     }
                                     break;
                                 case "scroll":
                                     if((aux[1].equals("horizontal") || aux[1].equals("vertical") || aux[1].equals("none"))) {
                                         configurationInfo.put(aux[0], aux[1]);
                                     }else{
-                                        throw new FormatException("Parameter scroll not valid");
+                                        return -1;
                                     }
                                     break;
                                 case "warn":
                                     if((aux[1].equals("no") || aux[1].equals("yes"))) {
                                         configurationInfo.put(aux[0], aux[1]);
                                     }else{
-                                        throw new FormatException("Parameter warn not valid");
+                                        return -1;
                                     }
                                     break;
                                 default:
-                                    throw new FormatException("File format error, parameter not known");
+                                    return -1;
                                       
                             }
                          
                 }
             }else{
-                throw new FormatException("Invalid file format");
+                return -1;
             }
+            
+            board.setConfigurationInfo(configurationInfo);
+            return 0;
                 
         }
         
         if(board.getImage()==null){
-            throw new FormatException("Image loading failure");
+            return -1;
         }
         
-        return configurationInfo;
+        return 0;
     }
     
     /**
      * It returns the continents for the board from a String
      * @param info
-     * @return
-     * @throws FormatException 
+     * @param board
+     * @return 
      */
-    public HashMap<String, ContinentModel> continentCreator(String info) throws FormatException{
+    public int continentCreator(String info, MapModel board){
         HashMap<String, ContinentModel> graphContinents = new HashMap();
         
         if(!info.equals("")){
@@ -195,33 +193,42 @@ public class MapFileManagement {
                 if(!linesInfo[i].equals("")){
                     aux = linesInfo[i].split("=", 2);
                     if(aux.length>1){
-                        ContinentModel auxContinent = new ContinentModel(aux[0], Integer.parseInt(aux[1]));
-                        graphContinents.put(aux[0], auxContinent);
-                            
+                        ContinentModel auxContinent;
+                        try{
+                            auxContinent = new ContinentModel(aux[0], Integer.parseInt(aux[1]));    
+                        }catch (NumberFormatException ex){
+                            return -1;
+                        }
+                        
+                        if(graphContinents.containsKey(aux[0])){
+                            return -1;
+                        }else{
+                            graphContinents.put(aux[0], auxContinent);
+                        }
                     }else{
-                        throw new FormatException("Continent without correct delimiter");
+                        return -1;
                     }
                 }
                 i++;
             }
         }else{
-            throw new FormatException("Invalid file format");
+            return -1;
         }
-        return graphContinents;
+        board.setGraphContinents(graphContinents);
+        return 0;
     }
  
     /**
      * It returns the countries for the board from a String. It also puts them in a Continent.
      * @param info
-     * @param graphContinents
+     * @param board
      * @return
-     * @throws FormatException 
      */
-    public HashMap<String, TerritoryModel> countryCreator(String info, HashMap<String, ContinentModel> graphContinents ) throws FormatException{
+    public int countryCreator(String info, MapModel board ){
         HashMap<String, TerritoryModel> graphTerritories = new HashMap();
         
-        if(graphContinents==null){
-            throw new FormatException("No continents provided");
+        if(board.getGraphContinents()==null){
+            return -1;
         }
         
         if(!info.equals("")){
@@ -234,17 +241,33 @@ public class MapFileManagement {
                   
                     //Splits the country information
                     aux = linesInfo[i].split(",");
-                    int j = 0;
+                    int j;
                             
                     //The information has to be bigger first country second and third position 4th continent
                     if (aux.length > 4) {
                         // Creates de Country in the file
                         TerritoryModel auxCountry;
+                        int cordX;
+                        int cordY;
+                        try{
+                            cordX=Integer.parseInt(aux[1]);
+                            cordY=Integer.parseInt(aux[2]);
+                        
+                        }catch(NumberFormatException e){
+                            return -1;
+                        }               
+                            
                         if (graphTerritories.keySet().contains(aux[0])) {
+                            
                             auxCountry = graphTerritories.get(aux[0]);
-                            auxCountry.countrySetter(Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
+                            if(auxCountry.getPositionX()==-1 && auxCountry.getPositionY()==-1){
+                                auxCountry.countrySetter(cordX,cordY);
+                            }else{
+                                return -1;
+                            }
+                            
                         } else {
-                            auxCountry = new TerritoryModel(aux[0], Integer.parseInt(aux[1]), Integer.parseInt(aux[2]));
+                            auxCountry = new TerritoryModel(aux[0], cordX,cordY);
                         }
 
                         //Creates adj country
@@ -261,22 +284,26 @@ public class MapFileManagement {
                             auxCountry.getAdj().add(auxCountryAdj);
                             graphTerritories.put(aux[j+4], auxCountryAdj);
                         }
-
-                        graphContinents.get(aux[3]).setMember(auxCountry);
+                        
+                        if(board.getGraphContinents().containsKey(aux[3])){
+                            board.getGraphContinents().get(aux[3]).setMember(auxCountry);
+                        }else{
+                            return -1;
+                        }
                         graphTerritories.put(aux[0], auxCountry);
 
                     } else {
-                        throw new FormatException("Country without adjacencies");
+                        return -1;
                     }             
                 }
                 i++;
             }
             
         }else{
-            throw new FormatException("Invalid file format");
+            return -1;
         }
-        
-        return graphTerritories;
+        board.setGraphTerritories(graphTerritories);
+        return 0;
     }
     
     
