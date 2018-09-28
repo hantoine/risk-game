@@ -210,6 +210,7 @@ public class PlayerGameInfoPanel extends JPanel {
             JButton aux = new JButton();
             aux.setIcon(cardIcon);
             aux.setText("");
+            aux.setBackground(this.currentPlayer.getColor());
             switch(hand.getTypeOfArmie()) {
                 case "infantry":
                     infantryCardBox.add(aux);
@@ -221,7 +222,6 @@ public class PlayerGameInfoPanel extends JPanel {
                     artilleryCardBox.add(aux);
                     break;
             }
-            aux.setBackground(this.currentPlayer.getColor());
         }
         cardBox.removeAll();
         cardBox.add(infantryCardBox);
