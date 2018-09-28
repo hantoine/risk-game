@@ -19,17 +19,17 @@ public class HumanPlayerModel extends PlayerModel{
     }
 
     @Override
-    public void reinforcement(RiskModel riskModel) {
+    public void reinforcement() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void fortification(RiskModel riskModel) {
+    public void fortification() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void attack(RiskModel riskModel) {
+    public void attack() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

@@ -128,7 +128,7 @@ public class RiskModel {
 
     public void nextStage(){    
         this.setStage(this.getStage()+ 1);
-        if(this.getStage()>=4){
+        if(this.getStage()>=3){
             this.setStage(0);
         }
     }
