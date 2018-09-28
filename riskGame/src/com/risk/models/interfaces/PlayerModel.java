@@ -5,6 +5,7 @@
  */
 package com.risk.models.interfaces;
 
+import com.risk.models.CardModel;
 import com.risk.models.ContinentModel;
 import com.risk.models.HandModel;
 import com.risk.models.TerritoryModel;
@@ -26,6 +27,7 @@ public abstract class PlayerModel {
     private Collection<ContinentModel> continentsOwned;
     private HandModel cardsOwned;
     private int numArmies;
+    private int returnedCards;
 
     /**
      * Constructor
@@ -42,6 +44,7 @@ public abstract class PlayerModel {
         this.isHuman = isHuman;
         this.cardsOwned = new HandModel();
         this.numArmies = 0;
+        this.returnedCards=0;
     }
     
     /**
@@ -170,5 +173,23 @@ public abstract class PlayerModel {
     public void setCardsOwned(HandModel cardsOwned) {
         this.cardsOwned = cardsOwned;
     }
+
+    /**
+     * Getter of the returnedCards attribute
+     * @return the returnedCards
+     */
+    public int getReturnedCards() {
+        return returnedCards;
+    }
+
+    /**
+     * Setter of the returnedCards attribute
+     * @param returnedCards the returnedCards to set
+     */
+    public void setReturnedCards(int returnedCards) {
+        this.returnedCards = returnedCards;
+    }
+    
+    
 
 }

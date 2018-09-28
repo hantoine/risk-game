@@ -7,6 +7,8 @@ package com.risk.models;
 
 import com.risk.models.interfaces.PlayerModel;
 import java.awt.Color;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * It represents an human player (child of PlayerModel)
@@ -29,7 +31,7 @@ public class HumanPlayerModel extends PlayerModel{
      */
     @Override
     public void reinforcement() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      
     }
 
     /**
@@ -47,5 +49,6 @@ public class HumanPlayerModel extends PlayerModel{
     public void attack() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     
 }
