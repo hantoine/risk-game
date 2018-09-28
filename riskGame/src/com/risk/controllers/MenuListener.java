@@ -5,7 +5,8 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.PlayerModel;
+import com.risk.models.HumanPlayerModel;
+import com.risk.models.interfaces.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.views.menu.DeletableButton;
 import com.risk.views.menu.PlayerListPanel;
@@ -102,11 +103,13 @@ public class MenuListener extends MouseAdapter {
                             this.riskView.remove(this.riskView.getMenuPanel());
                             this.riskView.setMenuPanel(null);
                             this.riskView.getPhase().setVisible(true);
+                            
                             LinkedList<PlayerPanel> aux2=aux.getPlayersPanel().getPlayersArray();
                             LinkedList<PlayerModel> listPlayers=new LinkedList<>();
                             for(int i=0; i<aux2.size();i++){
                                 PlayerPanel player=aux2.get(i);
-                                PlayerModel playerGame=new PlayerModel(player.getPlayerNameTextField().getText(),player.getColorButton().getBackground(),true);
+                                
+                                PlayerModel playerGame=new HumanPlayerModel(player.getPlayerNameTextField().getText(),player.getColorButton().getBackground(),true);
                                 listPlayers.add(playerGame);
                                 i++;
                             }

@@ -6,7 +6,7 @@
 package com.risk.views.player;
 
 import com.risk.models.CardModel;
-import com.risk.models.PlayerModel;
+import com.risk.models.interfaces.PlayerModel;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Dimension;

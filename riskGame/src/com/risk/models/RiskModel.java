@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import com.risk.models.interfaces.PlayerModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,14 +33,20 @@ public class RiskModel {
         this.stage=-1;
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
-        addPlayerToPlayerList("Player 3", Color.blue, false);
+        addPlayerToPlayerList("Player 3", Color.blue, true);
 
         this.currentPlayer = this.players.getFirst();
 
     }
 
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
-        players.add(new PlayerModel(name, color, isHuman));
+        if(isHuman){
+            players.add(new HumanPlayerModel(name, color, isHuman));
+            
+        }else{
+            players.add(new AIPlayerModel(name, color, isHuman));
+        }
+        
     }
 
     public void removePlayer(int index) {
