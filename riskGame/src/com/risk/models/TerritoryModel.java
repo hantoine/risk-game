@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import com.risk.models.interfaces.PlayerModel;
 import java.util.LinkedList;
 
 /**
@@ -34,6 +35,8 @@ public class TerritoryModel {
     public TerritoryModel(String name) {
         this.name = name;
         this.numArmies = 0;
+         this.positionX = -1;
+        this.positionY = -1;
         this.owner = null;
         this.adj = new LinkedList();
     }

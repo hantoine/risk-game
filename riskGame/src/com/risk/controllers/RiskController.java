@@ -7,10 +7,6 @@ package com.risk.controllers;
 
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
-import com.risk.views.menu.MenuView;
-import com.risk.views.menu.StartMenuView;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComponent;
@@ -57,14 +53,31 @@ public class RiskController implements ActionListener{
 
     void playGame() {
       
-        if(this.modelRisk.getStage()==-1){
-            //Start phase assign territories
-            this.modelRisk.nextTurn();
-            this.viewRisk.initialPlayer(modelRisk);
-            this.viewRisk.initialMap(modelRisk, countryListener);
-        }if(this.modelRisk.getStage()==0){
-            //Reinforcement phase create function
-            this.modelRisk.nextTurn();
-        }
+        // while(!this.modelRisk.getCurrentPlayer().getContriesOwned().containsAll(this.modelRisk.getBoard().getGraphTerritories().values())){
+            switch (this.modelRisk.getStage()) {
+                case -1:
+                 //Start phase assign territories
+                    this.modelRisk.nextTurn(); 
+                    this.viewRisk.initialPlayer(modelRisk);
+                    this.viewRisk.initialMap(modelRisk, countryListener);
+                    break;
+                case 0:
+                //Reinforcement phase create function
+                    modelRisk.getCurrentPlayer().reinforcement();
+                    break;
+        
+                case 1:
+                //Attack phase
+                    break;
+                case 2:
+                //Fortification phase
+                    this.modelRisk.nextTurn();
+                    break;
+                default:
+                    break;
+            }
+            
+            this.modelRisk.nextStage();
+        //}
     }
 }

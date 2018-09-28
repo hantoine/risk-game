@@ -21,8 +21,11 @@ public class HandModel {
         this.hand.add(new CardModel("Venezuela", "infantry"));
         this.hand.add(new CardModel("France", "infantry"));
         this.hand.add(new CardModel("China", "infantry"));
-
+//        this.hand.add(new CardModel("Canada", "cavalry"));
+        this.hand.add(new CardModel("India", "artillery"));
+        this.hand.add(new CardModel("Africa", "artillery"));
     }
+
 
     /**
      * @return the hand

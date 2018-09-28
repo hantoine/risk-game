@@ -5,7 +5,7 @@
  */
 package com.risk.models;
 
-import com.risk.models.exceptions.FormatException;
+import com.risk.models.interfaces.PlayerModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,14 +33,20 @@ public class RiskModel {
         this.stage=-1;
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
-        addPlayerToPlayerList("Player 3", Color.blue, false);
+        addPlayerToPlayerList("Player 3", Color.blue, true);
 
         this.currentPlayer = this.players.getFirst();
 
     }
 
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
-        players.add(new PlayerModel(name, color, isHuman));
+        if(isHuman){
+            players.add(new HumanPlayerModel(name, color, isHuman));
+            
+        }else{
+            players.add(new AIPlayerModel(name, color, isHuman));
+        }
+      
     }
 
     public void removePlayer(int index) {
@@ -49,21 +55,21 @@ public class RiskModel {
 
     public void setPlayerList(LinkedList<PlayerModel> playerList) {
         this.players = playerList;
+        this.currentPlayer = playerList.getFirst();
+        System.out.println(currentPlayer.getName());
     }
 
     public PlayerModel getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public void setBoard(String path) throws FormatException, IOException {
-        try {
-            MapFileManagement aux=new MapFileManagement();
-            board = aux.createBoard(path);
-        } catch (FormatException ex) {
-            throw new FormatException(ex.getMessage());
-        } catch (IOException ex) {
-            throw new IOException(ex.getMessage());
-        }
+    public int setBoard(String path){
+        this.board=new MapModel();
+        MapFileManagement aux=new MapFileManagement();
+        int result= aux.createBoard(path,this.board);
+        
+        return result;
+        
     }
 
     public void createFile(String fileContent) {
@@ -110,18 +116,20 @@ public class RiskModel {
     
     public void nextTurn(){
         
-        if(this.getTurn()+1<this.maxNbOfPlayers){
+        if(this.getTurn()+1<this.getPlayerList().size()){
             this.setTurn(this.getTurn() + 1);
             this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
         }else{
-            nextStage();
             this.setTurn(-1);
         }
         
     }
 
-    public void nextStage(){
+    public void nextStage(){    
         this.setStage(this.getStage()+ 1);
+        if(this.getStage()>=3){
+            this.setStage(0);
+        }
     }
     
     
