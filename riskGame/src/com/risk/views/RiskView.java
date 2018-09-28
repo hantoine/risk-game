@@ -21,6 +21,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -100,7 +101,11 @@ public class RiskView extends javax.swing.JFrame {
             this.remove(this.getPlayerPanel());
         }
         Container cp = getContentPane();
-        this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
+        try {
+            this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
+        } catch(IOException ex) {
+            System.out.println(ex.getMessage());
+        }
         this.getPlayerPanel().updatePlayer(riskModel.getCurrentPlayer());
         cp.add(this.getPlayerPanel(), BorderLayout.EAST);
        
