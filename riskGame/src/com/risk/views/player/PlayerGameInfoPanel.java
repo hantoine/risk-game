@@ -55,20 +55,9 @@ public class PlayerGameInfoPanel extends JPanel {
     public PlayerGameInfoPanel(PlayerModel currentPlayer) throws IOException {
         this.currentPlayer = currentPlayer;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setSize(150,580);
+        this.setSize(150,450);
         this.playerName = new JButton("Player 1");
         
-        // add an title
-        ImageIcon imageIcon = new ImageIcon("." + File.separator + "images" 
-                + File.separator + "title.png");    // load the image to a imageIcon
-//        Image image = imageIcon.getImage();
-//        Image newImage = image.getScaledInstance(150, 100, java.awt.Image.SCALE_SMOOTH);
-//        imageIcon = new ImageIcon(newImage);
-        this.title = new JLabel(imageIcon);
-        this.add(this.title);
-        
-        this.background = new ImageIcon("." + File.separator + "images" 
-                + File.separator + "playerPanelBackground.png");
         this.numArmies = new JButton("Army Owned: " + currentPlayer.getNumArmies());
         this.armyBox = new Box(BoxLayout.X_AXIS);
         this.numContinents = new JButton("Continent Owned: " + currentPlayer.getContinentsOwned().size());
