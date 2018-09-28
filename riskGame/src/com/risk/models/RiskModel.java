@@ -48,6 +48,8 @@ public class RiskModel {
 
     public void setPlayerList(LinkedList<PlayerModel> playerList) {
         this.players = playerList;
+        this.currentPlayer = playerList.getFirst();
+        System.out.println(currentPlayer.getName());
     }
 
     public PlayerModel getCurrentPlayer() {
@@ -117,8 +119,11 @@ public class RiskModel {
         
     }
 
-    public void nextStage(){
+    public void nextStage(){    
         this.setStage(this.getStage()+ 1);
+        if(this.getStage()>=4){
+            this.setStage(0);
+        }
     }
     
     
