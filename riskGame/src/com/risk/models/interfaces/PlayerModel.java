@@ -7,14 +7,14 @@ package com.risk.models.interfaces;
 
 import com.risk.models.ContinentModel;
 import com.risk.models.HandModel;
-import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import java.awt.Color;
 import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- *
+ * It represents a Player in the game
+ * It is the parent of HumanPlayerModel and AIPlayerModel
  * @author n_irahol
  */
 public abstract class PlayerModel {
@@ -27,6 +27,12 @@ public abstract class PlayerModel {
     private HandModel cardsOwned;
     private int numArmies;
 
+    /**
+     * Constructor
+     * @param name name of a player
+     * @param color color of a player
+     * @param isHuman true if the player is human
+     */
     public PlayerModel(String name, Color color, boolean isHuman) {
         this.name = name;
         this.color = color;
@@ -38,12 +44,23 @@ public abstract class PlayerModel {
         this.numArmies = 0;
     }
     
+    /**
+     * Definition of the reinforcement phase
+     */
     public abstract void reinforcement();
     
+    /**
+     * Definition of the fortification phase
+     */
     public abstract void fortification();
     
-    public abstract void attack();
     /**
+     * Definition of the attack phase
+     */
+    public abstract void attack();
+    
+    /**
+     * Getter of the name attribute
      * @return the name
      */
     public String getName() {
@@ -51,6 +68,7 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Setter of the name attribute
      * @param name the name to set
      */
     public void setName(String name) {
@@ -58,6 +76,7 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Getter of the color attribute
      * @return the color
      */
     public Color getColor() {
@@ -65,6 +84,7 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Setter of the color attribute
      * @param color the color to set
      */
     public void setColor(Color color) {
@@ -72,6 +92,7 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Getter of the countriesOwned attribute
      * @return the contriesOwned
      */
     public Collection<TerritoryModel> getContriesOwned() {
@@ -79,6 +100,7 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Setter of the countriesOwned attribute
      * @param contriesOwned the contriesOwned to set
      */
     public void setContriesOwned(Collection<TerritoryModel> contriesOwned) {
@@ -86,6 +108,7 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Add a country to the conuntryOwned list
      * @param countryOwned the additional country owned by this player
      */
     public void addCountryOwned(TerritoryModel countryOwned) {
@@ -93,6 +116,7 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Getter of the continentsOwned attribute
      * @return the continentsOwned
      */
     public Collection<ContinentModel> getContinentsOwned() {
@@ -100,6 +124,7 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Setter of the continentsOwned attribute
      * @param continentsOwned the continentsOwned to set
      */
     public void setContinentsOwned(Collection<ContinentModel> continentsOwned) {
@@ -107,6 +132,7 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Getter of the numArmies attribute
      * @return the numArmies
      */
     public int getNumArmies() {
@@ -114,6 +140,7 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Setter of the numArmies attribute
      * @param numArmies the numArmies to set
      */
     public void setNumArmies(int numArmies) {
@@ -121,13 +148,15 @@ public abstract class PlayerModel {
     }
 
     /**
-     * @return the numArmies
+     * Getter of the isHuman attribute
+     * @return the isHuman
      */
     public boolean getType() {
         return this.isHuman;
     }
 
     /**
+     * Getter of the cardsOwned attribute
      * @return the cardsOwned
      */
     public HandModel getCardsOwned() {
@@ -135,14 +164,11 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Setter of the cardsOwned attribute
      * @param cardsOwned the cardsOwned to set
      */
     public void setCardsOwned(HandModel cardsOwned) {
         this.cardsOwned = cardsOwned;
     }
 
-    public void initializeNumArmies(int numPlayerInGame) {
-        this.numArmies = 0;
-        //TODO
-    }
 }

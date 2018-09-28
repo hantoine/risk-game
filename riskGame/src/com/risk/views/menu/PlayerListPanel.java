@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- *
+ * Panel that contains multiple panels with players information
  * @author Nellybett
  */
 public class PlayerListPanel extends JPanel {
@@ -37,6 +37,11 @@ public class PlayerListPanel extends JPanel {
     private LinkedList<Color> colorUsed;
     MenuListener menuListener;
 
+    /**
+     * Constructor
+     * @param riskModel model
+     * @param menuAction mouse action listener for the menu
+     */
     public PlayerListPanel(RiskModel riskModel, MenuListener menuAction) {
         //setup PlayersPanel panel
         this.playersArray = new LinkedList<>();
@@ -51,7 +56,7 @@ public class PlayerListPanel extends JPanel {
         this.maxNbPlayers = riskModel.getMaxNumberOfPlayers();
         this.colorUsed = new LinkedList<Color>();
 
-        menuAction.setPanel(this);
+        menuAction.setPlayerList(this);
         JButton addPlayerButton = new JButton("+");
 
         BoxLayout layout = new BoxLayout(addPlayerPanel, BoxLayout.X_AXIS);
@@ -59,7 +64,7 @@ public class PlayerListPanel extends JPanel {
         this.addPlayerPanel.add(addPlayerButton);
         addPlayerButton.addMouseListener(menuAction);
 
-//content
+
         //initialize players list
         LinkedList<PlayerModel> playerList = riskModel.getPlayerList();
 
@@ -69,8 +74,9 @@ public class PlayerListPanel extends JPanel {
         this.setBackground(Color.white);
     }
 
-    /*
-     *
+    /**
+     * Initialize the player from the model
+     * @param playerList list of players
      */
     protected void initializePlayers(LinkedList<PlayerModel> playerList) {
 
@@ -82,6 +88,7 @@ public class PlayerListPanel extends JPanel {
     }
 
     /**
+     * Getter of the colorUsed attribute (list of colors already used)
      * @return the colorUsed
      */
     public LinkedList<Color> getColorUsed() {
@@ -89,14 +96,16 @@ public class PlayerListPanel extends JPanel {
     }
 
     /**
+     * Setter of the colorUsed attribute
      * @param colorUsed the colorUsed to set
      */
     public void setColorUsed(LinkedList<Color> colorUsed) {
         this.colorUsed = colorUsed;
     }
 
-    /*
-     *
+    /**
+     * Creates a name of a player 
+     * @return string with a name for a player
      */
     public String getNewPlayerName() {
         Integer nbPlayers = this.getPlayersArray().size() - this.nbBots; //remove 1 because there is the "+" button
@@ -104,8 +113,9 @@ public class PlayerListPanel extends JPanel {
         return "Player " + nbPlayers.toString();
     }
 
-    /*
-     *
+    /**
+     * Select a new color from the list of options
+     * @return color for a player
      */
     public Color getNewColor() {
         for (int i = 0; i < basicColors.length; i++) {
@@ -118,8 +128,11 @@ public class PlayerListPanel extends JPanel {
         return Color.pink;
     }
 
-    /*
-     *
+  
+    /**
+     * Adds and creates a player panel to the main panel and the list of player panels
+     * @param playerName name of the player
+     * @param color color of the player
      */
     public void addElement(String playerName, Color color) {
         if (this.getPlayersArray().size() == maxNbPlayers) {
@@ -168,6 +181,7 @@ public class PlayerListPanel extends JPanel {
     }
 
     /**
+     * Getter of the playersArray attribute
      * @return the playersArray
      */
     public LinkedList<PlayerPanel> getPlayersArray() {
@@ -175,6 +189,7 @@ public class PlayerListPanel extends JPanel {
     }
 
     /**
+     * Setter of the playersArray attribute
      * @param playersArray the playersArray to set
      */
     public void setPlayersArray(LinkedList<PlayerPanel> playersArray) {

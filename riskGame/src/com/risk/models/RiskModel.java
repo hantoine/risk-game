@@ -11,11 +11,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.awt.Color;
-import java.io.IOException;
 import java.util.LinkedList;
 
 /**
- *
+ * Represents the model of the game
  * @author Nellybett
  */
 public class RiskModel {
@@ -27,6 +26,10 @@ public class RiskModel {
     static Integer maxNbOfPlayers = 6;
     private PlayerModel currentPlayer;
 
+    /**
+     * Constructor of the model
+     * It includes son random players
+     */
     public RiskModel() {
         this.players = new LinkedList<>();
         this.turn=-1;
@@ -38,7 +41,13 @@ public class RiskModel {
         this.currentPlayer = this.players.getFirst();
 
     }
-
+    
+    /**
+     * It adds a human or AI player to the player list
+     * @param name the name of the player
+     * @param color color of the player
+     * @param isHuman true if it is human
+     */
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
         if(isHuman){
             players.add(new HumanPlayerModel(name, color, isHuman));
@@ -49,33 +58,58 @@ public class RiskModel {
       
     }
 
+    /**
+     * It removes a player from the list
+     * @param index the position in the list
+     */
     public void removePlayer(int index) {
         players.remove(index);
     }
 
+    /**
+     * It set the playerList attribute and the current player
+     * @param playerList 
+     */
     public void setPlayerList(LinkedList<PlayerModel> playerList) {
         this.players = playerList;
         this.currentPlayer = playerList.getFirst();
-        System.out.println(currentPlayer.getName());
     }
 
+    /**
+     * Getter of the currentPlayer attribute
+     * @return currentPlayer
+     */
     public PlayerModel getCurrentPlayer() {
         return currentPlayer;
     }
 
+    /**
+     * Setter of the board attribute from a file
+     * @param path path of the file
+     * @return 0 success, -1--6 error
+     */
     public int setBoard(String path){
         this.board=new MapModel();
         MapFileManagement aux=new MapFileManagement();
         int result= aux.createBoard(path,this.board);
-        
         return result;
         
     }
 
+    /**
+     * Creation of a map file from a board
+     * @param fileContent path where the file content is going to be
+     */
     public void createFile(String fileContent) {
-        MapFileManagement.generateBoardFile(fileContent);
+        MapFileManagement fileManagement= new MapFileManagement();
+        int result=fileManagement.generateBoardFile(fileContent, this.board);
+        
     }
 
+    /**
+     * Getter of the board attribute
+     * @return board
+     */
     public MapModel getBoard() {
         return board;
     }
@@ -106,14 +140,25 @@ public class RiskModel {
         }
     }
 
+    /**
+     * Getter of the maxNbOfPlayers attribute
+     * @return maxNbOfPlayers
+     */
     public int getMaxNumberOfPlayers() {
         return maxNbOfPlayers;
     }
 
+    /**
+     * Getter of the players attribute
+     * @return players list
+     */
     public LinkedList<PlayerModel> getPlayerList() {
         return this.players;
     }
     
+    /**
+     * Assigns turn to a player from the list
+     */
     public void nextTurn(){
         
         if(this.getTurn()+1<this.getPlayerList().size()){
@@ -125,6 +170,9 @@ public class RiskModel {
         
     }
 
+    /**
+     * Changes the stage/phase of the game
+     */
     public void nextStage(){    
         this.setStage(this.getStage()+ 1);
         if(this.getStage()>=3){
@@ -134,6 +182,7 @@ public class RiskModel {
     
     
     /**
+     * Getter of the turn attribute
      * @return the turn
      */
     public int getTurn() {
@@ -141,6 +190,7 @@ public class RiskModel {
     }
 
     /**
+     * Setter of the turn attribute
      * @param turn the turn to set
      */
     public void setTurn(int turn) {
@@ -148,6 +198,7 @@ public class RiskModel {
     }
 
     /**
+     * Setter of the currentPlayer attribute
      * @param currentPlayer the currentPlayer to set
      */
     public void setCurrentPlayer(PlayerModel currentPlayer) {
@@ -155,6 +206,7 @@ public class RiskModel {
     }
 
     /**
+     * Getter of the stage attribute
      * @return the stage
      */
     public int getStage() {
@@ -162,6 +214,7 @@ public class RiskModel {
     }
 
     /**
+     * Setter of the stage attribute
      * @param stage the stage to set
      */
     public void setStage(int stage) {
