@@ -25,7 +25,7 @@ public class PlayerModel {
 
     public PlayerModel(String name, Color color, boolean isHuman) {
         this.name = name;
-        this.color = null;
+        this.color = color;
         this.contriesOwned = new LinkedList<>();
         this.continentsOwned = new LinkedList<>();
         this.numArmies = 0;
