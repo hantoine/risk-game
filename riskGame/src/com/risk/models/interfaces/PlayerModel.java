@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.models;
+package com.risk.models.interfaces;
 
+import com.risk.models.ContinentModel;
+import com.risk.models.HandModel;
+import com.risk.models.RiskModel;
+import com.risk.models.TerritoryModel;
 import java.awt.Color;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -13,7 +17,7 @@ import java.util.LinkedList;
  *
  * @author n_irahol
  */
-public class PlayerModel {
+public abstract class PlayerModel {
 
     private boolean isHuman;
     private String name;
@@ -33,7 +37,12 @@ public class PlayerModel {
         this.cardsOwned = new HandModel();
         this.numArmies = 0;
     }
-
+    
+    public abstract void reinforcement(RiskModel riskModel);
+    
+    public abstract void fortification(RiskModel riskModel);
+    
+    public abstract void attack(RiskModel riskModel);
     /**
      * @return the name
      */
