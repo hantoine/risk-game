@@ -24,9 +24,9 @@ public class MapFileManagement {
     
     /**
      * It creates a board from a file
-     * @param path
-     * @param board
-     * @return
+     * @param path the path provided from the user
+     * @param board the map in the model
+     * @return 0 for an execution without errors
      */
     public int createBoard(String path, MapModel board){
         
@@ -75,7 +75,7 @@ public class MapFileManagement {
     /**
      * It reads a file and creates a String with it content
      * @param path
-     * @return
+     * @return -1 if a mistake occurs or the string with the file content
      */
     public String readFile(String path){  
         String linesRead;
@@ -98,11 +98,11 @@ public class MapFileManagement {
     }
     
     /**
-     * It returns information to configurate the board (author, image, and others) using a String
-     * @param info
-     * @param path
-     * @param board
-     * @return
+     * It sets information to configurate the board (author, image, and others) using a String
+     * @param info the string with the information
+     * @param path the path were the file was so it can look for the image
+     * @param board the map from the model
+     * @return 0 success or -1 error
      */
     public int configurationInf(String info, String path, MapModel board){
         
@@ -177,10 +177,10 @@ public class MapFileManagement {
     }
     
     /**
-     * It returns the continents for the board from a String
-     * @param info
-     * @param board
-     * @return 
+     * It sets the continents in the board from a String
+     * @param info the string with the continents information
+     * @param board the map to be modified from the model
+     * @return 0 success or -1 error
      */
     public int continentCreator(String info, MapModel board){
         HashMap<String, ContinentModel> graphContinents = new HashMap();
@@ -219,10 +219,10 @@ public class MapFileManagement {
     }
  
     /**
-     * It returns the countries for the board from a String. It also puts them in a Continent.
-     * @param info
-     * @param board
-     * @return
+     * It sets the countries in the board from a String. It also puts them in a Continent.
+     * @param info the string with the countries
+     * @param board the map from the model
+     * @return 0 success or -1 error
      */
     public int countryCreator(String info, MapModel board ){
         HashMap<String, TerritoryModel> graphTerritories = new HashMap();
@@ -307,8 +307,13 @@ public class MapFileManagement {
     }
     
     
-    // New requirement - Discussion
-    public static MapModel generateBoardFile(String path) {
-        return null;
+    /**
+     * It generates a file with the board information in the given path
+     * @param path the path provided by the user
+     * @param board the map to read
+     * @return 0 success or -1 error
+     */
+    public int generateBoardFile(String path, MapModel board) {
+        return 0;
     }
 }

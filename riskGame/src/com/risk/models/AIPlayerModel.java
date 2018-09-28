@@ -24,16 +24,25 @@ public class AIPlayerModel extends PlayerModel{
         super(name, color, isHuman);
     }
 
+    /**
+     * Reinforcement phase for AI Player
+     */
     @Override
     public void reinforcement() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Fortification phase for AI Player
+     */
     @Override
     public void fortification() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Attack phase for AI Player
+     */
     @Override
     public void attack() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
