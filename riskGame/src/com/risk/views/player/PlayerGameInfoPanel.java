@@ -56,7 +56,7 @@ public class PlayerGameInfoPanel extends JPanel {
         this.currentPlayer = currentPlayer;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(150,450);
-        this.playerName = new JButton("Player 1");
+        this.playerName = new JButton();
         
         this.numArmies = new JButton("Army Owned: " + currentPlayer.getNumArmies());
         this.armyBox = new Box(BoxLayout.X_AXIS);
@@ -162,7 +162,7 @@ public class PlayerGameInfoPanel extends JPanel {
         
         // update player name and color
         playerName.setText(this.currentPlayer.getName());
-        playerName.setBackground(currentPlayer.getColor());
+        playerName.setBackground(this.currentPlayer.getColor());
         
         // update armies
         ImageIcon infantryIcon = new ImageIcon("." + File.separator + "images" + File.separator + "icon-1.png");
