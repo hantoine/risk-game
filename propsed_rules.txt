@@ -13,4 +13,5 @@
 	- constants name:	should be in uppercase letter. e.g. RED, YELLOW, MAX_PRIORITY etc.
 
 - A method should not be longer than 30 lines.
-- we should commit as freauently as possible. It is considered possible to commit when an atomic modification of the source code as been completed.
+- we should commit as frequently as possible. It is considered possible to commit when an atomic modification of the source code as been completed.
+- Each methods should be commented using JavaDoc with a brief description of the function, a description of each of its parameters and a description of what it returns 
