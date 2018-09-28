@@ -5,7 +5,6 @@
  */
 package com.risk.models;
 
-import com.risk.models.exceptions.FormatException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -55,15 +54,13 @@ public class RiskModel {
         return currentPlayer;
     }
 
-    public void setBoard(String path) throws FormatException, IOException {
-        try {
-            MapFileManagement aux=new MapFileManagement();
-            board = aux.createBoard(path);
-        } catch (FormatException ex) {
-            throw new FormatException(ex.getMessage());
-        } catch (IOException ex) {
-            throw new IOException(ex.getMessage());
-        }
+    public int setBoard(String path){
+        this.board=new MapModel();
+        MapFileManagement aux=new MapFileManagement();
+        int result= aux.createBoard(path,this.board);
+        
+        return result;
+        
     }
 
     public void createFile(String fileContent) {

@@ -7,7 +7,6 @@ package com.risk.controllers;
 
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
-import com.risk.models.exceptions.FormatException;
 import com.risk.views.menu.DeletableButton;
 import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.RiskView;
@@ -17,7 +16,6 @@ import com.risk.views.menu.StartMenuView;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import javax.swing.JButton;
@@ -51,14 +49,13 @@ public class MenuListener extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        try {
-
             JComponent c = (JComponent) e.getSource();
             JButton addPlayer = (JButton) c;
-            if (addPlayer.getText().equals("+")) {
+        switch (addPlayer.getText()) {
+            case "+":
                 this.playerList.addElement(this.playerList.getNewPlayerName(), this.playerList.getNewColor());
-
-            } else if (addPlayer.getText().equals("-")) {
+                break;
+            case "-":
                 System.out.println("number of players" + this.playerList.getPlayersArray().size());
                 if ((this.playerList.getPlayersArray().size()) <= 3) {
                     JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
@@ -81,8 +78,8 @@ public class MenuListener extends MouseAdapter {
                     }
 
                 }
-
-            } else if (addPlayer.getText().equals("    ")) {
+                break;
+            case "    ":
                 Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
                 if (this.playerList.getColorUsed().contains(selectedColor)) {
                     JOptionPane.showMessageDialog(null, "This color is already used");
@@ -92,48 +89,63 @@ public class MenuListener extends MouseAdapter {
                     addPlayer.setBackground(selectedColor);
 
                 }
-
-            }else if(addPlayer.getText().equals("PLAY")){
-                
+                break;
+            case "PLAY":
                 StartMenuView aux1=(StartMenuView)this.riskView.getMenuPanel().getStartMenu();
                 NewGamePanel aux=(NewGamePanel) aux1.getTabbedPane().getComponent(0);
                 String selectedPath=aux.getSelectFileTextField().getText();
-                
                 if(!selectedPath.equals("")){
-                    try {
-                        riskModel.setBoard(selectedPath);
+                    int resultReadingValidation=riskModel.setBoard(selectedPath);
+                    if(resultReadingValidation==0){         
                         if((riskModel.getBoard()).connectedGraph()){
-                                this.riskView.getMenuPanel().setVisible(false);
-                                this.riskView.remove(this.riskView.getMenuPanel());
-                                this.riskView.setMenuPanel(null);
-                                this.riskView.getPhase().setVisible(true);
-                                LinkedList<PlayerPanel> aux2=aux.getPlayersPanel().getPlayersArray();
-                                LinkedList<PlayerModel> listPlayers=new LinkedList<>();
-                                for(int i=0; i<aux2.size();i++){
-                                    PlayerPanel player=aux2.get(i);
-                                    PlayerModel playerGame=new PlayerModel(player.getPlayerNameTextField().getText(),player.getColorButton().getBackground(),true);
-                                    listPlayers.add(playerGame);
-                                    i++;
-                                }
-                                
-                                this.riskModel.setPlayerList(listPlayers);
-                                this.riskController.playGame();
+                            this.riskView.getMenuPanel().setVisible(false);
+                            this.riskView.remove(this.riskView.getMenuPanel());
+                            this.riskView.setMenuPanel(null);
+                            this.riskView.getPhase().setVisible(true);
+                            LinkedList<PlayerPanel> aux2=aux.getPlayersPanel().getPlayersArray();
+                            LinkedList<PlayerModel> listPlayers=new LinkedList<>();
+                            for(int i=0; i<aux2.size();i++){
+                                PlayerPanel player=aux2.get(i);
+                                PlayerModel playerGame=new PlayerModel(player.getPlayerNameTextField().getText(),player.getColorButton().getBackground(),true);
+                                listPlayers.add(playerGame);
+                                i++;
+                            }
+                            
+                            this.riskModel.setPlayerList(listPlayers);
+                            this.riskController.playGame();
                             
                         }else{
                             JOptionPane.showMessageDialog(null, "Countries are not connected. please selected a new file");
                         }
-                    
-                    } catch (FormatException | IOException ex) {
-                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }else{
+                        JOptionPane.showMessageDialog(null,readingError(resultReadingValidation));
                     }
-                   
                 } else {
                     JOptionPane.showMessageDialog(null, "You have not selected a map");
-                }
-            }
-        } catch (NumberFormatException ex) {
-            System.out.println(ex);
+                }   break;
+            default:
+                break;
         }
     }
 
+    private String readingError(int resultReadingValidation) {
+        switch(resultReadingValidation){
+            case -1:
+                return "Error reading the file";
+            case -2:
+                return "Error in parameters to configurate the map.";
+            case -3:
+                return "Error in continent information.";
+            case -4:
+                return "Error in country information.";
+            case -5:
+                return "No territories separator in file.";
+            case -6:
+                return "No continents separator in file.";
+        }
+        return "Error in file format";
+    }
+
+    
+    
 }
