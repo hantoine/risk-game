@@ -7,30 +7,20 @@ package com.risk.views.player;
 
 import com.risk.models.CardModel;
 import com.risk.models.interfaces.PlayerModel;
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 
 /**
- *
- * @author Nellybett
+ * View of the player information
+ * @author Will
  */
 public class PlayerGameInfoPanel extends JPanel {
 
@@ -44,14 +34,17 @@ public class PlayerGameInfoPanel extends JPanel {
     private JButton numContinents;
     private Box cardBox;
     private JButton numCards;
-//    private JButton[] cards;
     private JLabel title;
     
     private int infantryNum = 0;
     private int cavalryNum = 0;
     private int artillery = 0;
     
-    
+    /**
+     * Constructor
+     * @param currentPlayer player that has the turn
+     * @throws IOException 
+     */
     public PlayerGameInfoPanel(PlayerModel currentPlayer) throws IOException {
         this.currentPlayer = currentPlayer;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -69,18 +62,22 @@ public class PlayerGameInfoPanel extends JPanel {
         ImageIcon infantryIcon = new ImageIcon("." + File.separator + "images" + File.separator + "icon-1.png");
         ImageIcon cavalryIcon = new ImageIcon("." + File.separator + "images" + File.separator + "icon-2.png");
         ImageIcon artilleryIcon = new ImageIcon("." + File.separator + "images" + File.separator + "icon-3.png");
+        
         JLabel numInfantry = new JLabel(infantryIcon);
         JLabel numCavalry = new JLabel(cavalryIcon);
         JLabel numArtillery = new JLabel(artilleryIcon);
+        
         Box artilleryArmyBox = new Box(BoxLayout.X_AXIS);
         int totalNumArmies = currentPlayer.getNumArmies();  // get total amount of armies owned
         this.artillery = totalNumArmies / 10;
         artilleryArmyBox.add(numArtillery);
         artilleryArmyBox.add(new JLabel("* " + artillery + "     "));
+        
         this.cavalryNum = (totalNumArmies - (totalNumArmies / 10) * 10) / 5;
         Box cavalryArmyBox = new Box(BoxLayout.X_AXIS);
         cavalryArmyBox.add(numCavalry);
         cavalryArmyBox.add(new JLabel("* " + cavalryNum + "     "));
+        
         this.infantryNum = totalNumArmies - (totalNumArmies / 10) * 10 - (((totalNumArmies - (totalNumArmies / 10) * 10) / 5) * 5);
         Box infantryArmyBox = new Box(BoxLayout.X_AXIS);
         infantryArmyBox.add(numInfantry);
@@ -100,14 +97,8 @@ public class PlayerGameInfoPanel extends JPanel {
             Image image = cardIcon.getImage();
             Image newImage = image.getScaledInstance(50, 70, java.awt.Image.SCALE_SMOOTH);
             cardIcon = new ImageIcon(newImage);
-//          Image image = cardIcon.getImage();
-//          BufferedImage resizedImg = new BufferedImage(10, 20, 
-//                        BufferedImage.TYPE_INT_ARGB);
-//          Graphics2D g = resizedImg.createGraphics();
-//          g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-//          g.drawImage(image, 60, 60, 10, 20, null);
-//          g.dispose();
-//          cardIcon = new ImageIcon(image);
+
+
             JButton aux = new JButton();
             aux.setIcon(cardIcon);
             aux.setText("");
@@ -122,8 +113,6 @@ public class PlayerGameInfoPanel extends JPanel {
                     artilleryCardBox.add(aux);
                     break;
             }
-//            System.out.println(hand.getCountryName() + "  " + hand.getTypeOfArmie());
-//            aux.setText(hand.getCountryName() + "  " + hand.getTypeOfArmie());
         }
         cardBox.add(infantryCardBox);
         cardBox.add(cavalryCardBox);
@@ -231,6 +220,10 @@ public class PlayerGameInfoPanel extends JPanel {
         
     }
 
+    /**
+     * 
+     * @param currentPlayer 
+     */
     public void setCurrentPlayer(PlayerModel currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
