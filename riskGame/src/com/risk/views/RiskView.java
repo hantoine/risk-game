@@ -73,7 +73,8 @@ public class RiskView extends javax.swing.JFrame {
 
         this.setMapPanel(new MapPanel(riskModel.getBoard(), countryListener));
         Container cp = getContentPane();
-        this.setSize(new Dimension(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth(), this.getMapPanel().getHeight()+80));
+        int referenceHeight=(this.getMapPanel().getHeight()>this.getPlayerPanel().getHeight())?this.getMapPanel().getHeight():this.getPlayerPanel().getHeight();
+        this.setSize(new Dimension(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth(),80+referenceHeight));
         cp.add(this.getMapPanel(), BorderLayout.CENTER);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
@@ -108,6 +109,7 @@ public class RiskView extends javax.swing.JFrame {
         }
         this.getPlayerPanel().updatePlayer(riskModel.getCurrentPlayer());
         cp.add(this.getPlayerPanel(), BorderLayout.EAST);
+        
        
     }
     

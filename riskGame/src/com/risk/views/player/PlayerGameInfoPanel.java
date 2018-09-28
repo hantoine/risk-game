@@ -55,7 +55,7 @@ public class PlayerGameInfoPanel extends JPanel {
     public PlayerGameInfoPanel(PlayerModel currentPlayer) throws IOException {
         this.currentPlayer = currentPlayer;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setSize(150,400);
+        this.setSize(150,580);
         this.playerName = new JButton("Player 1");
         
         // add an title
