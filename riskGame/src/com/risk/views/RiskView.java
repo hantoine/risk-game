@@ -21,6 +21,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -30,14 +31,12 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
- *
+ * Main View of the game
  * @author n_irahol
  */
 public class RiskView extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainView
-     */
+    
     private MenuView menuPanel;
     private JPanel optionPanel;
     private JPanel battlePanel;
@@ -46,6 +45,9 @@ public class RiskView extends javax.swing.JFrame {
     private RiskController riskController;
     private JButton phase;
     
+    /**
+     * Constructor of main view
+     */
     public RiskView() {
         super("Risk Game");
         
@@ -53,10 +55,11 @@ public class RiskView extends javax.swing.JFrame {
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
         this.setResizable(false);
-    
-        
     }
     
+    /**
+     * Initialize the panel where will be the additional elements of each phase
+     */
     public void initStagePanel(){
         this.phase=new JButton("Change Stage");
         this.phase.setVisible(false);
@@ -64,7 +67,11 @@ public class RiskView extends javax.swing.JFrame {
         cp.add(this.phase,BorderLayout.NORTH);
     }
     
-    
+    /**
+     * Initialize the map image and elements
+     * @param riskModel model of the game
+     * @param countryListener listen for the mouse events in the map
+     */
     public void initialMap(RiskModel riskModel, MouseListener countryListener) {
         if(this.getMapPanel()!=null){
             this.remove(this.getMapPanel());
@@ -72,13 +79,19 @@ public class RiskView extends javax.swing.JFrame {
 
         this.setMapPanel(new MapPanel(riskModel.getBoard(), countryListener));
         Container cp = getContentPane();
-        this.setSize(new Dimension(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth(), this.getMapPanel().getHeight()+80));
+        int referenceHeight=(this.getMapPanel().getHeight()>this.getPlayerPanel().getHeight())?this.getMapPanel().getHeight():this.getPlayerPanel().getHeight();
+        this.setSize(new Dimension(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth()+130,80+referenceHeight));
         cp.add(this.getMapPanel(), BorderLayout.CENTER);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
        
     }
 
+    /**
+     * Initialize the new game menu
+     * @param riskModel model of the game
+     * @param menuListener listen the events in the menu
+     */
     public void initialMenu(RiskModel riskModel, MenuListener menuListener) {
        
         StartMenuView start= new StartMenuView(riskModel, menuListener);
@@ -95,17 +108,29 @@ public class RiskView extends javax.swing.JFrame {
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
     
+    /**
+     * Initialize the information of a player
+     * @param riskModel model of the game
+     */
     public void initialPlayer(RiskModel riskModel) {
         if(this.getPlayerPanel()!=null){
             this.remove(this.getPlayerPanel());
         }
         Container cp = getContentPane();
-        this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
+        try {
+            this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
+        } catch(IOException ex) {
+            System.out.println(ex.getMessage());
+        }
         this.getPlayerPanel().updatePlayer(riskModel.getCurrentPlayer());
         cp.add(this.getPlayerPanel(), BorderLayout.EAST);
+        
        
     }
     
+    /**
+     * Initialize the menu bar of the game
+     */
     public void addMenuBar(){
         JMenuBar menuBar;
         JMenu menuFile,menuOption;
@@ -139,7 +164,9 @@ public class RiskView extends javax.swing.JFrame {
         this.setJMenuBar(menuBar);
         this.getJMenuBar().setVisible(true);
     }
+    
     /**
+     * Getter of the menuPanel attribute
      * @return the menuPanel
      */
     public MenuView getMenuPanel() {
@@ -147,6 +174,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Setter of the menuPanel attribute
      * @param menuPanel the menuPanel to set
      */
     public void setMenuPanel(MenuView menuPanel) {
@@ -154,6 +182,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Getter of the optionPanel attribute
      * @return the optionPanel
      */
     public JPanel getOptionPanel() {
@@ -161,6 +190,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Setter of the optionPanel attribute
      * @param optionPanel the optionPanel to set
      */
     public void setOptionPanel(JPanel optionPanel) {
@@ -168,6 +198,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Getter of the battlePanel attribute
      * @return the battlePanel
      */
     public JPanel getBattlePanel() {
@@ -175,6 +206,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Setter of the battlePanel attribute
      * @param battlePanel the battlePanel to set
      */
     public void setBattlePanel(JPanel battlePanel) {
@@ -182,6 +214,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Getter of the mapPanel attribute
      * @return the mapPanel
      */
     public MapPanel getMapPanel() {
@@ -189,6 +222,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Setter of the mapPanel attribute
      * @param mapPanel the mapPanel to set
      */
     public void setMapPanel(MapPanel mapPanel) {
@@ -196,6 +230,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Getter of the playerPanel attribute
      * @return the playerPanel
      */
     public PlayerGameInfoPanel getPlayerPanel() {
@@ -203,6 +238,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Setter of the playerPanel attribute
      * @param playerPanel the playerPanel to set
      */
     public void setPlayerPanel(PlayerGameInfoPanel playerPanel) {
@@ -210,6 +246,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Setter of the riskController attribute
      * @param riskController the riskController to set
      */
     public void setRiskController(RiskController riskController) {
@@ -217,6 +254,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Getter of the phase attribute
      * @return the phase
      */
     public JButton getPhase() {
@@ -224,6 +262,7 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Setter of the phase attribute
      * @param phase the phase to set
      */
     public void setPhase(JButton phase) {

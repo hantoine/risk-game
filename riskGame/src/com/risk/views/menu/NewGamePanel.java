@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
+ * It represents the new game tab in the menu
  * @author timot
  */
 public class NewGamePanel extends JPanel {
@@ -30,6 +30,11 @@ public class NewGamePanel extends JPanel {
     private JButton play;
     private JTextField selectFileTextField;
 
+    /**
+     * Constructor
+     * @param riskModel model of the game
+     * @param menuAction listener of mouse actions
+     */
     public NewGamePanel(RiskModel riskModel, MenuListener menuAction) {
 
         this.setLayout(new BorderLayout());
@@ -81,6 +86,7 @@ public class NewGamePanel extends JPanel {
     }
 
     /**
+     * Getter of the playersPanel attribute
      * @return the playersPanel
      */
     public PlayerListPanel getPlayersPanel() {
@@ -88,6 +94,7 @@ public class NewGamePanel extends JPanel {
     }
 
     /**
+     * Setter of the playersPanel attribute
      * @param playersPanel the playersPanel to set
      */
     public void setPlayersPanel(PlayerListPanel playersPanel) {
@@ -95,6 +102,7 @@ public class NewGamePanel extends JPanel {
     }
 
     /**
+     * Getter of the mapSelector attribute
      * @return the mapSelector
      */
     public JPanel getMapSelector() {
@@ -102,6 +110,7 @@ public class NewGamePanel extends JPanel {
     }
 
     /**
+     * Setter of the mapSelector attribute
      * @param mapSelector the mapSelector to set
      */
     public void setMapSelector(JPanel mapSelector) {
@@ -109,6 +118,7 @@ public class NewGamePanel extends JPanel {
     }
 
     /**
+     * Getter of the play attribute
      * @return the play
      */
     public JButton getPlay() {
@@ -116,6 +126,7 @@ public class NewGamePanel extends JPanel {
     }
 
     /**
+     * Setter of the play attribute
      * @param play the play to set
      */
     public void setPlay(JButton play) {
@@ -123,6 +134,7 @@ public class NewGamePanel extends JPanel {
     }
 
     /**
+     * Getter of the selectFileTextField attribute
      * @return the selectFileTextField
      */
     public JTextField getSelectFileTextField() {
@@ -130,6 +142,7 @@ public class NewGamePanel extends JPanel {
     }
 
     /**
+     * Setter of the selectFileTextField attribute
      * @param selectFileTextField the selectFileTextField to set
      */
     public void setSelectFileTextField(JTextField selectFileTextField) {
