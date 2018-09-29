@@ -51,7 +51,7 @@ public class PlayerGameInfoPanel extends JPanel {
         this.setSize(150,450);
         this.playerName = new JButton();
         
-        this.numArmies = new JButton("Army Owned: " + currentPlayer.getNumArmiesOwned()); //I think it is going to be hard keep track of this
+        this.numArmies = new JButton("Army Owned: " + currentPlayer.getNumArmies()); //I think it is going to be hard keep track of this
         this.armyBox = new Box(BoxLayout.X_AXIS);
         this.numContinents = new JButton("Continent Owned: " + currentPlayer.getContinentsOwned().size());
         this.numCountries = new JButton("Country Owned: " + currentPlayer.getContriesOwned().size());
@@ -167,7 +167,7 @@ public class PlayerGameInfoPanel extends JPanel {
         JLabel numCavalry = new JLabel(cavalryIcon);
         JLabel numArtillery = new JLabel(artilleryIcon);
         Box artilleryArmyBox = new Box(BoxLayout.X_AXIS);
-        int totalNumArmies = currentPlayer.getNumArmiesOwned();  // get total amount of armies owned
+        int totalNumArmies = currentPlayer.getNumArmies();  // get total amount of armies owned
         this.artillery = totalNumArmies / 10;
         artilleryArmyBox.add(numArtillery);
         artilleryArmyBox.add(new JLabel("* " + artillery + "     "));
