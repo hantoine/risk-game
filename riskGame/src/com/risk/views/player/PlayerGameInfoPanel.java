@@ -46,13 +46,13 @@ public class PlayerGameInfoPanel extends JPanel {
         this.numCountries = new JButton("Country Owned: " + currentPlayer.getContriesOwned().size());
         this.numCards = new JButton("Card Owned: " + currentPlayer.getCardsOwned().getHand().size());
         this.cardBox = new Box(BoxLayout.X_AXIS);
-
+  
         this.add(this.playerName);
         this.add(this.numArmies);
         this.add(this.numCountries);
         this.add(this.numContinents);
         this.add(this.numCards);
-        this.add(this.cardBox);
+        //this.add(this.cardBox);
 
         updatePlayer(currentPlayer);
     }
