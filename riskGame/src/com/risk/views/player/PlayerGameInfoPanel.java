@@ -126,18 +126,4 @@ public class PlayerGameInfoPanel extends JPanel {
 
     }
 
-    /**
-     * @return the playerName
-     */
-    public JButton getPlayerName() {
-        return playerName;
-    }
-
-    /**
-     * @param playerName the playerName to set
-     */
-    public void setPlayerName(JButton playerName) {
-        this.playerName = playerName;
-    }
-
 }
