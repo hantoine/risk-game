@@ -239,7 +239,7 @@ public class RiskModel {
         this.deck=new LinkedList();
         int i=0;
         for(String country:this.getBoard().getGraphTerritories().keySet()){
-            if(i<=42){
+            if(i<=14){
                 this.deck.add(new CardModel(country, "Infantry"));
                 this.deck.add(new CardModel(country, "Cavalry"));
                 this.deck.add(new CardModel(country, "Artillery"));
