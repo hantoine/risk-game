@@ -48,7 +48,7 @@ public class MapFileManagementTest {
         MapFileManagement instance = new MapFileManagement();
         int expResult = -7;
        
-        //Good path with correct file but null board
+        //Good path with correct file but not initialize board
         int result = instance.createBoard(path, board);
         assertEquals(expResult, result);
         

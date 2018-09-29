@@ -32,7 +32,11 @@ public class MapFileManagement {
         
         int errorConfigurationInfo;
         String fileRead;
-                
+        
+        if (board==null){
+            return -7;
+        }
+        
         fileRead = readFile(path);
         if (fileRead.equals("-1") || fileRead==null || fileRead.equals("")){
             return -1;
@@ -161,10 +165,12 @@ public class MapFileManagement {
                                     return -1;
                                       
                             }
-                            if(board.getImage()==null)
-                                return -1;
                          
                 }
+                
+                if(board.getImage()==null)
+                    return -1;
+                         
             }else{
                 return -1;
             }
