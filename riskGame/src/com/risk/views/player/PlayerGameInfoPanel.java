@@ -8,14 +8,12 @@ package com.risk.views.player;
 import com.risk.models.CardModel;
 import com.risk.models.interfaces.PlayerModel;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -66,7 +64,7 @@ public class PlayerGameInfoPanel extends JPanel {
     public void updatePlayer(PlayerModel currentPlayer) {
         // update player name and color
         playerName.setText(currentPlayer.getName());
-        playerName.setBackground(currentPlayer.getColor());                
+        playerName.setBackground(currentPlayer.getColor());
 
         // update countries and continents
         this.numCountries.setText("Countries Owned: " + Integer.toString(currentPlayer
