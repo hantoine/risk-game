@@ -68,7 +68,7 @@ public class RiskController implements ActionListener {
             switch (this.getModelRisk().getStage()) {
                 case -1:
                  //Start phase assign territories
-            	    this.modelRisk.initializePlayers();
+            	    this.getModelRisk().initializePlayers();
                     this.getModelRisk().nextTurn(); 
                     this.getViewRisk().initialPlayer(getModelRisk());
                     this.getViewRisk().initialMap(getModelRisk(), getCountryListener());
