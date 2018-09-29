@@ -26,14 +26,11 @@ import javax.swing.JPanel;
 public class PlayerGameInfoPanel extends JPanel {
 
     private JButton playerName;
-    private BufferedImage image;
-    private ImageIcon background;
     private JButton numArmies;
     private JButton numCountries;
     private JButton numContinents;
     private Box cardBox;
     private JButton numCards;
-    private JLabel title;
 
     /**
      * Constructor
