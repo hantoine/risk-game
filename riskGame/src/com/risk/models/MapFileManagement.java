@@ -33,9 +33,12 @@ public class MapFileManagement {
         int errorConfigurationInfo;
         String fileRead;
         
+        if (board==null){
+            return -7;
+        }
         
         fileRead = readFile(path);
-        if (fileRead.equals("-1")){
+        if (fileRead.equals("-1") || fileRead==null || fileRead.equals("")){
             return -1;
         }
             
@@ -162,6 +165,8 @@ public class MapFileManagement {
                                     return -1;
                                       
                             }
+                            if(board.getImage()==null)
+                                return -1;
                          
                 }
             }else{
@@ -248,7 +253,7 @@ public class MapFileManagement {
                     int j;
                             
                     //The information has to be bigger first country second and third position 4th continent
-                    if (aux.length > 4) {
+                    if (aux.length > 5) {
                         // Creates de Country in the file
                         TerritoryModel auxCountry;
                         int cordX;
