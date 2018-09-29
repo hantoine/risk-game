@@ -29,7 +29,6 @@ public class PlayerGameInfoPanel extends JPanel {
     private BufferedImage image;
     private ImageIcon background;
     private JButton numArmies;
-    private Box armyBox;
     private JButton numCountries;
     private JButton numContinents;
     private Box cardBox;
@@ -48,7 +47,6 @@ public class PlayerGameInfoPanel extends JPanel {
         this.playerName = new JButton();
 
         this.numArmies = new JButton("Army Owned: " + currentPlayer.getNumArmiesOwned());
-        this.armyBox = new Box(BoxLayout.X_AXIS);
         this.numContinents = new JButton("Continent Owned: " + currentPlayer.getContinentsOwned().size());
         this.numCountries = new JButton("Country Owned: " + currentPlayer.getContriesOwned().size());
         this.numCards = new JButton("Card Owned: " + currentPlayer.getCardsOwned().getHand().size());
@@ -56,7 +54,6 @@ public class PlayerGameInfoPanel extends JPanel {
 
         this.add(this.playerName);
         this.add(this.numArmies);
-        this.add(this.armyBox);
         this.add(this.numCountries);
         this.add(this.numContinents);
         this.add(this.numCards);
@@ -72,18 +69,7 @@ public class PlayerGameInfoPanel extends JPanel {
     public void updatePlayer(PlayerModel currentPlayer) {
         // update player name and color
         playerName.setText(currentPlayer.getName());
-        playerName.setBackground(currentPlayer.getColor());
-
-        // update armies
-        ImageIcon armyIcon = new ImageIcon("." + File.separator + "images" + File.separator + "icon-1.png");
-        JLabel numArmies = new JLabel(armyIcon);
-        Box armyBox = new Box(BoxLayout.X_AXIS);
-        
-        this.armyBox.removeAll();
-        this.armyBox.add(numArmies);
-        this.armyBox.add(new JLabel("* " + currentPlayer.getNumArmiesOwned() + "     "));
-
-                
+        playerName.setBackground(currentPlayer.getColor());                
 
         // update countries and continents
         this.numCountries.setText("Countries Owned: " + Integer.toString(currentPlayer
