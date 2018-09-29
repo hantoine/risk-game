@@ -112,7 +112,8 @@ public class PlayerModel {
     }
 
     /**
-     *
+     * Initialize the number of initial armies of this player depending on the number of players in the game
+     * @param nbPlayers number of players in the game
      */
     public void initializeArmies(int nbPlayers) {
         switch (nbPlayers) {
