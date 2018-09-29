@@ -31,7 +31,10 @@ public class HumanPlayerModel extends PlayerModel{
      */
     @Override
     public void reinforcement() {
-      
+    //this.setNumArmies(armiesAssignation());
+        while(this.getNumArmies()!=0){
+            
+        }
     }
 
     /**
@@ -49,6 +52,7 @@ public class HumanPlayerModel extends PlayerModel{
     public void attack() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
 
     
 }

@@ -51,13 +51,15 @@ public class PlayerGameInfoPanel extends JPanel {
         this.setSize(150,450);
         this.playerName = new JButton();
         
-        this.numArmies = new JButton("Army Owned: " + currentPlayer.getNumArmies());
+        this.numArmies = new JButton("Army Owned: " + currentPlayer.getNumArmiesOwned()); //I think it is going to be hard keep track of this
         this.armyBox = new Box(BoxLayout.X_AXIS);
         this.numContinents = new JButton("Continent Owned: " + currentPlayer.getContinentsOwned().size());
         this.numCountries = new JButton("Country Owned: " + currentPlayer.getContriesOwned().size());
         this.numCards = new JButton("Card Owned: " + currentPlayer.getCardsOwned().getHand().size());
         this.cardBox = new Box(BoxLayout.X_AXIS);
         
+        //I think you are repeating code, this should be eliminated
+        /*
         // initialize the armyBox
         ImageIcon infantryIcon = new ImageIcon("." + File.separator + "images" + File.separator + "icon-1.png");
         ImageIcon cavalryIcon = new ImageIcon("." + File.separator + "images" + File.separator + "icon-2.png");
@@ -116,7 +118,7 @@ public class PlayerGameInfoPanel extends JPanel {
         }
         cardBox.add(infantryCardBox);
         cardBox.add(cavalryCardBox);
-        cardBox.add(artilleryCardBox);
+        cardBox.add(artilleryCardBox); */
         
         // add player name
         this.add(this.playerName);
@@ -127,7 +129,7 @@ public class PlayerGameInfoPanel extends JPanel {
         this.add(this.numCards);
         this.add(this.cardBox);
         
-        
+        updatePlayer(currentPlayer);
         // work:
         /*
         1. make the player panel more beautiful (title, border, card image, fix the width)
@@ -165,7 +167,7 @@ public class PlayerGameInfoPanel extends JPanel {
         JLabel numCavalry = new JLabel(cavalryIcon);
         JLabel numArtillery = new JLabel(artilleryIcon);
         Box artilleryArmyBox = new Box(BoxLayout.X_AXIS);
-        int totalNumArmies = currentPlayer.getNumArmies();  // get total amount of armies owned
+        int totalNumArmies = currentPlayer.getNumArmiesOwned();  // get total amount of armies owned
         this.artillery = totalNumArmies / 10;
         artilleryArmyBox.add(numArtillery);
         artilleryArmyBox.add(new JLabel("* " + artillery + "     "));
