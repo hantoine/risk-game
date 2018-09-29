@@ -159,4 +159,13 @@ public class RiskModel {
     public void setStage(int stage) {
         this.stage = stage;
     }
+    
+    /**
+     * Initialize the initial number of armies for each player
+     */
+    public void initializePlayers() {
+        this.players.stream().forEach((player) -> {
+            player.initializeArmies(this.players.size());
+        });        
+    }
 }

@@ -157,9 +157,4 @@ public class PlayerModel {
     public void setCardsOwned(HandModel cardsOwned) {
         this.cardsOwned = cardsOwned;
     }
-
-    public void initializeNumArmies(int numPlayerInGame) {
-        this.numArmies = 0;
-        //TODO
-    }
 }
