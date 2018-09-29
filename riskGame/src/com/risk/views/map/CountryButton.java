@@ -9,7 +9,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 
 /**
- *
+ * Jlabel that represents a country in the map
  * @author hantoine
  */
 public class CountryButton extends JLabel {
@@ -20,30 +20,19 @@ public class CountryButton extends JLabel {
     private static int positionY;
     private String name;
 
- 
     /**
-     * @return the name
+     * Constructor
+     * @param x position in x
+     * @param y position y
+     * @param name name of the country
      */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public CountryButton(int x, int y, String name) {
         super("0");
         this.name = name;
         this.setBackground(Color.WHITE);
         this.setOpaque(true);
         this.setHorizontalAlignment(JLabel.CENTER);
-        //this.setEditable(false);
-
-        //this.setTransferHandler(new TransferHandler("text"));
+       
         this.positionX = x;
         this.positionY = y;
 
@@ -51,10 +40,36 @@ public class CountryButton extends JLabel {
         this.setSize(buttonSize, buttonSize);
     }
 
+ 
+    /**
+     * Getter of the name attribute
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Setter of the name attribute
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * It increase or decrease the armies that a player has in a country
+     * @param numberOfArmies new number
+     */
     public void updateArmies(String numberOfArmies) {
 
     }
 
+    /**
+     * It gives a new location for the country in the map
+     * @param x position in x
+     * @param y position in y
+     */
     public void updateLocation(int x, int y) {
 
     }

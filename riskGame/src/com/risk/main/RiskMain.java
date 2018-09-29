@@ -11,12 +11,13 @@ import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 
 /**
- *
+ * Main of the game
  * @author n_irahol
  */
 public class RiskMain {
 
     /**
+     * Creates the view and model and passes them to the controller
      * @param args the command line arguments
      */
     public static void main(String args[]) {

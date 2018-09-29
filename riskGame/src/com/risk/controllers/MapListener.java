@@ -16,20 +16,34 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 /**
- *
+ * It listens to Mouse events in the map
+ * It includes:
+ * <ul>
+ * <li>Attack movements</li>
+ * <li>Reinforcement movements</li>
+ * <li>Fortification movements</li>
+ * </ul>
  * @author Nellybett
  */
 public class MapListener extends MouseAdapter {
 
-    String countrySource;
-    String countryReceive;
+    private String countrySource;
+    private String countryReceive;
     private String countryReinforce;
-    RiskModel riskModel;
+    private RiskModel riskModel;
 
+    /**
+     * Constructor
+     * @param riskModel receives the model to change it when an event occurs 
+     */
     public MapListener(RiskModel riskModel) {
         this.riskModel = riskModel;
     }
 
+    /**
+     * It manages a pressed event in the map
+     * @param e the event to manage
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         MapPanel mapPanel;
@@ -40,7 +54,7 @@ public class MapListener extends MouseAdapter {
             if (cAux != null && cAux instanceof CountryButton) {
                 CountryButton source = (CountryButton) cAux;
                 source.setBackground(Color.gray);
-                this.countrySource = source.getName();
+                this.setCountrySource(source.getName());
                 System.out.println(source.getName());
             }
 
@@ -48,6 +62,10 @@ public class MapListener extends MouseAdapter {
 
     }
 
+    /**
+     * It manages a release event from the map
+     * @param e the event to manage
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         MapPanel mapPanel;
@@ -57,15 +75,19 @@ public class MapListener extends MouseAdapter {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
             if (cAux != null && cAux instanceof CountryButton) {
                 CountryButton destiny = (CountryButton) cAux;
-                CountryButton source = mapPanel.getCountriesButtons().get(this.countrySource);
+                CountryButton source = mapPanel.getCountriesButtons().get(this.getCountrySource());
                 source.setBackground(Color.white);
                 System.out.println(source.getName() + "--->" + destiny.getName());
-                this.countryReceive = source.getName();
+                this.setCountryReceive(source.getName());
             }
 
         }
     }
 
+    /**
+     * It manages a click event in the map
+     * @param e the event to manage
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         MapPanel mapPanel;
@@ -84,4 +106,52 @@ public class MapListener extends MouseAdapter {
         }
     }
 
+    
+    /**
+     * Getter of countrySource attribute
+     * @return the countrySource
+     */
+    public String getCountrySource() {
+        return countrySource;
+    }
+
+    /**
+     * Setter of countrySource attribute
+     * @param countrySource the countrySource to set
+     */
+    public void setCountrySource(String countrySource) {
+        this.countrySource = countrySource;
+    }
+
+    /**
+     * Getter of countryReceive attribute
+     * @return the countryReceive
+     */
+    public String getCountryReceive() {
+        return countryReceive;
+    }
+
+    /**
+     * Setter of countryReceive attribute
+     * @param countryReceive the countryReceive to set
+     */
+    public void setCountryReceive(String countryReceive) {
+        this.countryReceive = countryReceive;
+    }
+
+    /**
+     * Getter of riskModel attribute attribute
+     * @return the riskModel
+     */
+    public RiskModel getRiskModel() {
+        return riskModel;
+    }
+
+    /**
+     * Setter of riskModel attribute
+     * @param riskModel the riskModel to set
+     */
+    public void setRiskModel(RiskModel riskModel) {
+        this.riskModel = riskModel;
+    }
 }

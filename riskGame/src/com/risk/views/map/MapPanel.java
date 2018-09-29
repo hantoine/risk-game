@@ -11,6 +11,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import javax.swing.JPanel;
 
+/**
+ * JPanel that contains the map of the game
+ * @author Nellybett
+ */
 public class MapPanel extends JPanel {
 
     Image image;
@@ -18,8 +22,8 @@ public class MapPanel extends JPanel {
     private HashMap<String, CountryButton> countriesButtons;
 
     /**
-     *
-     * @param board
+     *Constructor
+     * @param board map in the model
      */
     public MapPanel(MapModel board, MouseListener countryListener) {
         super(null);
@@ -45,6 +49,10 @@ public class MapPanel extends JPanel {
             
     }
 
+    /**
+     * It paints the adj and the image in the panel
+     * @param g 
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -58,6 +66,7 @@ public class MapPanel extends JPanel {
     }
 
     /**
+     * Getter of the countriesButton attribute
      * @return the countriesButtons
      */
     public HashMap<String, CountryButton> getCountriesButtons() {
@@ -65,6 +74,7 @@ public class MapPanel extends JPanel {
     }
 
     /**
+     * Setter of the countriesButton attribute
      * @param countriesButtons the countriesButtons to set
      */
     public void setCountriesButtons(HashMap<String, CountryButton> countriesButtons) {

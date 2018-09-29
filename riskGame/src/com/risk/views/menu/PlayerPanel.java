@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- *
+ * It represents the view for the attributes of a player
  * @author Nellybett
  */
 public class PlayerPanel extends JPanel {
@@ -21,6 +21,7 @@ public class PlayerPanel extends JPanel {
     private DeletableButton delButton;
 
     /**
+     * Getter of the name attribute
      * @return the name
      */
     public String getName() {
@@ -28,6 +29,7 @@ public class PlayerPanel extends JPanel {
     }
 
     /**
+     * Setter of the name attribute
      * @param name the name to set
      */
     public void setName(String name) {
@@ -35,6 +37,7 @@ public class PlayerPanel extends JPanel {
     }
 
     /**
+     * Getter of the playerNameTextField attribute
      * @return the playerNameTextField
      */
     public JTextField getPlayerNameTextField() {
@@ -42,6 +45,7 @@ public class PlayerPanel extends JPanel {
     }
 
     /**
+     * Setter of the playerNameTextField attribute
      * @param playerNameTextField the playerNameTextField to set
      */
     public void setPlayerNameTextField(JTextField playerNameTextField) {
@@ -49,6 +53,7 @@ public class PlayerPanel extends JPanel {
     }
 
     /**
+     * Getter of the colorButton attribute
      * @return the colorButton
      */
     public JButton getColorButton() {
@@ -56,6 +61,7 @@ public class PlayerPanel extends JPanel {
     }
 
     /**
+     * Setter of the colorButton attribute
      * @param colorButton the colorButton to set
      */
     public void setColorButton(JButton colorButton) {
@@ -63,6 +69,7 @@ public class PlayerPanel extends JPanel {
     }
 
     /**
+     * Getter of the delButton attribute 
      * @return the delButton
      */
     public DeletableButton getDelButton() {
@@ -70,6 +77,7 @@ public class PlayerPanel extends JPanel {
     }
 
     /**
+     * Setter of the delButton attribute
      * @param delButton the delButton to set
      */
     public void setDelButton(DeletableButton delButton) {
