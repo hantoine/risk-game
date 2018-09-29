@@ -113,7 +113,6 @@ public class MenuListener extends MouseAdapter {
                                     PlayerPanel player=aux2.get(i);
                                     PlayerModel playerGame=new PlayerModel(player.getPlayerNameTextField().getText(),player.getColorButton().getBackground(),true);
                                     listPlayers.add(playerGame);
-                                    i++;
                                 }
                                 
                                 this.riskModel.setPlayerList(listPlayers);
