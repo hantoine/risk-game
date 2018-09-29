@@ -24,7 +24,6 @@ import javax.swing.JPanel;
  */
 public class PlayerGameInfoPanel extends JPanel {
 
-    private PlayerModel currentPlayer;
     private JButton playerName;
     private BufferedImage image;
     private ImageIcon background;
@@ -46,7 +45,6 @@ public class PlayerGameInfoPanel extends JPanel {
      * @throws IOException 
      */
     public PlayerGameInfoPanel(PlayerModel currentPlayer) throws IOException {
-        this.currentPlayer = currentPlayer;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(150,450);
         this.playerName = new JButton();
@@ -152,12 +150,10 @@ public class PlayerGameInfoPanel extends JPanel {
      * 
      * @param currentPlayer 
      */
-    public void updatePlayer(PlayerModel currentPlayer){
-        this.currentPlayer = currentPlayer;
-        
+    public void updatePlayer(PlayerModel currentPlayer){        
         // update player name and color
-        playerName.setText(this.currentPlayer.getName());
-        playerName.setBackground(this.currentPlayer.getColor());
+        playerName.setText(currentPlayer.getName());
+        playerName.setBackground(currentPlayer.getColor());
         
         // update armies
         ImageIcon infantryIcon = new ImageIcon("." + File.separator + "images" + File.separator + "icon-1.png");
@@ -195,7 +191,7 @@ public class PlayerGameInfoPanel extends JPanel {
         Box infantryCardBox = new Box(BoxLayout.Y_AXIS);
         Box cavalryCardBox = new Box(BoxLayout.Y_AXIS);
         Box artilleryCardBox = new Box(BoxLayout.Y_AXIS);
-        for (CardModel hand : this.currentPlayer.getCardsOwned().getHand()) {
+        for (CardModel hand : currentPlayer.getCardsOwned().getHand()) {
             // get the corresponding card ImageIcon and resize the card image
             ImageIcon cardIcon = new ImageIcon("." + File.separator + "images" 
                     + File.separator + hand.getTypeOfArmie() + ".png");
@@ -205,7 +201,7 @@ public class PlayerGameInfoPanel extends JPanel {
             JButton aux = new JButton();
             aux.setIcon(cardIcon);
             aux.setText("");
-            aux.setBackground(this.currentPlayer.getColor());
+            aux.setBackground(currentPlayer.getColor());
             switch(hand.getTypeOfArmie()) {
                 case "infantry":
                     infantryCardBox.add(aux);
@@ -224,14 +220,6 @@ public class PlayerGameInfoPanel extends JPanel {
         cardBox.add(artilleryCardBox);
         
         
-    }
-
-    /**
-     * 
-     * @param currentPlayer 
-     */
-    public void setCurrentPlayer(PlayerModel currentPlayer) {
-        this.currentPlayer = currentPlayer;
     }
 
     /**
