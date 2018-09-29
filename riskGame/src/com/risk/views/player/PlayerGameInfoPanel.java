@@ -35,9 +35,8 @@ public final class PlayerGameInfoPanel extends JPanel {
      * Constructor
      *
      * @param currentPlayer player that has the turn
-     * @throws IOException
      */
-    public PlayerGameInfoPanel(PlayerModel currentPlayer) throws IOException {
+    public PlayerGameInfoPanel(PlayerModel currentPlayer) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(150, 450);
         
@@ -54,10 +53,6 @@ public final class PlayerGameInfoPanel extends JPanel {
         this.add(this.numContinents);
         this.add(this.numCards);
         this.add(this.cardBox);
-
-        
-        this.setBorder(BorderFactory.createLineBorder(Color.black));
-        this.cardBox.setBorder(BorderFactory.createLineBorder(Color.yellow));
         
         updatePlayer(currentPlayer);
     }
