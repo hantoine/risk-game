@@ -13,6 +13,7 @@ import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
 import com.risk.views.menu.MenuView;
+import com.risk.views.player.PlayerGameHandPanel;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -42,6 +43,7 @@ public class RiskView extends javax.swing.JFrame {
     private JPanel battlePanel;
     private MapPanel mapPanel;
     private PlayerGameInfoPanel playerPanel;
+    private PlayerGameHandPanel playerHandPanel;
     private RiskController riskController;
     private JButton phase;
     
@@ -51,8 +53,8 @@ public class RiskView extends javax.swing.JFrame {
     public RiskView() {
         super("Risk Game");
         
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        Container cp = getContentPane();
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        Container cp = this.getContentPane();
         cp.setLayout(new BorderLayout());
         this.setResizable(false);
     }
@@ -117,15 +119,29 @@ public class RiskView extends javax.swing.JFrame {
             this.remove(this.getPlayerPanel());
         }
         Container cp = getContentPane();
-        try {
-            this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
-        } catch(IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+        this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
         this.getPlayerPanel().updatePlayer(riskModel.getCurrentPlayer());
-        cp.add(this.getPlayerPanel(), BorderLayout.EAST);
-        
-       
+        cp.add(this.getPlayerPanel(), BorderLayout.EAST);    
+    }    
+    
+    /**
+     * Initialize the player hand panel in charge of displaying the cards of the player
+     * @param riskModel model of the game
+     */
+    public void initialPlayerHandPanel(RiskModel riskModel) {
+        this.setPlayerHandPanel(new PlayerGameHandPanel(riskModel.getCurrentPlayer()));
+    }
+    
+    public PlayerGameHandPanel getPlayerHandPanel() {
+        return playerHandPanel;
+    }
+
+    private void setPlayerHandPanel(PlayerGameHandPanel playerHandPanel) {
+        if(this.getPlayerPanel() != null){
+            this.remove(this.getPlayerPanel());
+        }        
+        this.playerHandPanel = playerHandPanel;
+        //this.getContentPane().add(this.getPlayerPanel(), BorderLayout.SOUTH);       
     }
     
     /**

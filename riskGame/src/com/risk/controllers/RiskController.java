@@ -72,6 +72,7 @@ public class RiskController implements ActionListener{
                  //Start phase assign territories
                     this.getModelRisk().nextTurn(); 
                     this.getViewRisk().initialPlayer(getModelRisk());
+                    this.getViewRisk().initialPlayerHandPanel(getModelRisk());
                     this.getViewRisk().initialMap(getModelRisk(), getCountryListener());
                     break;
                 case 0:
