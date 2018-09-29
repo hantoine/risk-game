@@ -26,7 +26,6 @@ public abstract class PlayerModel {
     private Collection<TerritoryModel> contriesOwned;
     private Collection<ContinentModel> continentsOwned;
     private HandModel cardsOwned;
-    private int numArmiesOwned;
     private int numArmies;
     private int returnedCards;
 
@@ -41,7 +40,6 @@ public abstract class PlayerModel {
         this.color = color;
         this.contriesOwned = new LinkedList<>();
         this.continentsOwned = new LinkedList<>();
-        this.numArmiesOwned = 0;
         this.isHuman = isHuman;
         this.cardsOwned = new HandModel();
         this.numArmies = 0;
@@ -215,21 +213,5 @@ public abstract class PlayerModel {
      */
     public void setReturnedCards(int returnedCards) {
         this.returnedCards = returnedCards;
-    }
-    
-    /**
-     * Getter of the nuArmiesOwned attribute
-     * @return the numArmiesOwned
-     */
-    public int getNumArmiesOwned() {
-        return numArmiesOwned;
-    }
-
-    /**
-     * Setter of the nuArmiesOwned attribute
-     * @param numArmiesOwned the numArmiesOwned to set
-     */
-    public void setNumArmiesOwned(int numArmiesOwned) {
-        this.numArmiesOwned = numArmiesOwned;
     }
 }
