@@ -79,9 +79,13 @@ public class MapFileManagement {
      */
     public String readFile(String path){  
         String linesRead;
+        String[] extenValid;
         Path aux;
         try {
-            
+            extenValid=path.split("[.]");
+            if(!extenValid[extenValid.length-1].equals("map") || extenValid==null){
+                return "-1";
+            }
             try{
                 aux=Paths.get(path);        
             }catch(Exception ex){
