@@ -26,7 +26,6 @@ public abstract class PlayerModel {
     private Collection<TerritoryModel> contriesOwned;
     private Collection<ContinentModel> continentsOwned;
     private HandModel cardsOwned;
-    private int numArmiesOwned;
     private int numArmies;
     private int returnedCards;
 
@@ -41,7 +40,6 @@ public abstract class PlayerModel {
         this.color = color;
         this.contriesOwned = new LinkedList<>();
         this.continentsOwned = new LinkedList<>();
-        this.numArmiesOwned = 0;
         this.isHuman = isHuman;
         this.cardsOwned = new HandModel();
         this.numArmies = 0;
@@ -152,6 +150,32 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Initialize the number of initial armies of this player depending on the number of players in the game
+     * @param nbPlayers number of players in the game
+     */
+    public void initializeArmies(int nbPlayers) {
+        switch (nbPlayers) {
+            case 2:
+                this.numArmies = 40;
+                break;
+            case 3:
+                this.numArmies = 35;
+                break;
+            case 4:
+                this.numArmies = 30;
+                break;
+            case 5:
+                this.numArmies = 25;
+                break;
+            case 6:
+                this.numArmies = 20;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid number of players");
+        }
+    }
+
+    /**
      * Getter of the isHuman attribute
      * @return the isHuman
      */
@@ -190,21 +214,4 @@ public abstract class PlayerModel {
     public void setReturnedCards(int returnedCards) {
         this.returnedCards = returnedCards;
     }
-    
-    /**
-     * Getter of the nuArmiesOwned attribute
-     * @return the numArmiesOwned
-     */
-    public int getNumArmiesOwned() {
-        return numArmiesOwned;
-    }
-
-    /**
-     * Setter of the nuArmiesOwned attribute
-     * @param numArmiesOwned the numArmiesOwned to set
-     */
-    public void setNumArmiesOwned(int numArmiesOwned) {
-        this.numArmiesOwned = numArmiesOwned;
-    }
-
 }

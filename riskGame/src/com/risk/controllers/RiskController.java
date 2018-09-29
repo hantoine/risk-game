@@ -16,7 +16,7 @@ import javax.swing.JMenuItem;
  * It is the Game-driver
  * @author Nellybett
  */
-public class RiskController implements ActionListener{
+public class RiskController implements ActionListener {
 
     private RiskView viewRisk;
     private RiskModel modelRisk;
@@ -39,7 +39,6 @@ public class RiskController implements ActionListener{
         viewRisk.initStagePanel();
         viewRisk.setVisible(true);
         //viewRisk.initialMap(modelRisk, countryListener);
-        
 
     }
     
@@ -50,7 +49,7 @@ public class RiskController implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         JComponent c = (JComponent) e.getSource();
-        
+
         if (c != null && c instanceof JMenuItem) {
             JMenuItem source = (JMenuItem) c;
             System.out.println(source.getText());
@@ -72,6 +71,7 @@ public class RiskController implements ActionListener{
             switch (this.getModelRisk().getStage()) {
                 case -1:
                  //Start phase assign territories
+            	    this.getModelRisk().initializePlayers();
                     this.getModelRisk().nextTurn(); 
                     break;
                 case 0:
