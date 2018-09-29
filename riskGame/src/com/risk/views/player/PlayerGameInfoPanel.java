@@ -7,9 +7,11 @@ package com.risk.views.player;
 
 import com.risk.models.CardModel;
 import com.risk.models.interfaces.PlayerModel;
+import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -52,8 +54,12 @@ public class PlayerGameInfoPanel extends JPanel {
         this.add(this.numCountries);
         this.add(this.numContinents);
         this.add(this.numCards);
-        //this.add(this.cardBox);
+        this.add(this.cardBox);
 
+        
+        this.setBorder(BorderFactory.createLineBorder(Color.black));
+        this.cardBox.setBorder(BorderFactory.createLineBorder(Color.yellow));
+        
         updatePlayer(currentPlayer);
     }
 
@@ -77,13 +83,11 @@ public class PlayerGameInfoPanel extends JPanel {
 
         // update cards
         this.numCards.setText("Card Owned: " + currentPlayer.getCardsOwned().getHand().size());
-        Box infantryCardBox = new Box(BoxLayout.Y_AXIS);
-        Box cavalryCardBox = new Box(BoxLayout.Y_AXIS);
-        Box artilleryCardBox = new Box(BoxLayout.Y_AXIS);
-        for (CardModel hand : currentPlayer.getCardsOwned().getHand()) {
+        cardBox.removeAll();
+        currentPlayer.getCardsOwned().getHand().stream().forEach((card) -> {
             // get the corresponding card ImageIcon and resize the card image
             ImageIcon cardIcon = new ImageIcon("." + File.separator + "images"
-                    + File.separator + hand.getTypeOfArmie() + ".png");
+                    + File.separator + card.getTypeOfArmie() + ".png");
             Image image = cardIcon.getImage();
             Image newImage = image.getScaledInstance(50, 70, java.awt.Image.SCALE_SMOOTH);
             cardIcon = new ImageIcon(newImage);
@@ -91,23 +95,7 @@ public class PlayerGameInfoPanel extends JPanel {
             aux.setIcon(cardIcon);
             aux.setText("");
             aux.setBackground(currentPlayer.getColor());
-            switch (hand.getTypeOfArmie()) {
-                case "infantry":
-                    infantryCardBox.add(aux);
-                    break;
-                case "cavalry":
-                    cavalryCardBox.add(aux);
-                    break;
-                case "artillery":
-                    artilleryCardBox.add(aux);
-                    break;
-            }
-        }
-        cardBox.removeAll();
-        cardBox.add(infantryCardBox);
-        cardBox.add(cavalryCardBox);
-        cardBox.add(artilleryCardBox);
-
+            cardBox.add(aux);
+        });
     }
-
 }
