@@ -223,6 +223,15 @@ public class RiskModel {
     public void setStage(int stage) {
         this.stage = stage;
     }
+    
+    /**
+     * Initialize the initial number of armies for each player
+     */
+    public void initializePlayers() {
+        this.players.stream().forEach((player) -> {
+            player.initializeArmies(this.players.size());
+        });        
+    }
 
     /**
      * Getter of the deck attribute
@@ -239,7 +248,7 @@ public class RiskModel {
         this.deck=new LinkedList();
         int i=0;
         for(String country:this.getBoard().getGraphTerritories().keySet()){
-            if(i<=42){
+            if(i<=14){
                 this.deck.add(new CardModel(country, "Infantry"));
                 this.deck.add(new CardModel(country, "Cavalry"));
                 this.deck.add(new CardModel(country, "Artillery"));
@@ -257,6 +266,4 @@ public class RiskModel {
     public void shuffleDeck(){
         Collections.shuffle(this.getDeck());
     }
-    
-    
 }

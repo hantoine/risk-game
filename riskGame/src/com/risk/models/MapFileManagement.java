@@ -33,9 +33,12 @@ public class MapFileManagement {
         int errorConfigurationInfo;
         String fileRead;
         
+        if (board==null){
+            return -7;
+        }
         
         fileRead = readFile(path);
-        if (fileRead.equals("-1")){
+        if (fileRead.equals("-1") || fileRead==null || fileRead.equals("")){
             return -1;
         }
             
@@ -79,9 +82,13 @@ public class MapFileManagement {
      */
     public String readFile(String path){  
         String linesRead;
+        String[] extenValid;
         Path aux;
         try {
-            
+            extenValid=path.split("[.]");
+            if(!extenValid[extenValid.length-1].equals("map") || extenValid==null){
+                return "-1";
+            }
             try{
                 aux=Paths.get(path);        
             }catch(Exception ex){
@@ -160,6 +167,10 @@ public class MapFileManagement {
                             }
                          
                 }
+                
+                if(board.getImage()==null)
+                    return -1;
+                         
             }else{
                 return -1;
             }
