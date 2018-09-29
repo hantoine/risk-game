@@ -39,8 +39,8 @@ public class PlayerGameInfoPanel extends JPanel {
     public PlayerGameInfoPanel(PlayerModel currentPlayer) throws IOException {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(150, 450);
+        
         this.playerName = new JButton();
-
         this.numArmies = new JButton("Army Owned: " + currentPlayer.getNumArmiesOwned());
         this.numContinents = new JButton("Continent Owned: " + currentPlayer.getContinentsOwned().size());
         this.numCountries = new JButton("Country Owned: " + currentPlayer.getContriesOwned().size());
@@ -65,6 +65,9 @@ public class PlayerGameInfoPanel extends JPanel {
         // update player name and color
         playerName.setText(currentPlayer.getName());
         playerName.setBackground(currentPlayer.getColor());
+
+        //update the number of armies
+        this.numArmies.setText("Army Owned: " + currentPlayer.getNumArmiesOwned());
 
         // update countries and continents
         this.numCountries.setText("Countries Owned: " + Integer.toString(currentPlayer
