@@ -112,6 +112,31 @@ public class PlayerModel {
     }
 
     /**
+     *
+     */
+    public void initializeArmies(int nbPlayers) {
+        switch (nbPlayers) {
+            case 2:
+                this.numArmies = 40;
+                break;
+            case 3:
+                this.numArmies = 35;
+                break;
+            case 4:
+                this.numArmies = 30;
+                break;
+            case 5:
+                this.numArmies = 25;
+                break;
+            case 6:
+                this.numArmies = 20;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid number of players");
+        }
+    }
+
+    /**
      * @return the numArmies
      */
     public boolean getType() {
