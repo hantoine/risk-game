@@ -6,11 +6,8 @@
 package com.risk.views.player;
 
 import com.risk.models.interfaces.PlayerModel;
-import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
-import java.io.IOException;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
