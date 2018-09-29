@@ -57,7 +57,7 @@ public final class PlayerGameInfoPanel extends JPanel {
         playerName.setBackground(currentPlayer.getColor());
 
         //update the number of armies
-        this.numArmies.setText("Army Owned: " + currentPlayer.getNumArmiesOwned());
+        this.numArmies.setText("Army Owned: " + currentPlayer.getNumArmies());
 
         // update countries and continents
         this.numCountries.setText("Countries Owned: " + Integer.toString(currentPlayer
