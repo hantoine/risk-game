@@ -5,7 +5,6 @@
  */
 package com.risk.views.player;
 
-import com.risk.models.CardModel;
 import com.risk.models.interfaces.PlayerModel;
 import java.awt.Color;
 import java.awt.Image;
@@ -23,14 +22,14 @@ import javax.swing.JPanel;
  *
  * @author Will
  */
-public class PlayerGameInfoPanel extends JPanel {
+public final class PlayerGameInfoPanel extends JPanel {
 
-    private JButton playerName;
-    private JButton numArmies;
-    private JButton numCountries;
-    private JButton numContinents;
-    private Box cardBox;
-    private JButton numCards;
+    private final JButton playerName;
+    private final JButton numArmies;
+    private final JButton numCountries;
+    private final JButton numContinents;
+    private final Box cardBox;
+    private final JButton numCards;
 
     /**
      * Constructor
@@ -43,10 +42,10 @@ public class PlayerGameInfoPanel extends JPanel {
         this.setSize(150, 450);
         
         this.playerName = new JButton();
-        this.numArmies = new JButton("Army Owned: " + currentPlayer.getNumArmiesOwned());
-        this.numContinents = new JButton("Continent Owned: " + currentPlayer.getContinentsOwned().size());
-        this.numCountries = new JButton("Country Owned: " + currentPlayer.getContriesOwned().size());
-        this.numCards = new JButton("Card Owned: " + currentPlayer.getCardsOwned().getHand().size());
+        this.numArmies = new JButton();
+        this.numContinents = new JButton();
+        this.numCountries = new JButton();
+        this.numCards = new JButton();
         this.cardBox = new Box(BoxLayout.X_AXIS);
   
         this.add(this.playerName);
