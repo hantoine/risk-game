@@ -7,10 +7,6 @@ package com.risk.controllers;
 
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
-import com.risk.views.menu.MenuView;
-import com.risk.views.menu.StartMenuView;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComponent;
