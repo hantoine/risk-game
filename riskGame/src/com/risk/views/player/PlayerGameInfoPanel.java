@@ -36,9 +36,6 @@ public class PlayerGameInfoPanel extends JPanel {
     private JButton numCards;
     private JLabel title;
 
-    private int armyNum = 0;
-
-
     /**
      * Constructor
      *
@@ -81,11 +78,10 @@ public class PlayerGameInfoPanel extends JPanel {
         ImageIcon armyIcon = new ImageIcon("." + File.separator + "images" + File.separator + "icon-1.png");
         JLabel numArmies = new JLabel(armyIcon);
         Box armyBox = new Box(BoxLayout.X_AXIS);
-        this.armyNum = currentPlayer.getNumArmiesOwned();  // get total amount of armies owned
         
         this.armyBox.removeAll();
         this.armyBox.add(numArmies);
-        this.armyBox.add(new JLabel("* " + armyNum + "     "));
+        this.armyBox.add(new JLabel("* " + currentPlayer.getNumArmiesOwned() + "     "));
 
                 
 
