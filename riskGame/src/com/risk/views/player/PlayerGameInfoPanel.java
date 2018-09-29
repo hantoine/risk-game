@@ -129,7 +129,7 @@ public class PlayerGameInfoPanel extends JPanel {
         this.add(this.numCards);
         this.add(this.cardBox);
         
-        updatePlayer(currentPlayer);
+        updatePlayer(currentPlayer); //It is better if you call it from outside but it was just to reuse the code
         // work:
         /*
         1. make the player panel more beautiful (title, border, card image, fix the width)

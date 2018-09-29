@@ -25,6 +25,7 @@ public class RiskModel {
     private int stage;
     static Integer maxNbOfPlayers = 6;
     private PlayerModel currentPlayer;
+    private LinkedList<CardModel> deck;
 
     /**
      * Constructor of the model
@@ -37,7 +38,6 @@ public class RiskModel {
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, true);
-
         this.currentPlayer = this.players.getFirst();
 
     }
@@ -92,6 +92,9 @@ public class RiskModel {
         this.board=new MapModel();
         MapFileManagement aux=new MapFileManagement();
         int result= aux.createBoard(path,this.board);
+        if(result==0){
+            this.setDeck();
+        }
         return result;
         
     }
@@ -220,4 +223,40 @@ public class RiskModel {
     public void setStage(int stage) {
         this.stage = stage;
     }
+
+    /**
+     * Getter of the deck attribute
+     * @return the deck
+     */
+    public LinkedList<CardModel> getDeck() {
+        return deck;
+    }
+
+    /**
+     * Setter of the deck attribute
+     */
+    public void setDeck() {
+        this.deck=new LinkedList();
+        int i=0;
+        for(String country:this.getBoard().getGraphTerritories().keySet()){
+            if(i<=42){
+                this.deck.add(new CardModel(country, "Infantry"));
+                this.deck.add(new CardModel(country, "Cavalry"));
+                this.deck.add(new CardModel(country, "Artillery"));
+            }else{
+                break;
+            }
+            i++;
+        }
+        shuffleDeck();
+    }
+    
+    /**
+     * Change the order of the cards
+     */
+    public void shuffleDeck(){
+        Collections.shuffle(this.getDeck());
+    }
+    
+    
 }
