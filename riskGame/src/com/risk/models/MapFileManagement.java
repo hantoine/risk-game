@@ -361,7 +361,11 @@ public class MapFileManagement {
         return result;
         
     }
-    
+    /**
+     * It creats a string with the adjacencies of a country 
+     * @param country receives a country
+     * @return return a string with the adj sepaarated by a ,
+     */
     public String getAdj(TerritoryModel country){
         String adj="";
         int i=0;
@@ -375,7 +379,8 @@ public class MapFileManagement {
         }    
             return adj;
     }
-        
+    
+    
     public int savingFile(String path,String fileContent){
         BufferedWriter bufferedWriter = null;
         try {
