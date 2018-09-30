@@ -298,6 +298,7 @@ public class MapFileManagement {
                         
                         if(board.getGraphContinents().containsKey(aux[3])){
                             board.getGraphContinents().get(aux[3]).setMember(auxCountry);
+                            auxCountry.setContinentName(aux[3]);
                         }else{
                             return -1;
                         }
@@ -341,8 +342,7 @@ public class MapFileManagement {
         
         for(String country:board.getGraphTerritories().keySet()){
             TerritoryModel aux=board.getGraphTerritories().get(country);
-            String adj="";
-            result=getAdj(aux,adj);
+            String adj=getAdj(aux);
             
             if(result==0){
                     territories=territories+aux.getName()+","+aux.getPositionX()+","+aux.getPositionY()+","+aux.getContinentName()+","+adj+"\n";
@@ -351,19 +351,31 @@ public class MapFileManagement {
             }
             
         }
+        
+        fileContent=configuration+"\n"+continents+"\n"+territories;
+        System.out.println(fileContent);
         result=savingFile(fileContent);
         return result;
         
     }
     
-    public int getAdj(TerritoryModel country,String adj){
-            
-            return 0;
-        }
+    public String getAdj(TerritoryModel country){
+        String adj="";
+        int i=0;
+        for(TerritoryModel aux:country.getAdj()){
+            if(i==0){
+                adj=adj+aux.getName();
+                i++;
+            }else{
+                adj=adj+","+aux.getName();
+            }
+        }    
+            return adj;
+    }
         
-        public int savingFile(String fileContent){
+    public int savingFile(String fileContent){
             
-            return 0;
-        }
+        return 0;
+   }
 }
 
