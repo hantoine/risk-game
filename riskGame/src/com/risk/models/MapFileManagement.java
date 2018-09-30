@@ -357,7 +357,6 @@ public class MapFileManagement {
         }
         
         fileContent=configuration+"\n"+continents+"\n"+territories;
-        System.out.println(fileContent);
         result=savingFile(path,fileContent);
         return result;
         
@@ -382,7 +381,6 @@ public class MapFileManagement {
         try {
             
             File myFile = new File(path);
-            
             // check if file exist, otherwise create the file before writing
             if (!myFile.exists()) {
                 myFile.createNewFile();
@@ -390,6 +388,7 @@ public class MapFileManagement {
             Writer writer = new FileWriter(myFile);
             bufferedWriter = new BufferedWriter(writer);
             bufferedWriter.write(fileContent);
+            return 0;
         } catch (IOException e) {
             return -1;
         } finally{
@@ -399,7 +398,7 @@ public class MapFileManagement {
                  return -1;
             }
         }
-        return 0;
+        
    }
 }
 

@@ -92,6 +92,7 @@ public class RiskModel {
         this.board=new MapModel();
         MapFileManagement aux=new MapFileManagement();
         int result= aux.createBoard(path,this.board);
+        int test=aux.generateBoardFile("/Users/rebecca/Desktop/test/myMap.map", this.board);
         if(result==0){
             this.setDeck();
         }
