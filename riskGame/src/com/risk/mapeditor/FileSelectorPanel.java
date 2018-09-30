@@ -5,14 +5,18 @@
  */
 package com.risk.mapeditor;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Set;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -24,6 +28,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class FileSelectorPanel extends JPanel {
     private JButton selectFileButton;
     private JTextField textField;
+    private JLabel label;
+    private JPanel selectionPanel;
     
     /**
      * Constructor method.
@@ -34,12 +40,32 @@ public class FileSelectorPanel extends JPanel {
     public FileSelectorPanel(int width, int height, FileNameExtensionFilter exts){
         //parameterize the panel
         this.setSize(width, height);
-        this.setLayout(new FlowLayout());
+        this.setLayout(new BorderLayout());
+        this.setBorder(BorderFactory.createLineBorder(Color.black));
 
+        this.label = new JLabel("");
+        this.label.setVisible(false);
+        
+        this.selectionPanel = new JPanel();
+        selectionPanel.setLayout(new FlowLayout());
+        
         this.textField = new JTextField("No file selected.");
         setTextFieldSize(200,20);
         
         this.selectFileButton = new JButton("Select a file");
+        addFileChooserListener(exts);
+
+        this.add(BorderLayout.PAGE_START, label);
+        selectionPanel.add(selectFileButton);
+        selectionPanel.add(textField);
+        this.add(BorderLayout.CENTER, selectionPanel);
+    }
+    
+    /**
+     * Add a listener to the button so that it opens a FileChooser when clicked.
+     * @param exts 
+     */
+    public void addFileChooserListener(FileNameExtensionFilter exts){
         this.selectFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,9 +82,6 @@ public class FileSelectorPanel extends JPanel {
                 }
             }
         });
-
-        this.add(selectFileButton);
-        this.add(textField);
     }
     
     /**
@@ -85,5 +108,10 @@ public class FileSelectorPanel extends JPanel {
      */
     public void setButtonMessage(String message){
         this.selectFileButton.setText(message);
+    }
+    
+    public void setLabel(String message){
+        this.label.setText(message);
+        this.label.setVisible(true);
     }
 }
