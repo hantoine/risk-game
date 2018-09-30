@@ -6,9 +6,13 @@
 package com.risk.models;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -354,7 +358,7 @@ public class MapFileManagement {
         
         fileContent=configuration+"\n"+continents+"\n"+territories;
         System.out.println(fileContent);
-        result=savingFile(fileContent);
+        result=savingFile(path,fileContent);
         return result;
         
     }
@@ -373,8 +377,28 @@ public class MapFileManagement {
             return adj;
     }
         
-    public int savingFile(String fileContent){
+    public int savingFile(String path,String fileContent){
+        BufferedWriter bufferedWriter = null;
+        try {
             
+            File myFile = new File(path);
+            
+            // check if file exist, otherwise create the file before writing
+            if (!myFile.exists()) {
+                myFile.createNewFile();
+            }
+            Writer writer = new FileWriter(myFile);
+            bufferedWriter = new BufferedWriter(writer);
+            bufferedWriter.write(fileContent);
+        } catch (IOException e) {
+            return -1;
+        } finally{
+            try{
+                if(bufferedWriter != null) bufferedWriter.close();
+            } catch(Exception ex){
+                 return -1;
+            }
+        }
         return 0;
    }
 }
