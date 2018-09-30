@@ -31,7 +31,7 @@ public class MapEditorPanel extends javax.swing.JFrame {
         
         contentPanel = new JPanel();
         imageSelectorPanel = new FileSelectorPanel(210,30, new FileNameExtensionFilter(".png", ".jpg",".jpeg"));
-        imageSelectorPanel.setLabel("lol");
+        imageSelectorPanel.setLabel("");
         JLabel mapLabel= new JLabel("<html>Select a background image for your map.<br>"
                 + "Click left in an empty space to add a new country.<br>"
                 + "Click left on an existing country to modify it.<br>"
