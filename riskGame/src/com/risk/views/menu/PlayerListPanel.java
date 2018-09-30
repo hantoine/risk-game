@@ -172,7 +172,7 @@ public class PlayerListPanel extends JPanel {
         newPlayer.getDelButton().addMouseListener(this.menuListener);
         newPlayer.add(newPlayer.getDelButton());
         this.getPlayersArray().add(newPlayer);
-        System.out.println("Players name: " + newPlayer.getName());
+        
         this.add(newPlayer);
 
         revalidate();

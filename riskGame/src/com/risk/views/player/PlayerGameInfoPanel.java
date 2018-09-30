@@ -48,7 +48,7 @@ public final class PlayerGameInfoPanel extends JPanel {
     }
 
     /**
-     *
+     * Updates player information
      * @param currentPlayer
      */
     public void updatePlayer(PlayerModel currentPlayer) {

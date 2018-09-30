@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import com.risk.controllers.GameController;
 import com.risk.models.interfaces.PlayerModel;
 import java.awt.Color;
 
@@ -28,7 +29,7 @@ public class AIPlayerModel extends PlayerModel{
      * Reinforcement phase for AI Player
      */
     @Override
-    public void reinforcement() {
+    public void reinforcement(GameController playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -13,6 +13,7 @@ import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
 import com.risk.views.menu.MenuView;
+import com.risk.views.phases.StagePanel;
 import com.risk.views.player.PlayerGameHandPanel;
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -25,6 +26,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -46,6 +48,7 @@ public class RiskView extends javax.swing.JFrame {
     private PlayerGameHandPanel playerHandPanel;
     private RiskController riskController;
     private JButton phase;
+    private StagePanel stagePanel;
     
     /**
      * Constructor of main view
@@ -57,16 +60,15 @@ public class RiskView extends javax.swing.JFrame {
         Container cp = this.getContentPane();
         cp.setLayout(new BorderLayout());
         this.setResizable(false);
+        this.setStagePanel(new StagePanel());
+        cp.add(this.stagePanel,BorderLayout.NORTH);
     }
     
     /**
      * Initialize the panel where will be the additional elements of each phase
      */
-    public void initStagePanel(){
-        this.phase=new JButton("Change Stage");
-        this.phase.setVisible(false);
-        Container cp = getContentPane();
-        cp.add(this.phase,BorderLayout.NORTH);
+    public void initStagePanel(int phase, int armies){        
+        this.getStagePanel().updatePhase(phase,armies);
     }
     
     /**
@@ -89,6 +91,7 @@ public class RiskView extends javax.swing.JFrame {
        
     }
 
+    
     /**
      * Initialize the new game menu
      * @param riskModel model of the game
@@ -283,6 +286,20 @@ public class RiskView extends javax.swing.JFrame {
      */
     public void setPhase(JButton phase) {
         this.phase = phase;
+    }
+
+    /**
+     * @return the reinforcementArmies
+     */
+    public StagePanel getStagePanel() {
+        return stagePanel;
+    }
+
+    /**
+     * @param reinforcementArmies the reinforcementArmies to set
+     */
+    public void setStagePanel(StagePanel stagePanel) {
+        this.stagePanel = stagePanel;
     }
 
 
