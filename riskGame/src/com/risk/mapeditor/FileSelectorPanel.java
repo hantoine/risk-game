@@ -7,12 +7,11 @@ package com.risk.mapeditor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -60,6 +59,10 @@ public class FileSelectorPanel extends JPanel {
         this.selectFileButton = new JButton("Select a file");
         addFileChooserListener(exts);
 
+        //set alignment
+        label.setAlignmentX( Component.LEFT_ALIGNMENT );
+        selectionPanel.setAlignmentX( Component.LEFT_ALIGNMENT );
+        
         //add all components to the class
         this.add(BorderLayout.PAGE_START, label);
         selectionPanel.add(selectFileButton);
@@ -73,23 +76,19 @@ public class FileSelectorPanel extends JPanel {
      */
     public void addFileChooserListener(FileNameExtensionFilter exts){
         //add an action listener so that when one click on the button it opens the file chooser
-        this.selectFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-                //create a new fiel chooser
-                JFileChooser fileChooser;
-                fileChooser = new JFileChooser();
-                fileChooser.setFileFilter(exts);
-                fileChooser.setCurrentDirectory(new File("."+File.separator));
-                
-                //handle selection on file chooser
-                if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    String fileName = fileChooser.getSelectedFile().getAbsolutePath();
-                    setTextFieldMessage(fileName);
-                } else {
-                    setTextFieldMessage("No file selected.");
-                }
+        this.selectFileButton.addActionListener((ActionEvent e) -> {
+            //create a new fiel chooser
+            JFileChooser fileChooser;
+            fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(exts);
+            fileChooser.setCurrentDirectory(new File("."+File.separator));
+            
+            //handle selection on file chooser
+            if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getAbsolutePath();
+                setTextFieldMessage(fileName);
+            } else {
+                setTextFieldMessage("No file selected.");
             }
         });
     }
