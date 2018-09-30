@@ -46,7 +46,7 @@ public class MapPanel extends JPanel {
         
         });
         
-            
+        
     }
 
     /**
@@ -62,7 +62,6 @@ public class MapPanel extends JPanel {
         for(Line2D line:this.adj.values()){
             g2.draw(line);
         }
-        
     }
 
     /**
