@@ -5,6 +5,7 @@
  */
 package com.risk.controllers;
 
+import com.risk.mapeditor.MapEditorPanel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,9 @@ public class RiskController implements ActionListener {
     private MenuListener menuListener;
     private MapListener countryListener;
     
+    //temporary (tim)
+    private MapEditorPanel mapEditor;
+    
     /**
      * Constructor
      * @param riskModel the model of the game
@@ -34,10 +38,17 @@ public class RiskController implements ActionListener {
         this.viewRisk.setRiskController(this);
         this.countryListener = new MapListener(getModelRisk());
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this); 
+        
+        //temporary (tim)
+        this.mapEditor = new MapEditorPanel(400,400);
+        this.mapEditor.setVisible(true);
+        
+        /**
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.addMenuBar();
         viewRisk.initStagePanel();
         viewRisk.setVisible(true);
+        * **/
         //viewRisk.initialMap(modelRisk, countryListener);
 
     }

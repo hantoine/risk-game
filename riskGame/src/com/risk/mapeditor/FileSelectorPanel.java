@@ -23,6 +23,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Panel enabling to select a file and display the name of the selected file in a textfield.
+ * While you don't set a label there is no label displayed.
  * @author timot
  */
 public class FileSelectorPanel extends JPanel {
@@ -43,18 +44,23 @@ public class FileSelectorPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.setBorder(BorderFactory.createLineBorder(Color.black));
 
+        //create label
         this.label = new JLabel("");
         this.label.setVisible(false);
         
+        //create panel for button and text field
         this.selectionPanel = new JPanel();
         selectionPanel.setLayout(new FlowLayout());
         
+        //create text field
         this.textField = new JTextField("No file selected.");
         setTextFieldSize(200,20);
         
+        //create button
         this.selectFileButton = new JButton("Select a file");
         addFileChooserListener(exts);
 
+        //add all components to the class
         this.add(BorderLayout.PAGE_START, label);
         selectionPanel.add(selectFileButton);
         selectionPanel.add(textField);
@@ -66,14 +72,18 @@ public class FileSelectorPanel extends JPanel {
      * @param exts 
      */
     public void addFileChooserListener(FileNameExtensionFilter exts){
+        //add an action listener so that when one click on the button it opens the file chooser
         this.selectFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
+                //create a new fiel chooser
                 JFileChooser fileChooser;
                 fileChooser = new JFileChooser();
                 fileChooser.setFileFilter(exts);
                 fileChooser.setCurrentDirectory(new File("."+File.separator));
                 
+                //handle selection on file chooser
                 if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     String fileName = fileChooser.getSelectedFile().getAbsolutePath();
                     setTextFieldMessage(fileName);
@@ -110,8 +120,13 @@ public class FileSelectorPanel extends JPanel {
         this.selectFileButton.setText(message);
     }
     
+    /**
+     * Set the message displayed by the label and make it visible if it is not already
+     * @param message 
+     */
     public void setLabel(String message){
         this.label.setText(message);
-        this.label.setVisible(true);
+        if(!this.label.isVisible())
+            this.label.setVisible(true);
     }
 }

@@ -5,6 +5,7 @@
  */
 package com.risk.views.menu;
 
+import com.risk.mapeditor.MapEditorPanel;
 import com.risk.controllers.MenuListener;
 import com.risk.models.RiskModel;
 import java.awt.BorderLayout;
@@ -47,8 +48,12 @@ public class StartMenuView extends JPanel {
         tabbedPane.setSize(300, 500);
 
         //get tabbed pane content
-        String[] titles = {"New Game", "Map Editor"};
-        JComponent[] components = {new NewGamePanel(riskModel, menuAction), new MapEditorPanel()};
+        
+        //temporary (tim) : commented because I don't know where to put the map editor
+        //String[] titles = {"New Game", "Map Editor"};
+        //JComponent[] components = {new NewGamePanel(riskModel, menuAction), new MapEditorPanel()};
+        String[] titles = {"New Game"};
+        JComponent[] components = {new NewGamePanel(riskModel, menuAction)};
 
         for (int i = 0; i < components.length; i++) {
             components[i].setSize(200, 200);
