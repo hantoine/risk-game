@@ -5,7 +5,7 @@
  */
 package com.risk.models.interfaces;
 
-import com.risk.models.CardModel;
+import com.risk.controllers.GameController;
 import com.risk.models.ContinentModel;
 import com.risk.models.HandModel;
 import com.risk.models.TerritoryModel;
@@ -27,6 +27,7 @@ public abstract class PlayerModel {
     private Collection<ContinentModel> continentsOwned;
     private HandModel cardsOwned;
     private int numArmies;
+    private int armiesDeploy;
     private int returnedCards;
 
     /**
@@ -43,13 +44,15 @@ public abstract class PlayerModel {
         this.isHuman = isHuman;
         this.cardsOwned = new HandModel();
         this.numArmies = 0;
+        this.armiesDeploy=0;
         this.returnedCards=0;
     }
     
     /**
      * Definition of the reinforcement phase
+     * @param playGame
      */
-    public abstract void reinforcement();
+    public abstract void reinforcement(GameController playGame);
     
     /**
      * Definition of the fortification phase
@@ -214,4 +217,20 @@ public abstract class PlayerModel {
     public void setReturnedCards(int returnedCards) {
         this.returnedCards = returnedCards;
     }
+
+    /**
+     * @return the armiesDeploy
+     */
+    public int getArmiesDeploy() {
+        return armiesDeploy;
+    }
+
+    /**
+     * @param armiesDeploy
+     */
+    public void setArmiesDeploy(int armiesDeploy) {
+        this.armiesDeploy = armiesDeploy;
+    }
+    
+    
 }

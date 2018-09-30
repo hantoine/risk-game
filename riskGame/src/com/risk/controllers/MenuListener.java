@@ -115,7 +115,7 @@ public class MenuListener extends MouseAdapter {
                             this.getRiskView().getMenuPanel().setVisible(false);
                             this.getRiskView().remove(this.getRiskView().getMenuPanel());
                             this.getRiskView().setMenuPanel(null);
-                            this.getRiskView().getPhase().setVisible(true);
+                            this.getRiskView().getStagePanel().setVisible(true);
                             
                             LinkedList<PlayerPanel> aux2=aux.getPlayersPanel().getPlayersArray();
                             LinkedList<PlayerModel> listPlayers=new LinkedList<>();

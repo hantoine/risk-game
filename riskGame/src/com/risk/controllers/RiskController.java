@@ -22,6 +22,8 @@ public class RiskController implements ActionListener {
     private RiskModel modelRisk;
     private MenuListener menuListener;
     private MapListener countryListener;
+    private Thread playGame;
+    private Object syncObj;
     
     /**
      * Constructor
@@ -29,14 +31,14 @@ public class RiskController implements ActionListener {
      * @param riskView  the view of the game
      */
     public RiskController(RiskModel riskModel,RiskView riskView) {
+        this.syncObj=new Object();
         this.modelRisk=riskModel;
         this.viewRisk = riskView;
         this.viewRisk.setRiskController(this);
-        this.countryListener = new MapListener(getModelRisk());
+        this.countryListener = new MapListener(getModelRisk(),getViewRisk(),this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this); 
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.addMenuBar();
-        viewRisk.initStagePanel();
         viewRisk.setVisible(true);
         //viewRisk.initialMap(modelRisk, countryListener);
 
@@ -60,42 +62,23 @@ public class RiskController implements ActionListener {
     }
 
     /**
-     * It represent the different phases of the game.
+     * It executes a thread with the different phases of the game.
      * It is called after setting the players and board information
      */
     void playGame() {
       
         this.getViewRisk().initialPlayer(getModelRisk());
         this.getViewRisk().initialMap(getModelRisk(), getCountryListener());
-        // while(!this.modelRisk.getCurrentPlayer().getContriesOwned().containsAll(this.modelRisk.getBoard().getGraphTerritories().values())){
-            switch (this.getModelRisk().getStage()) {
-                case -1:
-                 //Start phase assign territories
-            	    this.getModelRisk().initializePlayers();
-                    this.getModelRisk().nextTurn(); 
-                    this.getViewRisk().initialPlayer(getModelRisk());
-                    this.getViewRisk().initialPlayerHandPanel(getModelRisk());
-                    this.getViewRisk().initialMap(getModelRisk(), getCountryListener());
-                    break;
-                case 0:
-                //Reinforcement phase create function
-                    getModelRisk().getCurrentPlayer().reinforcement();
-                    break;
+        this.getViewRisk().initialPlayerHandPanel(modelRisk);
+        GameController playStart = new GameController(this.getModelRisk(),this.getViewRisk(),this.getCountryListener(),this);
         
-                case 1:
-                //Attack phase
-                    break;
-                case 2:
-                //Fortification phase
-                    this.getModelRisk().nextTurn();
-                    break;
-                default:
-                    break;
-            }
-            
-            this.getModelRisk().nextStage();
-        //}
-    }
+        
+        Thread thread=new Thread(playStart);
+        this.setPlayGame(thread);
+        thread.start();
+        
+    }    
+    
     
     /**
      * Getter of the viewRisk attribute
@@ -159,6 +142,34 @@ public class RiskController implements ActionListener {
      */
     public void setCountryListener(MapListener countryListener) {
         this.countryListener = countryListener;
+    }
+
+    /**
+     * @return the playGame
+     */
+    public Thread getPlayGame() {
+        return playGame;
+    }
+
+    /**
+     * @param playGame the playGame to set
+     */
+    public void setPlayGame(Thread playGame) {
+        this.playGame = playGame;
+    }
+
+    /**
+     * @return the syncObj
+     */
+    public Object getSyncObj() {
+        return syncObj;
+    }
+
+    /**
+     * @param syncObj the syncObj to set
+     */
+    public void setSyncObj(Object syncObj) {
+        this.syncObj = syncObj;
     }
 
 

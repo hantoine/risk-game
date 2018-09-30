@@ -167,8 +167,10 @@ public class RiskModel {
         if(this.getTurn()+1<this.getPlayerList().size()){
             this.setTurn(this.getTurn() + 1);
             this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
+            System.out.println("En el modelo--"+this.getCurrentPlayer().getName());
         }else{
-            this.setTurn(-1);
+            this.setTurn(0);
+            this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
         }
         
     }
