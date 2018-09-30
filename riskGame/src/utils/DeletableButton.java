@@ -6,19 +6,21 @@
 package com.risk.views.menu;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
 
 /**
- * It represents the map editor panel in the menu
+ *
  * @author timot
  */
-public class MapEditorPanel extends JPanel {
+public class DeletableButton extends JButton {
 
-    /**
-     * Constructor
-     */
-    public MapEditorPanel() {
-        JButton test = new JButton("button");
-        this.add(test);
+    int ID;
+
+    public DeletableButton(String text, int ID) {
+        this.ID = ID;
+        this.setText(text);
+    }
+
+    public int getID() {
+        return this.ID;
     }
 }
