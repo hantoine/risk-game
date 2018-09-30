@@ -380,7 +380,12 @@ public class MapFileManagement {
             return adj;
     }
     
-    
+    /**
+     * It saves string in a file 
+     * @param path is the place to save the string
+     * @param fileContent is the contens for a file
+     * @return success 0, or error -1
+     */
     public int savingFile(String path,String fileContent){
         BufferedWriter bufferedWriter = null;
         try {
