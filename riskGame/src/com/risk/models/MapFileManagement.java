@@ -325,7 +325,7 @@ public class MapFileManagement {
     
     /**
      * It generates a file with the board information in the given path
-     * @param path the path provided by the user
+     * @param path the path provided by the user it includes the name of the file
      * @param board the map to read
      * @return 0 success or -1 error
      */
