@@ -325,6 +325,45 @@ public class MapFileManagement {
      * @return 0 success or -1 error
      */
     public int generateBoardFile(String path, MapModel board) {
-        return 0;
+        String fileContent="";
+        String configuration="[Map]\n";
+        String continents="[Continents]\n";
+        String territories="[Territories]\n";
+        int result=0;
+        
+        for(String info:board.getConfigurationInfo().keySet()){
+            configuration=configuration+info+"="+board.getConfigurationInfo().get(info)+"\n";
+        }
+        
+        for(String continent:board.getGraphContinents().keySet()){
+            continents=continents+continent+"="+board.getGraphContinents().get(continent).getBonusScore()+"\n";
+        }
+        
+        for(String country:board.getGraphTerritories().keySet()){
+            TerritoryModel aux=board.getGraphTerritories().get(country);
+            String adj="";
+            result=getAdj(aux,adj);
+            
+            if(result==0){
+                    territories=territories+aux.getName()+","+aux.getPositionX()+","+aux.getPositionY()+","+aux.getContinentName()+","+adj+"\n";
+            }else{
+                return -1;
+            }
+            
+        }
+        result=savingFile(fileContent);
+        return result;
+        
     }
+    
+    public int getAdj(TerritoryModel country,String adj){
+            
+            return 0;
+        }
+        
+        public int savingFile(String fileContent){
+            
+            return 0;
+        }
 }
+
