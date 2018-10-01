@@ -49,8 +49,7 @@ public class MapEditorPanel extends javax.swing.JFrame{
         JLabel mapLabel= new JLabel("<html>Click left in an empty space to add a new country.<br>"
                 + "Click left on an existing country to modify it.<br>"
                 + "Click right on an existing country to delete it.<br></html>");
-        mapPanel = new MapView();
-        mapPanel.addMouseListener(editorController.getMouseListener());
+        mapPanel = new MapView(editorController);
         
         //set alignment
         imageSelectorPanel.setAlignmentX( Component.LEFT_ALIGNMENT );

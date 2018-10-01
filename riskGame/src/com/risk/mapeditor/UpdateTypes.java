@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.observers;
-
-import com.risk.mapeditor.UpdateTypes;
-
-
+package com.risk.mapeditor;
 
 /**
  *
  * @author timot
  */
-public interface MapModelObserver {
-    public void update(UpdateTypes updateType, Object object);
+public enum UpdateTypes{
+   ADD_TERRITORY, REMOVE_TERRITORY, UPDATE_TERRITORY;
 }

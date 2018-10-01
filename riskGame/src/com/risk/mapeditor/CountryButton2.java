@@ -15,8 +15,7 @@ import javax.swing.JLabel;
  */
 public class CountryButton2 extends JLabel {
 
-    
-    private Dimension buttonSize = new Dimension(100,20);
+    private Dimension buttonSize;
     private static int positionX;
     private static int positionY;
     private String name;
@@ -26,16 +25,16 @@ public class CountryButton2 extends JLabel {
      * @param x position in x
      * @param y position y
      * @param name name of the country
+     * @param dim
      */
-    public CountryButton2(int x, int y, String name) {
+    public CountryButton2(int x, int y, String name, Dimension dim) {
         super(name);
         this.name = name;
         this.setBackground(Color.WHITE);
         this.setOpaque(true);
         this.setHorizontalAlignment(JLabel.CENTER);
-       
-        if(this.buttonSize.width < name.length())
-            this.buttonSize.width = name.length();
+    
+        this.buttonSize = dim;
         
         this.positionX = x;
         this.positionY = y;
@@ -66,7 +65,7 @@ public class CountryButton2 extends JLabel {
      * @param numberOfArmies new number
      */
     public void updateArmies(String numberOfArmies) {
-
+        
     }
 
     /**

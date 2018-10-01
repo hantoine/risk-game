@@ -5,9 +5,12 @@
  */
 package com.risk.mapeditor;
 
+import com.risk.controllers.MapEditorController;
+import com.risk.models.TerritoryModel;
 import com.risk.observers.MapModelObserver;
 import com.risk.views.map.CountryButton;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.util.HashMap;
 import javax.swing.BorderFactory;
@@ -20,37 +23,21 @@ import javax.swing.JPanel;
 public class MapView extends JPanel implements MapModelObserver  {
     protected Image image;
     protected HashMap<String, CountryButton2> countriesButtons;
+    protected Dimension buttonsDims = new Dimension(100,20);
+    private MapEditorController controller;
     
     /**
      * Constructor of a map view
      */
-    public MapView() {
+    public MapView(MapEditorController editorController) {
         this.setBorder(BorderFactory.createLineBorder(Color.black));
         this.countriesButtons = new HashMap<>();
         this.setBackground(Color.white);
         this.setLayout(null);
-    }
-    
-    /**
-     * Create a new button for the country to be created and add it to the view.
-     * @param countryName
-     * @param x
-     * @param y 
-     */
-    public void addCountry(String countryName, int x, int y)
-    {
-        //test if countryName, x or y not already used
         
-        //create a button
-        CountryButton2 newButton = new CountryButton2(x, y, countryName);
+        controller = editorController; 
+        this.addMouseListener(controller.getMapMouseListener());
         
-        //add to internal list
-        this.countriesButtons.put(countryName, newButton);
-        
-        //draw the new button
-        this.add(newButton);
-        revalidate();
-        repaint();
     }
     
     /**
@@ -58,40 +45,41 @@ public class MapView extends JPanel implements MapModelObserver  {
      * Removing implies deleting the associated button.
      * @param countryName 
      */
-    public void removeCountry(String countryName)
+    public void removeTerritory(String countryName)
     {
-        
-        this.countriesButtons.remove(countryName);
-        
+        //remove from the list
+        this.countriesButtons.remove(countryName);   
+        //redraw the view
         revalidate();
         repaint();
     }
     
-     protected void addCountry(int posX, int posY, String newName){
+     protected void addTerritory(int posX, int posY, String newName){
          //add to view
-        CountryButton2 countryButton = new CountryButton2(posX, posY, newName);
-        this.add(countryButton);
-        countryButton.setVisible(true);
+        CountryButton2 newCountryButton = new CountryButton2(posX, posY, newName, buttonsDims);
+        this.add(newCountryButton);
+        newCountryButton.addMouseListener(controller.getCountryMouseListener());
+        newCountryButton.setVisible(true);
         
         //add to internal list
-        countriesButtons.put(newName, countryButton);
+        countriesButtons.put(newName, newCountryButton);
         
         //draw the new button
         revalidate();
         repaint();
     }
     
-    protected void addContinent(){
-        
-    }
-    
-    protected void editCountry(){
-        
-    }
-    
-    public void update(int posX, int posY, String newName){
-        System.out.println("Update call received!" + Integer.toString(posX) + "_" + Integer.toString(posY) + newName);
-        addCountry(posX, posY, newName);
+    public void update(UpdateTypes updateType, Object object){
+        switch(updateType){
+            case ADD_TERRITORY:
+                TerritoryModel newTerritory = (TerritoryModel)object;
+                addTerritory(newTerritory.getPositionX(), newTerritory.getPositionY(), newTerritory.getName());
+                break;
+            case REMOVE_TERRITORY:
+                String territoryName = (String)object;
+                removeTerritory(territoryName);
+                break;
+        }
     }
     
 }
