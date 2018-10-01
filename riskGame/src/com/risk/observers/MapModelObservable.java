@@ -5,12 +5,13 @@
  */
 package com.risk.observers;
 
+import com.risk.mapeditor.UpdateTypes;
+
 /**
  *
  * @author timot
  */
 public interface MapModelObservable {
     public void addObserver(MapModelObserver newObserver);
-    public void removeObserver();
-    public void notifyObserver(int posX, int posY, String newName);
+    public void notifyObserver(UpdateTypes updateType, Object object);
 }

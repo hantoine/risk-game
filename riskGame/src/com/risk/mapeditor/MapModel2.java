@@ -37,35 +37,25 @@ public class MapModel2 implements MapModelObservable {
         
     }
     
-    public void addContinent(){
-        
-    }
-    
     public void addTerritory(int posX, int posY){
         String newName = "Country"+Integer.toString(graphTerritories.size());
         TerritoryModel newTerritory = new TerritoryModel(newName, posX, posY);
         graphTerritories.put(newName, newTerritory);
-        notifyObserver(posX, posY, newName);
-        
+        notifyObserver(UpdateTypes.ADD_TERRITORY, newTerritory);
     }
     
-    public void removeContinent(){
-        
-    }
-    
-    public void removeTerritory(){
-        
+    public void removeTerritory(String countryName){
+        graphTerritories.remove(countryName);
+        notifyObserver(UpdateTypes.REMOVE_TERRITORY, countryName);
     }
     
     public void addObserver(MapModelObserver newObserver){
         observers.add(newObserver);
     }
-    public void removeObserver(){
-        
-    }
-    public void notifyObserver(int posX, int posY, String newName){
+    
+    public void notifyObserver(UpdateTypes updateType, Object object){
         for (MapModelObserver observer : observers){
-            observer.update(posX, posY, newName);
+            observer.update(updateType, object);
         }
     }
     
