@@ -15,10 +15,11 @@ import javax.swing.JPanel;
 
 /**
  * View of the cards owned by the player
+ *
  * @author liyixuan
  */
 public final class PlayerGameHandPanel extends JPanel {
-    
+
     JButton handCard;
 
     /**
@@ -35,7 +36,7 @@ public final class PlayerGameHandPanel extends JPanel {
     public void updatePlayer(PlayerModel currentPlayer) {
 
         this.removeAll();
-        
+
         currentPlayer.getCardsOwned().getCards().stream().forEach((card) -> {
             System.out.println("printing cards");
             // get the corresponding card ImageIcon and resize the card image

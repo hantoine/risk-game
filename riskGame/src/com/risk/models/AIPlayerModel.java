@@ -11,12 +11,14 @@ import java.awt.Color;
 
 /**
  * It represents an AI player (child of PlayerModel)
+ *
  * @author Nellybett
  */
-public class AIPlayerModel extends PlayerModel{
+public class AIPlayerModel extends PlayerModel {
 
     /**
      * Constructor from Player Model
+     *
      * @param name name of the player
      * @param color color of the player
      * @param isHuman true if it is human
@@ -48,5 +50,5 @@ public class AIPlayerModel extends PlayerModel{
     public void attack() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

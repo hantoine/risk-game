@@ -11,12 +11,14 @@ import java.awt.Color;
 
 /**
  * It represents an human player (child of PlayerModel)
+ *
  * @author Nellybett
  */
-public class HumanPlayerModel extends PlayerModel{
-    
+public class HumanPlayerModel extends PlayerModel {
+
     /**
      * Constructor from Player Model
+     *
      * @param name name of the player
      * @param color color of the player
      * @param isHuman true if it is human
@@ -30,9 +32,9 @@ public class HumanPlayerModel extends PlayerModel{
      */
     @Override
     public void reinforcement(GameController playGame) {
-        int armies=armiesAssignation();
+        int armies = armiesAssignation();
         this.setArmiesDeploy(armies);
-        this.setNumArmies(this.getNumArmies()+armies);
+        this.setNumArmies(this.getNumArmies() + armies);
     }
 
     /**
@@ -50,33 +52,35 @@ public class HumanPlayerModel extends PlayerModel{
     public void attack() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
      * Assign the armies for reinforcement phase
+     *
      * @return number of armies to deploy
      */
     private int armiesAssignation() {
-        int extraCountries= (int) Math.floor(this.getContriesOwned().size()/3);
-        int extraContinent=0;
-        for(ContinentModel continent:this.getContinentsOwned()){
-            extraContinent=extraContinent+continent.getBonusScore();
+        int extraCountries = (int) Math.floor(this.getContriesOwned().size() / 3);
+        int extraContinent = 0;
+        for (ContinentModel continent : this.getContinentsOwned()) {
+            extraContinent = extraContinent + continent.getBonusScore();
         }
-        System.out.println(extraContinent+extraCountries);
-        if(extraContinent+extraCountries<3){
+        System.out.println(extraContinent + extraCountries);
+        if (extraContinent + extraCountries < 3) {
             return 3;
-        }else{
-            return extraContinent+extraCountries;
+        } else {
+            return extraContinent + extraCountries;
         }
     }
-    
+
     /**
      * Assign extra armies depending on handed cards
+     *
      * @return number of extra armies according to handed cards
      */
-    private int armiesAssignationCards(){
-        this.setReturnedCards(this.getReturnedCards()+3);
-        
-        switch(this.getReturnedCards()){
+    private int armiesAssignationCards() {
+        this.setReturnedCards(this.getReturnedCards() + 3);
+
+        switch (this.getReturnedCards()) {
             case 3:
                 return 4;
             case 6:
@@ -90,8 +94,8 @@ public class HumanPlayerModel extends PlayerModel{
             case 18:
                 return 15;
             default:
-                return 15+(((this.getReturnedCards()-18)/3)*5); //after 18 you get 5 more for every 3 cards returned
+                return 15 + (((this.getReturnedCards() - 18) / 3) * 5); //after 18 you get 5 more for every 3 cards returned
         }
     }
-    
+
 }
