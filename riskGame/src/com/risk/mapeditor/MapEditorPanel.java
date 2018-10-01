@@ -46,7 +46,7 @@ public class MapEditorPanel extends javax.swing.JFrame{
         contentPanel.setSize(width-imageSelectorPanel.getMaximumSize().width, height-imageSelectorPanel.getMaximumSize().height);
         
         //map view plus explanations for the user
-        JLabel mapLabel= new JLabel("<html>Click right in an empty space to add a new country.<br>"
+        JLabel mapLabel= new JLabel("<html>Click left in an empty space to add a new country.<br>"
                 + "Click left on an existing country to modify it.<br>"
                 + "Click right on an existing country to delete it.<br></html>");
         mapPanel = new MapView();
