@@ -18,12 +18,12 @@ import java.util.LinkedList;
  *
  * @author Nellybett
  */
-public class RiskModel {
+public final class RiskModel {
 
     private MapModel board;
     private LinkedList<PlayerModel> players;
     private int turn;
-    private int stage;
+    private GameStage stage;
     static Integer maxNbOfPlayers = 6;
     private PlayerModel currentPlayer;
     private LinkedList<CardModel> deck;
@@ -34,7 +34,7 @@ public class RiskModel {
     public RiskModel() {
         this.players = new LinkedList<>();
         this.turn = -1;
-        this.stage = -1;
+        this.stage = GameStage.START;
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, true);
@@ -97,7 +97,6 @@ public class RiskModel {
         this.board = new MapModel();
         MapFileManagement aux = new MapFileManagement();
         int result = aux.createBoard(path, this.board);
-        int test = aux.generateBoardFile("/Users/rebecca/Desktop/test/myMap.map", this.board);
         if (result == 0) {
             this.setDeck();
         }
@@ -177,8 +176,10 @@ public class RiskModel {
         if (this.getTurn() + 1 < this.getPlayerList().size()) {
             this.setTurn(this.getTurn() + 1);
             this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
+            System.out.println("En el modelo--" + this.getCurrentPlayer().getName());
         } else {
-            this.setTurn(-1);
+            this.setTurn(0);
+            this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
         }
 
     }
@@ -187,10 +188,7 @@ public class RiskModel {
      * Changes the stage/phase of the game
      */
     public void nextStage() {
-        this.setStage(this.getStage() + 1);
-        if (this.getStage() >= 3) {
-            this.setStage(0);
-        }
+        this.setStage(this.getStage().next());
     }
 
     /**
@@ -225,7 +223,7 @@ public class RiskModel {
      *
      * @return the stage
      */
-    public int getStage() {
+    public GameStage getStage() {
         return stage;
     }
 
@@ -234,7 +232,7 @@ public class RiskModel {
      *
      * @param stage the stage to set
      */
-    public void setStage(int stage) {
+    public void setStage(GameStage stage) {
         this.stage = stage;
     }
 

@@ -5,7 +5,7 @@
  */
 package com.risk.models.interfaces;
 
-import com.risk.models.CardModel;
+import com.risk.controllers.GameController;
 import com.risk.models.ContinentModel;
 import com.risk.models.HandModel;
 import com.risk.models.TerritoryModel;
@@ -14,8 +14,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * It represents a Player in the game
- * It is the parent of HumanPlayerModel and AIPlayerModel
+ * It represents a Player in the game It is the parent of HumanPlayerModel and
+ * AIPlayerModel
+ *
  * @author n_irahol
  */
 public abstract class PlayerModel {
@@ -27,10 +28,12 @@ public abstract class PlayerModel {
     private Collection<ContinentModel> continentsOwned;
     private HandModel cardsOwned;
     private int numArmies;
+    private int armiesDeploy;
     private int returnedCards;
 
     /**
      * Constructor
+     *
      * @param name name of a player
      * @param color color of a player
      * @param isHuman true if the player is human
@@ -43,26 +46,30 @@ public abstract class PlayerModel {
         this.isHuman = isHuman;
         this.cardsOwned = new HandModel();
         this.numArmies = 0;
-        this.returnedCards=0;
+        this.armiesDeploy = 0;
+        this.returnedCards = 0;
     }
-    
+
     /**
      * Definition of the reinforcement phase
+     *
+     * @param playGame
      */
-    public abstract void reinforcement();
-    
+    public abstract void reinforcement(GameController playGame);
+
     /**
      * Definition of the fortification phase
      */
     public abstract void fortification();
-    
+
     /**
      * Definition of the attack phase
      */
     public abstract void attack();
-    
+
     /**
      * Getter of the name attribute
+     *
      * @return the name
      */
     public String getName() {
@@ -71,6 +78,7 @@ public abstract class PlayerModel {
 
     /**
      * Setter of the name attribute
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -79,6 +87,7 @@ public abstract class PlayerModel {
 
     /**
      * Getter of the color attribute
+     *
      * @return the color
      */
     public Color getColor() {
@@ -87,6 +96,7 @@ public abstract class PlayerModel {
 
     /**
      * Setter of the color attribute
+     *
      * @param color the color to set
      */
     public void setColor(Color color) {
@@ -95,6 +105,7 @@ public abstract class PlayerModel {
 
     /**
      * Getter of the countriesOwned attribute
+     *
      * @return the contriesOwned
      */
     public Collection<TerritoryModel> getContriesOwned() {
@@ -103,6 +114,7 @@ public abstract class PlayerModel {
 
     /**
      * Setter of the countriesOwned attribute
+     *
      * @param contriesOwned the contriesOwned to set
      */
     public void setContriesOwned(Collection<TerritoryModel> contriesOwned) {
@@ -111,6 +123,7 @@ public abstract class PlayerModel {
 
     /**
      * Add a country to the conuntryOwned list
+     *
      * @param countryOwned the additional country owned by this player
      */
     public void addCountryOwned(TerritoryModel countryOwned) {
@@ -119,6 +132,7 @@ public abstract class PlayerModel {
 
     /**
      * Getter of the continentsOwned attribute
+     *
      * @return the continentsOwned
      */
     public Collection<ContinentModel> getContinentsOwned() {
@@ -127,6 +141,7 @@ public abstract class PlayerModel {
 
     /**
      * Setter of the continentsOwned attribute
+     *
      * @param continentsOwned the continentsOwned to set
      */
     public void setContinentsOwned(Collection<ContinentModel> continentsOwned) {
@@ -135,6 +150,7 @@ public abstract class PlayerModel {
 
     /**
      * Getter of the numArmies attribute
+     *
      * @return the numArmies
      */
     public int getNumArmies() {
@@ -143,6 +159,7 @@ public abstract class PlayerModel {
 
     /**
      * Setter of the numArmies attribute
+     *
      * @param numArmies the numArmies to set
      */
     public void setNumArmies(int numArmies) {
@@ -150,7 +167,9 @@ public abstract class PlayerModel {
     }
 
     /**
-     * Initialize the number of initial armies of this player depending on the number of players in the game
+     * Initialize the number of initial armies of this player depending on the
+     * number of players in the game
+     *
      * @param nbPlayers number of players in the game
      */
     public void initializeArmies(int nbPlayers) {
@@ -177,6 +196,7 @@ public abstract class PlayerModel {
 
     /**
      * Getter of the isHuman attribute
+     *
      * @return the isHuman
      */
     public boolean getType() {
@@ -185,6 +205,7 @@ public abstract class PlayerModel {
 
     /**
      * Getter of the cardsOwned attribute
+     *
      * @return the cardsOwned
      */
     public HandModel getCardsOwned() {
@@ -193,6 +214,7 @@ public abstract class PlayerModel {
 
     /**
      * Setter of the cardsOwned attribute
+     *
      * @param cardsOwned the cardsOwned to set
      */
     public void setCardsOwned(HandModel cardsOwned) {
@@ -201,6 +223,7 @@ public abstract class PlayerModel {
 
     /**
      * Getter of the returnedCards attribute
+     *
      * @return the returnedCards
      */
     public int getReturnedCards() {
@@ -209,9 +232,25 @@ public abstract class PlayerModel {
 
     /**
      * Setter of the returnedCards attribute
+     *
      * @param returnedCards the returnedCards to set
      */
     public void setReturnedCards(int returnedCards) {
         this.returnedCards = returnedCards;
     }
+
+    /**
+     * @return the armiesDeploy
+     */
+    public int getArmiesDeploy() {
+        return armiesDeploy;
+    }
+
+    /**
+     * @param armiesDeploy
+     */
+    public void setArmiesDeploy(int armiesDeploy) {
+        this.armiesDeploy = armiesDeploy;
+    }
+
 }
