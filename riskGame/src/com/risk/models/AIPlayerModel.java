@@ -5,17 +5,20 @@
  */
 package com.risk.models;
 
+import com.risk.controllers.GameController;
 import com.risk.models.interfaces.PlayerModel;
 import java.awt.Color;
 
 /**
  * It represents an AI player (child of PlayerModel)
+ *
  * @author Nellybett
  */
-public class AIPlayerModel extends PlayerModel{
+public class AIPlayerModel extends PlayerModel {
 
     /**
      * Constructor from Player Model
+     *
      * @param name name of the player
      * @param color color of the player
      * @param isHuman true if it is human
@@ -28,7 +31,7 @@ public class AIPlayerModel extends PlayerModel{
      * Reinforcement phase for AI Player
      */
     @Override
-    public void reinforcement() {
+    public void reinforcement(GameController playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -47,5 +50,5 @@ public class AIPlayerModel extends PlayerModel{
     public void attack() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
