@@ -5,6 +5,7 @@
  */
 package com.risk.mapeditor;
 
+import com.risk.observers.MapModelObserver;
 import com.risk.views.map.CountryButton;
 import java.awt.Color;
 import java.awt.Image;
@@ -16,7 +17,7 @@ import javax.swing.JPanel;
  *
  * @author timot
  */
-public class MapView extends JPanel  {
+public class MapView extends JPanel implements MapModelObserver  {
     protected Image image;
     protected HashMap<String, CountryButton> countriesButtons;
     
@@ -58,13 +59,36 @@ public class MapView extends JPanel  {
      */
     public void removeCountry(String countryName)
     {
-        //add to internal list
+        
         this.countriesButtons.remove(countryName);
+        
+        revalidate();
+        repaint();
+    }
+    
+     protected void addCountry(int posX, int posY, String newName){
+         //add to internal list
+        CountryButton countryButton = new CountryButton(posX, posY, newName);
+        countriesButtons.put(newName, countryButton);
+        this.add(countryButton);
+        countryButton.setVisible(true);
         
         //draw the new button
         revalidate();
         repaint();
     }
     
+    protected void addContinent(){
+        
+    }
+    
+    protected void editCountry(){
+        
+    }
+    
+    public void update(int posX, int posY, String newName){
+        System.out.println("Update call received!");
+        addCountry(posX, posY, newName);
+    }
     
 }
