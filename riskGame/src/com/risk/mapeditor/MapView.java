@@ -19,7 +19,7 @@ import javax.swing.JPanel;
  */
 public class MapView extends JPanel implements MapModelObserver  {
     protected Image image;
-    protected HashMap<String, CountryButton> countriesButtons;
+    protected HashMap<String, CountryButton2> countriesButtons;
     
     /**
      * Constructor of a map view
@@ -27,7 +27,8 @@ public class MapView extends JPanel implements MapModelObserver  {
     public MapView() {
         this.setBorder(BorderFactory.createLineBorder(Color.black));
         this.countriesButtons = new HashMap<>();
-        
+        this.setBackground(Color.white);
+        this.setLayout(null);
     }
     
     /**
@@ -41,7 +42,7 @@ public class MapView extends JPanel implements MapModelObserver  {
         //test if countryName, x or y not already used
         
         //create a button
-        CountryButton newButton = new CountryButton(x, y, countryName);
+        CountryButton2 newButton = new CountryButton2(x, y, countryName);
         
         //add to internal list
         this.countriesButtons.put(countryName, newButton);
@@ -67,11 +68,13 @@ public class MapView extends JPanel implements MapModelObserver  {
     }
     
      protected void addCountry(int posX, int posY, String newName){
-         //add to internal list
-        CountryButton countryButton = new CountryButton(posX, posY, newName);
-        countriesButtons.put(newName, countryButton);
+         //add to view
+        CountryButton2 countryButton = new CountryButton2(posX, posY, newName);
         this.add(countryButton);
         countryButton.setVisible(true);
+        
+        //add to internal list
+        countriesButtons.put(newName, countryButton);
         
         //draw the new button
         revalidate();
@@ -87,7 +90,7 @@ public class MapView extends JPanel implements MapModelObserver  {
     }
     
     public void update(int posX, int posY, String newName){
-        System.out.println("Update call received!");
+        System.out.println("Update call received!" + Integer.toString(posX) + "_" + Integer.toString(posY) + newName);
         addCountry(posX, posY, newName);
     }
     
