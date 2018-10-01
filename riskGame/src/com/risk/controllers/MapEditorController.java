@@ -6,7 +6,6 @@
 package com.risk.controllers;
 
 import com.risk.mapeditor.MapModel2;
-import com.risk.models.MapModel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
