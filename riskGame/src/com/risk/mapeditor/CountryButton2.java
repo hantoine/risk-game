@@ -6,6 +6,7 @@
 package com.risk.mapeditor;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.JLabel;
 
 /**
@@ -15,7 +16,7 @@ import javax.swing.JLabel;
 public class CountryButton2 extends JLabel {
 
     
-    private static final int buttonSize = 25;
+    private Dimension buttonSize = new Dimension(100,20);
     private static int positionX;
     private static int positionY;
     private String name;
@@ -33,14 +34,17 @@ public class CountryButton2 extends JLabel {
         this.setOpaque(true);
         this.setHorizontalAlignment(JLabel.CENTER);
        
+        if(this.buttonSize.width < name.length())
+            this.buttonSize.width = name.length();
+        
         this.positionX = x;
         this.positionY = y;
 
-        this.setSize(buttonSize, buttonSize);
-        this.setBounds(x, y, buttonSize, buttonSize);
+        this.setSize(buttonSize.width, buttonSize.height);
+        this.setBounds(x-buttonSize.width/2, y-buttonSize.height/2, buttonSize.width, buttonSize.height);
     }
 
- 
+
     /**
      * Getter of the name attribute
      * @return the name
