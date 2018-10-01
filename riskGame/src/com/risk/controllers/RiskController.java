@@ -6,6 +6,8 @@
 package com.risk.controllers;
 
 import com.risk.mapeditor.MapEditorPanel;
+import com.risk.mapeditor.MapModel2;
+import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import java.awt.event.ActionEvent;
@@ -40,9 +42,13 @@ public class RiskController implements ActionListener {
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this); 
         
         //temporary (tim)
-        this.mapEditor = new MapEditorPanel(400,400);
+        MapModel2 newMap = new MapModel2();
+        MapEditorController editorController = new MapEditorController(newMap);
+        this.mapEditor = new MapEditorPanel(600,600, editorController);
         this.mapEditor.setVisible(true);
+        newMap.addObserver(mapEditor.getMapView());
         
+        //temporary (tim)
         /**
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.addMenuBar();
