@@ -7,18 +7,22 @@ package com.risk.models;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * It represents the board
+ *
  * @author n_irahol
  */
 public class MapModel {
 
     private HashMap<String, String> configurationInfo;
     private BufferedImage image;
+    private int mapHeight;
+    private int mapWidth;
     private HashMap<String, ContinentModel> graphContinents;
     private HashMap<String, TerritoryModel> graphTerritories;
 
@@ -27,7 +31,7 @@ public class MapModel {
      */
     public MapModel() {
     }
-    
+
     /**
      * It prints the countries and relationships between them
      */
@@ -45,45 +49,54 @@ public class MapModel {
     }
 
     /**
-     * It calls dfsConnected to validate if the countries in the board represent a connected graph 
+     * It calls dfsConnected to validate if the countries in the board with the
+     * given continents represent a connected graph.
+     *
+     * @param continent Continent for which to check. If null the whole Map is
+     * checked
      * @return true if it is a connected graph
      */
-    public boolean connectedGraph() {
-        int size = this.getGraphTerritories().keySet().size();
-        HashMap<String, Boolean> visited = new HashMap();
-        HashMap<String, TerritoryModel> map = this.getGraphTerritories();
-        Map.Entry<String, TerritoryModel> entry = map.entrySet().iterator().next();
-        TerritoryModel value = entry.getValue();
+    private boolean isConnectedGraph() {
+        List<String> visited = new ArrayList<>(this.getGraphTerritories().size());
 
-        if (size > 0) {
-            visited.put(value.getName(), Boolean.TRUE);
-            this.dfsConnected(value, visited);
+        Iterator<TerritoryModel> it = this.getGraphTerritories().values().iterator();
+        if (it.hasNext()) {
+            this.dfsConnected(it.next(), visited);
         }
 
-        return (visited.size() == size);
-
+        return (visited.size() == this.getGraphTerritories().size());
     }
-    
+
     /**
-     * It uses dfs algorithm to validate that you can reach any country from another country
-     * @param v a country or vertex in the graph 
-     * @param visited List of visited vertexes
+     * Check that the map is valid
+     *
+     * @return Returns true if the map is valid
      */
-    public void dfsConnected(TerritoryModel v, HashMap<String, Boolean> visited) {
-        visited.put(v.getName(), Boolean.TRUE);
-        LinkedList<TerritoryModel> aux;
-        aux = v.getAdj();
+    public boolean check() {
+        return this.isConnectedGraph()
+                && this.getGraphContinents().values().stream().allMatch((c) -> (c.check()));
+    }
 
-        for (TerritoryModel c : aux) {
+    /**
+     * It uses deep first search algorithm to validate that every territory is
+     * reachable
+     *
+     * @param v a country or vertex in the graph
+     * @param visited List of visited territories will be visited
+     */
+    private void dfsConnected(TerritoryModel v, List<String> visited) {
+        visited.add(v.getName());
 
-            if (!(visited.containsKey(c.getName()))) {
-                dfsConnected(c, visited);
-            }
-        }
+        v.getAdj().stream()
+                .filter((c) -> (!visited.contains(c.getName())))
+                .forEach((c) -> {
+                    dfsConnected(c, visited);
+                });
     }
 
     /**
      * Getter of the graphContinents attribute
+     *
      * @return the graphContinents
      */
     public HashMap<String, ContinentModel> getGraphContinents() {
@@ -92,7 +105,8 @@ public class MapModel {
 
     /**
      * Setter of the graphContinents attribute
-     * @param graphContinents 
+     *
+     * @param graphContinents
      */
     public void setGraphContinents(HashMap<String, ContinentModel> graphContinents) {
         this.graphContinents = graphContinents;
@@ -100,6 +114,7 @@ public class MapModel {
 
     /**
      * Getter of the graphTerritories attribute
+     *
      * @return the graphTerritories
      */
     public HashMap<String, TerritoryModel> getGraphTerritories() {
@@ -108,7 +123,8 @@ public class MapModel {
 
     /**
      * Setter of the graphTerritories attribute
-     * @param graphTerritories 
+     *
+     * @param graphTerritories
      */
     public void setGraphTerritories(HashMap<String, TerritoryModel> graphTerritories) {
         this.graphTerritories = graphTerritories;
@@ -116,7 +132,8 @@ public class MapModel {
 
     /**
      * Getter of the configurationInfo attribute
-     * @return the configurationInfo 
+     *
+     * @return the configurationInfo
      */
     public HashMap<String, String> getConfigurationInfo() {
         return configurationInfo;
@@ -124,7 +141,8 @@ public class MapModel {
 
     /**
      * Setter of the configurationInfo attribute
-     * @param configurationInfo 
+     *
+     * @param configurationInfo
      */
     public void setConfigurationInfo(HashMap<String, String> configurationInfo) {
         this.configurationInfo = configurationInfo;
@@ -132,6 +150,7 @@ public class MapModel {
 
     /**
      * Getter of the image attribute
+     *
      * @return the image
      */
     public Image getImage() {
@@ -140,10 +159,39 @@ public class MapModel {
 
     /**
      * Setter of the image attribute
+     *
      * @param image the image to set
      */
     public void setImage(BufferedImage image) {
         this.image = image;
+    }
+
+    public void setMapHeight(int mapHeight) {
+        if (this.getImage() == null) {
+            this.mapHeight = mapHeight;
+        }
+    }
+
+    public void setMapWidth(int mapWidth) {
+        if (this.getImage() == null) {
+            this.mapWidth = mapWidth;
+        }
+    }
+
+    public int getMapHeight() {
+        if (this.getImage() == null) {
+            return mapHeight;
+        } else {
+            return this.getImage().getHeight(null);
+        }
+    }
+
+    public int getMapWidth() {
+        if (this.getImage() == null) {
+            return mapWidth;
+        } else {
+            return this.getImage().getWidth(null);
+        }
     }
 
 }

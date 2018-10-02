@@ -138,6 +138,9 @@ public class MapFileManagement {
                             break;
                         case "image":
                             configurationInfo.put(aux[0], aux[1]);
+                            if (aux[1].isEmpty()) {
+                                break;
+                            }
                             Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
                             try {
                                 BufferedImage image = ImageIO.read(new File(imagePath.toString()));
@@ -176,10 +179,9 @@ public class MapFileManagement {
 
                 }
 
-                if (board.getImage() == null) {
-                    return -1;
-                }
-
+                //if (board.getImage() == null) {
+                //    return -1;
+                //}
             } else {
                 return -1;
             }
@@ -254,79 +256,90 @@ public class MapFileManagement {
             return -1;
         }
 
-        if (!info.equals("")) {
-            String[] linesInfo = info.split("\\r?\\n");
-            int i = 0;
-            String aux[];
-            while (i < linesInfo.length) {
+        if (info.equals("")) {
+            return -1;
+        }
 
-                if (!linesInfo[i].equals("")) {
+        String[] linesInfo = info.split("\\r?\\n");
+        int i = 0;
+        String aux[];
+        while (i < linesInfo.length) {
 
-                    //Splits the country information
-                    aux = linesInfo[i].split(",");
-                    int j;
+            if (linesInfo[i].equals(" ") || linesInfo[i].isEmpty()) {
+                i++;
+                continue;
+            }
 
-                    //The information has to be bigger first country second and third position 4th continent
-                    if (aux.length > 4) {
-                        // Creates de Country in the file
-                        TerritoryModel auxCountry;
-                        int cordX;
-                        int cordY;
-                        try {
-                            cordX = Integer.parseInt(aux[1]);
-                            cordY = Integer.parseInt(aux[2]);
+            //Splits the country information
+            aux = linesInfo[i].split(",");
+            int j;
 
-                        } catch (NumberFormatException e) {
-                            return -1;
-                        }
+            //The information has to be bigger first country second and third position 4th continent
+            if (aux.length > 4) {
+                // Creates de Country in the file
+                TerritoryModel auxCountry;
+                int cordX;
+                int cordY;
+                try {
+                    cordX = Integer.parseInt(aux[1]);
+                    cordY = Integer.parseInt(aux[2]);
 
-                        if (graphTerritories.keySet().contains(aux[0])) {
+                    if (cordX + 50 > board.getMapWidth()) {
+                        board.setMapWidth(cordX + 50);
+                    }
 
-                            auxCountry = graphTerritories.get(aux[0]);
-                            if (auxCountry.getPositionX() == -1 && auxCountry.getPositionY() == -1) {
-                                auxCountry.countrySetter(cordX, cordY);
-                            } else {
-                                return -1;
-                            }
+                    if (cordY + 50 > board.getMapHeight()) {
+                        board.setMapHeight(cordY + 50);
+                    }
+                } catch (NumberFormatException e) {
+                    return -1;
+                }
 
-                        } else {
-                            auxCountry = new TerritoryModel(aux[0], cordX, cordY);
-                        }
+                if (graphTerritories.keySet().contains(aux[0])) {
 
-                        //Creates adj country
-                        TerritoryModel auxCountryAdj;
-
-                        for (j = 0; j < aux.length - 4; j++) {
-                            if (graphTerritories.keySet().contains(aux[j + 4])) {
-                                auxCountryAdj = graphTerritories.get(aux[j + 4]);
-
-                            } else {
-                                auxCountryAdj = new TerritoryModel(aux[j + 4]);
-                            }
-                            //Adds the adj
-                            auxCountry.getAdj().add(auxCountryAdj);
-                            graphTerritories.put(aux[j + 4], auxCountryAdj);
-                        }
-
-                        if (board.getGraphContinents().containsKey(aux[3])) {
-                            board.getGraphContinents().get(aux[3]).setMember(auxCountry);
-                            auxCountry.setContinentName(aux[3]);
-                        } else {
-                            return -1;
-                        }
-                        graphTerritories.put(aux[0], auxCountry);
-
+                    auxCountry = graphTerritories.get(aux[0]);
+                    if (auxCountry.getPositionX() == -1 && auxCountry.getPositionY() == -1) {
+                        auxCountry.countrySetter(cordX, cordY);
                     } else {
                         return -1;
                     }
+
+                } else {
+                    auxCountry = new TerritoryModel(aux[0], cordX, cordY);
                 }
-                i++;
+
+                //Creates adj country
+                TerritoryModel auxCountryAdj;
+
+                for (j = 0; j < aux.length - 4; j++) {
+                    if (graphTerritories.keySet().contains(aux[j + 4])) {
+                        auxCountryAdj = graphTerritories.get(aux[j + 4]);
+
+                    } else {
+                        auxCountryAdj = new TerritoryModel(aux[j + 4]);
+                    }
+                    //Adds the adj
+                    auxCountry.getAdj().add(auxCountryAdj);
+                    graphTerritories.put(aux[j + 4], auxCountryAdj);
+                }
+
+                if (board.getGraphContinents().containsKey(aux[3])) {
+                    board.getGraphContinents().get(aux[3]).setMember(auxCountry);
+                    auxCountry.setContinentName(aux[3]);
+                } else {
+                    return -1;
+                }
+                graphTerritories.put(aux[0], auxCountry);
+
+            } else {
+                return -1;
             }
 
-        } else {
-            return -1;
+            i++;
         }
+
         board.setGraphTerritories(graphTerritories);
+
         return 0;
     }
 
