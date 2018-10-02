@@ -40,7 +40,6 @@ public class MapView extends JPanel implements MapModelObserver  {
         
         controller = editorController; 
         this.addMouseListener(controller.getMapMouseListener());
-        
     }
     
     /**
@@ -110,10 +109,15 @@ public class MapView extends JPanel implements MapModelObserver  {
                 removeTerritory(territoryName);
                 break;
             case UPDATE_TERRITORY:
-                TerritoryModel modifiedTerritory = (TerritoryModel)object;
-                territoryName = modifiedTerritory.getName();
-                CountryButton2 territoryButton = this.countriesButtons.get(territoryName);
-                territoryButton.setName(territoryName);
+                Map<String,String> data= (Map<String,String>)object;
+                String formerName = data.get("name");
+                String newName = data.get("newName");
+                
+                CountryButton2 territoryButton = this.countriesButtons.remove(formerName);
+                if(territoryButton != null){
+                    territoryButton.setName(newName);
+                    countriesButtons.put(newName, territoryButton);
+                }
                 break;
         }
     }
@@ -123,13 +127,13 @@ public class MapView extends JPanel implements MapModelObserver  {
      * It shows up when the user clicked left on a Territory button.
      * @param continentsList
      * @param territoryName
+     * @param continentName
      * @return 
      */
-    public Map<String,String> modifyTerritory(Set<String> continentsList, String territoryName){
+    public Map<String,String> modifyTerritory(String[] continentsList, String territoryName, String continentName){
         Map<String,String> data = new HashMap<>();
         
-        ModifyCountryPanel modifyPanel = new ModifyCountryPanel(continentsList, territoryName);
-        
+        ModifyCountryPanel modifyPanel = new ModifyCountryPanel(continentsList, territoryName, continentName);
         String boxName="Modifying " + territoryName;
         int result = JOptionPane.showConfirmDialog(null, 
                modifyPanel, 
@@ -139,7 +143,6 @@ public class MapView extends JPanel implements MapModelObserver  {
         if (result == JOptionPane.OK_OPTION) {
             data.put("newName", modifyPanel.getTerritoryName());
             data.put("continent", modifyPanel.getTerritoryContinent());
-            System.out.println(modifyPanel.getTerritoryContinent());
             return data;
         }
         else

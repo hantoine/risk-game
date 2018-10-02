@@ -8,6 +8,7 @@ package com.risk.controllers;
 import com.risk.mapeditor.CountryButton2;
 import com.risk.mapeditor.MapModel2;
 import com.risk.mapeditor.MapView;
+import com.risk.models.TerritoryModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -186,7 +187,30 @@ public class MapEditorController {
         }
         
         public void mouseClicked(MouseEvent e){
-            
+            if(SwingUtilities.isLeftMouseButton(e)){
+                Object sourceObj = e.getSource();
+                String className = sourceObj.getClass().getName();
+                
+                if(className == "com.risk.mapeditor.CountryButton2"){
+                    CountryButton2 targetButton = (CountryButton2)sourceObj;
+                    String territoryName = targetButton.getName();
+                    String[] continentList = newMap.getContinentList();
+                    TerritoryModel territoryModel = newMap.getTerritoryByName(territoryName);
+                    String continentName = territoryModel.getContinentName(); 
+                    
+                    //get information from the user
+                    JPanel mapPanel = (JPanel)targetButton.getParent();
+                    Map<String,String> data = ((MapView)mapPanel).modifyTerritory(continentList, territoryName, continentName);
+                    
+                    //if succeeded update the model's data
+                    if (!data.isEmpty()){
+                        data.put("name", territoryName);
+                        this.newMap.updateTerritory(data);
+                    }
+                    else
+                        return;
+                }
+            }
         }
 
         public void mouseEntered(MouseEvent e){
@@ -207,30 +231,9 @@ public class MapEditorController {
                 String className = sourceObj.getClass().getName();
                 if(className == "com.risk.mapeditor.CountryButton2"){
                     String countryName = ((CountryButton2)sourceObj).getName();
-                    System.out.println("test");
                     this.newMap.removeTerritory(countryName);
                 }
             }
-            else if(SwingUtilities.isLeftMouseButton(e)){
-                Object sourceObj = e.getSource();
-                String className = sourceObj.getClass().getName();
-                if(className == "com.risk.mapeditor.CountryButton2"){
-                    CountryButton2 targetButton = (CountryButton2)sourceObj;
-                    JPanel mapPanel = (JPanel)targetButton.getParent();
-                    String territoryName = targetButton.getName();
-                    Set<String> continentList = newMap.getGraphContinents().keySet();
-                    Map<String,String> data = ((MapView)mapPanel).modifyTerritory(continentList, territoryName);
-                    
-                    if (!data.isEmpty())         {
-                        data.put("name", territoryName);
-                        this.newMap.updateTerritory(data);
-                    }
-                    else
-                        return;
-                }
-            }
         }
-
     }
-    
 }
