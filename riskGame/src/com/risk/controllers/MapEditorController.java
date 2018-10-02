@@ -94,6 +94,7 @@ public class MapEditorController {
                 String className = sourceObj.getClass().getName();
                 if(className == "com.risk.mapeditor.CountryButton2"){
                     String countryName = ((CountryButton2)sourceObj).getName();
+                    System.out.println("test");
                     this.newMap.removeTerritory(countryName);
                 }
             }
