@@ -98,14 +98,22 @@ public class MapView extends JPanel implements MapModelObserver  {
     }
     
     public void update(UpdateTypes updateType, Object object){
+        String territoryName;
+        
         switch(updateType){
             case ADD_TERRITORY:
                 TerritoryModel newTerritory = (TerritoryModel)object;
                 addTerritory(newTerritory.getPositionX(), newTerritory.getPositionY(), newTerritory.getName());
                 break;
             case REMOVE_TERRITORY:
-                String territoryName = (String)object;
+                territoryName = (String)object;
                 removeTerritory(territoryName);
+                break;
+            case UPDATE_TERRITORY:
+                TerritoryModel modifiedTerritory = (TerritoryModel)object;
+                territoryName = modifiedTerritory.getName();
+                CountryButton2 territoryButton = this.countriesButtons.get(territoryName);
+                territoryButton.setName(territoryName);
                 break;
         }
     }
@@ -122,12 +130,16 @@ public class MapView extends JPanel implements MapModelObserver  {
         
         ModifyCountryPanel modifyPanel = new ModifyCountryPanel(continentsList, territoryName);
         
+        String boxName="Modifying " + territoryName;
         int result = JOptionPane.showConfirmDialog(null, 
                modifyPanel, 
-               "Modifying " + territoryName, 
+               boxName, 
                JOptionPane.OK_CANCEL_OPTION);
         
         if (result == JOptionPane.OK_OPTION) {
+            data.put("newName", modifyPanel.getTerritoryName());
+            data.put("continent", modifyPanel.getTerritoryContinent());
+            System.out.println(modifyPanel.getTerritoryContinent());
             return data;
         }
         else

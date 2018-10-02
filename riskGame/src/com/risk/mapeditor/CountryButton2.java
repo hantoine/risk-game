@@ -19,6 +19,7 @@ public class CountryButton2 extends JLabel {
     private static int positionX;
     private static int positionY;
     private String name;
+    private String continentName;
 
     /**
      * Constructor
@@ -43,7 +44,6 @@ public class CountryButton2 extends JLabel {
         this.setBounds(x-buttonSize.width/2, y-buttonSize.height/2, buttonSize.width, buttonSize.height);
     }
 
-
     /**
      * Getter of the name attribute
      * @return the name
@@ -61,20 +61,17 @@ public class CountryButton2 extends JLabel {
     }
 
     /**
-     * It increase or decrease the armies that a player has in a country
-     * @param numberOfArmies new number
-     */
-    public void updateArmies(String numberOfArmies) {
-        
-    }
-
-    /**
      * It gives a new location for the country in the map
      * @param x position in x
      * @param y position in y
      */
     public void updateLocation(int x, int y) {
-
+        this.positionX = x;
+        this.positionY = y;
+    }
+    
+    public void updateContinentName(String newName) {
+        this.continentName = newName;
     }
 
 }

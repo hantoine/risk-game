@@ -6,7 +6,6 @@
 package com.risk.mapeditor;
 
 import com.risk.controllers.MapEditorController;
-import com.risk.models.TerritoryModel;
 import com.risk.observers.MapModelObserver;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -43,8 +42,6 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     public void addElement(Component newComponent, String name) {  
         if(!"javax.swing.JTextField".equals(newComponent.getClass().getName()) )
             return;
-
-        
         
         //add listeners
         JTextField newElement = (JTextField)newComponent;
@@ -58,6 +55,18 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
 
         //draw
         this.setVisible(true);
+        revalidate();
+        repaint();
+    }
+    
+    @Override
+    /**
+     * Remove a component by name
+     * @param name 
+     */
+    public void removeElement(String name){
+        this.remove(items.get(name));
+        this.items.remove(name);
         revalidate();
         repaint();
     }

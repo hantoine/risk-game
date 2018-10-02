@@ -123,7 +123,7 @@ public class MapEditorController {
                 String className = sourceObj.getClass().getName();
                 if(className == "javax.swing.JTextField"){
                     String continentName = ((JTextField)sourceObj).getText();
-                    this.newMap.removeTerritory(continentName);
+                    this.newMap.removeContinent(continentName);
                 }
             }
         }
@@ -221,8 +221,10 @@ public class MapEditorController {
                     Set<String> continentList = newMap.getGraphContinents().keySet();
                     Map<String,String> data = ((MapView)mapPanel).modifyTerritory(continentList, territoryName);
                     
-                    if (!data.isEmpty())                
+                    if (!data.isEmpty())         {
+                        data.put("name", territoryName);
                         this.newMap.updateTerritory(data);
+                    }
                     else
                         return;
                 }

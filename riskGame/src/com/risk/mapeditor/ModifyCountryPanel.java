@@ -23,6 +23,10 @@ import javax.swing.JTextField;
  * @author timot
  */
 public class ModifyCountryPanel extends JPanel{
+    
+    protected JComboBox continentListBox;
+    protected JTextField territoryNameField;
+    
     public ModifyCountryPanel(Set<String> continentsList, String territoryName){
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(500,500);
@@ -30,7 +34,8 @@ public class ModifyCountryPanel extends JPanel{
         JPanel namePanel  = new JPanel();
         namePanel.setLayout(new FlowLayout());
         namePanel.add(new JLabel("Name:"));
-        namePanel.add(new JTextField(territoryName));        
+        territoryNameField = new JTextField(territoryName);
+        namePanel.add(territoryNameField);        
         
         JPanel listPanel  = new JPanel();
         listPanel.setLayout(new FlowLayout());
@@ -39,9 +44,18 @@ public class ModifyCountryPanel extends JPanel{
                 continentsList.size(),
                 String[].class);
         
-        listPanel.add(new JComboBox(continentList));
+        continentListBox = new JComboBox(continentList);
+        listPanel.add(continentListBox);
         
         this.add(namePanel);
         this.add(listPanel);
+    }
+    
+    public String getTerritoryName(){
+        return this.territoryNameField.getText();
+    }
+    
+    public String getTerritoryContinent(){
+        return (String)this.continentListBox.getSelectedItem();
     }
 }
