@@ -113,7 +113,7 @@ public class MenuListener extends MouseAdapter {
                 if (!selectedPath.equals("")) {
                     int resultReadingValidation = getRiskModel().setBoard(selectedPath);
                     if (resultReadingValidation == 0) {
-                        if ((getRiskModel().getBoard()).connectedGraph()) {
+                        if ((getRiskModel().getBoard()).check()) {
                             this.getRiskView().getMenuPanel().setVisible(false);
                             this.getRiskView().remove(this.getRiskView().getMenuPanel());
                             this.getRiskView().setMenuPanel(null);
@@ -131,7 +131,7 @@ public class MenuListener extends MouseAdapter {
                             this.getRiskController().playGame();
 
                         } else {
-                            JOptionPane.showMessageDialog(null, "Countries are not connected. please selected a new file");
+                            JOptionPane.showMessageDialog(null, "The map is not valid.");
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, readingError(resultReadingValidation));
