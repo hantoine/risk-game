@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class MapView extends JPanel implements MapModelObserver  {
      * Change background image of the map
      * @param backgroundImage 
      */
-    public void setImage(Image backgroundImage){
+    public void setImage(BufferedImage backgroundImage){
         this.backgroundImage = backgroundImage;
         repaint(); //call to paintComponent
     }
@@ -96,6 +97,7 @@ public class MapView extends JPanel implements MapModelObserver  {
         repaint();
     }
     
+    @Override
     public void update(UpdateTypes updateType, Object object){
         String territoryName;
         

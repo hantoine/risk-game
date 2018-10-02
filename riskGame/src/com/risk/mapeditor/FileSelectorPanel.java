@@ -26,10 +26,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author timot
  */
 public class FileSelectorPanel extends JPanel {
-    private JButton selectFileButton;
-    private JTextField textField;
-    private JLabel label;
-    private JPanel selectionPanel;
+    protected JButton selectFileButton;
+    protected JTextField textField;
+    protected JLabel label;
+    protected JPanel selectionPanel;
     
     /**
      * Constructor method.
@@ -53,6 +53,7 @@ public class FileSelectorPanel extends JPanel {
         
         //create text field
         this.textField = new JTextField("No file selected.");
+        this.textField.setEditable(false);
         setTextFieldSize(200,20);
         
         //create button
@@ -91,6 +92,10 @@ public class FileSelectorPanel extends JPanel {
                 setTextFieldMessage("No file selected.");
             }
         });
+    }
+    
+    public JTextField getTextField(){
+        return this.textField;
     }
     
     /**
