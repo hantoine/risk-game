@@ -14,6 +14,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * MAP object
@@ -47,6 +48,11 @@ public class MapModel2 implements MapModelObservable {
     public void removeTerritory(String countryName){
         graphTerritories.remove(countryName);
         notifyObserver(UpdateTypes.REMOVE_TERRITORY, countryName);
+    }
+    
+    public void updateTerritory(Map<String,String> data){
+        String name = data.get("name");
+        String continent = data.get("continent");
     }
     
     public void addObserver(MapModelObserver newObserver){

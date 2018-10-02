@@ -6,6 +6,7 @@
 package com.risk.mapeditor;
 
 import com.risk.controllers.MapEditorController;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.BoxLayout;
@@ -22,7 +23,7 @@ public class MapEditorPanel extends javax.swing.JFrame{
     protected JPanel contentPanel;
     protected FileSelectorPanel imageSelectorPanel;
     protected MapView mapPanel;
-    private MapEditorController controller;
+    private MapEditorController controler;
     
     /**
      * Constructor
@@ -33,7 +34,8 @@ public class MapEditorPanel extends javax.swing.JFrame{
     public MapEditorPanel(int width, int height, MapEditorController editorController) {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(width, height);
-        controller = editorController;
+        controler = editorController;
+        this.setTitle("Map Editor");
         
         //all content is being stored in this panel
         contentPanel = new JPanel();
@@ -57,10 +59,10 @@ public class MapEditorPanel extends javax.swing.JFrame{
         mapPanel.setAlignmentX( Component.LEFT_ALIGNMENT );
         
         //add elements
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.add(imageSelectorPanel);
-        contentPanel.add(mapLabel);
-        contentPanel.add(mapPanel);
+        contentPanel.setLayout(new BorderLayout());
+        contentPanel.add(BorderLayout.NORTH, imageSelectorPanel);
+        contentPanel.add(BorderLayout.SOUTH, mapLabel);
+        contentPanel.add(BorderLayout.CENTER, mapPanel);
         setContentPane(contentPanel);
     }
     

@@ -7,10 +7,14 @@ package com.risk.controllers;
 
 import com.risk.mapeditor.CountryButton2;
 import com.risk.mapeditor.MapModel2;
+import com.risk.mapeditor.MapView;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Map;
+import java.util.Set;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -32,6 +36,9 @@ public class MapEditorController {
         return new ButtonMouseController(newMap);
     }
     
+    /**
+     * Listener for the entire map panel (to add new elements on it)
+     */
     protected class MapMouseController implements MouseListener {
         protected MapModel2 newMap;
         
@@ -65,6 +72,9 @@ public class MapEditorController {
 
     }
     
+    /**
+     * Listeners for buttons
+     */
     protected class ButtonMouseController implements MouseListener {
         protected MapModel2 newMap;
         
@@ -96,6 +106,22 @@ public class MapEditorController {
                     String countryName = ((CountryButton2)sourceObj).getName();
                     System.out.println("test");
                     this.newMap.removeTerritory(countryName);
+                }
+            }
+            else if(SwingUtilities.isLeftMouseButton(e)){
+                Object sourceObj = e.getSource();
+                String className = sourceObj.getClass().getName();
+                if(className == "com.risk.mapeditor.CountryButton2"){
+                    CountryButton2 targetButton = (CountryButton2)sourceObj;
+                    JPanel mapPanel = (JPanel)targetButton.getParent();
+                    String territoryName = targetButton.getName();
+                    Set<String> continentList = newMap.getGraphContinents().keySet();
+                    Map<String,String> data = ((MapView)mapPanel).modifyTerritory(continentList, territoryName);
+                    
+                    if (!data.isEmpty())                
+                        this.newMap.updateTerritory(data);
+                    else
+                        return;
                 }
             }
         }
