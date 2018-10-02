@@ -13,5 +13,5 @@ import com.risk.mapeditor.UpdateTypes;
  */
 public interface MapModelObservable {
     public void addObserver(MapModelObserver newObserver);
-    public void notifyObserver(UpdateTypes updateType, Object object);
+    public void notifyObservers(UpdateTypes updateType, Object object);
 }

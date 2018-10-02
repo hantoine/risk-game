@@ -42,29 +42,34 @@ public class MapModel2 implements MapModelObservable {
         String newName = "Continent"+Integer.toString(graphContinents.size());
         ContinentModel newContinent = new ContinentModel(newName, 1);
         graphContinents.put(newName, newContinent);
-        notifyObserver(UpdateTypes.ADD_CONTINENT, newName);
+        notifyObservers(UpdateTypes.ADD_CONTINENT, newName);
     }
     
     public void removeContinent(String continentName){
         graphContinents.remove(continentName);
-        notifyObserver(UpdateTypes.REMOVE_CONTINENT, continentName);
+        notifyObservers(UpdateTypes.REMOVE_CONTINENT, continentName);
     }
     
     public void addTerritory(int posX, int posY){
         String newName = "Country"+Integer.toString(graphTerritories.size());
         TerritoryModel newTerritory = new TerritoryModel(newName, posX, posY);
         graphTerritories.put(newName, newTerritory);
-        notifyObserver(UpdateTypes.ADD_TERRITORY, newTerritory);
+        notifyObservers(UpdateTypes.ADD_TERRITORY, newTerritory);
     }
     
     public void removeTerritory(String countryName){
         graphTerritories.remove(countryName);
-        notifyObserver(UpdateTypes.REMOVE_TERRITORY, countryName);
+        notifyObservers(UpdateTypes.REMOVE_TERRITORY, countryName);
     }
     
     public void updateTerritory(Map<String,String> data){
-        String name = data.get("name");
-        String continent = data.get("continent");
+        String formerName = data.get("name");
+        String newName = data.get("newName");
+        String newContinent = data.get("continent");
+        TerritoryModel modifiedTerritory = graphTerritories.get(formerName);
+        modifiedTerritory.setName(newName);
+        modifiedTerritory.setContinentName(newContinent);
+        notifyObservers(UpdateTypes.UPDATE_TERRITORY, modifiedTerritory);
     }
     
     @Override
@@ -73,7 +78,7 @@ public class MapModel2 implements MapModelObservable {
     }
     
     @Override
-    public void notifyObserver(UpdateTypes updateType, Object object){
+    public void notifyObservers(UpdateTypes updateType, Object object){
         for (MapModelObserver observer : observers){
             observer.update(updateType, object);
         }
