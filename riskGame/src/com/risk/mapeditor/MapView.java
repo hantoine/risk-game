@@ -8,7 +8,6 @@ package com.risk.mapeditor;
 import com.risk.controllers.MapEditorController;
 import com.risk.models.TerritoryModel;
 import com.risk.observers.MapModelObserver;
-import com.risk.views.map.CountryButton;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -48,10 +47,16 @@ public class MapView extends JPanel implements MapModelObserver  {
     public void removeTerritory(String countryName)
     {
         //remove from the list
-        this.countriesButtons.remove(countryName);   
-        //redraw the view
-        revalidate();
-        repaint();
+        CountryButton2 buttonToDelete = countriesButtons.get(countryName);
+        
+        if(buttonToDelete != null){
+            this.remove(buttonToDelete);
+            this.countriesButtons.remove(countryName);  
+        
+            //redraw the view
+            revalidate();
+            repaint();
+        }
     }
     
      protected void addTerritory(int posX, int posY, String newName){
@@ -77,9 +82,9 @@ public class MapView extends JPanel implements MapModelObserver  {
                 break;
             case REMOVE_TERRITORY:
                 String territoryName = (String)object;
+                System.out.println("test:"+territoryName);
                 removeTerritory(territoryName);
                 break;
         }
     }
-    
 }
