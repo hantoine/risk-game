@@ -42,7 +42,7 @@ public class MapModel2 implements MapModelObservable {
         String newName = "Continent"+Integer.toString(graphContinents.size());
         ContinentModel newContinent = new ContinentModel(newName, 1);
         graphContinents.put(newName, newContinent);
-        notifyObserver(UpdateTypes.ADD_CONTINENT, newContinent);
+        notifyObserver(UpdateTypes.ADD_CONTINENT, newName);
     }
     
     public void removeContinent(String continentName){

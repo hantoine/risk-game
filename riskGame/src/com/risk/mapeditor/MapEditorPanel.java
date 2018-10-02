@@ -25,6 +25,7 @@ public class MapEditorPanel extends javax.swing.JFrame{
     protected FileSelectorPanel imageSelectorPanel;
     protected MapView mapPanel;
     private MapEditorController controler;
+    protected ContinentListPanel continentsPanel;
     
     /**
      * Constructor
@@ -55,7 +56,8 @@ public class MapEditorPanel extends javax.swing.JFrame{
         mapPanel = new MapView(editorController);
         
         //panel to add continents
-        CustomListPanel continentsPanel = new CustomListPanel(200,600);
+        ContinentListPanel continentsPanel = new ContinentListPanel(200,600, editorController);
+        this.continentsPanel=continentsPanel;
         
         //set alignment
         imageSelectorPanel.setAlignmentX( Component.LEFT_ALIGNMENT );
@@ -76,6 +78,10 @@ public class MapEditorPanel extends javax.swing.JFrame{
      * @return 
      */
     public MapView getMapView(){
-        return mapPanel;
+        return this.mapPanel;
+    }
+    
+    public ContinentListPanel getContinentListPanel(){
+        return this.continentsPanel;
     }
 }
