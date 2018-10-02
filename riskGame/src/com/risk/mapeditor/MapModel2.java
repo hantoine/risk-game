@@ -38,6 +38,18 @@ public class MapModel2 implements MapModelObservable {
         
     }
     
+    public void addContinent(){
+        String newName = "Continent"+Integer.toString(graphContinents.size());
+        ContinentModel newContinent = new ContinentModel(newName, 1);
+        graphContinents.put(newName, newContinent);
+        notifyObserver(UpdateTypes.ADD_CONTINENT, newContinent);
+    }
+    
+    public void removeContinent(String continentName){
+        graphContinents.remove(continentName);
+        notifyObserver(UpdateTypes.REMOVE_CONTINENT, continentName);
+    }
+    
     public void addTerritory(int posX, int posY){
         String newName = "Country"+Integer.toString(graphTerritories.size());
         TerritoryModel newTerritory = new TerritoryModel(newName, posX, posY);
@@ -55,10 +67,12 @@ public class MapModel2 implements MapModelObservable {
         String continent = data.get("continent");
     }
     
+    @Override
     public void addObserver(MapModelObserver newObserver){
         observers.add(newObserver);
     }
     
+    @Override
     public void notifyObserver(UpdateTypes updateType, Object object){
         for (MapModelObserver observer : observers){
             observer.update(updateType, object);
