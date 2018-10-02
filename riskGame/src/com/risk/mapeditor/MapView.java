@@ -105,7 +105,6 @@ public class MapView extends JPanel implements MapModelObserver  {
                 break;
             case REMOVE_TERRITORY:
                 String territoryName = (String)object;
-                System.out.println("test:"+territoryName);
                 removeTerritory(territoryName);
                 break;
         }

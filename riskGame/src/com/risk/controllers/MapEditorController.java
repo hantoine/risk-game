@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -30,6 +31,10 @@ public class MapEditorController {
         newMap = mapModel;
     }
     
+    /**
+     * Getters
+     * @return 
+     */
     public MapMouseController getMapMouseListener(){
         return new MapMouseController(newMap);
     }
@@ -62,9 +67,8 @@ public class MapEditorController {
         
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+            newMap.addContinent();
         }
-        
     }
     
     /**
@@ -79,19 +83,18 @@ public class MapEditorController {
         
         @Override
         public void insertUpdate(DocumentEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            
         }
 
         @Override
         public void removeUpdate(DocumentEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            
         }
 
         @Override
         public void changedUpdate(DocumentEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            
         }
-        
     }
     
     /**
@@ -106,29 +109,34 @@ public class MapEditorController {
         
         @Override
         public void mouseClicked(MouseEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            if (SwingUtilities.isRightMouseButton(e)){
+                Object sourceObj = e.getSource();
+                String className = sourceObj.getClass().getName();
+                if(className == "javax.swing.JTextField"){
+                    String continentName = ((JTextField)sourceObj).getText();
+                    this.newMap.removeTerritory(continentName);
+                }
+            }
         }
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            
         }
-        
     }
     
     /**

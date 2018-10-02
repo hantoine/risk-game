@@ -47,6 +47,7 @@ public class RiskController implements ActionListener {
         this.mapEditor = new MapEditorPanel(1000,600, editorController);
         this.mapEditor.setVisible(true);
         newMap.addObserver(mapEditor.getMapView());
+        newMap.addObserver(mapEditor.getContinentListPanel());
         
         //temporary (tim)
         /**

@@ -30,8 +30,8 @@ public class CustomListPanel extends JPanel {
         this.items = new HashMap<>();
         
         //setup add button
-        this.addButton = new JButton("+");
-        this.add(addButton);
+        //this.addButton = new JButton("+");
+        //this.add(addButton);
     }
     
     /**
