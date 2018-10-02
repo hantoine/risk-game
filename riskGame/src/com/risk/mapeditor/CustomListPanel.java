@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package utils;
+package com.risk.mapeditor;
 
 import java.util.LinkedList;
 import javax.swing.BoxLayout;
@@ -14,12 +14,12 @@ import javax.swing.JPanel;
  *
  * @author timot
  */
-public class ListPanelComponent extends JPanel {
+public class CustomListPanel extends JPanel {
     private JPanel container;
     private LinkedList<JPanel> items;
     private JButton addButton;
 
-    public ListPanelComponent(Integer panelWidth, Integer panelHeight) {
+    public CustomListPanel(Integer panelWidth, Integer panelHeight) {
         this.setSize(panelWidth, panelHeight);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         

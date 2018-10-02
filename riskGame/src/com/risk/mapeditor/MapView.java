@@ -6,13 +6,17 @@
 package com.risk.mapeditor;
 
 import com.risk.controllers.MapEditorController;
+import com.risk.models.ContinentModel;
 import com.risk.models.TerritoryModel;
 import com.risk.observers.MapModelObserver;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -60,7 +64,7 @@ public class MapView extends JPanel implements MapModelObserver  {
     }
     
      protected void addTerritory(int posX, int posY, String newName){
-         //add to view
+        //add to view
         CountryButton2 newCountryButton = new CountryButton2(posX, posY, newName, buttonsDims);
         this.add(newCountryButton);
         newCountryButton.addMouseListener(controller.getCountryMouseListener());
@@ -86,5 +90,29 @@ public class MapView extends JPanel implements MapModelObserver  {
                 removeTerritory(territoryName);
                 break;
         }
+    }
+    
+    /**
+     * Ask the user to modify a Territory's informations.
+     * It shows up when the user clicked left on a Territory button.
+     * @param continentsList
+     * @param territoryName
+     * @return 
+     */
+    public Map<String,String> modifyTerritory(Set<String> continentsList, String territoryName){
+        Map<String,String> data = new HashMap<>();
+        
+        ModifyCountryPanel modifyPanel = new ModifyCountryPanel(continentsList, territoryName);
+        
+        int result = JOptionPane.showConfirmDialog(null, 
+               modifyPanel, 
+               "Modifying " + territoryName, 
+               JOptionPane.OK_CANCEL_OPTION);
+        
+        if (result == JOptionPane.OK_OPTION) {
+            return data;
+        }
+        else
+           return data;
     }
 }
