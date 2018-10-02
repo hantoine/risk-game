@@ -30,8 +30,36 @@ public class MapEditorController {
         newMap = mapModel;
     }
     
+    public MapMouseController getMapMouseListener(){
+        return new MapMouseController(newMap);
+    }
+    
+    public ButtonMouseController getCountryMouseListener(){
+        return new ButtonMouseController(newMap);
+    }
+    
+    public AddContinentButtonListener getAddContinentButtonListener(){
+        return new AddContinentButtonListener(newMap);
+    }
+    
+    public ContinentMouseListener getContinentMouseListener(){
+        return new ContinentMouseListener(newMap);
+    }
+    
+    public ContinentTextListener getContinentTextListener(){
+        return new ContinentTextListener(newMap);
+    }    
+    
+    /**
+     * Class to handle clicks on the "add" button listener to add continents
+     */
     public class AddContinentButtonListener implements ActionListener{
-
+        protected MapModel2 newMap;
+        
+        public AddContinentButtonListener(MapModel2 mapModel){
+            newMap = mapModel;
+        }
+        
         @Override
         public void actionPerformed(ActionEvent e) {
             
@@ -39,8 +67,16 @@ public class MapEditorController {
         
     }
     
+    /**
+     * Class to handle changes of the name of continents
+     */
     public class ContinentTextListener implements DocumentListener{
-
+        protected MapModel2 newMap;
+        
+        public ContinentTextListener(MapModel2 mapModel){
+            newMap = mapModel;
+        }
+        
         @Override
         public void insertUpdate(DocumentEvent e) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -58,8 +94,16 @@ public class MapEditorController {
         
     }
     
+    /**
+     * Class to handle mouse events on continents objects
+     */
     public class ContinentMouseListener implements MouseListener{
-
+        protected MapModel2 newMap;
+        
+        public ContinentMouseListener(MapModel2 mapModel){
+            newMap = mapModel;
+        }
+        
         @Override
         public void mouseClicked(MouseEvent e) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -85,14 +129,6 @@ public class MapEditorController {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
         
-    }
-    
-    public MapMouseController getMapMouseListener(){
-        return new MapMouseController(newMap);
-    }
-    
-    public ButtonMouseController getCountryMouseListener(){
-        return new ButtonMouseController(newMap);
     }
     
     /**
