@@ -6,11 +6,11 @@
 package com.risk.mapeditor;
 
 import com.risk.controllers.MapEditorController;
-import com.risk.models.ContinentModel;
 import com.risk.models.TerritoryModel;
 import com.risk.observers.MapModelObserver;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ import javax.swing.JPanel;
  * @author timot
  */
 public class MapView extends JPanel implements MapModelObserver  {
-    protected Image image;
+    protected Image backgroundImage;
     protected HashMap<String, CountryButton2> countriesButtons;
     protected Dimension buttonsDims = new Dimension(100,20);
     private MapEditorController controller;
@@ -41,6 +41,25 @@ public class MapView extends JPanel implements MapModelObserver  {
         controller = editorController; 
         this.addMouseListener(controller.getMapMouseListener());
         
+    }
+    
+    /**
+     * Change background image of the map
+     * @param backgroundImage 
+     */
+    public void setImage(Image backgroundImage){
+        this.backgroundImage = backgroundImage;
+        repaint(); //call to paintComponent
+    }
+    
+    @Override
+    /**
+     * To paint the images into the JPanel
+     */
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if(backgroundImage!=null)
+            g.drawImage(backgroundImage, 0, 0, null);
     }
     
     /**

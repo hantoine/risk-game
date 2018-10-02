@@ -10,5 +10,10 @@ package com.risk.mapeditor;
  * @author timot
  */
 public enum UpdateTypes{
-   ADD_TERRITORY, REMOVE_TERRITORY, UPDATE_TERRITORY;
+   ADD_TERRITORY, 
+   REMOVE_TERRITORY, 
+   UPDATE_TERRITORY,
+   ADD_CONTINENT, 
+   REMOVE_CONTINENT, 
+   UPDATE_CONTINENT;
 }

@@ -9,6 +9,7 @@ import com.risk.controllers.MapEditorController;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import static java.lang.Math.floor;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -53,6 +54,9 @@ public class MapEditorPanel extends javax.swing.JFrame{
                 + "Click right on an existing country to delete it.<br></html>");
         mapPanel = new MapView(editorController);
         
+        //panel to add continents
+        CustomListPanel continentsPanel = new CustomListPanel(200,600);
+        
         //set alignment
         imageSelectorPanel.setAlignmentX( Component.LEFT_ALIGNMENT );
         mapLabel.setAlignmentX( Component.LEFT_ALIGNMENT );
@@ -62,6 +66,7 @@ public class MapEditorPanel extends javax.swing.JFrame{
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(BorderLayout.NORTH, imageSelectorPanel);
         contentPanel.add(BorderLayout.SOUTH, mapLabel);
+        contentPanel.add(BorderLayout.EAST, continentsPanel);
         contentPanel.add(BorderLayout.CENTER, mapPanel);
         setContentPane(contentPanel);
     }
