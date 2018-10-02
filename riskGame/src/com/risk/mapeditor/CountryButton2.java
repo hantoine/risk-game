@@ -19,7 +19,6 @@ public class CountryButton2 extends JLabel {
     private static int positionX;
     private static int positionY;
     private String name;
-    private String continentName;
 
     /**
      * Constructor
@@ -58,6 +57,7 @@ public class CountryButton2 extends JLabel {
      */
     public void setName(String name) {
         this.name = name;
+        this.setText(name);
     }
 
     /**
@@ -69,9 +69,4 @@ public class CountryButton2 extends JLabel {
         this.positionX = x;
         this.positionY = y;
     }
-    
-    public void updateContinentName(String newName) {
-        this.continentName = newName;
-    }
-
 }

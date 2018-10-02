@@ -33,7 +33,7 @@ public class MapEditorPanel extends javax.swing.JFrame{
      * @param height
      * @param editorController
      */
-    public MapEditorPanel(int width, int height, MapEditorController editorController) {
+    public MapEditorPanel(int width, int height, MapEditorController editorController, MapModel2 initMapModel) {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(width, height);
         controler = editorController;
@@ -56,7 +56,7 @@ public class MapEditorPanel extends javax.swing.JFrame{
         mapPanel = new MapView(editorController);
         
         //panel to add continents
-        ContinentListPanel continentsPanel = new ContinentListPanel(200,600, editorController);
+        ContinentListPanel continentsPanel = new ContinentListPanel(200,600, editorController, initMapModel.getContinentList());
         this.continentsPanel=continentsPanel;
         
         //set alignment

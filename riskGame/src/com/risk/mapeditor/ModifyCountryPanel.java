@@ -27,7 +27,7 @@ public class ModifyCountryPanel extends JPanel{
     protected JComboBox continentListBox;
     protected JTextField territoryNameField;
     
-    public ModifyCountryPanel(Set<String> continentsList, String territoryName){
+    public ModifyCountryPanel(String[] continentList, String territoryName, String territoryContinent){
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(500,500);
         
@@ -40,11 +40,15 @@ public class ModifyCountryPanel extends JPanel{
         JPanel listPanel  = new JPanel();
         listPanel.setLayout(new FlowLayout());
         listPanel.add(new JLabel("Belongs to:"));
-        String[] continentList = Arrays.copyOf(continentsList.toArray(), 
-                continentsList.size(),
-                String[].class);
+        
+        System.out.println("continentList:"+continentList);
+        System.out.println("territoryName:"+territoryName);
+        System.out.println("territoryContinent:"+territoryContinent);
         
         continentListBox = new JComboBox(continentList);
+        if(!territoryContinent.equals(""))
+            continentListBox.setSelectedItem(territoryContinent);
+        
         listPanel.add(continentListBox);
         
         this.add(namePanel);

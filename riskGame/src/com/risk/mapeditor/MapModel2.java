@@ -12,9 +12,11 @@ import com.risk.observers.MapModelObservable;
 import com.risk.observers.MapModelObserver;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * MAP object
@@ -35,7 +37,12 @@ public class MapModel2 implements MapModelObservable {
         graphContinents = new HashMap<>();
         graphTerritories = new HashMap<>();
         observers = new LinkedList<>();
-        
+        addContinent();
+    }
+    
+    public TerritoryModel getTerritoryByName(String territoryName){
+        TerritoryModel target = this.graphTerritories.get(territoryName);
+        return target;
     }
     
     public void addContinent(){
@@ -53,6 +60,7 @@ public class MapModel2 implements MapModelObservable {
     public void addTerritory(int posX, int posY){
         String newName = "Country"+Integer.toString(graphTerritories.size());
         TerritoryModel newTerritory = new TerritoryModel(newName, posX, posY);
+        newTerritory.setContinentName(this.graphContinents.entrySet().iterator().next().getKey());
         graphTerritories.put(newName, newTerritory);
         notifyObservers(UpdateTypes.ADD_TERRITORY, newTerritory);
     }
@@ -63,13 +71,22 @@ public class MapModel2 implements MapModelObservable {
     }
     
     public void updateTerritory(Map<String,String> data){
+        //get data
         String formerName = data.get("name");
         String newName = data.get("newName");
         String newContinent = data.get("continent");
-        TerritoryModel modifiedTerritory = graphTerritories.get(formerName);
+        
+        //get territory to be modified
+        TerritoryModel modifiedTerritory = graphTerritories.remove(formerName);
+        
+        //modify territory
         modifiedTerritory.setName(newName);
         modifiedTerritory.setContinentName(newContinent);
-        notifyObservers(UpdateTypes.UPDATE_TERRITORY, modifiedTerritory);
+        
+        //replace the old entry by the updated one
+        graphTerritories.put(newName, modifiedTerritory);
+        
+        notifyObservers(UpdateTypes.UPDATE_TERRITORY, data);
     }
     
     @Override
@@ -116,4 +133,12 @@ public class MapModel2 implements MapModelObservable {
         return graphTerritories;
     }
 
+    public String[] getContinentList(){
+        Set<String> continentsList = this.getGraphContinents().keySet();
+        String[] continentList = Arrays.copyOf(continentsList.toArray(), 
+                continentsList.size(),
+                String[].class);
+        return continentList;
+    }
+    
 }

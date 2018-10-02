@@ -23,7 +23,7 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     private HashMap<String, Component> items;
     private JButton addButton;
     
-    public ContinentListPanel(Integer width, Integer height, MapEditorController editorController) {
+    public ContinentListPanel(Integer width, Integer height, MapEditorController editorController, String[] continentList) {
         //setup component
         super(width, height);
         this.controller = editorController;
@@ -31,6 +31,10 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
         
         //setup list of objects to display
         this.items = new HashMap<>();
+        
+        for(String continentName:continentList){
+            this.addContinent(continentName);
+        }
         
         //setup add button
         this.addButton = new JButton("+");
@@ -90,6 +94,8 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
             case REMOVE_CONTINENT:
                 continentName = (String)object;
                 removeContinent(continentName);
+                break;
+            case UPDATE_TERRITORY:
                 break;
         }
     }
