@@ -13,7 +13,7 @@ public enum GameStage {
     START,
     REINFORCEMENT,
     ATTACK,
-    FORTIFICATION{
+    FORTIFICATION {
         @Override
         public GameStage next() {
             return GameStage.REINFORCEMENT;
