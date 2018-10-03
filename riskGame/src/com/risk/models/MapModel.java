@@ -72,7 +72,7 @@ public class MapModel {
      *
      * @return Returns true if the map is valid
      */
-    public boolean check() {
+    public boolean isValid() {
         return this.isConnectedGraph()
                 && this.getGraphContinents().values().stream().allMatch((c) -> (c.check()));
     }

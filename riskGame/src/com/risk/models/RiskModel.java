@@ -20,7 +20,7 @@ import java.util.LinkedList;
  */
 public final class RiskModel {
 
-    private MapModel board;
+    private MapModel map;
     private LinkedList<PlayerModel> players;
     private int turn;
     private GameStage stage;
@@ -93,15 +93,13 @@ public final class RiskModel {
      * @param path path of the file
      * @return 0 success, -1--6 error
      */
-    public int setBoard(String path) {
-        this.board = new MapModel();
-        MapFileManagement aux = new MapFileManagement();
-        int result = aux.createBoard(path, this.board);
+    public int loadMap(String path) {
+        this.map = new MapModel();
+        int result = new MapFileManagement().createBoard(path, this.map);
         if (result == 0) {
             this.setDeck();
         }
         return result;
-
     }
 
     /**
@@ -111,7 +109,7 @@ public final class RiskModel {
      */
     public void createFile(String fileContent) {
         MapFileManagement fileManagement = new MapFileManagement();
-        int result = fileManagement.generateBoardFile(fileContent, this.board);
+        int result = fileManagement.generateBoardFile(fileContent, this.map);
 
     }
 
@@ -120,8 +118,8 @@ public final class RiskModel {
      *
      * @return board
      */
-    public MapModel getBoard() {
-        return board;
+    public MapModel getMap() {
+        return map;
     }
 
     /**
@@ -132,7 +130,7 @@ public final class RiskModel {
             throw new IllegalArgumentException();
         }
 
-        List<TerritoryModel> countriesLeft = new ArrayList<>(board.getGraphTerritories().values());
+        List<TerritoryModel> countriesLeft = new ArrayList<>(map.getGraphTerritories().values());
         Collections.shuffle(countriesLeft);
 
         int countriesPerPlayer = (countriesLeft.size() / players.size());
@@ -260,7 +258,7 @@ public final class RiskModel {
     public void setDeck() {
         this.deck = new LinkedList();
         int i = 0;
-        for (String country : this.getBoard().getGraphTerritories().keySet()) {
+        for (String country : this.getMap().getGraphTerritories().keySet()) {
             if (i <= 14) {
                 this.deck.add(new CardModel(country, "Infantry"));
                 this.deck.add(new CardModel(country, "Cavalry"));

@@ -42,7 +42,7 @@ public class GameController implements Runnable {
      */
     @Override
     public void run() {
-        while (!modelRisk.getCurrentPlayer().getContriesOwned().containsAll(modelRisk.getBoard().getGraphTerritories().values())) {
+        while (!modelRisk.getCurrentPlayer().getContriesOwned().containsAll(modelRisk.getMap().getGraphTerritories().values())) {
 
             switch (modelRisk.getStage()) {
                 case START:

@@ -115,7 +115,7 @@ public class MapListener extends MouseAdapter {
                     this.countryReinforce = reinforce.getName();
                     PlayerModel currentPlayer = this.riskModel.getCurrentPlayer();
                     if (currentPlayer.getArmiesDeploy() >= 1) {
-                        TerritoryModel aux = this.riskModel.getBoard().getGraphTerritories().get(countryReinforce);
+                        TerritoryModel aux = this.riskModel.getMap().getGraphTerritories().get(countryReinforce);
                         if (currentPlayer.getContriesOwned().contains(aux)) {
                             aux.setNumArmies(aux.getNumArmies() + 1);
                             reinforce.setText(Integer.toString(Integer.parseInt(reinforce.getText()) + 1));
