@@ -9,9 +9,12 @@ import com.risk.controllers.MapEditorController;
 import com.risk.observers.MapModelObserver;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.HashMap;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**
@@ -27,19 +30,31 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
         //setup component
         super(width, height);
         this.controller = editorController;
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new GridBagLayout());
         
         //setup list of objects to display
         this.items = new HashMap<>();
         
+        //setup add button
+        this.addButton = new JButton("Add Continent");
+        
+        this.addButton.addActionListener(editorController.getAddContinentButtonListener());
+        
+        this.add(addButton, gbc);
+        
+        addDummyLabel();
         for(String continentName:continentList){
             this.addContinent(continentName);
         }
-        
-        //setup add button
-        this.addButton = new JButton("+");
-        this.addButton.addActionListener(editorController.getAddContinentButtonListener());
-        this.add(addButton);
+    }
+    
+    public void addDummyLabel(){
+        GridBagConstraints dummyGbc = new GridBagConstraints();
+        dummyGbc.weighty=1;
+        dummyGbc.weightx=1;
+        dummyGbc.gridx=0;
+        dummyGbc.gridy=gbc.gridy+1;
+        this.add(this.dummyLabel, dummyGbc);
     }
     
     @Override
@@ -49,13 +64,17 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
         
         //add listeners
         JTextField newElement = (JTextField)newComponent;
-        newElement.setMaximumSize(new Dimension(400, 50));
+        this.remove(this.dummyLabel);
+        
+        gbc.gridy+=1;
         newElement.getDocument().addDocumentListener(this.controller.getContinentTextListener());
         newElement.addMouseListener(this.controller.getContinentMouseListener());
 
         //add to the list and the view
         this.items.put(name, newElement);
-        this.add(newElement, items.size()-1);
+        this.add(newElement, gbc);
+        
+        addDummyLabel();
 
         //draw
         this.setVisible(true);
@@ -71,6 +90,7 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     public void removeElement(String name){
         this.remove(items.get(name));
         this.items.remove(name);
+        gbc.gridy-=1;
         revalidate();
         repaint();
     }

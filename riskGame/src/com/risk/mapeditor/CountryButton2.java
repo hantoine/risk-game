@@ -7,13 +7,14 @@ package com.risk.mapeditor;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 
 /**
  *
  * @author timot
  */
-public class CountryButton2 extends JLabel {
+public class CountryButton2 extends JButton {
 
     private Dimension buttonSize;
     private static int positionX;

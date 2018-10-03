@@ -198,7 +198,7 @@ public class MapEditorController {
         public ButtonMouseController(MapModel2 mapModel){
             newMap = mapModel;
         }
-        
+            
         public void mouseClicked(MouseEvent e){
             if(SwingUtilities.isLeftMouseButton(e)){
                 Object sourceObj = e.getSource();
