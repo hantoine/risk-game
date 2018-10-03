@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
@@ -178,10 +179,6 @@ public class MapFileManagement {
                     }
 
                 }
-
-                //if (board.getImage() == null) {
-                //    return -1;
-                //}
             } else {
                 return -1;
             }
@@ -262,7 +259,7 @@ public class MapFileManagement {
 
         String[] linesInfo = info.split("\\r?\\n");
         int i = 0;
-        String aux[];
+        String currentTerritoryLine[];
         while (i < linesInfo.length) {
 
             if (linesInfo[i].equals(" ") || linesInfo[i].isEmpty()) {
@@ -271,18 +268,18 @@ public class MapFileManagement {
             }
 
             //Splits the country information
-            aux = linesInfo[i].split(",");
+            currentTerritoryLine = linesInfo[i].split(",");
             int j;
 
             //The information has to be bigger first country second and third position 4th continent
-            if (aux.length > 4) {
+            if (currentTerritoryLine.length > 4) {
                 // Creates de Country in the file
                 TerritoryModel auxCountry;
                 int cordX;
                 int cordY;
                 try {
-                    cordX = Integer.parseInt(aux[1]);
-                    cordY = Integer.parseInt(aux[2]);
+                    cordX = Integer.parseInt(currentTerritoryLine[1]);
+                    cordY = Integer.parseInt(currentTerritoryLine[2]);
 
                     if (cordX + 50 > board.getMapWidth()) {
                         board.setMapWidth(cordX + 50);
@@ -295,9 +292,12 @@ public class MapFileManagement {
                     return -1;
                 }
 
-                if (graphTerritories.keySet().contains(aux[0])) {
+                final String currentTerritoryName = currentTerritoryLine[0].trim(); 
+                Optional<String> alreadyCreatedTerritoryName = graphTerritories.keySet().stream()
+                        .filter(s -> s.equalsIgnoreCase(currentTerritoryName)).findFirst();
+                if (alreadyCreatedTerritoryName.isPresent()) {
 
-                    auxCountry = graphTerritories.get(aux[0]);
+                    auxCountry = graphTerritories.get(alreadyCreatedTerritoryName.get());
                     if (auxCountry.getPositionX() == -1 && auxCountry.getPositionY() == -1) {
                         auxCountry.countrySetter(cordX, cordY);
                     } else {
@@ -305,31 +305,34 @@ public class MapFileManagement {
                     }
 
                 } else {
-                    auxCountry = new TerritoryModel(aux[0], cordX, cordY);
+                    auxCountry = new TerritoryModel(currentTerritoryName, cordX, cordY);
                 }
 
                 //Creates adj country
                 TerritoryModel auxCountryAdj;
 
-                for (j = 0; j < aux.length - 4; j++) {
-                    if (graphTerritories.keySet().contains(aux[j + 4])) {
-                        auxCountryAdj = graphTerritories.get(aux[j + 4]);
-
+                for (j = 0; j < currentTerritoryLine.length - 4; j++) {
+                    final String currentAdjacentTerritoryName = currentTerritoryLine[j+4].trim();
+                    Optional<String> alreadyCreatedAdjacentTerritoryName = graphTerritories.keySet().stream()
+                        .filter(s -> s.equalsIgnoreCase(currentAdjacentTerritoryName)).findFirst();
+                    
+                    if (alreadyCreatedAdjacentTerritoryName.isPresent()) {
+                        auxCountryAdj = graphTerritories.get(alreadyCreatedAdjacentTerritoryName.get());
                     } else {
-                        auxCountryAdj = new TerritoryModel(aux[j + 4]);
+                        auxCountryAdj = new TerritoryModel(currentAdjacentTerritoryName);
                     }
                     //Adds the adj
                     auxCountry.getAdj().add(auxCountryAdj);
-                    graphTerritories.put(aux[j + 4], auxCountryAdj);
+                    graphTerritories.put(auxCountryAdj.getName(), auxCountryAdj);
                 }
 
-                if (board.getGraphContinents().containsKey(aux[3])) {
-                    board.getGraphContinents().get(aux[3]).setMember(auxCountry);
-                    auxCountry.setContinentName(aux[3]);
+                if (board.getGraphContinents().containsKey(currentTerritoryLine[3])) {
+                    board.getGraphContinents().get(currentTerritoryLine[3]).setMember(auxCountry);
+                    auxCountry.setContinentName(currentTerritoryLine[3]);
                 } else {
                     return -1;
                 }
-                graphTerritories.put(aux[0], auxCountry);
+                graphTerritories.put(auxCountry.getName(), auxCountry);
 
             } else {
                 return -1;
@@ -338,6 +341,12 @@ public class MapFileManagement {
             i++;
         }
 
+        //If the line of one of the adjacent territory has not been met, there is an error in the file 
+        if(graphTerritories.values().stream().anyMatch(
+                (t) -> (t.getContinentName() == null))
+                )
+            return -4;
+        
         board.setGraphTerritories(graphTerritories);
 
         return 0;
