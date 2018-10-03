@@ -82,7 +82,7 @@ public class RiskView extends javax.swing.JFrame {
             this.remove(this.getMapPanel());
         }
 
-        this.setMapPanel(new MapPanel(riskModel.getBoard(), countryListener));
+        this.setMapPanel(new MapPanel(riskModel.getMap(), countryListener));
         getContentPane().add(this.getMapPanel(), BorderLayout.CENTER);
         int referenceHeight = (this.getMapPanel().getHeight() > this.getPlayerPanel().getHeight()) ? this.getMapPanel().getHeight() : this.getPlayerPanel().getHeight();
         this.setSize(new Dimension(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth() + 30, 80 + referenceHeight + 90));

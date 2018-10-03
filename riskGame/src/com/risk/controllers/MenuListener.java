@@ -107,38 +107,40 @@ public class MenuListener extends MouseAdapter {
                 }
                 break;
             case "PLAY":
-                StartMenuView aux1 = (StartMenuView) this.getRiskView().getMenuPanel().getStartMenu();
-                NewGamePanel aux = (NewGamePanel) aux1.getTabbedPane().getComponent(0);
-                String selectedPath = aux.getSelectFileTextField().getText();
-                if (!selectedPath.equals("")) {
-                    int resultReadingValidation = getRiskModel().setBoard(selectedPath);
-                    if (resultReadingValidation == 0) {
-                        if ((getRiskModel().getBoard()).check()) {
-                            this.getRiskView().getMenuPanel().setVisible(false);
-                            this.getRiskView().remove(this.getRiskView().getMenuPanel());
-                            this.getRiskView().setMenuPanel(null);
-                            this.getRiskView().getStagePanel().setVisible(true);
+                NewGamePanel newGamePanel = (NewGamePanel) this.getRiskView().getMenuPanel().getStartMenu().getTabbedPane().getComponent(0);
+                String selectedPath = newGamePanel.getSelectFileTextField().getText();
 
-                            LinkedList<PlayerPanel> aux2 = aux.getPlayersPanel().getPlayersArray();
-                            LinkedList<PlayerModel> listPlayers = new LinkedList<>();
-                            for (int i = 0; i < aux2.size(); i++) {
-                                PlayerPanel player = aux2.get(i);
-                                PlayerModel playerGame = new HumanPlayerModel(player.getPlayerNameTextField().getText(), player.getColorButton().getBackground(), true);
-                                listPlayers.add(playerGame);
-                            }
-
-                            this.getRiskModel().setPlayerList(listPlayers);
-                            this.getRiskController().playGame();
-
-                        } else {
-                            JOptionPane.showMessageDialog(null, "The map is not valid.");
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, readingError(resultReadingValidation));
-                    }
-                } else {
+                if (selectedPath.equals("")) {
                     JOptionPane.showMessageDialog(null, "You have not selected a map");
+                    break;
                 }
+
+                int resultReadingValidation = getRiskModel().loadMap(selectedPath);                
+                if (resultReadingValidation != 0) {
+                    JOptionPane.showMessageDialog(null, readingError(resultReadingValidation));
+                    break;
+                }
+                
+                if (!getRiskModel().getMap().isValid()) {
+                    JOptionPane.showMessageDialog(null, "The map is not valid.");
+                    break;
+                }
+                
+                this.getRiskView().getMenuPanel().setVisible(false);
+                this.getRiskView().remove(this.getRiskView().getMenuPanel());
+                this.getRiskView().setMenuPanel(null);
+                this.getRiskView().getStagePanel().setVisible(true);
+
+                LinkedList<PlayerPanel> listPlayerPanels = newGamePanel.getPlayersPanel().getPlayersArray();
+                LinkedList<PlayerModel> listPlayers = new LinkedList<>();
+                for (int i = 0; i < listPlayerPanels.size(); i++) {
+                    PlayerPanel player = listPlayerPanels.get(i);
+                    PlayerModel playerGame = new HumanPlayerModel(player.getPlayerNameTextField().getText(), player.getColorButton().getBackground(), true);
+                    listPlayers.add(playerGame);
+                }
+                this.getRiskModel().setPlayerList(listPlayers);
+                
+                this.getRiskController().playGame();
                 break;
             default:
                 break;

@@ -17,6 +17,41 @@
 			//function content
 		}
 		```
+	- Try not too have too many nested conditions:
+	  What we should not do:
+		```java
+		void function(DataObject dataObject) {
+			if(check1(dataObject)) {
+				if(check2(dataObject)) {
+					if(check3(dataObject)) {
+						doThings(dataObject);
+					} else {
+						System.out.println("Check 3 failed");
+					}
+				} else {
+					System.out.println("Check 2 failed");
+				}
+			} else {
+				System.out.println("Check 1 failed");
+			}
+		}
+		```
+	  What we should do:
+		```java
+		void function(DataObject dataObject) {
+			if(!check1(dataObject)) {
+				System.out.println("Check 1 failed");
+			}	
+			if(!check2(dataObject)) {
+				System.out.println("Check 2 failed");
+			}
+			if(check3(dataObject)) {
+				System.out.println("Check 3 failed");
+			}
+			
+			doThings(dataObject);
+		}
+		```
 
 - After refactoring, lets try to  always do peer programming
 - Code in master should always be running. Always work on a dedicated branch. (The branch can stay local if only one laptop is working on it)
