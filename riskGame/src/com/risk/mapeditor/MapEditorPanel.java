@@ -10,6 +10,8 @@ import com.risk.observers.MapModelObserver;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -28,7 +30,9 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
     protected MapView mapPanel;
     private MapEditorController controler;
     protected ContinentListPanel continentsPanel;
-    protected CustomListPanel modesPanel;
+    protected CustomListPanel toolsPanel;
+    protected String selectedtoolName;
+    
     
     /**
      * Constructor
@@ -59,23 +63,40 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
         this.continentsPanel = new ContinentListPanel(120,600, editorController, initMapModel.getContinentList());
         
         //panel with buttons to select a mode
-        this.modesPanel = new CustomListPanel(120,600);
-        this.initModesPanel();
+        String[] toolsList = {"Add Territory", "Edit Territory", "Create Link"};
+        this.toolsPanel = new ToolsListPanel(120,600, toolsList, getToolButtonListener());
         
         //add elements
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(BorderLayout.NORTH, imageSelectorPanel);
-        contentPanel.add(BorderLayout.WEST, modesPanel);
+        contentPanel.add(BorderLayout.WEST, toolsPanel);
         contentPanel.add(BorderLayout.EAST, continentsPanel);
         contentPanel.add(BorderLayout.CENTER, mapPanel);
         setContentPane(contentPanel);
         
     }
     
-    private void initModesPanel(){
-        String[] modesList = {"Add Territory", "Edit Territory", "Create Link"};
-        for(String modeName:modesList)
-            this.modesPanel.addElement(new JButton(modeName),modeName);
+    public ToolButtonListener getToolButtonListener(){
+        return new ToolButtonListener(this);
+    }
+    
+    /**
+     * Button listener to change the mode when the user click on a tool to select it 
+     */
+    protected class ToolButtonListener implements ActionListener{
+
+        private MapEditorPanel mapEditorPanel;
+        
+        public ToolButtonListener(MapEditorPanel mapEditorPanel){
+            this.mapEditorPanel = mapEditorPanel;
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String toolName = ((JButton)e.getSource()).getText();
+            this.mapEditorPanel.selectedtoolName = toolName;
+            System.out.println("selected tool:"+ toolName);
+        }
     }
     
     /**
