@@ -13,9 +13,14 @@ public enum GameStage {
     START,
     REINFORCEMENT,
     ATTACK,
-    FORTIFICATION;
+    FORTIFICATION{
+        @Override
+        public GameStage next() {
+            return GameStage.REINFORCEMENT;
+        }
+    };
 
-    private static GameStage[] vals = values();
+    private static final GameStage[] vals = values();
 
     public GameStage next() {
         return vals[(this.ordinal() + 1) % vals.length];
