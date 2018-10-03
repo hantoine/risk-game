@@ -97,6 +97,8 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
                 break;
             case UPDATE_TERRITORY:
                 break;
+            case UPDATE_BACKGROUND_IMAGE:
+                break;
         }
     }
 }
