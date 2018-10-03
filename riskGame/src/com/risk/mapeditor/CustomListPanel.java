@@ -21,8 +21,8 @@ import javax.swing.JPanel;
  * @author timot
  */
 public class CustomListPanel extends JPanel {
-    private HashMap<String, Component> items;
-    private JButton addButton;
+    protected HashMap<String, Component> items;
+    protected JButton addButton;
     protected GridBagConstraints gbc;
     protected JLabel dummyLabel;
             
