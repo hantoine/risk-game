@@ -121,6 +121,8 @@ public class MapView extends JPanel implements MapModelObserver  {
                     countriesButtons.put(newName, territoryButton);
                 }
                 break;
+            case UPDATE_BACKGROUND_IMAGE:
+                break;
         }
     }
     

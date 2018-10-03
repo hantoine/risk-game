@@ -6,20 +6,29 @@
 package com.risk.controllers;
 
 import com.risk.mapeditor.CountryButton2;
+import com.risk.mapeditor.MapEditorPanel;
 import com.risk.mapeditor.MapModel2;
 import com.risk.mapeditor.MapView;
 import com.risk.models.TerritoryModel;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 
 /**
  *
@@ -55,6 +64,10 @@ public class MapEditorController {
     public ContinentTextListener getContinentTextListener(){
         return new ContinentTextListener(newMap);
     }    
+    
+    public selectBackImgListener getSelectBackImgListener(MapView mapPanel, MapEditorPanel editorPanel){
+        return new selectBackImgListener(mapPanel, editorPanel, this.newMap);
+    }
     
     /**
      * Class to handle clicks on the "add" button listener to add continents
@@ -235,5 +248,44 @@ public class MapEditorController {
                 }
             }
         }
+    }
+    
+    public class selectBackImgListener implements DocumentListener{
+        protected MapView mapPanel;
+        protected MapEditorPanel editorPanel;
+        protected MapModel2 mapModel;
+        
+        public selectBackImgListener(MapView mapPanel, MapEditorPanel editorPanel, MapModel2 mapModel){
+            this.mapPanel = mapPanel;
+            this.editorPanel = editorPanel;
+            this.mapModel = mapModel;
+        }
+        
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            File sourceImage;
+            try {
+                sourceImage = new File(e.getDocument().getText(0,e.getDocument().getLength()));
+                BufferedImage backgroundImage = ImageIO.read(sourceImage);
+                mapModel.setImage(backgroundImage);
+                
+            } catch (BadLocationException ex) {
+                Logger.getLogger(MapEditorPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(MapEditorPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {            
+            
+            
+        }
+        
     }
 }

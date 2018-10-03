@@ -6,30 +6,21 @@
 package com.risk.mapeditor;
 
 import com.risk.controllers.MapEditorController;
+import com.risk.observers.MapModelObserver;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import static java.lang.Math.floor;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.BadLocationException;
 
 /**
  * It represents the map editor panel in the menu
  * @author timot
  */
-public class MapEditorPanel extends javax.swing.JFrame{
+public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserver{
 
     protected JPanel contentPanel;
     protected FileSelectorPanel imageSelectorPanel;
@@ -43,7 +34,7 @@ public class MapEditorPanel extends javax.swing.JFrame{
      * @param height
      * @param editorController
      */
-    public MapEditorPanel(int width, int height, MapEditorController editorController, MapModel2 initMapModel) {
+    public MapEditorPanel(int width, int height, MapEditorController editorController, MapModel2 initMapModel){
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(width, height));
         controler = editorController;
@@ -64,7 +55,7 @@ public class MapEditorPanel extends javax.swing.JFrame{
                 + "Click left on an existing country to modify it.<br>"
                 + "Click right on an existing country to delete it.<br></html>");
         mapPanel = new MapView(editorController);
-        this.imageSelectorPanel.getTextField().getDocument().addDocumentListener(new selectDocumentListener(mapPanel, this));
+        this.imageSelectorPanel.getTextField().getDocument().addDocumentListener(controler.getSelectBackImgListener(mapPanel, this));
         
         //panel to add continents
         ContinentListPanel continentsPanel = new ContinentListPanel(200,600, editorController, initMapModel.getContinentList());
@@ -96,28 +87,24 @@ public class MapEditorPanel extends javax.swing.JFrame{
     public ContinentListPanel getContinentListPanel(){
         return this.continentsPanel;
     }
-    
-    public class selectDocumentListener implements DocumentListener{
-        protected MapView mapPanel;
-        protected MapEditorPanel editorPanel;
-        
-        public selectDocumentListener(MapView mapPanel, MapEditorPanel editorPanel){
-            this.mapPanel = mapPanel;
-            this.editorPanel = editorPanel;
-        }
-        
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            File sourceImage;
-            try {
-                sourceImage = new File(e.getDocument().getText(0,e.getDocument().getLength()));
-                BufferedImage backgroundImage = ImageIO.read(sourceImage);
+
+    @Override
+    public void update(UpdateTypes updateType, Object object){        
+        switch(updateType){
+            case ADD_TERRITORY:
+                break;
+            case REMOVE_TERRITORY:
+                break;
+            case UPDATE_TERRITORY:
+                break;
+            case UPDATE_BACKGROUND_IMAGE:
+                BufferedImage backgroundImage = (BufferedImage) object;
                 
                 //get current sizes of components
                 int width = backgroundImage.getWidth();
                 int height = backgroundImage.getHeight();
                 Dimension mapPanelSize = this.mapPanel.getSize();
-                Dimension parentSize = this.editorPanel.getSize();
+                Dimension parentSize = this.getSize();
                 
                 //compute new size to adapt to the image
                 double difWidth = width-mapPanelSize.getWidth();
@@ -126,27 +113,11 @@ public class MapEditorPanel extends javax.swing.JFrame{
                 parentSize.height+=difHeight;
                 
                 //set new size and set new background image
-                editorPanel.setSize(parentSize);
+                this.setSize(parentSize);
                 this.mapPanel.setImage(backgroundImage);
-                editorPanel.repaint();
+                this.repaint();  
                 
-            } catch (BadLocationException ex) {
-                Logger.getLogger(MapEditorPanel.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(MapEditorPanel.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                break;
         }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {            
-            
-            
-        }
-        
     }
 }

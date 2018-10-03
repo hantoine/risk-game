@@ -105,7 +105,7 @@ public class MapModel2 implements MapModelObservable {
      * Getter of the image attribute
      * @return the image
      */
-    public Image getImage() {
+    public BufferedImage getImage() {
         return image;
     }
 
@@ -115,6 +115,7 @@ public class MapModel2 implements MapModelObservable {
      */
     public void setImage(BufferedImage image) {
         this.image = image;
+        notifyObservers(UpdateTypes.UPDATE_BACKGROUND_IMAGE, image);
     }
     
     /**
