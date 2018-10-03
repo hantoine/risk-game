@@ -8,9 +8,12 @@ package com.risk.mapeditor;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.HashMap;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -20,18 +23,23 @@ import javax.swing.JPanel;
 public class CustomListPanel extends JPanel {
     private HashMap<String, Component> items;
     private JButton addButton;
-
+    protected GridBagConstraints gbc;
+    protected JLabel dummyLabel;
+            
     public CustomListPanel(Integer width, Integer height) {
         //setup component
         this.setPreferredSize(new Dimension(width, height));
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         
         //setup list of objects to display
         this.items = new HashMap<>();
-        
-        //setup add button
-        //this.addButton = new JButton("+");
-        //this.add(addButton);
+        dummyLabel = new JLabel(" ");
+        addDummyLabel();
     }
     
     /**
@@ -40,6 +48,7 @@ public class CustomListPanel extends JPanel {
      */
     public void setAddButtonName(String newName){
         this.addButton.setName(newName);
+        addDummyLabel();
     }
     
     /**
@@ -47,12 +56,28 @@ public class CustomListPanel extends JPanel {
      * @param newElement
      * @param name 
      */
-    public void addElement(Component newElement, String name) {  
+    public void addElement(Component newElement, String name) {
         this.items.put(name, newElement);
-        this.add(newElement, items.size()-1);
+        
+        this.remove(this.dummyLabel);
+        
+        gbc.gridy+=1;
+        this.add(newElement, this.gbc, items.size()-1);
         this.setVisible(true);
+        
+        addDummyLabel();
+        
         revalidate();
         repaint();
+    }
+    
+    protected void addDummyLabel(){
+        GridBagConstraints dummyGbc = new GridBagConstraints();
+        dummyGbc.weighty=1;
+        dummyGbc.weightx=1;
+        dummyGbc.gridx=0;
+        dummyGbc.gridy=gbc.gridy+1;
+        this.add(dummyLabel, dummyGbc);
     }
     
     /**
@@ -62,6 +87,7 @@ public class CustomListPanel extends JPanel {
     public void removeElement(String name){
         this.remove(items.get(name));
         this.items.remove(name);
+        gbc.gridy-=1;
         revalidate();
         repaint();
     }
