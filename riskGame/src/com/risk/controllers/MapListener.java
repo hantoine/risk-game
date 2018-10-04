@@ -10,7 +10,7 @@ import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import com.risk.models.interfaces.PlayerModel;
 import com.risk.views.RiskView;
-import com.risk.views.map.CountryButton;
+import com.risk.views.map.CountryLabel;
 import com.risk.views.map.MapPanel;
 import java.awt.Color;
 import java.awt.Component;
@@ -31,7 +31,7 @@ import javax.swing.SwingUtilities;
  */
 public class MapListener extends MouseAdapter {
 
-    private CountryButton countrySource;
+    private CountryLabel countrySource;
     final private RiskController riskController;
 
     /**
@@ -53,8 +53,8 @@ public class MapListener extends MouseAdapter {
         JComponent c = (JComponent) e.getSource();
         if (c instanceof MapPanel) {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux instanceof CountryButton) {
-                CountryButton source = (CountryButton) cAux;
+            if (cAux instanceof CountryLabel) {
+                CountryLabel source = (CountryLabel) cAux;
                 source.setBackground(Color.gray);
                 this.setCountrySource(source);
 
@@ -75,9 +75,9 @@ public class MapListener extends MouseAdapter {
         JComponent c = (JComponent) e.getSource();
         if (c instanceof MapPanel) {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux instanceof CountryButton) {
-                CountryButton destiny = (CountryButton) cAux;
-                CountryButton source = this.getCountrySource();
+            if (cAux instanceof CountryLabel) {
+                CountryLabel destiny = (CountryLabel) cAux;
+                CountryLabel source = this.getCountrySource();
 
                 source.setBackground(Color.white);
                 System.out.println(source.getName() + "--->" + destiny.getName());
@@ -100,8 +100,8 @@ public class MapListener extends MouseAdapter {
         JComponent c = (JComponent) e.getSource();
         if (c instanceof MapPanel) {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux instanceof CountryButton) {
-                CountryButton countryClicked = (CountryButton) cAux;
+            if (cAux instanceof CountryLabel) {
+                CountryLabel countryClicked = (CountryLabel) cAux;
                 countryClicked.setBackground(Color.white);
 
                 this.riskController.getPlayGame().clickOnTerriroty(countryClicked.getName());
@@ -109,11 +109,11 @@ public class MapListener extends MouseAdapter {
         }
     }
 
-    private CountryButton getCountrySource() {
+    private CountryLabel getCountrySource() {
         return countrySource;
     }
 
-    private void setCountrySource(CountryButton countrySource) {
+    private void setCountrySource(CountryLabel countrySource) {
         this.countrySource = countrySource;
     }
 }

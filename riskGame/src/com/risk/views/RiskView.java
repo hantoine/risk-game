@@ -64,19 +64,11 @@ public final class RiskView extends javax.swing.JFrame {
     }
 
     public void updateView(RiskModel rm) {
-        this.getStagePanel().updatePhase(rm.getStage(), rm.getCurrentPlayer().getNumArmies());
-
-        //TODO: update the MapPanel
+        this.getStagePanel().updatePhase(rm.getStage(), rm.getCurrentPlayer().getNumArmiesAvailable());
+        this.getMapPanel().updateView(rm);
         this.getPlayerPanel().updatePlayer(rm.getCurrentPlayer());
         this.getPlayerHandPanel().updatePlayer(rm.getCurrentPlayer());
 
-    }
-
-    /**
-     * Initialize the panel where will be the additional elements of each phase
-     */
-    public void initStagePanel(GameStage phase, int armies) {
-        this.getStagePanel().updatePhase(phase, armies);
     }
 
     /**
@@ -86,7 +78,8 @@ public final class RiskView extends javax.swing.JFrame {
      * @param countryListener listen for the mouse events in the map
      */
     public void initialMap(RiskModel riskModel, MouseListener countryListener) {
-        this.setMapPanel(new MapPanel(riskModel.getMap(), countryListener));
+        this.setMapPanel(new MapPanel(riskModel));
+        this.getMapPanel().setListener(countryListener);
     }
 
     /**

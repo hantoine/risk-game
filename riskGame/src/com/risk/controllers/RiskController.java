@@ -72,10 +72,11 @@ public final class RiskController implements ActionListener {
         this.getViewRisk().initialPlayerHandPanel(modelRisk);
         this.getViewRisk().initialMap(getModelRisk(), getCountryListener());
         this.modelRisk.assignCoutriesToPlayers();
-        
+
         GameController playStart = new GameController(this.getModelRisk(), this.getViewRisk(), this.getCountryListener());
         this.setPlayGame(playStart);
-        this.getPlayGame().finishStage();
+        modelRisk.initializePlayers();
+        this.viewRisk.updateView(modelRisk);
     }
 
     /**

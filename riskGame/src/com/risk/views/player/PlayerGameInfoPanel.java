@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 public final class PlayerGameInfoPanel extends JPanel {
 
     private final JButton playerName;
-    private final JButton numArmies;
+    private final JButton numArmiesOwned;
     private final JButton numCountries;
     private final JButton numContinents;
     private final JButton numCards;
@@ -32,13 +32,13 @@ public final class PlayerGameInfoPanel extends JPanel {
         this.setSize(150, 450);
 
         this.playerName = new JButton();
-        this.numArmies = new JButton();
+        this.numArmiesOwned = new JButton();
         this.numContinents = new JButton();
         this.numCountries = new JButton();
         this.numCards = new JButton();
 
         this.add(this.playerName);
-        this.add(this.numArmies);
+        this.add(this.numArmiesOwned);
         this.add(this.numCountries);
         this.add(this.numContinents);
         this.add(this.numCards);
@@ -56,7 +56,7 @@ public final class PlayerGameInfoPanel extends JPanel {
         playerName.setBackground(currentPlayer.getColor());
 
         //update the number of armies
-        this.numArmies.setText("Army Owned: " + currentPlayer.getNumArmies());
+        this.numArmiesOwned.setText("Army Owned: " + currentPlayer.getNumArmiesOwned());
 
         // update countries and continents
         this.numCountries.setText("Countries Owned: " + Integer.toString(currentPlayer
