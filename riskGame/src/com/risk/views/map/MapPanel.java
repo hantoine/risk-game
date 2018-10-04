@@ -26,12 +26,14 @@ public class MapPanel extends JPanel {
     /**
      * Constructor
      *
-     * @param rm RiskModel interaction
      */
-    public MapPanel(RiskModel rm) {
+    public MapPanel() {
         super(null);
+        setVisible(true);
+        setSize(400, 600);
+    }
 
-        MapModel mapModel = rm.getMap();
+    private void createMap(MapModel mapModel) {
         this.image = mapModel.getImage();
         this.setSize(mapModel.getMapWidth(), mapModel.getMapHeight());
         this.countriesButtons = new HashMap<>();
@@ -57,21 +59,26 @@ public class MapPanel extends JPanel {
         this.addMouseListener(countryListener);
     }
 
-    public void updateView(RiskModel rm) {
-        HashMap<String, TerritoryModel> graphTerritories = rm.getMap().getGraphTerritories();
+    public void updateView(RiskModel rm, boolean mapChanged) {
+        if (mapChanged) {
+            this.createMap(rm.getMap());
+        }
 
+        HashMap<String, TerritoryModel> graphTerritories = rm.getMap().getGraphTerritories();
         this.countriesButtons.values().stream()
                 .forEach((countryButton) -> {
                     TerritoryModel territory = graphTerritories.get(countryButton.getName());
                     countryButton.setText(Integer.toString(territory.getNumArmies()));
-                    countryButton.setForeground(territory.getOwner().getColor());
+                    if (territory.getOwner() != null) {
+                        countryButton.setForeground(territory.getOwner().getColor());
+                    }
                 });
     }
 
     /**
      * It paints the adjacent and the image in the panel
      *
-     * @param g
+     * @param g Graphics object used to draw
      */
     @Override
     protected void paintComponent(Graphics g) {

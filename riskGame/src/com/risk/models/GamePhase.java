@@ -9,20 +9,20 @@ package com.risk.models;
  *
  * @author hantoine
  */
-public enum GameStage {
+public enum GamePhase {
     INITIAL_ARMY_PLACEMENT,
     REINFORCEMENT,
     ATTACK,
     FORTIFICATION {
         @Override
-        public GameStage next() {
-            return GameStage.REINFORCEMENT;
+        public GamePhase next() {
+            return GamePhase.REINFORCEMENT;
         }
     };
 
-    private static final GameStage[] vals = values();
+    private static final GamePhase[] vals = values();
 
-    public GameStage next() {
+    public GamePhase next() {
         return vals[(this.ordinal() + 1) % vals.length];
     }
 }

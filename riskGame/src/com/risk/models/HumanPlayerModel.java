@@ -40,7 +40,7 @@ public class HumanPlayerModel extends PlayerModel {
      */
     @Override
     public void fortification(GameController playGame) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // nothing to do
     }
 
     /**
@@ -50,7 +50,5 @@ public class HumanPlayerModel extends PlayerModel {
     public void attack(GameController playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-
 
 }

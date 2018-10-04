@@ -52,8 +52,6 @@ public class MapModel {
      * It calls dfsConnected to validate if the countries in the board with the
      * given continents represent a connected graph.
      *
-     * @param continent Continent for which to check. If null the whole Map is
-     * checked
      * @return true if it is a connected graph
      */
     private boolean isConnectedGraph() {
@@ -106,7 +104,7 @@ public class MapModel {
     /**
      * Setter of the graphContinents attribute
      *
-     * @param graphContinents
+     * @param graphContinents HashMap containing all continents of the map with their name as a key
      */
     public void setGraphContinents(HashMap<String, ContinentModel> graphContinents) {
         this.graphContinents = graphContinents;
@@ -115,7 +113,7 @@ public class MapModel {
     /**
      * Getter of the graphTerritories attribute
      *
-     * @return the graphTerritories
+     * @return the graphTerritories, a HashMap containing all continents of the map with their name as a key
      */
     public HashMap<String, TerritoryModel> getGraphTerritories() {
         return graphTerritories;
@@ -124,7 +122,7 @@ public class MapModel {
     /**
      * Setter of the graphTerritories attribute
      *
-     * @param graphTerritories
+     * @param graphTerritories HashMap containing all territories of the map with their name as a key
      */
     public void setGraphTerritories(HashMap<String, TerritoryModel> graphTerritories) {
         this.graphTerritories = graphTerritories;
@@ -133,7 +131,7 @@ public class MapModel {
     /**
      * Getter of the configurationInfo attribute
      *
-     * @return the configurationInfo
+     * @return the configuration information contained in the map file
      */
     public HashMap<String, String> getConfigurationInfo() {
         return configurationInfo;
@@ -142,7 +140,7 @@ public class MapModel {
     /**
      * Setter of the configurationInfo attribute
      *
-     * @param configurationInfo
+     * @param configurationInfo the configuration information contained in the map file
      */
     public void setConfigurationInfo(HashMap<String, String> configurationInfo) {
         this.configurationInfo = configurationInfo;

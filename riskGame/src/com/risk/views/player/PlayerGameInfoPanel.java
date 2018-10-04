@@ -30,6 +30,7 @@ public final class PlayerGameInfoPanel extends JPanel {
     public PlayerGameInfoPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(150, 450);
+        this.setVisible(false);
 
         this.playerName = new JButton();
         this.numArmiesOwned = new JButton();
@@ -51,6 +52,8 @@ public final class PlayerGameInfoPanel extends JPanel {
      * @param currentPlayer Player whose it is currently the turn
      */
     public void updatePlayer(PlayerModel currentPlayer) {
+        this.setVisible(true);
+
         // update player name and color
         playerName.setText(currentPlayer.getName());
         playerName.setBackground(currentPlayer.getColor());

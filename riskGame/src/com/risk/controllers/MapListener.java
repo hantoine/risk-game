@@ -5,11 +5,6 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.GameStage;
-import com.risk.models.RiskModel;
-import com.risk.models.TerritoryModel;
-import com.risk.models.interfaces.PlayerModel;
-import com.risk.views.RiskView;
 import com.risk.views.map.CountryLabel;
 import com.risk.views.map.MapPanel;
 import java.awt.Color;
@@ -37,7 +32,7 @@ public class MapListener extends MouseAdapter {
     /**
      * Constructor
      *
-     * @param riskController
+     * @param riskController The RiskController controlling the main view of the game
      */
     public MapListener(RiskController riskController) {
         this.riskController = riskController;
