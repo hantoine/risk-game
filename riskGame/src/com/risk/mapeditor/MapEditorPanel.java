@@ -43,6 +43,7 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
         setSize(new Dimension(width, height));
         controler = editorController;
         this.setTitle("Map Editor");
+        this.setResizable(false);
         
         //all content is being stored in this panel
         contentPanel = new JPanel();

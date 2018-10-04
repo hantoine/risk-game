@@ -148,6 +148,14 @@ public class MapModel2 implements MapModelObservable {
         return true;
     }
     
+    public String getAvailableContinent(TerritoryModel territory){
+        LinkedList<TerritoryModel> neighbours = territory.getAdj();
+        if(neighbours!=null)
+            return neighbours.get(0).getContinentName();
+        else
+            return this.graphContinents.keySet().iterator().next();
+    }
+    
     /**
      * Remove a continent and notify the observers
      * @param continentName 
@@ -155,6 +163,14 @@ public class MapModel2 implements MapModelObservable {
     public boolean removeContinent(String continentName){
         if (this.getContinentList().length==1)
             return false;
+        
+        ContinentModel continentToDel = this.graphContinents.get(continentName);
+        LinkedList<TerritoryModel> members = continentToDel.getMembers();
+        
+        for(TerritoryModel member : members){
+            member.setContinentName(getAvailableContinent(member));
+        }
+        
         graphContinents.remove(continentName);
         int nbContinents = this.getContinentList().length;
         System.out.println("nb continents : "+Integer.toString(nbContinents));
@@ -173,10 +189,18 @@ public class MapModel2 implements MapModelObservable {
         
         String newName = getNewName(false);
         
+        //create territory
         TerritoryModel newTerritory = new TerritoryModel(newName, posX, posY);
+        
+        //add it to a continent
         String continentName = this.graphContinents.entrySet().iterator().next().getKey();
         newTerritory.setContinentName(continentName);
+        this.graphContinents.get(continentName).setMember(newTerritory);
+        
+        //add territory to list
         this.graphTerritories.put(newName, newTerritory);
+        
+        //update views
         notifyObservers(UpdateTypes.ADD_TERRITORY, newTerritory);
         return true;
     }
@@ -186,6 +210,20 @@ public class MapModel2 implements MapModelObservable {
      * @param countryName 
      */
     public void removeTerritory(String countryName){
+        
+        TerritoryModel territoryToDel = graphTerritories.get(countryName);
+        
+        //update continent owning the territory
+        String continent = territoryToDel.getContinentName();
+        this.graphContinents.get(continent).removeMember(territoryToDel);
+        
+        //remove territory from other territories' lists of neighbours
+        LinkedList<TerritoryModel> neighbours = territoryToDel.getAdj();
+        for(TerritoryModel neighbour : neighbours){
+            neighbour.removeNeighbour(territoryToDel);
+        }
+        
+        //delete the territory
         graphTerritories.remove(countryName);
         notifyObservers(UpdateTypes.REMOVE_TERRITORY, countryName);
     }
@@ -206,6 +244,7 @@ public class MapModel2 implements MapModelObservable {
         //modify territory
         modifiedTerritory.setName(newName);
         modifiedTerritory.setContinentName(newContinent);
+        this.graphContinents.get(newContinent).setMember(modifiedTerritory);
         
         //replace the old entry by the updated one
         graphTerritories.put(newName, modifiedTerritory);

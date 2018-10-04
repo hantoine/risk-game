@@ -28,6 +28,10 @@ public class ContinentModel {
         this.members = new LinkedList<>();
     }
 
+    public void removeMember(TerritoryModel member){
+        this.members.remove(member);
+    }
+    
     /**
      * Getter of the members attribute
      * @return the members
