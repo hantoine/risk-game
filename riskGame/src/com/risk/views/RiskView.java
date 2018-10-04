@@ -23,10 +23,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -38,7 +36,7 @@ import javax.swing.KeyStroke;
  *
  * @author n_irahol
  */
-public class RiskView extends javax.swing.JFrame {
+public final class RiskView extends javax.swing.JFrame {
 
     private MenuView menuPanel;
     private JPanel optionPanel;
@@ -64,6 +62,15 @@ public class RiskView extends javax.swing.JFrame {
         cp.add(this.stagePanel, BorderLayout.NORTH);
     }
 
+    public void updateView(RiskModel rm) {
+        this.getStagePanel().updatePhase(rm.getStage(), rm.getCurrentPlayer().getNumArmies());
+
+        //TODO: update the MapPanel
+        this.getPlayerPanel().updatePlayer(rm.getCurrentPlayer());
+        this.getPlayerHandPanel().updatePlayer(rm.getCurrentPlayer());
+
+    }
+
     /**
      * Initialize the panel where will be the additional elements of each phase
      */
@@ -78,16 +85,7 @@ public class RiskView extends javax.swing.JFrame {
      * @param countryListener listen for the mouse events in the map
      */
     public void initialMap(RiskModel riskModel, MouseListener countryListener) {
-        if (this.getMapPanel() != null) {
-            this.remove(this.getMapPanel());
-        }
-
         this.setMapPanel(new MapPanel(riskModel.getMap(), countryListener));
-        getContentPane().add(this.getMapPanel(), BorderLayout.CENTER);
-        int referenceHeight = (this.getMapPanel().getHeight() > this.getPlayerPanel().getHeight()) ? this.getMapPanel().getHeight() : this.getPlayerPanel().getHeight();
-        this.setSize(new Dimension(this.getMapPanel().getWidth() + this.getPlayerPanel().getWidth() + 30, 80 + referenceHeight + 90));
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
 
     /**
@@ -121,10 +119,9 @@ public class RiskView extends javax.swing.JFrame {
         if (this.getPlayerPanel() != null) {
             this.remove(this.getPlayerPanel());
         }
-        Container cp = getContentPane();
-        this.setPlayerPanel(new PlayerGameInfoPanel(riskModel.getCurrentPlayer()));
+        this.setPlayerPanel(new PlayerGameInfoPanel());
         this.getPlayerPanel().updatePlayer(riskModel.getCurrentPlayer());
-        cp.add(this.getPlayerPanel(), BorderLayout.EAST);
+        getContentPane().add(this.getPlayerPanel(), BorderLayout.EAST);
     }
 
     /**
@@ -134,7 +131,8 @@ public class RiskView extends javax.swing.JFrame {
      * @param riskModel model of the game
      */
     public void initialPlayerHandPanel(RiskModel riskModel) {
-        this.setPlayerHandPanel(new PlayerGameHandPanel(riskModel.getCurrentPlayer()));
+        this.setPlayerHandPanel(new PlayerGameHandPanel());
+        this.getPlayerHandPanel().updatePlayer(riskModel.getCurrentPlayer());
     }
 
     public PlayerGameHandPanel getPlayerHandPanel() {
@@ -253,7 +251,25 @@ public class RiskView extends javax.swing.JFrame {
      * @param mapPanel the mapPanel to set
      */
     public void setMapPanel(MapPanel mapPanel) {
+        if (this.mapPanel != null) {
+            this.remove(this.mapPanel);
+        }
+
         this.mapPanel = mapPanel;
+
+        getContentPane().add(this.mapPanel, BorderLayout.CENTER);
+
+        this.setSize(
+                this.mapPanel.getWidth() + this.getPlayerPanel().getWidth() + 150,
+                this.getStagePanel().getHeight() + Math.max(this.mapPanel.getHeight(), this.getPlayerPanel().getHeight()) + this.getPlayerHandPanel().getHeight() + 50
+        );
+
+        this.centerWindow();
+    }
+
+    private void centerWindow() {
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
 
     /**
@@ -309,7 +325,10 @@ public class RiskView extends javax.swing.JFrame {
     }
 
     /**
-     * @param reinforcementArmies the reinforcementArmies to set
+     * Setter of the stagePanel attribute
+     *
+     * @param stagePanel the stagePanel to set
+     *
      */
     public void setStagePanel(StagePanel stagePanel) {
         this.stagePanel = stagePanel;

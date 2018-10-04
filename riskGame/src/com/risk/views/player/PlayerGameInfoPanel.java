@@ -26,9 +26,8 @@ public final class PlayerGameInfoPanel extends JPanel {
     /**
      * Constructor
      *
-     * @param currentPlayer player that has the turn
      */
-    public PlayerGameInfoPanel(PlayerModel currentPlayer) {
+    public PlayerGameInfoPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(150, 450);
 
@@ -43,14 +42,13 @@ public final class PlayerGameInfoPanel extends JPanel {
         this.add(this.numCountries);
         this.add(this.numContinents);
         this.add(this.numCards);
-
-        updatePlayer(currentPlayer);
     }
 
     /**
-     * Updates player information
+     * Update the information displayed by the PlayerGameInfoPanel according to
+     * the information of the current player
      *
-     * @param currentPlayer
+     * @param currentPlayer Player whose it is currently the turn
      */
     public void updatePlayer(PlayerModel currentPlayer) {
         // update player name and color

@@ -23,6 +23,7 @@ public final class RiskModel {
     private MapModel map;
     private LinkedList<PlayerModel> players;
     private int turn;
+    private PlayerModel winningPlayer;
     private GameStage stage;
     static Integer maxNbOfPlayers = 6;
     private PlayerModel currentPlayer;
@@ -276,5 +277,14 @@ public final class RiskModel {
      */
     public void shuffleDeck() {
         Collections.shuffle(this.getDeck());
+    }
+    
+    
+    public PlayerModel getWinningPlayer() {
+        return winningPlayer;
+    }
+
+    public void setWinningPlayer(PlayerModel winningPlayer) {
+        this.winningPlayer = winningPlayer;
     }
 }

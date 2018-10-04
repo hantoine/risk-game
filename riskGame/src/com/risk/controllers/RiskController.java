@@ -23,8 +23,7 @@ public class RiskController implements ActionListener {
     private RiskModel modelRisk;
     private MenuListener menuListener;
     private MapListener countryListener;
-    private Thread playGame;
-    private Object syncObj;
+    private GameController playGame;
 
     /**
      * Constructor
@@ -33,7 +32,6 @@ public class RiskController implements ActionListener {
      * @param riskView the view of the game
      */
     public RiskController(RiskModel riskModel, RiskView riskView) {
-        this.syncObj = new Object();
         this.modelRisk = riskModel;
         this.viewRisk = riskView;
         this.viewRisk.setRiskController(this);
@@ -71,14 +69,13 @@ public class RiskController implements ActionListener {
     void playGame() {
 
         this.getViewRisk().initialPlayer(getModelRisk());
-        this.getViewRisk().initialMap(getModelRisk(), getCountryListener());
         this.getViewRisk().initialPlayerHandPanel(modelRisk);
+        this.getViewRisk().initialMap(getModelRisk(), getCountryListener());
+        this.modelRisk.assignCoutriesToPlayers();
+        
         GameController playStart = new GameController(this.getModelRisk(), this.getViewRisk(), this.getCountryListener(), this);
-
-        Thread thread = new Thread(playStart);
-        this.setPlayGame(thread);
-        thread.start();
-
+        this.setPlayGame(playStart);
+        this.getPlayGame().runStage();
     }
 
     /**
@@ -156,29 +153,14 @@ public class RiskController implements ActionListener {
     /**
      * @return the playGame
      */
-    public Thread getPlayGame() {
+    public GameController getPlayGame() {
         return playGame;
     }
 
     /**
      * @param playGame the playGame to set
      */
-    public void setPlayGame(Thread playGame) {
+    public void setPlayGame(GameController playGame) {
         this.playGame = playGame;
     }
-
-    /**
-     * @return the syncObj
-     */
-    public Object getSyncObj() {
-        return syncObj;
-    }
-
-    /**
-     * @param syncObj the syncObj to set
-     */
-    public void setSyncObj(Object syncObj) {
-        this.syncObj = syncObj;
-    }
-
 }
