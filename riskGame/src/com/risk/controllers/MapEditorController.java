@@ -11,6 +11,7 @@ import com.risk.mapeditor.MapEditorPanel;
 import com.risk.mapeditor.MapModel2;
 import com.risk.mapeditor.MapView;
 import com.risk.mapeditor.Tools;
+import com.risk.models.ContinentModel;
 import com.risk.models.TerritoryModel;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -25,12 +26,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 /**
  *
@@ -63,10 +66,6 @@ public class MapEditorController {
         return new ContinentMouseListener(newMap);
     }
     
-    public ContinentTextListener getContinentTextListener(){
-        return new ContinentTextListener(newMap);
-    }    
-    
     public selectBackImgListener getSelectBackImgListener(MapView mapPanel, MapEditorPanel editorPanel){
         return new selectBackImgListener(mapPanel, editorPanel, this.newMap);
     }
@@ -93,32 +92,6 @@ public class MapEditorController {
     }
     
     /**
-     * Class to handle changes of the name of continents
-     */
-    public class ContinentTextListener implements DocumentListener{
-        public MapModel2 newMap;
-        
-        public ContinentTextListener(MapModel2 mapModel){
-            newMap = mapModel;
-        }
-        
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            
-        }
-    }
-    
-    /**
      * Class to handle mouse events on continents objects
      */
     public class ContinentMouseListener implements MouseListener{
@@ -139,17 +112,39 @@ public class MapEditorController {
 
         @Override
         public void mouseReleased(MouseEvent e) {
+                     
+            //get object we clicked on (jlabel)
+            Object sourceObj = e.getSource();
+            String className = sourceObj.getClass().getName();
+                
+            //if JLabel then process
+            if(className != "javax.swing.JLabel")
+                return;
+            
+            JLabel clickedLabel = (JLabel)sourceObj;
+            ContinentListPanel clickedPanel=(ContinentListPanel)clickedLabel.getParent();
+            
             if (SwingUtilities.isRightMouseButton(e)){
-                Object sourceObj = e.getSource();
-                String className = sourceObj.getClass().getName();
-                if(className == "javax.swing.JTextField"){
-                    String continentName = ((JTextField)sourceObj).getText();
-                    boolean success = this.newMap.removeContinent(continentName);
-                    if(!success){
-                        JTextField clickedField = (JTextField)sourceObj;
-                        ContinentListPanel clickedPanel = (ContinentListPanel)clickedField.getParent();
-                        clickedPanel.showError("Any map needs at least one continent.");
-                    }
+                String continentName = ((JLabel)sourceObj).getText();
+                boolean success = this.newMap.removeContinent(continentName);
+                if(!success){
+                    clickedPanel.showError("Any map needs at least one continent.");
+                }
+            }
+            else if (SwingUtilities.isLeftMouseButton(e)){
+                //save original name of continent
+                String formerName = clickedLabel.getText();
+                
+                ContinentModel continentToModify = newMap.getGraphContinents().get(formerName);
+                int bonusScore = continentToModify.getBonusScore();
+                
+                //get information from the user
+                Map<String, String> data = clickedPanel.modifyContinent(formerName, bonusScore);
+
+                //if succeeded update the model's data
+                if (!data.isEmpty()) {
+                    data.put("name", formerName);
+                    this.newMap.updateContinent(data);
                 }
             }
         }

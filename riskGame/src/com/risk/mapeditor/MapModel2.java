@@ -150,7 +150,7 @@ public class MapModel2 implements MapModelObservable {
     
     public String getAvailableContinent(TerritoryModel territory){
         LinkedList<TerritoryModel> neighbours = territory.getAdj();
-        if(neighbours!=null)
+        if(neighbours!=null && !neighbours.isEmpty())
             return neighbours.get(0).getContinentName();
         else
             return this.graphContinents.keySet().iterator().next();
@@ -250,6 +250,29 @@ public class MapModel2 implements MapModelObservable {
         graphTerritories.put(newName, modifiedTerritory);
         
         notifyObservers(UpdateTypes.UPDATE_TERRITORY_NAME, data);
+    }
+    
+    public void updateContinent(Map<String,String> data){
+        String formerName = data.get("name");
+        String newName = data.get("newName");
+        int bonusScore = Integer.parseInt(data.get("bonusScore"));
+        
+        //update continent
+        ContinentModel continentToModify = this.graphContinents.remove(formerName);
+        continentToModify.setName(data.get("newName"));
+        continentToModify.setBonusScore(bonusScore);
+        
+        graphContinents.put(newName, continentToModify);
+        
+        //update name of the continent in all members of the continent
+        if (!formerName.equals(newName)){
+            LinkedList<TerritoryModel> members = continentToModify.getMembers();
+            for(TerritoryModel member : members){
+                member.setContinentName(newName);
+            }
+        }
+        
+        notifyObservers(UpdateTypes.UPDATE_CONTINENT, data);
     }
     
     @Override

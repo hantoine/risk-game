@@ -14,7 +14,7 @@ import java.util.LinkedList;
 public class ContinentModel {
 
     private LinkedList<TerritoryModel> members;
-    private final int bonusScore;
+    private int bonusScore;
     private String name;
 
     /**
@@ -62,6 +62,10 @@ public class ContinentModel {
      */
     public int getBonusScore() {
         return bonusScore;
+    }
+    
+    public void setBonusScore(int newBonusScore){
+        this.bonusScore=newBonusScore;
     }
     
     /**

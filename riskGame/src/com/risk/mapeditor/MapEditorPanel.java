@@ -152,6 +152,8 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
                 this.repaint();  
                 
                 break;
+            case UPDATE_CONTINENT:
+                break;
         }
     }
 }

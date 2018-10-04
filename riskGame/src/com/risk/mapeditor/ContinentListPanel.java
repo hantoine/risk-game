@@ -7,15 +7,17 @@ package com.risk.mapeditor;
 
 import com.risk.controllers.MapEditorController;
 import com.risk.observers.MapModelObserver;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashMap;
-import javax.swing.BoxLayout;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -57,24 +59,29 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
         this.add(this.dummyLabel, dummyGbc);
     }
     
+    private void customize(JLabel label, String name){
+        label.setText(name);
+        label.setBackground(Color.white);
+        label.setFont(new java.awt.Font("Arial", Font.PLAIN, 12));
+    }
+    
     @Override
     public void addElement(Component newComponent, String name) {  
-        if(!"javax.swing.JTextField".equals(newComponent.getClass().getName()) )
+        if(!"javax.swing.JLabel".equals(newComponent.getClass().getName()) )
             return;
         
+        //create element
+        JLabel newElement = (JLabel)newComponent;
+        customize(newElement, name);
+        
         //add listeners
-        JTextField newElement = (JTextField)newComponent;
-        this.remove(this.dummyLabel);
-        
-        gbc.gridy+=1;
-        newElement.getDocument().addDocumentListener(this.controller.getContinentTextListener());
         newElement.addMouseListener(this.controller.getContinentMouseListener());
-
+        
         //add to the list and the view
+        this.remove(this.dummyLabel);
+        gbc.gridy+=1;
         this.items.put(name, newElement);
-        
         this.add(newElement, gbc);
-        
         addDummyLabel();
 
         //draw
@@ -97,7 +104,7 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     }
 
     public void addContinent(String continentName){
-        addElement(new JTextField(continentName), continentName);
+        addElement(new JLabel(continentName), continentName);
     }
     
     public void removeContinent(String continentName){
@@ -116,6 +123,16 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
                 continentName = (String)object;
                 this.removeContinent(continentName);
                 break;
+            case UPDATE_CONTINENT:
+                Map<String,String> data= (Map<String,String>)object;
+                String formerName = data.get("name");
+                String newName = data.get("newName");
+                
+                JLabel elementToModify = (JLabel)this.items.get(formerName);
+                elementToModify.setText(newName);
+                this.items.remove(formerName);
+                this.items.put(newName, elementToModify);
+                break;
             case UPDATE_TERRITORY_NAME:
                 break;
             case UPDATE_TERRITORY_POS:
@@ -123,5 +140,25 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
             case UPDATE_BACKGROUND_IMAGE:
                 break;
         }
+    }
+    
+    public Map<String, String> modifyContinent(String formerName, int bonusScore){
+        Map<String,String> data = new HashMap<>();
+        
+        //create panel inside the jdialog
+        ModifyContinentPanel modifyPanel = new ModifyContinentPanel(formerName, bonusScore);
+        String boxName="Modifying " + formerName;
+        int result = JOptionPane.showConfirmDialog(null, 
+               modifyPanel, 
+               boxName, 
+               JOptionPane.OK_CANCEL_OPTION);
+        
+        if (result == JOptionPane.OK_OPTION) {
+            data.put("newName", modifyPanel.getContinentName());
+            data.put("bonusScore", modifyPanel.getBonusScore());
+            return data;
+        }
+        else
+           return data;
     }
 }
