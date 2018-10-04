@@ -13,7 +13,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.BorderFactory;
@@ -29,6 +32,7 @@ public class MapView extends JPanel implements MapModelObserver  {
     protected HashMap<String, CountryButton2> countriesButtons;
     protected Dimension buttonsDims = new Dimension(100,20);
     private MapEditorController controller;
+    protected Tools selectedTool;
     
     /**
      * Constructor of a map view
@@ -41,6 +45,14 @@ public class MapView extends JPanel implements MapModelObserver  {
         
         controller = editorController; 
         this.addMouseListener(controller.getMapMouseListener());
+    }
+    
+    public Tools getCurrentTool(){
+        return this.selectedTool;
+    }
+    
+    public void setCurrentTool(Tools toolInUse){
+        this.selectedTool=toolInUse;
     }
     
     /**
@@ -151,5 +163,27 @@ public class MapView extends JPanel implements MapModelObserver  {
         }
         else
            return data;
+    }
+    
+    public String createLink(String[] territoryArray, String territoryName){
+        
+        String boxName="Add link to " + territoryName;
+        String neighbour = (String)JOptionPane.showInputDialog(
+                    null,
+                    "Select a new neighbour for " + territoryName,
+                    boxName,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    territoryArray,
+                    territoryArray[0]);
+        
+        return neighbour;
+    }
+    
+    public void showError(String errorMessage){
+        JOptionPane.showMessageDialog(null,
+            errorMessage,
+            "Inane error",
+            JOptionPane.ERROR_MESSAGE);
     }
 }

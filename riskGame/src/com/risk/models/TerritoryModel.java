@@ -51,6 +51,10 @@ public class TerritoryModel {
         this.adj = new LinkedList();
     }
 
+    public void addNeighbour(TerritoryModel neighbour){
+        this.adj.add(neighbour);
+    }
+    
     /**
      * Setter for the position of a country
      * @param positionX

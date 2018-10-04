@@ -5,12 +5,8 @@
  */
 package com.risk.mapeditor;
 
-import com.risk.controllers.MapEditorController;
 import com.risk.mapeditor.MapEditorPanel.ToolButtonListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 
 /**
  *
