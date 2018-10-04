@@ -21,6 +21,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -201,6 +202,7 @@ public class MapEditorController {
                         break;
                     case LINK:
                         break;
+                    
                 }
             }
         }
@@ -225,6 +227,7 @@ public class MapEditorController {
                 MapView clickedPanel = (MapView)targetButton.getParent();
                 Tools toolName = clickedPanel.getCurrentTool();
                 String territoryName = targetButton.getName();
+                String neighbourName;
                         
                 switch(toolName){
                     case CREATE:
@@ -254,10 +257,30 @@ public class MapEditorController {
                             return;
                         }
                         
-                        String neighbour = clickedPanel.createLink(territoryList, territoryName);
+                        neighbourName = clickedPanel.createLink(territoryList, territoryName);
                         
-                        if (!"".equals(neighbour)){
-                            newMap.addLink(territoryName, neighbour);
+                        if (!"".equals(neighbourName)){
+                            newMap.addLink(territoryName, neighbourName);
+                        }
+                        break;
+                        
+                    case UNLINK:
+                        //get list of neighbours' names
+                        LinkedList<TerritoryModel> neighbourList = newMap.getTerritoryByName(territoryName).getAdj();
+                        
+                        if(neighbourList.isEmpty()){
+                            clickedPanel.showError("No neighbour found for this territory");
+                            return;
+                        }
+                        
+                        LinkedList<String> neighbourStringList = new LinkedList<>();
+                        for(TerritoryModel neighbourModel: neighbourList){
+                            neighbourStringList.add(neighbourModel.getName());
+                        }
+                        
+                        neighbourName = clickedPanel.removeLink(neighbourStringList);
+                        if (!"".equals(neighbourName)){
+                            newMap.removeLink(territoryName, neighbourName);
                         }
                         break;
                 }

@@ -266,6 +266,20 @@ public class MapView extends JPanel implements MapModelObserver  {
         return neighbour;
     }
     
+    public String removeLink(LinkedList<String> neighbourStringList){
+        String boxName="Remove link";
+        String[] territoryArray = neighbourStringList.toArray(new String[neighbourStringList.size()]);
+        String neighbour = (String)JOptionPane.showInputDialog(
+                    null,
+                    "Choose a link to remove",
+                    boxName,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    territoryArray,
+                    territoryArray[0]);
+        return neighbour;
+    }
+    
     /**
      * Show a popup error to the user to inform of an error
      * @param errorMessage 

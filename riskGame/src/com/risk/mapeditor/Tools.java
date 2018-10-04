@@ -12,5 +12,6 @@ package com.risk.mapeditor;
 public enum Tools{
    CREATE, 
    EDIT, 
-   LINK;
+   LINK,
+   UNLINK;
 }
