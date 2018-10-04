@@ -105,10 +105,10 @@ public class MapListener extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         MapPanel mapPanel;
         JComponent c = (JComponent) e.getSource();
-        if (c != null && c instanceof MapPanel) {
+        if (c instanceof MapPanel) {
             mapPanel = (MapPanel) c;
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux != null && cAux instanceof CountryButton) {
+            if (cAux instanceof CountryButton) {
                 if (this.riskModel.getStage() == GameStage.REINFORCEMENT) {
                     CountryButton reinforce = (CountryButton) cAux;
                     reinforce.setBackground(Color.white);
@@ -126,9 +126,7 @@ public class MapListener extends MouseAdapter {
                         }
 
                         if (currentPlayer.getArmiesDeploy() == 0) {
-                            synchronized (this.riskController.getSyncObj()) {
-                                this.riskController.getSyncObj().notify();
-                            }
+                            this.riskController.getPlayGame().finishStage();
                         }
                     }
                 }

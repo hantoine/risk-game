@@ -5,7 +5,6 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.GameStage;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 
@@ -15,7 +14,7 @@ import com.risk.views.RiskView;
  *
  * @author Nellybett
  */
-public class GameController implements Runnable {
+public class GameController {
 
     RiskModel modelRisk;
     RiskView riskView;
@@ -40,42 +39,33 @@ public class GameController implements Runnable {
     /**
      * The function that contains all the phases in the game
      */
-    @Override
-    public void run() {
-        while (!modelRisk.getCurrentPlayer().getContriesOwned().containsAll(modelRisk.getMap().getGraphTerritories().values())) {
+    public void runStage() {
+        if (modelRisk.getCurrentPlayer().getContriesOwned().containsAll(modelRisk.getMap().getGraphTerritories().values())) {
+            modelRisk.setWinningPlayer(modelRisk.getCurrentPlayer());
+            return;
+        }
 
-            switch (modelRisk.getStage()) {
-                case START:
-                    modelRisk.nextTurn();
-                    modelRisk.initializePlayers();
-                    break;
-                case REINFORCEMENT:
-                    modelRisk.getCurrentPlayer().reinforcement(this);
-                    riskView.initStagePanel(GameStage.REINFORCEMENT, modelRisk.getCurrentPlayer().getArmiesDeploy());
-                    waitForOfEndStage();
-                    break;
+        switch (modelRisk.getStage()) {
+            case START:
+                modelRisk.nextTurn();
+                modelRisk.initializePlayers();
+                break;
+            case REINFORCEMENT:
+                modelRisk.getCurrentPlayer().reinforcement(this);
+                riskView.updateView(modelRisk);
+                break;
 
-                case ATTACK:
-                    break;
-                case FORTIFICATION:
-                    modelRisk.nextTurn();
-                    riskView.initialPlayerHandPanel(modelRisk);
-                    riskView.initialPlayer(modelRisk);
-                    break;
-            }
-
-            modelRisk.nextStage();
+            case ATTACK:
+                break;
+            case FORTIFICATION:
+                modelRisk.nextTurn();
+                riskView.updateView(modelRisk);
+                break;
         }
     }
-
-    private void waitForOfEndStage() {
-        synchronized (riskController.getSyncObj()) {
-            try {
-                riskController.getSyncObj().wait();
-            } catch (InterruptedException e) {
-                System.out.println("Execution error");
-            }
-        }
+    
+    public void finishStage()
+    {
+        modelRisk.nextStage();
     }
-
 }
