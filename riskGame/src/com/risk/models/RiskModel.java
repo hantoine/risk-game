@@ -147,6 +147,7 @@ public final class RiskModel {
             int playerIndex = rnd.nextInt(players.size());
             players.get(playerIndex).addCountryOwned(countriesLeft.remove(0));
         }
+
     }
 
     /**

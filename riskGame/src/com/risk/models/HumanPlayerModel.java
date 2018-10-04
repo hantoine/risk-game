@@ -41,7 +41,7 @@ public class HumanPlayerModel extends PlayerModel {
      * Fortification phase for Human Player
      */
     @Override
-    public void fortification() {
+    public void fortification(GameController playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -49,7 +49,7 @@ public class HumanPlayerModel extends PlayerModel {
      * Attack phase for Human Player
      */
     @Override
-    public void attack() {
+    public void attack(GameController playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

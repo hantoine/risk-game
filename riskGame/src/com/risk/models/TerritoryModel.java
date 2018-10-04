@@ -102,6 +102,15 @@ public class TerritoryModel {
     public int getNumArmies() {
         return numArmies;
     }
+    
+    /**
+     * Increase the number of armies on the territory by one
+     * 
+     * @return The new number of armies on this territory
+     */
+    public int incrementNumArmies() {
+        return ++numArmies;
+    }
 
     /**
      * Setter for the numArmies attribute

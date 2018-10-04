@@ -28,6 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
@@ -332,6 +333,15 @@ public final class RiskView extends javax.swing.JFrame {
      */
     public void setStagePanel(StagePanel stagePanel) {
         this.stagePanel = stagePanel;
+    }
+
+    /**
+     * Open a Message Dialog to show message to user
+     *
+     * @param message Text to be displayed in the message dialog
+     */
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(null, message);
     }
 
 }

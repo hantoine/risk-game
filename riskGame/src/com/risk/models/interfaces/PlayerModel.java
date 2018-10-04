@@ -21,7 +21,6 @@ import java.util.LinkedList;
  */
 public abstract class PlayerModel {
 
-    private boolean isHuman;
     private String name;
     private Color color;
     private Collection<TerritoryModel> contriesOwned;
@@ -43,7 +42,6 @@ public abstract class PlayerModel {
         this.color = color;
         this.contriesOwned = new LinkedList<>();
         this.continentsOwned = new LinkedList<>();
-        this.isHuman = isHuman;
         this.cardsOwned = new HandModel();
         this.numArmies = 0;
         this.armiesDeploy = 0;
@@ -59,13 +57,15 @@ public abstract class PlayerModel {
 
     /**
      * Definition of the fortification phase
+     * @param playGame
      */
-    public abstract void fortification();
+    public abstract void fortification(GameController playGame);
 
     /**
      * Definition of the attack phase
+     * @param playGame
      */
-    public abstract void attack();
+    public abstract void attack(GameController playGame);
 
     /**
      * Getter of the name attribute
@@ -118,7 +118,15 @@ public abstract class PlayerModel {
      * @param contriesOwned the contriesOwned to set
      */
     public void setContriesOwned(Collection<TerritoryModel> contriesOwned) {
-        this.contriesOwned = contriesOwned;
+        
+        this.contriesOwned.stream().forEach((c) ->{
+            c.setOwner(null);
+        });
+        this.contriesOwned = new LinkedList(contriesOwned);
+        
+        this.contriesOwned.stream().forEach((c) ->{
+            c.setOwner(this);
+        });
     }
 
     /**
@@ -128,6 +136,7 @@ public abstract class PlayerModel {
      */
     public void addCountryOwned(TerritoryModel countryOwned) {
         this.contriesOwned.add(countryOwned);
+        countryOwned.setOwner(this);
     }
 
     /**
@@ -165,6 +174,15 @@ public abstract class PlayerModel {
     public void setNumArmies(int numArmies) {
         this.numArmies = numArmies;
     }
+    
+    /**
+     * Decrease by one the number of armies this player has available
+     * 
+     * @return the new number of armies available for this player
+     */
+    public int decrementNumArmies() {
+        return --this.numArmies;
+    }
 
     /**
      * Initialize the number of initial armies of this player depending on the
@@ -192,15 +210,6 @@ public abstract class PlayerModel {
             default:
                 throw new IllegalArgumentException("Invalid number of players");
         }
-    }
-
-    /**
-     * Getter of the isHuman attribute
-     *
-     * @return the isHuman
-     */
-    public boolean getType() {
-        return this.isHuman;
     }
 
     /**
