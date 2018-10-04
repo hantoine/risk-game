@@ -52,6 +52,10 @@ public class CountryButton2 extends JButton {
         return name;
     }
 
+    public void setPosition(int x, int y){
+        this.setBounds(x, y, this.getWidth(), this.getHeight());
+    }
+    
     /**
      * Setter of the name attribute
      * @param name the name to set

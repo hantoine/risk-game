@@ -94,6 +94,10 @@ public class MapView extends JPanel implements MapModelObserver  {
         }
     }
     
+    public Dimension getButtonDimension(){
+        return buttonsDims;
+    }
+    
      protected void addTerritory(int posX, int posY, String newName){
         //add to view
         CountryButton2 newCountryButton = new CountryButton2(posX, posY, newName, buttonsDims);
@@ -112,6 +116,8 @@ public class MapView extends JPanel implements MapModelObserver  {
     @Override
     public void update(UpdateTypes updateType, Object object){
         String territoryName;
+        CountryButton2 territoryButton;
+        TerritoryModel territoryModel;
         
         switch(updateType){
             case ADD_TERRITORY:
@@ -122,16 +128,21 @@ public class MapView extends JPanel implements MapModelObserver  {
                 territoryName = (String)object;
                 removeTerritory(territoryName);
                 break;
-            case UPDATE_TERRITORY:
+            case UPDATE_TERRITORY_NAME:
                 Map<String,String> data= (Map<String,String>)object;
                 String formerName = data.get("name");
                 String newName = data.get("newName");
                 
-                CountryButton2 territoryButton = this.countriesButtons.remove(formerName);
+                territoryButton = this.countriesButtons.remove(formerName);
                 if(territoryButton != null){
                     territoryButton.setName(newName);
                     countriesButtons.put(newName, territoryButton);
                 }
+                break;
+            case UPDATE_TERRITORY_POS:
+                territoryModel = (TerritoryModel)object;
+                territoryButton = this.countriesButtons.get(territoryModel.getName());
+                territoryButton.setPosition(territoryModel.getPositionX(), territoryModel.getPositionY());
                 break;
             case UPDATE_BACKGROUND_IMAGE:
                 break;
@@ -180,10 +191,14 @@ public class MapView extends JPanel implements MapModelObserver  {
         return neighbour;
     }
     
+    /**
+     * Show a popup error to the user to inform of an error
+     * @param errorMessage 
+     */
     public void showError(String errorMessage){
         JOptionPane.showMessageDialog(null,
             errorMessage,
-            "Inane error",
+            "Error",
             JOptionPane.ERROR_MESSAGE);
     }
 }

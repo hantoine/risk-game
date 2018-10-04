@@ -5,12 +5,14 @@
  */
 package com.risk.controllers;
 
+import com.risk.mapeditor.ContinentListPanel;
 import com.risk.mapeditor.CountryButton2;
 import com.risk.mapeditor.MapEditorPanel;
 import com.risk.mapeditor.MapModel2;
 import com.risk.mapeditor.MapView;
 import com.risk.mapeditor.Tools;
 import com.risk.models.TerritoryModel;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -22,6 +24,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -80,7 +83,12 @@ public class MapEditorController {
         
         @Override
         public void actionPerformed(ActionEvent e) {
-            newMap.addContinent();
+            boolean success = newMap.addContinent();
+            if(success == false){
+                JButton buttonClicked = (JButton)e.getSource();
+                ContinentListPanel clickedPanel = (ContinentListPanel)buttonClicked.getParent();
+                clickedPanel.showError("The maximum number of continents to be created has been reached.");
+            }
         }
     }
     
@@ -136,7 +144,12 @@ public class MapEditorController {
                 String className = sourceObj.getClass().getName();
                 if(className == "javax.swing.JTextField"){
                     String continentName = ((JTextField)sourceObj).getText();
-                    this.newMap.removeContinent(continentName);
+                    boolean success = this.newMap.removeContinent(continentName);
+                    if(!success){
+                        JTextField clickedField = (JTextField)sourceObj;
+                        ContinentListPanel clickedPanel = (ContinentListPanel)clickedField.getParent();
+                        clickedPanel.showError("Any map needs at least one continent.");
+                    }
                 }
             }
         }
@@ -183,7 +196,12 @@ public class MapEditorController {
                     case CREATE:
                         int posX = e.getX();
                         int posY = e.getY();
-                        this.newMap.addTerritory(posX, posY);
+                        boolean success = this.newMap.addTerritory(posX, posY);
+                        if(success == false){
+                            MapView mapView = (MapView)e.getSource();
+                            mapView.showError("The maximum number of territories to be created has been reached.");
+                        }
+                            
                         break;
                     case EDIT:
                         break;
@@ -290,7 +308,9 @@ public class MapEditorController {
             try {
                 sourceImage = new File(e.getDocument().getText(0,e.getDocument().getLength()));
                 BufferedImage backgroundImage = ImageIO.read(sourceImage);
-                mapModel.setImage(backgroundImage);
+                
+                Dimension buttonDim = mapPanel.getButtonDimension();
+                mapModel.setImage(backgroundImage, buttonDim);
                 
             } catch (BadLocationException ex) {
                 Logger.getLogger(MapEditorPanel.class.getName()).log(Level.SEVERE, null, ex);

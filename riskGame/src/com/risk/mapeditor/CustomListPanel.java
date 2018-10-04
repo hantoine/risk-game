@@ -14,10 +14,11 @@ import java.util.HashMap;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- *
+ * 
  * @author timot
  */
 public class CustomListPanel extends JPanel {
@@ -26,6 +27,11 @@ public class CustomListPanel extends JPanel {
     protected GridBagConstraints gbc;
     protected JLabel dummyLabel;
             
+    /**
+     * Contructor
+     * @param width
+     * @param height 
+     */
     public CustomListPanel(Integer width, Integer height) {
         //setup component
         this.setPreferredSize(new Dimension(width, height));
@@ -71,6 +77,9 @@ public class CustomListPanel extends JPanel {
         repaint();
     }
     
+    /**
+     * Add a dummy label to fill the space of GridBag (just a matter of graphism)
+     */
     protected void addDummyLabel(){
         GridBagConstraints dummyGbc = new GridBagConstraints();
         dummyGbc.weighty=1;
@@ -90,5 +99,16 @@ public class CustomListPanel extends JPanel {
         gbc.gridy-=1;
         revalidate();
         repaint();
+    }
+    
+    /**
+     * Show a popup error to the user to inform of an error
+     * @param errorMessage 
+     */
+    public void showError(String errorMessage){
+        JOptionPane.showMessageDialog(null,
+            errorMessage,
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
     }
 }
