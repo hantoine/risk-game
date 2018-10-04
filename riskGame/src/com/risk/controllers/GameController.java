@@ -5,15 +5,17 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.GameStage;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import com.risk.models.interfaces.PlayerModel;
 import com.risk.views.RiskView;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * It represents the game process. It is execute in a thread in the
- * RiskController
+ * It represents the game process. It contains all methods corresponding to the
+ * execution of the Game
  *
  * @author Nellybett
  */
@@ -21,17 +23,14 @@ public class GameController {
 
     RiskModel modelRisk;
     RiskView riskView;
-    MapListener countryListener;
 
     /**
      * Constructor
      *
      * @param riskModel model of the game
      * @param riskView view of the game
-     * @param countryListener listener to mouse events
      */
-    public GameController(RiskModel riskModel, RiskView riskView, MapListener countryListener) {
-        this.countryListener = countryListener;
+    public GameController(RiskModel riskModel, RiskView riskView) {
         this.modelRisk = riskModel;
         this.riskView = riskView;
     }
@@ -48,39 +47,43 @@ public class GameController {
             return;
         }
 
-        //Finish steps of current stage
-        switch (modelRisk.getStage()) {
+        // Finishing steps of current stage
+        switch (modelRisk.getPhase()) {
             case INITIAL_ARMY_PLACEMENT:
                 break;
             case REINFORCEMENT:
                 break;
             case ATTACK:
+                checkForDeadPlayers();
                 break;
             case FORTIFICATION:
+                modelRisk.nextTurn();
                 break;
         }
 
-        modelRisk.nextStage();
+        modelRisk.nextPhase();
 
         // Beginning steps of new stage
-        switch (modelRisk.getStage()) {
+        switch (modelRisk.getPhase()) {
             case INITIAL_ARMY_PLACEMENT:
                 break;
             case REINFORCEMENT:
                 modelRisk.getCurrentPlayer().reinforcement(this);
-                riskView.updateView(modelRisk);
                 break;
             case ATTACK:
-                //since attack is not implemented yet
-                this.finishStage();
-
-                modelRisk.getCurrentPlayer().attack(this);
+                try {
+                    modelRisk.getCurrentPlayer().attack(this);
+                } catch (UnsupportedOperationException e) {
+                    //since attack is not implemented yet, we skip it 
+                    this.finishStage();
+                }
                 break;
             case FORTIFICATION:
-                modelRisk.nextTurn();
-                riskView.updateView(modelRisk);
+                modelRisk.getCurrentPlayer().fortification(this);
                 break;
         }
+
+        riskView.updateView(modelRisk);
     }
 
     /**
@@ -90,54 +93,31 @@ public class GameController {
      * @param territoryClickedName Name of the territory on which the player
      * clicked
      */
-    public void clickOnTerriroty(String territoryClickedName) {
+    public void clickOnTerritory(String territoryClickedName) {
         TerritoryModel territoryClicked = this.modelRisk.getMap().getGraphTerritories().get(territoryClickedName);
         PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
 
-
-        switch (this.modelRisk.getStage()) {
-                
+        switch (this.modelRisk.getPhase()) {
             case INITIAL_ARMY_PLACEMENT:
-                if (currentPlayer.getNumArmiesAvailable() <= 0) { //should never happen
-                    this.riskView.showMessage("You have no more armies to deploy");
-                    return;
+                if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
+                    break;
                 }
-                if (!currentPlayer.getContriesOwned().contains(territoryClicked)) {
-                    this.riskView.showMessage("You don't own this country");
-                    return;
+                this.modelRisk.nextTurn();
+                if (currentPlayer.getNumArmiesAvailable() == 0 && modelRisk.getTurn() == 0) {
+                    this.finishStage();
                 }
-
-                territoryClicked.incrementNumArmies();
-                currentPlayer.decrementNumArmiesAvailable();
-
-                if (currentPlayer.getNumArmiesAvailable() == 0) {
-                    if((this.modelRisk.getTurn() + 1) % this.modelRisk.getPlayerList().size() == 0) {
-                        this.finishStage();
-                    }
-                    this.modelRisk.nextTurn();
-                }
-                break;      
+                riskView.updateView(modelRisk);
+                break;
             case REINFORCEMENT:
-                if (currentPlayer.getNumArmiesAvailable() <= 0) { //should never happen
-                    this.riskView.showMessage("You have no more armies to deploy");
-                    return;
+                if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
+                    break;
                 }
-                if (!currentPlayer.getContriesOwned().contains(territoryClicked)) {
-                    this.riskView.showMessage("You don't own this country");
-                    return;
-                }
-
-                territoryClicked.incrementNumArmies();
-                currentPlayer.decrementNumArmiesAvailable();
-
                 if (currentPlayer.getNumArmiesAvailable() == 0) {
                     this.finishStage();
                 }
-
+                riskView.updateView(modelRisk);
                 break;
         }
-
-        riskView.updateView(modelRisk);
     }
 
     /**
@@ -152,6 +132,65 @@ public class GameController {
     public void dragNDropTerritory(String sourceTerritoryName, String destTerritoryName) {
         TerritoryModel sourceTerritory = this.modelRisk.getMap().getGraphTerritories().get(sourceTerritoryName);
         TerritoryModel destTerritory = this.modelRisk.getMap().getGraphTerritories().get(destTerritoryName);
+        PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
+
+        switch (this.modelRisk.getPhase()) {
+            case FORTIFICATION:
+                if (!sourceTerritory.getAdj().contains(destTerritory)) {
+                    break;
+                }
+                if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
+                        || !currentPlayer.getContriesOwned().contains(destTerritory)) {
+                    this.riskView.showMessage("You don't own this country !");
+                    break;
+                }
+
+                try {
+                    sourceTerritory.decrementNumArmies();
+                    destTerritory.incrementNumArmies();
+                    riskView.updateView(modelRisk);
+                } catch (IllegalStateException e) {
+                    this.riskView.showMessage("There is no armies in the source country !");
+                }
+                break;
+        }
 
     }
+
+    /**
+     * Place an army from the given player on the given territory.
+     *
+     * @param player Player whose army is going to be taken
+     * @param territory Territory on which the army will be added
+     * @return True if the army placement worked, false otherwise
+     */
+    private boolean tryPlaceArmy(PlayerModel player, TerritoryModel territory) {
+        if (player.getNumArmiesAvailable() <= 0) { //should never happen
+            this.riskView.showMessage("You have no armies left to deploy !");
+            return false;
+        }
+        if (!player.getContriesOwned().contains(territory)) {
+            this.riskView.showMessage("You don't own this country !");
+            return false;
+        }
+
+        territory.incrementNumArmies();
+        player.decrementNumArmiesAvailable();
+
+        return true;
+    }
+
+    private void checkForDeadPlayers() {
+        List<PlayerModel> currentPlayerList = new LinkedList(this.modelRisk.getPlayerList());
+        currentPlayerList.stream()
+                .filter(p -> p.getContriesOwned().isEmpty())
+                .forEach((p) -> {
+                    this.riskView.showMessage(String.format(
+                            "The player %s has no more territories, it is eliminated from the game !",
+                            p.getName())
+                    );
+                    this.modelRisk.removePlayer(p);
+                });
+    }
+
 }

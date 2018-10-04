@@ -10,11 +10,11 @@ import javax.swing.JLabel;
 
 /**
  * JLabel that represents a country in the map
+ *
  * @author hantoine
  */
 public class CountryLabel extends JLabel {
 
-    
     private static final int buttonSize = 25;
     private static int positionX;
     private static int positionY;
@@ -22,6 +22,7 @@ public class CountryLabel extends JLabel {
 
     /**
      * Constructor
+     *
      * @param x position in x
      * @param y position y
      * @param name name of the country
@@ -32,7 +33,7 @@ public class CountryLabel extends JLabel {
         this.setBackground(Color.WHITE);
         this.setOpaque(true);
         this.setHorizontalAlignment(JLabel.CENTER);
-       
+
         this.positionX = x;
         this.positionY = y;
 
@@ -40,9 +41,9 @@ public class CountryLabel extends JLabel {
         this.setSize(buttonSize, buttonSize);
     }
 
- 
     /**
      * Getter of the name attribute
+     *
      * @return the name
      */
     public String getName() {
@@ -51,6 +52,7 @@ public class CountryLabel extends JLabel {
 
     /**
      * Setter of the name attribute
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -59,6 +61,7 @@ public class CountryLabel extends JLabel {
 
     /**
      * It increase or decrease the armies that a player has in a country
+     *
      * @param numberOfArmies new number
      */
     public void updateArmies(String numberOfArmies) {
@@ -67,6 +70,7 @@ public class CountryLabel extends JLabel {
 
     /**
      * It gives a new location for the country in the map
+     *
      * @param x position in x
      * @param y position in y
      */

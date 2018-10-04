@@ -82,10 +82,10 @@ public class MapFileManagement {
     }
 
     /**
-     * It reads a file and creates a String with it content
+     * It reads a file and creates a String with its content
      *
-     * @param path
-     * @return -1 if a mistake occurs or the string with the file content
+     * @param path Path of the file
+     * @return Return the string with the file content or the String "-1" if an error occurred
      */
     public String readFile(String path) {
         String linesRead;
@@ -342,9 +342,7 @@ public class MapFileManagement {
         }
 
         //If the line of one of the adjacent territory has not been met, there is an error in the file 
-        if(graphTerritories.values().stream().anyMatch(
-                (t) -> (t.getContinentName() == null))
-                )
+        if(graphTerritories.values().stream().anyMatch((t) -> (t.getContinentName() == null)))
             return -4;
         
         board.setGraphTerritories(graphTerritories);

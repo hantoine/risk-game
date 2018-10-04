@@ -56,8 +56,8 @@ public class TerritoryModel {
     /**
      * Setter for the position of a country
      *
-     * @param positionX
-     * @param positionY
+     * @param positionX the position X of this country
+     * @param positionY the position Y of this country
      */
     public void countrySetter(int positionX, int positionY) {
 
@@ -118,6 +118,17 @@ public class TerritoryModel {
      */
     public int incrementNumArmies() {
         return ++numArmies;
+    }
+
+    /**
+     * Decrease the number of armies on the territory by one
+     *
+     * @return The new number of armies on this territory
+     */
+    public int decrementNumArmies() throws IllegalStateException {
+        if(numArmies == 0)
+            throw new IllegalStateException("Negative number of armies on a territory not allowed.");
+        return --numArmies;
     }
 
     /**

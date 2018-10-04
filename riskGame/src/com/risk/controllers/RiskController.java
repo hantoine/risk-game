@@ -8,7 +8,6 @@ package com.risk.controllers;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 
@@ -17,7 +16,7 @@ import javax.swing.JMenuItem;
  *
  * @author Nellybett
  */
-public final class RiskController implements ActionListener {
+public final class RiskController {
 
     private RiskView viewRisk;
     private RiskModel modelRisk;
@@ -34,32 +33,18 @@ public final class RiskController implements ActionListener {
     public RiskController(RiskModel riskModel, RiskView riskView) {
         this.modelRisk = riskModel;
         this.viewRisk = riskView;
-        this.viewRisk.setRiskController(this);
         this.countryListener = new MapListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
         viewRisk.initialMenu(modelRisk, menuListener);
-        viewRisk.addMenuBar();
         viewRisk.setVisible(true);
-        //viewRisk.initialMap(modelRisk, countryListener);
-
     }
 
     /**
-     * It listens to de menu bar events that are part of the main view
-     *
-     * @param e the event to manage
+     * Display the NewGame Menu Called when user press on New Game MenuItem.
+     * 
      */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JComponent c = (JComponent) e.getSource();
-
-        if (c != null && c instanceof JMenuItem) {
-            JMenuItem source = (JMenuItem) c;
-            System.out.println(source.getText());
-            if (source.getText().equals("New Game")) {
-                getViewRisk().initialMenu(getModelRisk(), getMenuListener());
-            }
-        }
+    public void newGameMenuItemPressed() {
+        getViewRisk().initialMenu(getModelRisk(), getMenuListener());
     }
 
     /**
@@ -67,16 +52,10 @@ public final class RiskController implements ActionListener {
      * after setting the players and board information
      */
     void playGame() {
-
-        this.getViewRisk().initialPlayer(getModelRisk());
-        this.getViewRisk().initialPlayerHandPanel(modelRisk);
-        this.getViewRisk().initialMap(getModelRisk(), getCountryListener());
+        this.setPlayGame(new GameController(this.modelRisk, this.viewRisk));
+        this.modelRisk.initializePlayersArmies();
         this.modelRisk.assignCoutriesToPlayers();
-
-        GameController playStart = new GameController(this.getModelRisk(), this.getViewRisk(), this.getCountryListener());
-        this.setPlayGame(playStart);
-        modelRisk.initializePlayers();
-        this.viewRisk.updateView(modelRisk);
+        this.viewRisk.updateViewWithNewMap(modelRisk);
     }
 
     /**

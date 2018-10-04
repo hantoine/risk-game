@@ -47,30 +47,42 @@ public abstract class PlayerModel {
     }
 
     /**
-     * Definition of the reinforcement phase
+     * Definition of the reinforcement phase. Called at the beginning of the
+     * phase. Depending on the type of player it will either initialize and
+     * update the UI for the human player to play or execute the action with the
+     * artificial intelligence
      *
-     * @param playGame
+     * @param playGame GameController reference used to access game informations
+     * and methods
      */
     public abstract void reinforcement(GameController playGame);
 
     /**
-     * Definition of the fortification phase
+     * Definition of the fortification phase. Called at the beginning of the
+     * phase. Depending on the type of player it will either initialize and
+     * update the UI for the human player to play or execute the action with the
+     * artificial intelligence
      *
-     * @param playGame
+     * @param playGame GameController reference used to access game informations
+     * and methods
      */
     public abstract void fortification(GameController playGame);
 
     /**
-     * Definition of the attack phase
+     * Definition of the attack phase. Called at the beginning of the phase.
+     * Depending on the type of player it will either initialize and update the
+     * UI for the human player to play or execute the action with the artificial
+     * intelligence
      *
-     * @param playGame
+     * @param playGame GameController reference used to access game informations
+     * and methods
      */
     public abstract void attack(GameController playGame);
 
     /**
      * Getter of the name attribute
      *
-     * @return the name
+     * @return the name of this player
      */
     public String getName() {
         return name;
@@ -119,9 +131,11 @@ public abstract class PlayerModel {
      */
     public void setContriesOwned(Collection<TerritoryModel> contriesOwned) {
 
-        this.contriesOwned.stream().forEach((c) -> {
-            c.setOwner(null);
-        });
+        this.contriesOwned.stream()
+                .filter(c -> c.getOwner() != null)
+                .forEach((c) -> {
+                    c.getOwner().removeCountryOwned(c);
+                });
         this.contriesOwned = new LinkedList(contriesOwned);
 
         this.contriesOwned.stream().forEach((c) -> {
@@ -130,12 +144,25 @@ public abstract class PlayerModel {
     }
 
     /**
-     * Add a country to the conuntryOwned list
+     * Add a country to the list of countries owned by this player
      *
      * @param countryOwned the additional country owned by this player
      */
     public void addCountryOwned(TerritoryModel countryOwned) {
+        if (countryOwned.getOwner() != null) {
+            countryOwned.getOwner().removeCountryOwned(countryOwned);
+        }
         this.contriesOwned.add(countryOwned);
+        countryOwned.setOwner(this);
+    }
+
+    /**
+     * Remove a country from the list of countries owned by this player
+     *
+     * @param countryOwned the country no longer owned by this player
+     */
+    public void removeCountryOwned(TerritoryModel countryOwned) {
+        this.contriesOwned.remove(countryOwned);
         countryOwned.setOwner(this);
     }
 
@@ -196,7 +223,7 @@ public abstract class PlayerModel {
                 this.setNumArmiesAvailable(40);
                 break;
             case 3:
-                this.setNumArmiesAvailable(35);
+                this.setNumArmiesAvailable(3); //modified temporarily to speed up tests
                 break;
             case 4:
                 this.setNumArmiesAvailable(30);
@@ -280,7 +307,7 @@ public abstract class PlayerModel {
             extraContinent += continent.getBonusScore();
         }
         int extraCards = armiesAssignationCards();
-        
+
         System.out.println(extraContinent + extraCountries + extraCards);
         if (extraContinent + extraCountries + extraCards < 3) {
             return 3;

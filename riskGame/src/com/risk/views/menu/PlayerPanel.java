@@ -19,6 +19,10 @@ public class PlayerPanel extends JPanel {
     private JTextField playerNameTextField;
     private JButton colorButton;
     private DeletableButton delButton;
+    
+    public PlayerPanel() {
+        setSize(200, 500);
+    }
 
     /**
      * Getter of the name attribute
