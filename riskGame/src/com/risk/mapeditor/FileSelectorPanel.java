@@ -59,10 +59,8 @@ public class FileSelectorPanel extends JPanel {
         //create button
         this.selectFileButton = new JButton("Select a file");
         addFileChooserListener(exts);
-
-        //set alignment
-        label.setAlignmentX( Component.LEFT_ALIGNMENT );
-        selectionPanel.setAlignmentX( Component.LEFT_ALIGNMENT );
+        
+        
         
         //add all components to the class
         this.add(BorderLayout.PAGE_START, label);

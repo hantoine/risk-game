@@ -55,6 +55,10 @@ public class TerritoryModel {
         this.adj.add(neighbour);
     }
     
+    public void removeNeighbour(TerritoryModel neighbour){
+        this.adj.remove(neighbour);
+    }
+    
     /**
      * Setter for the position of a country
      * @param positionX
