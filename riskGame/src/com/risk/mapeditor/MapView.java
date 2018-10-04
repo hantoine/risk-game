@@ -271,6 +271,31 @@ public class MapView extends JPanel implements MapModelObserver  {
                     null,
                     territoryArray,
                     territoryArray[0]);
+        
+        if(neighbour.equals(""))
+            return neighbour;
+        
+        /*if neighbour name not empty
+        get name of the future link to check if it already exists*/
+        String name1;
+        String name2;
+        if (getAsciiValue(neighbour) > getAsciiValue(territoryName)) {
+            name1 = neighbour;
+            name2 = territoryName;
+        } else {
+            name1 = territoryName;
+            name2 = neighbour;
+        }
+        String futureName  =name1+";"+name2;
+        
+        //check if already exists
+        for(String linkName: this.links.keySet()){
+            if(linkName.equals(futureName)){
+                this.showError("This link already exists");
+                return "";
+            }
+        }
+        
         return neighbour;
     }
     
