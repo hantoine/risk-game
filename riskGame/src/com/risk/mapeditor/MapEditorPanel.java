@@ -62,7 +62,7 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
         this.continentsPanel = new ContinentListPanel(120,600, editorController, initMapModel.getContinentList());
         
         //panel with buttons to select a mode
-        String[] toolsList = {"Add Territory", "Edit Territory", "Create Link"};
+        String[] toolsList = {"Add Territory", "Edit Territory", "Create Link", "Remove Link"};
         this.mapPanel.setCurrentTool(Tools.CREATE);
         this.toolsPanel = new ToolsListPanel(120,600, toolsList, getToolButtonListener());
         
@@ -103,6 +103,9 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
                     break;
                 case "Create Link":
                     this.mapPanel.setCurrentTool(Tools.LINK);
+                    break;
+                case "Remove Link":
+                    this.mapPanel.setCurrentTool(Tools.UNLINK);
                     break;
             }
         }
