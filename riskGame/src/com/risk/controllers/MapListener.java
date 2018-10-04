@@ -17,7 +17,6 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -32,21 +31,15 @@ import javax.swing.SwingUtilities;
  */
 public class MapListener extends MouseAdapter {
 
-    private String countrySource;
-    private String countryReceive;
-    private String countryReinforce;
-    private RiskModel riskModel;
-    private RiskView riskView;
-    private RiskController riskController;
+    private CountryButton countrySource;
+    final private RiskController riskController;
 
     /**
      * Constructor
      *
-     * @param riskModel receives the model to change it when an event occurs
+     * @param riskController
      */
-    public MapListener(RiskModel riskModel, RiskView riskView, RiskController riskController) {
-        this.riskModel = riskModel;
-        this.riskView = riskView;
+    public MapListener(RiskController riskController) {
         this.riskController = riskController;
     }
 
@@ -57,15 +50,14 @@ public class MapListener extends MouseAdapter {
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        MapPanel mapPanel;
         JComponent c = (JComponent) e.getSource();
-        if (c != null && c instanceof MapPanel) {
-            mapPanel = (MapPanel) c;
+        if (c instanceof MapPanel) {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux != null && cAux instanceof CountryButton) {
+            if (cAux instanceof CountryButton) {
                 CountryButton source = (CountryButton) cAux;
                 source.setBackground(Color.gray);
-                this.setCountrySource(source.getName());
+                this.setCountrySource(source);
+
                 System.out.println(source.getName());
             }
 
@@ -80,17 +72,19 @@ public class MapListener extends MouseAdapter {
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-        MapPanel mapPanel;
         JComponent c = (JComponent) e.getSource();
-        if (c != null && c instanceof MapPanel) {
-            mapPanel = (MapPanel) c;
+        if (c instanceof MapPanel) {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux != null && cAux instanceof CountryButton) {
+            if (cAux instanceof CountryButton) {
                 CountryButton destiny = (CountryButton) cAux;
-                CountryButton source = mapPanel.getCountriesButtons().get(this.getCountrySource());
+                CountryButton source = this.getCountrySource();
+
                 source.setBackground(Color.white);
                 System.out.println(source.getName() + "--->" + destiny.getName());
-                this.setCountryReceive(source.getName());
+
+                this.riskController.getPlayGame().dragNDropTerritory(source.getName(), destiny.getName());
+
+                this.setCountrySource(null);
             }
 
         }
@@ -103,89 +97,23 @@ public class MapListener extends MouseAdapter {
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-        MapPanel mapPanel;
         JComponent c = (JComponent) e.getSource();
         if (c instanceof MapPanel) {
-            mapPanel = (MapPanel) c;
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
             if (cAux instanceof CountryButton) {
-                if (this.riskModel.getStage() == GameStage.REINFORCEMENT) {
-                    CountryButton reinforce = (CountryButton) cAux;
-                    reinforce.setBackground(Color.white);
-                    this.countryReinforce = reinforce.getName();
-                    PlayerModel currentPlayer = this.riskModel.getCurrentPlayer();
-                    if (currentPlayer.getArmiesDeploy() >= 1) {
-                        TerritoryModel aux = this.riskModel.getMap().getGraphTerritories().get(countryReinforce);
-                        if (currentPlayer.getContriesOwned().contains(aux)) {
-                            aux.setNumArmies(aux.getNumArmies() + 1);
-                            reinforce.setText(Integer.toString(Integer.parseInt(reinforce.getText()) + 1));
-                            this.riskModel.getCurrentPlayer().setArmiesDeploy(this.riskModel.getCurrentPlayer().getArmiesDeploy() - 1);
-                            this.riskView.initStagePanel(GameStage.REINFORCEMENT, this.riskModel.getCurrentPlayer().getArmiesDeploy());
-                        } else {
-                            JOptionPane.showMessageDialog(null, "You don't own this country");
-                        }
+                CountryButton countryClicked = (CountryButton) cAux;
+                countryClicked.setBackground(Color.white);
 
-                        if (currentPlayer.getArmiesDeploy() == 0) {
-                            this.riskController.getPlayGame().finishStage();
-                        }
-                    }
-                }
+                this.riskController.getPlayGame().clickOnTerriroty(countryClicked.getName());
             }
-
         }
     }
 
-    /**
-     * Getter of countrySource attribute
-     *
-     * @return the countrySource
-     */
-    public String getCountrySource() {
+    private CountryButton getCountrySource() {
         return countrySource;
     }
 
-    /**
-     * Setter of countrySource attribute
-     *
-     * @param countrySource the countrySource to set
-     */
-    public void setCountrySource(String countrySource) {
+    private void setCountrySource(CountryButton countrySource) {
         this.countrySource = countrySource;
-    }
-
-    /**
-     * Getter of countryReceive attribute
-     *
-     * @return the countryReceive
-     */
-    public String getCountryReceive() {
-        return countryReceive;
-    }
-
-    /**
-     * Setter of countryReceive attribute
-     *
-     * @param countryReceive the countryReceive to set
-     */
-    public void setCountryReceive(String countryReceive) {
-        this.countryReceive = countryReceive;
-    }
-
-    /**
-     * Getter of riskModel attribute attribute
-     *
-     * @return the riskModel
-     */
-    public RiskModel getRiskModel() {
-        return riskModel;
-    }
-
-    /**
-     * Setter of riskModel attribute
-     *
-     * @param riskModel the riskModel to set
-     */
-    public void setRiskModel(RiskModel riskModel) {
-        this.riskModel = riskModel;
     }
 }

@@ -17,7 +17,7 @@ import javax.swing.JMenuItem;
  *
  * @author Nellybett
  */
-public class RiskController implements ActionListener {
+public final class RiskController implements ActionListener {
 
     private RiskView viewRisk;
     private RiskModel modelRisk;
@@ -35,7 +35,7 @@ public class RiskController implements ActionListener {
         this.modelRisk = riskModel;
         this.viewRisk = riskView;
         this.viewRisk.setRiskController(this);
-        this.countryListener = new MapListener(getModelRisk(), getViewRisk(), this);
+        this.countryListener = new MapListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.addMenuBar();
@@ -73,9 +73,9 @@ public class RiskController implements ActionListener {
         this.getViewRisk().initialMap(getModelRisk(), getCountryListener());
         this.modelRisk.assignCoutriesToPlayers();
         
-        GameController playStart = new GameController(this.getModelRisk(), this.getViewRisk(), this.getCountryListener(), this);
+        GameController playStart = new GameController(this.getModelRisk(), this.getViewRisk(), this.getCountryListener());
         this.setPlayGame(playStart);
-        this.getPlayGame().runStage();
+        this.getPlayGame().finishStage();
     }
 
     /**

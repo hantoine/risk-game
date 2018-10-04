@@ -39,7 +39,7 @@ public class AIPlayerModel extends PlayerModel {
      * Fortification phase for AI Player
      */
     @Override
-    public void fortification() {
+    public void fortification(GameController playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -47,7 +47,7 @@ public class AIPlayerModel extends PlayerModel {
      * Attack phase for AI Player
      */
     @Override
-    public void attack() {
+    public void attack(GameController playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

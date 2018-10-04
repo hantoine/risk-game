@@ -13,7 +13,6 @@ import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.RiskView;
 import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.PlayerPanel;
-import com.risk.views.menu.StartMenuView;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
