@@ -126,7 +126,9 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
                 break;
             case REMOVE_TERRITORY:
                 break;
-            case UPDATE_TERRITORY:
+            case UPDATE_TERRITORY_NAME:
+                break;
+            case UPDATE_TERRITORY_POS:
                 break;
             case UPDATE_BACKGROUND_IMAGE:
                 BufferedImage backgroundImage = (BufferedImage) object;

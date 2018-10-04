@@ -72,6 +72,7 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
 
         //add to the list and the view
         this.items.put(name, newElement);
+        
         this.add(newElement, gbc);
         
         addDummyLabel();
@@ -109,13 +110,15 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
         switch(updateType){
             case ADD_CONTINENT:
                 continentName = (String)object;
-                addContinent(continentName);
+                this.addContinent(continentName);
                 break;
             case REMOVE_CONTINENT:
                 continentName = (String)object;
-                removeContinent(continentName);
+                this.removeContinent(continentName);
                 break;
-            case UPDATE_TERRITORY:
+            case UPDATE_TERRITORY_NAME:
+                break;
+            case UPDATE_TERRITORY_POS:
                 break;
             case UPDATE_BACKGROUND_IMAGE:
                 break;
