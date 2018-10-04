@@ -24,6 +24,10 @@ public class ToolsListPanel extends CustomListPanel {
         
         for(String toolName:toolsList){
             JButton newTool = new JButton(toolName);
+            
+            if(toolName.equals(toolsList[0]))
+                newTool.setBackground(Color.cyan);
+            
             newTool.addActionListener(buttonListener);
             newTool.addActionListener(new selectButtonListener(this));
             this.addElement(newTool, toolName);
