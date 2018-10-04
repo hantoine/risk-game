@@ -146,6 +146,8 @@ public class MapView extends JPanel implements MapModelObserver  {
                 break;
             case UPDATE_BACKGROUND_IMAGE:
                 break;
+            case UPDATE_CONTINENT:
+                break;
         }
     }
     
