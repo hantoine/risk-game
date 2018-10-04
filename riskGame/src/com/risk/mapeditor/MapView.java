@@ -243,6 +243,15 @@ public class MapView extends JPanel implements MapModelObserver  {
                JOptionPane.OK_CANCEL_OPTION);
         
         if (result == JOptionPane.OK_OPTION) {
+            //check if name not already used
+            for(String otherName: this.countriesButtons.keySet()){
+                if(modifyPanel.getTerritoryName().equals(otherName))
+                {
+                    this.showError("This name is already used");
+                    return data;
+                }
+            }
+            
             data.put("newName", modifyPanel.getTerritoryName());
             data.put("continent", modifyPanel.getTerritoryContinent());
             return data;
@@ -262,7 +271,6 @@ public class MapView extends JPanel implements MapModelObserver  {
                     null,
                     territoryArray,
                     territoryArray[0]);
-        
         return neighbour;
     }
     
