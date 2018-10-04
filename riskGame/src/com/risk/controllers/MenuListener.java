@@ -114,17 +114,17 @@ public class MenuListener extends MouseAdapter {
                     break;
                 }
 
-                int resultReadingValidation = getRiskModel().loadMap(selectedPath);                
+                int resultReadingValidation = getRiskModel().loadMap(selectedPath);
                 if (resultReadingValidation != 0) {
                     JOptionPane.showMessageDialog(null, readingError(resultReadingValidation));
                     break;
                 }
-                
+
                 if (!getRiskModel().getMap().isValid()) {
                     JOptionPane.showMessageDialog(null, "The map is not valid.");
                     break;
                 }
-                
+
                 this.getRiskView().getMenuPanel().setVisible(false);
                 this.getRiskView().remove(this.getRiskView().getMenuPanel());
                 this.getRiskView().setMenuPanel(null);
@@ -138,7 +138,7 @@ public class MenuListener extends MouseAdapter {
                     listPlayers.add(playerGame);
                 }
                 this.getRiskModel().setPlayerList(listPlayers);
-                
+
                 this.getRiskController().playGame();
                 break;
             default:

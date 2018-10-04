@@ -10,7 +10,7 @@ package com.risk.models;
  * @author hantoine
  */
 public enum GameStage {
-    START,
+    INITIAL_ARMY_PLACEMENT,
     REINFORCEMENT,
     ATTACK,
     FORTIFICATION {

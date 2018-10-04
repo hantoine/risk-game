@@ -38,10 +38,13 @@ public class StagePanel extends JPanel {
 
     public void updatePhase(GameStage phase, int armies) {
         switch (phase) {
-            case START:
+            case INITIAL_ARMY_PLACEMENT:
+                this.endPhase.setVisible(false);
+                this.armies.setText(Integer.toString(armies));
+                this.armiesText.setVisible(true);
+                this.armies.setVisible(true);
                 break;
             case REINFORCEMENT:
-                this.endPhase.setVisible(false);
                 this.armies.setText(Integer.toString(armies));
                 this.armiesText.setVisible(true);
                 this.armies.setVisible(true);

@@ -34,8 +34,8 @@ public final class RiskModel {
      */
     public RiskModel() {
         this.players = new LinkedList<>();
-        this.turn = -1;
-        this.stage = GameStage.START;
+        this.turn = 0;
+        this.stage = GameStage.INITIAL_ARMY_PLACEMENT;
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, true);
@@ -172,16 +172,8 @@ public final class RiskModel {
      * Assigns turn to a player from the list
      */
     public void nextTurn() {
-
-        if (this.getTurn() + 1 < this.getPlayerList().size()) {
-            this.setTurn(this.getTurn() + 1);
-            this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
-            System.out.println("En el modelo--" + this.getCurrentPlayer().getName());
-        } else {
-            this.setTurn(0);
-            this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
-        }
-
+        this.setTurn((this.getTurn() + 1) % this.getPlayerList().size());
+        this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
     }
 
     /**
@@ -279,8 +271,7 @@ public final class RiskModel {
     public void shuffleDeck() {
         Collections.shuffle(this.getDeck());
     }
-    
-    
+
     public PlayerModel getWinningPlayer() {
         return winningPlayer;
     }

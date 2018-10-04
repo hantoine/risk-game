@@ -50,9 +50,7 @@ public class GameController {
 
         //Finish steps of current stage
         switch (modelRisk.getStage()) {
-            case START:
-                modelRisk.nextTurn();
-                modelRisk.initializePlayers();
+            case INITIAL_ARMY_PLACEMENT:
                 break;
             case REINFORCEMENT:
                 break;
@@ -66,13 +64,16 @@ public class GameController {
 
         // Beginning steps of new stage
         switch (modelRisk.getStage()) {
-            case START:
+            case INITIAL_ARMY_PLACEMENT:
                 break;
             case REINFORCEMENT:
                 modelRisk.getCurrentPlayer().reinforcement(this);
                 riskView.updateView(modelRisk);
                 break;
             case ATTACK:
+                //since attack is not implemented yet
+                this.finishStage();
+
                 modelRisk.getCurrentPlayer().attack(this);
                 break;
             case FORTIFICATION:
@@ -91,28 +92,52 @@ public class GameController {
      */
     public void clickOnTerriroty(String territoryClickedName) {
         TerritoryModel territoryClicked = this.modelRisk.getMap().getGraphTerritories().get(territoryClickedName);
+        PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
+
 
         switch (this.modelRisk.getStage()) {
-            case REINFORCEMENT:
-                PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
-
-                if (currentPlayer.getArmiesDeploy() <= 0) { //should never happen
+                
+            case INITIAL_ARMY_PLACEMENT:
+                if (currentPlayer.getNumArmiesAvailable() <= 0) { //should never happen
                     this.riskView.showMessage("You have no more armies to deploy");
+                    return;
                 }
                 if (!currentPlayer.getContriesOwned().contains(territoryClicked)) {
                     this.riskView.showMessage("You don't own this country");
+                    return;
                 }
 
                 territoryClicked.incrementNumArmies();
-                currentPlayer.decrementNumArmies();
-                this.riskView.initStagePanel(GameStage.REINFORCEMENT, currentPlayer.getArmiesDeploy());
+                currentPlayer.decrementNumArmiesAvailable();
 
-                if (currentPlayer.getArmiesDeploy() == 0) {
+                if (currentPlayer.getNumArmiesAvailable() == 0) {
+                    if((this.modelRisk.getTurn() + 1) % this.modelRisk.getPlayerList().size() == 0) {
+                        this.finishStage();
+                    }
+                    this.modelRisk.nextTurn();
+                }
+                break;      
+            case REINFORCEMENT:
+                if (currentPlayer.getNumArmiesAvailable() <= 0) { //should never happen
+                    this.riskView.showMessage("You have no more armies to deploy");
+                    return;
+                }
+                if (!currentPlayer.getContriesOwned().contains(territoryClicked)) {
+                    this.riskView.showMessage("You don't own this country");
+                    return;
+                }
+
+                territoryClicked.incrementNumArmies();
+                currentPlayer.decrementNumArmiesAvailable();
+
+                if (currentPlayer.getNumArmiesAvailable() == 0) {
                     this.finishStage();
                 }
 
                 break;
         }
+
+        riskView.updateView(modelRisk);
     }
 
     /**

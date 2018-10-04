@@ -9,10 +9,10 @@ import java.awt.Color;
 import javax.swing.JLabel;
 
 /**
- * Jlabel that represents a country in the map
+ * JLabel that represents a country in the map
  * @author hantoine
  */
-public class CountryButton extends JLabel {
+public class CountryLabel extends JLabel {
 
     
     private static final int buttonSize = 25;
@@ -26,7 +26,7 @@ public class CountryButton extends JLabel {
      * @param y position y
      * @param name name of the country
      */
-    public CountryButton(int x, int y, String name) {
+    public CountryLabel(int x, int y, String name) {
         super("0");
         this.name = name;
         this.setBackground(Color.WHITE);
