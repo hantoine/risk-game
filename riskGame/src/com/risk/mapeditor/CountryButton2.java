@@ -74,4 +74,8 @@ public class CountryButton2 extends JButton {
         this.positionX = x;
         this.positionY = y;
     }
+    
+    public Dimension getSize(){
+        return this.buttonSize;
+    }
 }

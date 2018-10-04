@@ -43,10 +43,7 @@ public class MapPanel extends JPanel {
                 adje.setLine(Double.valueOf(currentCountry.getPositionX()), Double.valueOf(currentCountry.getPositionY()),Double.valueOf(d.getPositionX()),Double.valueOf(d.getPositionY()));
                 adj.put(currentCountry.getName()+"-"+d.getName(),adje);
             }
-        
         });
-        
-        
     }
 
     /**

@@ -11,7 +11,9 @@ import com.risk.observers.MapModelObserver;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,6 +35,7 @@ public class MapView extends JPanel implements MapModelObserver  {
     protected Dimension buttonsDims = new Dimension(100,20);
     private MapEditorController controller;
     protected Tools selectedTool;
+    protected HashMap<String,Line2D> links;
     
     /**
      * Constructor of a map view
@@ -40,6 +43,7 @@ public class MapView extends JPanel implements MapModelObserver  {
     public MapView(MapEditorController editorController) {
         this.setBorder(BorderFactory.createLineBorder(Color.black));
         this.countriesButtons = new HashMap<>();
+        this.links = new HashMap<>();
         this.setBackground(Color.white);
         this.setLayout(null);
         
@@ -72,6 +76,11 @@ public class MapView extends JPanel implements MapModelObserver  {
         super.paintComponent(g);
         if(backgroundImage!=null)
             g.drawImage(backgroundImage, 0, 0, null);
+        
+        Graphics2D g2 = (Graphics2D) g;
+        this.links.values().forEach((link) -> {
+            g2.draw(link);
+        });
     }
     
     /**
@@ -118,6 +127,9 @@ public class MapView extends JPanel implements MapModelObserver  {
         String territoryName;
         CountryButton2 territoryButton;
         TerritoryModel territoryModel;
+        String name1;
+        String name2;
+        String[] linkNames;
         
         switch(updateType){
             case ADD_TERRITORY:
@@ -148,7 +160,68 @@ public class MapView extends JPanel implements MapModelObserver  {
                 break;
             case UPDATE_CONTINENT:
                 break;
+            case REMOVE_LINK:  
+                linkNames = (String[])object;
+                
+                //get key of the link
+                if(getAsciiValue(linkNames[0])>getAsciiValue(linkNames[1])){
+                    name1=linkNames[0];
+                    name2=linkNames[1];
+                }
+                else{
+                    name1=linkNames[1];
+                    name2=linkNames[0];
+                }
+                String linkName= name1+";"+name2;
+                
+                //remove from list of links
+                links.remove(linkName);
+                
+                //undraw
+                repaint();
+                break;
+            case ADD_LINK:
+                linkNames = (String[])object;
+                CountryButton2 firstItem = this.countriesButtons.get(linkNames[0]);
+                CountryButton2 secondItem = this.countriesButtons.get(linkNames[1]);
+                
+                //create line to be drawn
+                Line2D newLink = new Line2D.Double();
+                newLink.setLine(firstItem.getBounds().x + ((double)this.buttonsDims.width/2.), 
+                        firstItem.getBounds().y + ((double)this.buttonsDims.height/2.),
+                        secondItem.getBounds().x + ((double)this.buttonsDims.width/2.),
+                        secondItem.getBounds().y + ((double)this.buttonsDims.height/2.));
+                
+                //define a name
+                if(getAsciiValue(linkNames[0])>getAsciiValue(linkNames[1])){
+                    name1=linkNames[0];
+                    name2=linkNames[1];
+                }
+                else{
+                    name1=linkNames[1];
+                    name2=linkNames[0];
+                }
+                
+                //add to list
+                links.put(name1+";"+name2, newLink);
+                
+                //draw line
+                repaint();
+                break;
         }
+    }
+    
+    /**
+     * Trick to find an order between two Strings
+     * @param string
+     * @return 
+     */
+    public int getAsciiValue(String string){
+        int sum = 0;
+        for(Character c : string.toCharArray()){
+            sum+=(int)c;
+        }
+        return sum;
     }
     
     /**

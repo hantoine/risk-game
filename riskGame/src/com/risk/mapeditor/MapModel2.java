@@ -12,6 +12,7 @@ import com.risk.observers.MapModelObservable;
 import com.risk.observers.MapModelObserver;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,6 +81,23 @@ public class MapModel2 implements MapModelObservable {
         //add neighbours
         this.graphTerritories.get(territoryName).addNeighbour(neighbourModel);
         this.graphTerritories.get(neighbour).addNeighbour(territoryModel);
+        
+        String[] newLink = {territoryName, neighbour};
+        notifyObservers(UpdateTypes.ADD_LINK, newLink);
+    }
+    
+    public void removeLink(String territoryName, String neighbour){
+        //get models
+        TerritoryModel neighbourModel = this.graphTerritories.get(neighbour);
+        TerritoryModel territoryModel = this.graphTerritories.get(territoryName);
+        
+        //remove neighbours
+        this.graphTerritories.get(territoryName).removeNeighbour(neighbourModel);
+        this.graphTerritories.get(neighbour).removeNeighbour(territoryModel);
+        
+        //remove from the view
+        String[] link = {territoryName, neighbour};
+        notifyObservers(UpdateTypes.REMOVE_LINK, link);
     }
     
     /**
@@ -221,6 +239,10 @@ public class MapModel2 implements MapModelObservable {
         LinkedList<TerritoryModel> neighbours = territoryToDel.getAdj();
         for(TerritoryModel neighbour : neighbours){
             neighbour.removeNeighbour(territoryToDel);
+            
+            //remove from the view
+            String[] link = {territoryToDel.getName(), neighbour.getName()};
+            notifyObservers(UpdateTypes.REMOVE_LINK, link);
         }
         
         //delete the territory

@@ -196,7 +196,6 @@ public class MapEditorController {
                             MapView mapView = (MapView)e.getSource();
                             mapView.showError("The maximum number of territories to be created has been reached.");
                         }
-                            
                         break;
                     case EDIT:
                         break;
