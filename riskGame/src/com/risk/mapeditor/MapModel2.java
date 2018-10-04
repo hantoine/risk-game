@@ -12,9 +12,11 @@ import com.risk.observers.MapModelObservable;
 import com.risk.observers.MapModelObserver;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,6 +42,11 @@ public class MapModel2 implements MapModelObservable {
         addContinent();
     }
     
+    public void addLink(String territoryName, String neighbour){
+        TerritoryModel neighbourModel = this.graphTerritories.get(neighbour);
+        this.graphTerritories.get(territoryName).addNeighbour(neighbourModel);
+    }
+    
     public TerritoryModel getTerritoryByName(String territoryName){
         TerritoryModel target = this.graphTerritories.get(territoryName);
         return target;
@@ -58,10 +65,10 @@ public class MapModel2 implements MapModelObservable {
     }
     
     public void addTerritory(int posX, int posY){
-        String newName = "Country"+Integer.toString(graphTerritories.size());
+        String newName = "Country"+Integer.toString(this.graphTerritories.size());
         TerritoryModel newTerritory = new TerritoryModel(newName, posX, posY);
         newTerritory.setContinentName(this.graphContinents.entrySet().iterator().next().getKey());
-        graphTerritories.put(newName, newTerritory);
+        this.graphTerritories.put(newName, newTerritory);
         notifyObservers(UpdateTypes.ADD_TERRITORY, newTerritory);
     }
     
@@ -134,6 +141,10 @@ public class MapModel2 implements MapModelObservable {
         return graphTerritories;
     }
 
+    /**
+     * Return an array containing all the names of the continents
+     * @return 
+     */
     public String[] getContinentList(){
         Set<String> continentsList = this.getGraphContinents().keySet();
         String[] continentList = Arrays.copyOf(continentsList.toArray(), 
@@ -142,4 +153,34 @@ public class MapModel2 implements MapModelObservable {
         return continentList;
     }
     
+    /**
+     * Return an array containing all the names of the territories
+     * @return 
+     */
+    public String[] getTerritoryList(){
+        Set<String> territorySet = this.getGraphTerritories().keySet();
+        String[] territoryArray = Arrays.copyOf(territorySet.toArray(), 
+                territorySet.size(),
+                String[].class);
+        return territoryArray;
+    }
+    
+    
+    public String[] getPotentialNeighbours(String territoryName){
+        Set<String> territorySet = this.graphTerritories.keySet();
+        List<String> territoryList = new ArrayList<String>();
+        territoryList.addAll(territorySet);
+        territoryList.remove(territoryName);
+        
+        TerritoryModel territoryModel = this.graphTerritories.get(territoryName);
+        LinkedList<TerritoryModel> neighbours = territoryModel.getAdj();
+        for(TerritoryModel neighbour:neighbours){
+            territoryList.remove(neighbour.getName());
+        }
+        
+        String[] territoryArray = Arrays.copyOf(territoryList.toArray(), 
+                territoryList.size(),
+                String[].class);
+        return territoryArray;
+    }
 }

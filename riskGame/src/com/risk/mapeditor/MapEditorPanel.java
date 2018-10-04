@@ -31,8 +31,6 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
     private MapEditorController controler;
     protected ContinentListPanel continentsPanel;
     protected CustomListPanel toolsPanel;
-    protected String selectedtoolName;
-    
     
     /**
      * Constructor
@@ -64,6 +62,7 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
         
         //panel with buttons to select a mode
         String[] toolsList = {"Add Territory", "Edit Territory", "Create Link"};
+        this.mapPanel.setCurrentTool(Tools.CREATE);
         this.toolsPanel = new ToolsListPanel(120,600, toolsList, getToolButtonListener());
         
         //add elements
@@ -77,7 +76,7 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
     }
     
     public ToolButtonListener getToolButtonListener(){
-        return new ToolButtonListener(this);
+        return new ToolButtonListener(this.mapPanel);
     }
     
     /**
@@ -85,17 +84,26 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
      */
     protected class ToolButtonListener implements ActionListener{
 
-        private MapEditorPanel mapEditorPanel;
+        private MapView mapPanel;
         
-        public ToolButtonListener(MapEditorPanel mapEditorPanel){
-            this.mapEditorPanel = mapEditorPanel;
+        public ToolButtonListener(MapView mapPanel){
+            this.mapPanel = mapPanel;
         }
         
         @Override
         public void actionPerformed(ActionEvent e) {
             String toolName = ((JButton)e.getSource()).getText();
-            this.mapEditorPanel.selectedtoolName = toolName;
-            System.out.println("selected tool:"+ toolName);
+            switch(toolName){
+                case "Add Territory":
+                    this.mapPanel.setCurrentTool(Tools.CREATE);
+                    break;
+                case "Edit Territory":
+                    this.mapPanel.setCurrentTool(Tools.EDIT);
+                    break;
+                case "Create Link":
+                    this.mapPanel.setCurrentTool(Tools.LINK);
+                    break;
+            }
         }
     }
     
