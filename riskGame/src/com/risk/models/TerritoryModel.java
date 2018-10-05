@@ -10,11 +10,11 @@ import java.util.LinkedList;
 
 /**
  * It represents a territory/country in the map
+ *
  * @author n_irahol
  */
 public class TerritoryModel {
 
-    
     private LinkedList<TerritoryModel> adj;
     private int positionX;
     private int positionY;
@@ -25,6 +25,7 @@ public class TerritoryModel {
 
     /**
      * Constructor
+     *
      * @param name name of a country
      * @param positionX position in x in the image
      * @param positionY position in y in the image
@@ -40,21 +41,31 @@ public class TerritoryModel {
 
     /**
      * Constructor
-     * @param name name of a country 
+     *
+     * @param name name of a country
      */
     public TerritoryModel(String name) {
         this.name = name;
         this.numArmies = 0;
-         this.positionX = -1;
+        this.positionX = -1;
         this.positionY = -1;
         this.owner = null;
         this.adj = new LinkedList();
     }
 
+    public void addNeighbour(TerritoryModel neighbour) {
+        this.adj.add(neighbour);
+    }
+
+    public void removeNeighbour(TerritoryModel neighbour) {
+        this.adj.remove(neighbour);
+    }
+
     /**
      * Setter for the position of a country
-     * @param positionX
-     * @param positionY 
+     *
+     * @param positionX the position X of this country
+     * @param positionY the position Y of this country
      */
     public void countrySetter(int positionX, int positionY) {
 
@@ -65,7 +76,8 @@ public class TerritoryModel {
 
     /**
      * Getter for the positionX attribute
-     * @return positionX 
+     *
+     * @return positionX
      */
     public int getPositionX() {
         return positionX;
@@ -73,6 +85,7 @@ public class TerritoryModel {
 
     /**
      * Getter for the positionY attribute
+     *
      * @return positionY
      */
     public int getPositionY() {
@@ -81,6 +94,7 @@ public class TerritoryModel {
 
     /**
      * Getter for the adj attribute
+     *
      * @return the adj
      */
     public LinkedList<TerritoryModel> getAdj() {
@@ -89,6 +103,7 @@ public class TerritoryModel {
 
     /**
      * Setter for the adj attribute
+     *
      * @param adj the adj to set
      */
     public void setAdj(LinkedList<TerritoryModel> adj) {
@@ -97,6 +112,7 @@ public class TerritoryModel {
 
     /**
      * Getter for the numArmies attribute
+     *
      * @return the numArmies
      */
     public int getNumArmies() {
@@ -104,7 +120,29 @@ public class TerritoryModel {
     }
 
     /**
+     * Increase the number of armies on the territory by one
+     *
+     * @return The new number of armies on this territory
+     */
+    public int incrementNumArmies() {
+        return ++numArmies;
+    }
+
+    /**
+     * Decrease the number of armies on the territory by one
+     *
+     * @return The new number of armies on this territory
+     */
+    public int decrementNumArmies() throws IllegalStateException {
+        if (numArmies == 0) {
+            throw new IllegalStateException("Negative number of armies on a territory not allowed.");
+        }
+        return --numArmies;
+    }
+
+    /**
      * Setter for the numArmies attribute
+     *
      * @param numArmies the numArmies to set
      */
     public void setNumArmies(int numArmies) {
@@ -113,6 +151,7 @@ public class TerritoryModel {
 
     /**
      * Getter for the owner attribute
+     *
      * @return the owner
      */
     public PlayerModel getOwner() {
@@ -121,6 +160,7 @@ public class TerritoryModel {
 
     /**
      * Setter for the owner attribute
+     *
      * @param owner the owner to set
      */
     public void setOwner(PlayerModel owner) {
@@ -129,6 +169,7 @@ public class TerritoryModel {
 
     /**
      * Getter for the name attribute
+     *
      * @return the name
      */
     public String getName() {
@@ -137,6 +178,7 @@ public class TerritoryModel {
 
     /**
      * Setter for the name attribute
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -145,6 +187,7 @@ public class TerritoryModel {
 
     /**
      * Getter for the continentName attribute
+     *
      * @return the continentName
      */
     public String getContinentName() {
@@ -153,6 +196,7 @@ public class TerritoryModel {
 
     /**
      * Setter for the continentName attribute
+     *
      * @param continentName the continentName to set
      */
     public void setContinentName(String continentName) {
@@ -161,6 +205,7 @@ public class TerritoryModel {
 
     /**
      * Setter for the positionX attribute
+     *
      * @param positionX the positionX to set
      */
     public void setPositionX(int positionX) {
@@ -169,6 +214,7 @@ public class TerritoryModel {
 
     /**
      * Setter for the positionY attribute
+     *
      * @param positionY the positionY to set
      */
     public void setPositionY(int positionY) {

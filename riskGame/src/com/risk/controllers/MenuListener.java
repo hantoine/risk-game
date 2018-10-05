@@ -6,6 +6,7 @@
 package com.risk.controllers;
 
 import com.risk.models.HumanPlayerModel;
+import com.risk.models.MapFileManagement;
 import com.risk.models.interfaces.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.views.menu.DeletableButton;
@@ -13,7 +14,6 @@ import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.RiskView;
 import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.PlayerPanel;
-import com.risk.views.menu.StartMenuView;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -107,7 +107,7 @@ public class MenuListener extends MouseAdapter {
                 }
                 break;
             case "PLAY":
-                NewGamePanel newGamePanel = (NewGamePanel) this.getRiskView().getMenuPanel().getStartMenu().getTabbedPane().getComponent(0);
+                NewGamePanel newGamePanel = this.getRiskView().getMenuPanel().getStartMenu().getNewGamePanel();
                 String selectedPath = newGamePanel.getSelectFileTextField().getText();
 
                 if (selectedPath.equals("")) {
@@ -115,20 +115,20 @@ public class MenuListener extends MouseAdapter {
                     break;
                 }
 
-                int resultReadingValidation = getRiskModel().loadMap(selectedPath);                
+                int resultReadingValidation = getRiskModel().loadMap(selectedPath);
                 if (resultReadingValidation != 0) {
-                    JOptionPane.showMessageDialog(null, readingError(resultReadingValidation));
+                    JOptionPane.showMessageDialog(null, MapFileManagement.readingError(resultReadingValidation));
                     break;
                 }
-                
+
                 if (!getRiskModel().getMap().isValid()) {
                     JOptionPane.showMessageDialog(null, "The map is not valid.");
                     break;
                 }
-                
+
                 this.getRiskView().getMenuPanel().setVisible(false);
                 this.getRiskView().remove(this.getRiskView().getMenuPanel());
-                this.getRiskView().setMenuPanel(null);
+                this.getRiskView().hideMenu();
                 this.getRiskView().getStagePanel().setVisible(true);
 
                 LinkedList<PlayerPanel> listPlayerPanels = newGamePanel.getPlayersPanel().getPlayersArray();
@@ -139,37 +139,11 @@ public class MenuListener extends MouseAdapter {
                     listPlayers.add(playerGame);
                 }
                 this.getRiskModel().setPlayerList(listPlayers);
-                
                 this.getRiskController().playGame();
                 break;
             default:
                 break;
         }
-    }
-
-    /**
-     * It provides the message in case of error in reading the map from a file
-     *
-     * @param resultReadingValidation it has a value between -1 and -6, each
-     * value represent a different error
-     * @return A string with the error message
-     */
-    private String readingError(int resultReadingValidation) {
-        switch (resultReadingValidation) {
-            case -1:
-                return "Error reading the file";
-            case -2:
-                return "Error in parameters to configurate the map.";
-            case -3:
-                return "Error in continent information.";
-            case -4:
-                return "Error in country information.";
-            case -5:
-                return "No territories separator in file.";
-            case -6:
-                return "No continents separator in file.";
-        }
-        return "Error in file format";
     }
 
     /**

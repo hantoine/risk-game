@@ -13,14 +13,17 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * It represents the new game tab in the menu
+ *
  * @author timot
  */
 public class NewGamePanel extends JPanel {
@@ -28,10 +31,14 @@ public class NewGamePanel extends JPanel {
     private PlayerListPanel playersPanel;
     private JPanel mapSelector;
     private JButton play;
+    private final JButton openMapEditor;
+    JPanel mapSelectAndEdit;
+    JLabel text;
     private JTextField selectFileTextField;
 
     /**
      * Constructor
+     *
      * @param riskModel model of the game
      * @param menuAction listener of mouse actions
      */
@@ -43,11 +50,10 @@ public class NewGamePanel extends JPanel {
         this.mapSelector = new JPanel();
         this.mapSelector.setSize(4000, 50);
         this.selectFileTextField = new JTextField("");
-        Dimension d= new Dimension(100, 20);
+        Dimension d = new Dimension(100, 20);
         this.selectFileTextField.setPreferredSize(d);
         JButton selectFileButton = new JButton("Select a Map");
-        
-        
+
         selectFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,8 +62,8 @@ public class NewGamePanel extends JPanel {
                         "Conquest Map file", "map");
                 fileChooser = new JFileChooser();
                 fileChooser.setFileFilter(filter);
-                fileChooser.setCurrentDirectory(new File("."+File.separator+"maps"));
-                
+                fileChooser.setCurrentDirectory(new File("." + File.separator + "maps"));
+
                 if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     String fileName = fileChooser.getSelectedFile().getAbsolutePath();
                     getSelectFileTextField().setText(fileName);
@@ -66,11 +72,19 @@ public class NewGamePanel extends JPanel {
                 }
             }
         });
+        this.openMapEditor = new JButton("Open map editor");
+        this.text = new JLabel(" ");
 
         this.mapSelector.setLayout(new FlowLayout());
         this.mapSelector.add(selectFileButton);
         this.mapSelector.add(selectFileTextField);
         this.mapSelector.add(selectFileTextField);
+
+        this.mapSelectAndEdit = new JPanel();
+        this.mapSelectAndEdit.setLayout(new BoxLayout(mapSelectAndEdit, BoxLayout.Y_AXIS));
+        this.mapSelectAndEdit.add(this.mapSelector);
+        this.mapSelectAndEdit.add(this.openMapEditor);
+        this.mapSelectAndEdit.add(this.text);
 
         //players panel
         playersPanel = new PlayerListPanel(riskModel, menuAction);
@@ -80,13 +94,14 @@ public class NewGamePanel extends JPanel {
         play.addMouseListener(menuAction);
 
         //add content to panel
-        this.add(BorderLayout.PAGE_START, mapSelector);
+        this.add(BorderLayout.PAGE_START, mapSelectAndEdit);
         this.add(BorderLayout.CENTER, playersPanel);
         this.add(BorderLayout.PAGE_END, play);
     }
 
     /**
      * Getter of the playersPanel attribute
+     *
      * @return the playersPanel
      */
     public PlayerListPanel getPlayersPanel() {
@@ -95,14 +110,20 @@ public class NewGamePanel extends JPanel {
 
     /**
      * Setter of the playersPanel attribute
+     *
      * @param playersPanel the playersPanel to set
      */
     public void setPlayersPanel(PlayerListPanel playersPanel) {
         this.playersPanel = playersPanel;
     }
 
+    public JButton getOpenMapEditor() {
+        return this.openMapEditor;
+    }
+
     /**
      * Getter of the mapSelector attribute
+     *
      * @return the mapSelector
      */
     public JPanel getMapSelector() {
@@ -111,6 +132,7 @@ public class NewGamePanel extends JPanel {
 
     /**
      * Setter of the mapSelector attribute
+     *
      * @param mapSelector the mapSelector to set
      */
     public void setMapSelector(JPanel mapSelector) {
@@ -119,6 +141,7 @@ public class NewGamePanel extends JPanel {
 
     /**
      * Getter of the play attribute
+     *
      * @return the play
      */
     public JButton getPlay() {
@@ -127,6 +150,7 @@ public class NewGamePanel extends JPanel {
 
     /**
      * Setter of the play attribute
+     *
      * @param play the play to set
      */
     public void setPlay(JButton play) {
@@ -135,6 +159,7 @@ public class NewGamePanel extends JPanel {
 
     /**
      * Getter of the selectFileTextField attribute
+     *
      * @return the selectFileTextField
      */
     public JTextField getSelectFileTextField() {
@@ -143,6 +168,7 @@ public class NewGamePanel extends JPanel {
 
     /**
      * Setter of the selectFileTextField attribute
+     *
      * @param selectFileTextField the selectFileTextField to set
      */
     public void setSelectFileTextField(JTextField selectFileTextField) {
