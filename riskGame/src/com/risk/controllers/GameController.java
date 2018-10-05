@@ -93,7 +93,7 @@ public class GameController {
      * @param territoryClickedName Name of the territory on which the player
      * clicked
      */
-    public void clickOnTerriroty(String territoryClickedName) {
+    public void clickOnTerritory(String territoryClickedName) {
         TerritoryModel territoryClicked = this.modelRisk.getMap().getGraphTerritories().get(territoryClickedName);
         PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
 

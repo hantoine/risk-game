@@ -5,6 +5,7 @@
  */
 package com.risk.views.player;
 
+import com.risk.models.RiskModel;
 import com.risk.models.interfaces.PlayerModel;
 import java.awt.Image;
 import java.io.File;
@@ -28,16 +29,16 @@ public final class PlayerGameHandPanel extends JPanel {
      */
     public PlayerGameHandPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        this.setSize(150, 450);
     }
 
     /**
      * Update the information displayed by the PlayerGameHandPanl according to
      * the information of the current player
      *
-     * @param currentPlayer Player whose it is currently the turn
+     * @param rm The model of the game containing all information about the current player
      */
-    public void updatePlayer(PlayerModel currentPlayer) {
+    public void updateView(RiskModel rm) {
+        PlayerModel currentPlayer = rm.getCurrentPlayer();
         this.removeAll();
         currentPlayer.getCardsOwned().getCards().stream()
                 .forEach((card) -> {

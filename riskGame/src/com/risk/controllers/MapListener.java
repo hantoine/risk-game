@@ -99,7 +99,7 @@ public class MapListener extends MouseAdapter {
                 CountryLabel countryClicked = (CountryLabel) cAux;
                 countryClicked.setBackground(Color.white);
 
-                this.riskController.getPlayGame().clickOnTerriroty(countryClicked.getName());
+                this.riskController.getPlayGame().clickOnTerritory(countryClicked.getName());
             }
         }
     }

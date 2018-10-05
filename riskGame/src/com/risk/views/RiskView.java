@@ -23,12 +23,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
@@ -39,11 +37,9 @@ import javax.swing.KeyStroke;
 public final class RiskView extends javax.swing.JFrame {
 
     private MenuView menuPanel;
-    private JPanel battlePanel;
-    private MapPanel mapPanel;
+    final private MapPanel mapPanel;
     final private PlayerGameInfoPanel playerPanel;
     final private PlayerGameHandPanel playerHandPanel;
-    private JButton phase;
     final private PhasePanel stagePanel;
 
     /**
@@ -53,7 +49,7 @@ public final class RiskView extends javax.swing.JFrame {
         super("Risk Game");
 
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        this.setResizable(false);
+        this.setResizable(true);
 
         this.playerHandPanel = new PlayerGameHandPanel();
         this.stagePanel = new PhasePanel();
@@ -82,8 +78,8 @@ public final class RiskView extends javax.swing.JFrame {
     public void updateView(RiskModel rm) {
         this.getStagePanel().updateView(rm);
         this.getMapPanel().updateView(rm, false);
-        this.getPlayerPanel().updatePlayer(rm.getCurrentPlayer());
-        this.getPlayerHandPanel().updatePlayer(rm.getCurrentPlayer());
+        this.getPlayerPanel().updateView(rm);
+        this.getPlayerHandPanel().updateView(rm);
 
     }
 
@@ -97,12 +93,12 @@ public final class RiskView extends javax.swing.JFrame {
     public void updateViewWithNewMap(RiskModel rm) {
         this.getStagePanel().updateView(rm);
         this.getMapPanel().updateView(rm, true);
-        this.getPlayerPanel().updatePlayer(rm.getCurrentPlayer());
-        this.getPlayerHandPanel().updatePlayer(rm.getCurrentPlayer());
+        this.getPlayerPanel().updateView(rm);
+        this.getPlayerHandPanel().updateView(rm);
 
         this.setSize(
-                this.mapPanel.getWidth() + this.getPlayerPanel().getWidth() + 40,
-                this.getStagePanel().getHeight() + Math.max(this.mapPanel.getHeight(), this.getPlayerPanel().getHeight()) + this.getPlayerHandPanel().getHeight() + 175
+                this.mapPanel.getImage().getWidth(null)+200,
+                this.mapPanel.getImage().getHeight(null)+200
         );
 
         this.centerWindow();
@@ -142,13 +138,9 @@ public final class RiskView extends javax.swing.JFrame {
         this.setMenuPanel(aux);
         aux.add(start);
         aux.setVisible(true);
-        if (this.getMapPanel() == null) {
-            this.setSize(800, 600);
-        }
         aux.setSize(300, 500);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         aux.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
-        setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
 
     public void hideMenu() {
@@ -213,24 +205,6 @@ public final class RiskView extends javax.swing.JFrame {
     }
 
     /**
-     * Getter of the battlePanel attribute
-     *
-     * @return the battlePanel
-     */
-    public JPanel getBattlePanel() {
-        return battlePanel;
-    }
-
-    /**
-     * Setter of the battlePanel attribute
-     *
-     * @param battlePanel the battlePanel to set
-     */
-    public void setBattlePanel(JPanel battlePanel) {
-        this.battlePanel = battlePanel;
-    }
-
-    /**
      * Getter of the mapPanel attribute
      *
      * @return the mapPanel
@@ -251,24 +225,6 @@ public final class RiskView extends javax.swing.JFrame {
      */
     public PlayerGameInfoPanel getPlayerPanel() {
         return playerPanel;
-    }
-
-    /**
-     * Getter of the phase attribute
-     *
-     * @return the phase
-     */
-    public JButton getPhase() {
-        return phase;
-    }
-
-    /**
-     * Setter of the phase attribute
-     *
-     * @param phase the phase to set
-     */
-    public void setPhase(JButton phase) {
-        this.phase = phase;
     }
 
     /**

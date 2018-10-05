@@ -34,6 +34,7 @@ public class MapPanel extends JPanel {
     }
 
     private void createMap(MapModel mapModel) {
+        clearMap();
         this.image = mapModel.getImage();
         this.setSize(mapModel.getMapWidth(), mapModel.getMapHeight());
         this.countriesButtons = new HashMap<>();
@@ -108,6 +109,21 @@ public class MapPanel extends JPanel {
      */
     public void setCountriesButtons(HashMap<String, CountryLabel> countriesButtons) {
         this.countriesButtons = countriesButtons;
+    }
+
+    private void clearMap() {
+        if (this.countriesButtons != null) {
+            this.countriesButtons.values().stream().forEach((cb) -> {
+                this.remove(cb);
+            });
+            this.countriesButtons = null;
+        }
+
+        this.adj = new HashMap<>();
+    }
+    
+    public Image getImage() {
+        return image;
     }
 
 }
