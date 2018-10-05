@@ -210,6 +210,14 @@ public abstract class PlayerModel {
     public int decrementNumArmiesAvailable() {
         return --this.numArmiesAvailable;
     }
+    
+    /**
+     * Increase the number of armies this player has available
+     * @param i
+     */
+    public void addNumArmiesAvailable(int i) {
+        this.setNumArmiesAvailable(this.getNumArmiesAvailable()+i);
+    }
 
     /**
      * Initialize the number of initial armies of this player depending on the
@@ -300,22 +308,26 @@ public abstract class PlayerModel {
      *
      * @return number of armies to deploy
      */
-    private int armiesAssignation() {
+    public int armiesAssignation() {
         int extraCountries = (int) Math.floor(this.getContriesOwned().size() / 3);
         int extraContinent = 0;
         for (ContinentModel continent : this.getContinentsOwned()) {
             extraContinent += continent.getBonusScore();
         }
-        int extraCards = armiesAssignationCards();
-
-        System.out.println(extraContinent + extraCountries + extraCards);
-        if (extraContinent + extraCountries + extraCards < 3) {
+        
+        System.out.println(extraContinent + extraCountries);
+        if (extraContinent + extraCountries < 3) {
             return 3;
         } else {
-            return extraContinent + extraCountries + extraCards;
+            return extraContinent + extraCountries;
         }
     }
 
+    public void armiesCardAssignation() {
+        int numberArmiesCard=this.armiesAssignationCards();
+        this.addNumArmiesAvailable(numberArmiesCard);
+    }
+    
     /**
      * Assign extra armies depending on handed cards
      *
@@ -340,5 +352,40 @@ public abstract class PlayerModel {
             default:
                 return 15 + (((this.getReturnedCards() - 18) / 3) * 5); //after 18 you get 5 more for every 3 cards returned
         }
+        
+    
+    }
+    
+    /**
+     * Removes the cards from a players hand depending on their type
+     * @param typeOfArmie 
+     */
+    public void removeCards(String typeOfArmie){
+        HandModel handCurrentPlayer=this.getCardsOwned();
+        if(typeOfArmie.equals("different")){
+            handCurrentPlayer.getCards().remove(
+                    handCurrentPlayer.getCards().stream()
+                    .filter(c -> c.getTypeOfArmie().equals("infantry"))
+                    .findFirst()
+                    .get());
+            
+            handCurrentPlayer.getCards().remove(
+                    handCurrentPlayer.getCards().stream()
+                    .filter(c -> c.getTypeOfArmie().equals("artillery"))
+                    .findFirst()
+                    .get());
+            
+            handCurrentPlayer.getCards().remove(
+                    handCurrentPlayer.getCards().stream()
+                    .filter(c -> c.getTypeOfArmie().equals("cavalry"))
+                    .findFirst()
+                    .get());
+             
+        }else{
+            handCurrentPlayer.getCards().removeIf(
+                    c->c.getTypeOfArmie().equals(typeOfArmie));
+        }
+        
+    
     }
 }

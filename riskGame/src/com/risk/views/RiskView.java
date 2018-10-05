@@ -115,6 +115,10 @@ public final class RiskView extends javax.swing.JFrame {
         this.getStagePanel().getEndPhase().addActionListener(e -> {
             rc.getPlayGame().finishPhase();
         });
+        
+        this.getStagePanel().getHandCards().addActionListener(e -> {
+            rc.getPlayGame().clickHand();
+        });
 
         Component c = this.getJMenuBar().getMenu(0).getMenuComponent(0);
         if (c instanceof JMenuItem) {

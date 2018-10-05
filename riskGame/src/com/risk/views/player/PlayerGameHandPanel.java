@@ -19,7 +19,7 @@ import javax.swing.JPanel;
  *
  * @author liyixuan
  */
-public final class PlayerGameHandPanel extends JPanel {
+public final class PlayerGameHandPanel extends JPanel{
 
     JButton handCard;
 
@@ -57,5 +57,6 @@ public final class PlayerGameHandPanel extends JPanel {
                     this.add(aux);
                 }
                 );
+        this.repaint();
     }
 }
