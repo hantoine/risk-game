@@ -117,11 +117,10 @@ public class NewGamePanel extends JPanel {
         this.playersPanel = playersPanel;
     }
 
-    
     public JButton getOpenMapEditor() {
         return this.openMapEditor;
     }
-    
+
     /**
      * Getter of the mapSelector attribute
      *

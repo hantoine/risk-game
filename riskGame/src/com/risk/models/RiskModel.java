@@ -68,7 +68,7 @@ public final class RiskModel {
     public void removePlayer(int index) {
         players.remove(index);
     }
-    
+
     /**
      * It removes a player from the list
      *

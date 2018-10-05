@@ -5,8 +5,6 @@
  */
 package com.risk.models;
 
-import com.risk.mapeditor.MapConfig;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +32,7 @@ public class MapModel {
         graphContinents = new HashMap<>();
         graphTerritories = new HashMap<>();
         mapConfig = new MapConfig();
-        
+
     }
 
     /**
@@ -109,7 +107,8 @@ public class MapModel {
     /**
      * Setter of the graphContinents attribute
      *
-     * @param graphContinents HashMap containing all continents of the map with their name as a key
+     * @param graphContinents HashMap containing all continents of the map with
+     * their name as a key
      */
     public void setGraphContinents(HashMap<String, ContinentModel> graphContinents) {
         this.graphContinents = graphContinents;
@@ -118,7 +117,8 @@ public class MapModel {
     /**
      * Getter of the graphTerritories attribute
      *
-     * @return the graphTerritories, a HashMap containing all continents of the map with their name as a key
+     * @return the graphTerritories, a HashMap containing all continents of the
+     * map with their name as a key
      */
     public HashMap<String, TerritoryModel> getGraphTerritories() {
         return graphTerritories;
@@ -127,7 +127,8 @@ public class MapModel {
     /**
      * Setter of the graphTerritories attribute
      *
-     * @param graphTerritories HashMap containing all territories of the map with their name as a key
+     * @param graphTerritories HashMap containing all territories of the map
+     * with their name as a key
      */
     public void setGraphTerritories(HashMap<String, TerritoryModel> graphTerritories) {
         this.graphTerritories = graphTerritories;

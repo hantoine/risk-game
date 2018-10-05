@@ -9,10 +9,10 @@ import java.util.LinkedList;
 
 /**
  * It represents the group of cards that is owned by a player
+ *
  * @author l_yixu
  */
 public class HandModel {
- 
 
     private LinkedList<CardModel> cards;
 
@@ -28,9 +28,9 @@ public class HandModel {
         this.cards.add(new CardModel("Africa", "artillery"));
     }
 
-
     /**
      * Getter for the cards attribute
+     *
      * @return the cards
      */
     public LinkedList<CardModel> getCards() {
@@ -39,6 +39,7 @@ public class HandModel {
 
     /**
      * Setter for the cards attribute
+     *
      * @param cards the hand to set
      */
     public void setCards(LinkedList<CardModel> cards) {

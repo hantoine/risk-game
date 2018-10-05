@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.mapeditor;
+package com.risk.views.editor;
 
+import com.risk.models.MapConfig;
 import com.risk.controllers.MapEditorController;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;

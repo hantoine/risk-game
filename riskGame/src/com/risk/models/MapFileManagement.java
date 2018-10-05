@@ -5,7 +5,6 @@
  */
 package com.risk.models;
 
-import com.risk.mapeditor.MapConfig;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -143,6 +142,7 @@ public class MapFileManagement {
                             if (aux[1].isEmpty()) {
                                 break;
                             }
+                            mapConfig.setImagePath(aux[1]);
                             Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
                             try {
                                 BufferedImage image = ImageIO.read(new File(imagePath.toString()));

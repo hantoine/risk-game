@@ -5,14 +5,10 @@
  */
 package com.risk.controllers;
 
-import com.risk.mapeditor.MapEditorView;
-import com.risk.mapeditor.EditableMapModel;
-import com.risk.models.MapModel;
+import com.risk.views.editor.MapEditorView;
+import com.risk.models.editor.EditableMapModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
-import java.awt.event.ActionEvent;
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
 
 /**
  * It is the Game-driver

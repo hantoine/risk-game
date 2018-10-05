@@ -9,7 +9,15 @@ package com.risk.observers;
  *
  * @author timot
  */
-public interface MapModelObserver {
-
-    public void update(UpdateTypes updateType, Object object);
+public enum UpdateTypes {
+    ADD_TERRITORY,
+    REMOVE_TERRITORY,
+    UPDATE_TERRITORY_NAME,
+    UPDATE_TERRITORY_POS,
+    ADD_CONTINENT,
+    REMOVE_CONTINENT,
+    UPDATE_CONTINENT,
+    UPDATE_BACKGROUND_IMAGE,
+    ADD_LINK,
+    REMOVE_LINK;
 }

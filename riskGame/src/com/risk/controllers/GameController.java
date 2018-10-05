@@ -11,7 +11,6 @@ import com.risk.models.interfaces.PlayerModel;
 import com.risk.views.RiskView;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * It represents the game process. It contains all methods corresponding to the

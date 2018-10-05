@@ -1,10 +1,12 @@
-package com.risk.mapeditor;
+package com.risk.models.editor;
 
 /**
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates and open the template
  * in the editor.
  */
+import com.risk.models.MapConfig;
+import com.risk.observers.UpdateTypes;
 import com.risk.models.ContinentModel;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
@@ -451,12 +453,12 @@ public final class EditableMapModel implements MapModelObservable {
     public void setAuthorConfig(String authorName) {
         this.getMapConfig().setAuthor(authorName);
     }
-    
+
     public void setImagePath(String path) {
         this.getMapConfig().setImagePath(path);
     }
-    
-    public MapConfig getMapConfig(){
+
+    public MapConfig getMapConfig() {
         return this.map.getConfigurationInfo();
     }
 

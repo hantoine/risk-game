@@ -5,12 +5,12 @@
  */
 package com.risk.controllers;
 
-import com.risk.mapeditor.ContinentListPanel;
-import com.risk.mapeditor.CountryButton2;
-import com.risk.mapeditor.MapEditorView;
-import com.risk.mapeditor.EditableMapModel;
-import com.risk.mapeditor.MapView;
-import com.risk.mapeditor.Tools;
+import com.risk.views.editor.ContinentListPanel;
+import com.risk.views.editor.CountryButton2;
+import com.risk.views.editor.MapEditorView;
+import com.risk.models.editor.EditableMapModel;
+import com.risk.views.editor.MapView;
+import com.risk.views.editor.Tools;
 import com.risk.models.ContinentModel;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
