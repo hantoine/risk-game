@@ -30,6 +30,8 @@ public class MapModel {
      * Constructor
      */
     public MapModel() {
+        graphContinents = new HashMap<>();
+        graphTerritories = new HashMap<>();
     }
 
     /**
@@ -151,7 +153,7 @@ public class MapModel {
      *
      * @return the image
      */
-    public Image getImage() {
+    public BufferedImage getImage() {
         return image;
     }
 

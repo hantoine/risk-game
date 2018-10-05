@@ -106,7 +106,7 @@ public class MenuListener extends MouseAdapter {
                 }
                 break;
             case "PLAY":
-                NewGamePanel newGamePanel = (NewGamePanel) this.getRiskView().getMenuPanel().getStartMenu().getTabbedPane().getComponent(0);
+                NewGamePanel newGamePanel = this.getRiskView().getMenuPanel().getStartMenu().getNewGamePanel();
                 String selectedPath = newGamePanel.getSelectFileTextField().getText();
 
                 if (selectedPath.equals("")) {

@@ -7,8 +7,8 @@ package com.risk.controllers;
 
 import com.risk.mapeditor.ContinentListPanel;
 import com.risk.mapeditor.CountryButton2;
-import com.risk.mapeditor.MapEditorPanel;
-import com.risk.mapeditor.MapModel2;
+import com.risk.mapeditor.MapEditorView;
+import com.risk.mapeditor.EditableMapModel;
 import com.risk.mapeditor.MapView;
 import com.risk.mapeditor.Tools;
 import com.risk.models.ContinentModel;
@@ -41,9 +41,9 @@ import javax.swing.text.Document;
  * @author timot
  */
 public class MapEditorController {
-    public MapModel2 newMap;
+    public EditableMapModel newMap;
     
-    public MapEditorController(MapModel2 mapModel){
+    public MapEditorController(EditableMapModel mapModel){
         newMap = mapModel;
     }
     
@@ -67,7 +67,7 @@ public class MapEditorController {
         return new ContinentMouseListener(newMap);
     }
     
-    public selectBackImgListener getSelectBackImgListener(MapView mapPanel, MapEditorPanel editorPanel){
+    public selectBackImgListener getSelectBackImgListener(MapView mapPanel, MapEditorView editorPanel){
         return new selectBackImgListener(mapPanel, editorPanel, this.newMap);
     }
     
@@ -75,9 +75,9 @@ public class MapEditorController {
      * Class to handle clicks on the "add" button listener to add continents
      */
     public class AddContinentButtonListener implements ActionListener{
-        protected MapModel2 newMap;
+        protected EditableMapModel newMap;
         
-        public AddContinentButtonListener(MapModel2 mapModel){
+        public AddContinentButtonListener(EditableMapModel mapModel){
             newMap = mapModel;
         }
         
@@ -96,9 +96,9 @@ public class MapEditorController {
      * Class to handle mouse events on continents objects
      */
     public class ContinentMouseListener implements MouseListener{
-        public MapModel2 newMap;
+        public EditableMapModel newMap;
         
-        public ContinentMouseListener(MapModel2 mapModel){
+        public ContinentMouseListener(EditableMapModel mapModel){
             newMap = mapModel;
         }
         
@@ -165,9 +165,9 @@ public class MapEditorController {
      * Listener for the entire map panel (to add new elements on it)
      */
     protected class MapMouseController implements MouseListener {
-        public MapModel2 newMap;
+        public EditableMapModel newMap;
         
-        public MapMouseController(MapModel2 mapModel){
+        public MapMouseController(EditableMapModel mapModel){
             newMap = mapModel;
         }
         
@@ -212,9 +212,9 @@ public class MapEditorController {
      * Listeners for buttons
      */
     protected class ButtonMouseController implements MouseListener {
-        public MapModel2 newMap;
+        public EditableMapModel newMap;
         
-        public ButtonMouseController(MapModel2 mapModel){
+        public ButtonMouseController(EditableMapModel mapModel){
             newMap = mapModel;
         }
             
@@ -259,7 +259,7 @@ public class MapEditorController {
                         
                         neighbourName = clickedPanel.createLink(territoryList, territoryName);
                         
-                        if (!"".equals(neighbourName)){
+                        if (!"".equals(neighbourName) && neighbourName != null){
                             newMap.addLink(territoryName, neighbourName);
                         }
                         break;
@@ -279,7 +279,7 @@ public class MapEditorController {
                         }
                         
                         neighbourName = clickedPanel.removeLink(neighbourStringList);
-                        if (!"".equals(neighbourName)){
+                        if (!"".equals(neighbourName) && neighbourName != null){
                             newMap.removeLink(territoryName, neighbourName);
                         }
                         break;
@@ -310,10 +310,10 @@ public class MapEditorController {
     
     public class selectBackImgListener implements DocumentListener{
         protected MapView mapPanel;
-        protected MapEditorPanel editorPanel;
-        public MapModel2 mapModel;
+        protected MapEditorView editorPanel;
+        public EditableMapModel mapModel;
         
-        public selectBackImgListener(MapView mapPanel, MapEditorPanel editorPanel, MapModel2 mapModel){
+        public selectBackImgListener(MapView mapPanel, MapEditorView editorPanel, EditableMapModel mapModel){
             this.mapPanel = mapPanel;
             this.editorPanel = editorPanel;
             this.mapModel = mapModel;
@@ -330,9 +330,9 @@ public class MapEditorController {
                 mapModel.setImage(backgroundImage, buttonDim);
                 
             } catch (BadLocationException ex) {
-                Logger.getLogger(MapEditorPanel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MapEditorView.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(MapEditorPanel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MapEditorView.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

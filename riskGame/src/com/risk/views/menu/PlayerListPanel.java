@@ -24,17 +24,19 @@ import javax.swing.JTextField;
  */
 public class PlayerListPanel extends JPanel {
 
-    private JPanel addPlayerPanel;
+    final private JPanel addPlayerPanel;
     private LinkedList<PlayerPanel> playersArray;
     int nbBots;
     int uniqueID;
     int maxNbPlayers;
-    Color basicColors[] = {Color.red,
+    Color basicColors[] = {
+        Color.red,
         Color.green,
         Color.blue,
-        Color.white,
         Color.black,
-        Color.orange};
+        Color.orange,
+        Color.CYAN
+    };
     private LinkedList<Color> colorUsed;
     MenuListener menuListener;
 

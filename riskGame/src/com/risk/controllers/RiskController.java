@@ -5,8 +5,8 @@
  */
 package com.risk.controllers;
 
-import com.risk.mapeditor.MapEditorPanel;
-import com.risk.mapeditor.MapModel2;
+import com.risk.mapeditor.MapEditorView;
+import com.risk.mapeditor.EditableMapModel;
 import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
@@ -26,10 +26,9 @@ public final class RiskController {
     private MenuListener menuListener;
     private MapListener countryListener;
     private GameController playGame;
-    
+
     //temporary (tim)
-    private MapEditorPanel mapEditor;
-    
+    private MapEditorView mapEditor;
 
     /**
      * Constructor
@@ -40,28 +39,33 @@ public final class RiskController {
     public RiskController(RiskModel riskModel, RiskView riskView) {
         this.modelRisk = riskModel;
         this.viewRisk = riskView;
-        
-	//temporary (tim)
-        MapModel2 newMap = new MapModel2();
+
+        //temporary (tim)
+        /*
+
+         */
+        //temporary (tim)
+        //*
+        this.countryListener = new MapListener(this);
+        this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
+        viewRisk.initialMenu(modelRisk, menuListener);
+        viewRisk.setVisible(true);
+        //*/
+    }
+
+    public void openMapEditor() {
+        EditableMapModel newMap = new EditableMapModel();
         MapEditorController editorController = new MapEditorController(newMap);
-        this.mapEditor = new MapEditorPanel(1000,600, editorController, newMap);
+        this.mapEditor = new MapEditorView(1000, 600, editorController, newMap);
         this.mapEditor.setVisible(true);
         newMap.addObserver(mapEditor);
         newMap.addObserver(mapEditor.getMapView());
         newMap.addObserver(mapEditor.getContinentListPanel());
-        
-        //temporary (tim)
-        /*
-	this.countryListener = new MapListener(this);
-        this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
-        viewRisk.initialMenu(modelRisk, menuListener);
-        viewRisk.setVisible(true);
-	*/
     }
 
     /**
      * Display the NewGame Menu Called when user press on New Game MenuItem.
-     * 
+     *
      */
     public void newGameMenuItemPressed() {
         getViewRisk().initialMenu(getModelRisk(), getMenuListener());
