@@ -10,16 +10,18 @@ package com.risk.mapeditor;
  * @author timot
  */
 public class MapConfig {
+
     boolean wrap;
     boolean warn;
     String scroll;
     String author;
-    
-    public MapConfig(){
-        this.author="new author";
-        this.scroll="";
-        this.warn=true;
-        this.wrap=true;
+    String imagePath;
+
+    public MapConfig() {
+        this.author = "new author";
+        this.scroll = "";
+        this.warn = true;
+        this.wrap = true;
     }
 
     public boolean isWrap() {
@@ -53,6 +55,12 @@ public class MapConfig {
     public void setAuthor(String author) {
         this.author = author;
     }
-    
-    
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }

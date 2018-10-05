@@ -32,7 +32,8 @@ public class MapListener extends MouseAdapter {
     /**
      * Constructor
      *
-     * @param riskController The RiskController controlling the main view of the game
+     * @param riskController The RiskController controlling the main view of the
+     * game
      */
     public MapListener(RiskController riskController) {
         this.riskController = riskController;
@@ -73,16 +74,15 @@ public class MapListener extends MouseAdapter {
             if (cAux instanceof CountryLabel) {
                 CountryLabel destiny = (CountryLabel) cAux;
                 CountryLabel source = this.getCountrySource();
-
-                source.setBackground(Color.white);
+                if (source == null) {
+                    return;
+                }
                 System.out.println(source.getName() + "--->" + destiny.getName());
-
                 this.riskController.getPlayGame().dragNDropTerritory(source.getName(), destiny.getName());
-
-                this.setCountrySource(null);
             }
-
         }
+        this.getCountrySource().setBackground(Color.white);
+        this.setCountrySource(null);
     }
 
     /**

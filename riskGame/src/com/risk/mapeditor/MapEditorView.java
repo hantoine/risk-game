@@ -9,13 +9,22 @@ import com.risk.controllers.MapEditorController;
 import com.risk.observers.MapModelObserver;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -28,7 +37,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
     protected JPanel contentPanel;
     protected FileSelectorPanel imageSelectorPanel;
     protected MapView mapPanel;
-    private MapEditorController controler;
+    private MapEditorController controller;
     protected ContinentListPanel continentsPanel;
     protected CustomListPanel toolsPanel;
     protected MapConfigPanel mapConfigPanel;
@@ -43,7 +52,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
     public MapEditorView(int width, int height, MapEditorController editorController, EditableMapModel initMapModel) {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(width, height));
-        controler = editorController;
+        controller = editorController;
         this.setTitle("Map Editor");
         this.setResizable(false);
 
@@ -58,7 +67,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
         contentPanel.setSize(width - imageSelectorPanel.getMaximumSize().width, height - imageSelectorPanel.getMaximumSize().height);
 
         mapPanel = new MapView(editorController);
-        this.imageSelectorPanel.getTextField().getDocument().addDocumentListener(controler.getSelectBackImgListener(mapPanel, this));
+        this.imageSelectorPanel.getTextField().getDocument().addDocumentListener(controller.getSelectBackImgListener(mapPanel, this));
 
         //panel to add continents
         this.continentsPanel = new ContinentListPanel(120, 600, editorController, initMapModel.getContinentList());
@@ -69,7 +78,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
         this.toolsPanel = new ToolsListPanel(120, 600, toolsList, getToolButtonListener());
 
         //panel to set map configuration
-        this.mapConfigPanel = new MapConfigPanel();
+        this.mapConfigPanel = new MapConfigPanel(editorController);
 
         //add elements
         contentPanel.setLayout(new BorderLayout());
@@ -79,10 +88,74 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
         contentPanel.add(BorderLayout.CENTER, mapPanel);
         contentPanel.add(BorderLayout.SOUTH, mapConfigPanel);
         setContentPane(contentPanel);
-        
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dimension.width / 2 - this.getWidth() / 2, dimension.height / 2 - this.getHeight()/ 2);
+        this.addMenuBar(editorController);
 
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dimension.width / 2 - this.getWidth() / 2, dimension.height / 2 - this.getHeight() / 2);
+
+    }
+
+    /**
+     * Initialize the menu bar of the editor
+     *
+     */
+    private void addMenuBar(MapEditorController editorController) {
+        JMenuBar menuBar;
+        JMenu menuFile;
+        JMenuItem menuItemOpen;
+        JMenuItem menuItemSave;
+
+        //Create the menu bar.
+        menuBar = new JMenuBar();
+        menuBar.setLayout(new FlowLayout(FlowLayout.LEFT));
+        //Build the first menu.
+        menuFile = new JMenu("File");
+        menuFile.setMnemonic(KeyEvent.VK_A);
+        menuFile.getAccessibleContext().setAccessibleDescription("File");
+        menuBar.add(menuFile, BorderLayout.NORTH);
+
+        //a group of JMenuItems
+        menuFile.setLayout(new BoxLayout(menuFile, BoxLayout.Y_AXIS));
+        menuItemOpen = new JMenuItem("Open File");
+        menuItemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+        menuItemOpen.getAccessibleContext().setAccessibleDescription("Open Map File");
+        menuItemSave = new JMenuItem("Save File");
+        menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+        menuItemSave.getAccessibleContext().setAccessibleDescription("Save Map File");
+        menuFile.add(menuItemOpen);
+        menuFile.add(menuItemSave);
+
+        menuItemOpen.addActionListener(e -> {
+            JFileChooser fileChooser;
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Conquest Map file", "map");
+            fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(filter);
+            fileChooser.setCurrentDirectory(new File("." + File.separator + "maps"));
+
+            if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                String filepath = fileChooser.getSelectedFile().getAbsolutePath();
+                editorController.loadMapFromFile(filepath);
+                this.mapConfigPanel.update(this.controller.getNewMap().getMapConfig());
+            }
+        });
+
+        menuItemSave.addActionListener(e -> {
+            JFileChooser fileChooser;
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Conquest Map file", "map");
+            fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(filter);
+            fileChooser.setCurrentDirectory(new File("." + File.separator + "maps"));
+
+            if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                String filepath = fileChooser.getSelectedFile().getAbsolutePath();
+                editorController.saveMapToFile(filepath);
+            }
+        });
+
+        this.setJMenuBar(menuBar);
+        this.getJMenuBar().setVisible(true);
     }
 
     public ToolButtonListener getToolButtonListener() {

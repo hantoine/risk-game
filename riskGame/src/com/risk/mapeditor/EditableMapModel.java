@@ -51,6 +51,10 @@ public final class EditableMapModel implements MapModelObservable {
         TerritoryModel neighbourModel = this.getGraphTerritories().get(neighbour);
         TerritoryModel territoryModel = this.getGraphTerritories().get(territoryName);
 
+        if (neighbourModel.getAdj().contains(neighbourModel)) {
+            return;
+        }
+
         //add neighbours
         this.getGraphTerritories().get(territoryName).addNeighbour(neighbourModel);
         this.getGraphTerritories().get(neighbour).addNeighbour(territoryModel);
@@ -144,8 +148,12 @@ public final class EditableMapModel implements MapModelObservable {
         if (neighbours != null && !neighbours.isEmpty()) {
             return neighbours.get(0).getContinentName();
         } else {
-            return this.getGraphContinents().keySet().iterator().next();
+            return null;
         }
+    }
+
+    public MapModel getInternalMap() {
+        return map;
     }
 
     /**
@@ -154,11 +162,10 @@ public final class EditableMapModel implements MapModelObservable {
      * @param continentName
      */
     public boolean removeContinent(String continentName) {
-        if (this.getContinentList().length == 1) {
+        ContinentModel continentToDel = this.getGraphContinents().get(continentName);
+        if (continentToDel == null) {
             return false;
         }
-        
-        ContinentModel continentToDel = this.getGraphContinents().get(continentName);
         LinkedList<TerritoryModel> members = continentToDel.getMembers();
 
         for (TerritoryModel member : members) {
@@ -211,7 +218,7 @@ public final class EditableMapModel implements MapModelObservable {
         this.getGraphContinents().get(continent).removeMember(territoryToDel);
 
         //remove territory from other territories' lists of neighbours
-        LinkedList<TerritoryModel> neighbours = territoryToDel.getAdj();
+        LinkedList<TerritoryModel> neighbours = new LinkedList<>(territoryToDel.getAdj());
         for (TerritoryModel neighbour : neighbours) {
             neighbour.removeNeighbour(territoryToDel);
 
@@ -428,4 +435,29 @@ public final class EditableMapModel implements MapModelObservable {
                 String[].class);
         return territoryArray;
     }
+
+    public void setScrollConfig(String scrollConfig) {
+        this.getMapConfig().setScroll(scrollConfig);
+    }
+
+    public void setWrapConfig(boolean wrapConfig) {
+        this.getMapConfig().setWrap(wrapConfig);
+    }
+
+    public void setWarnConfig(boolean warnConfig) {
+        this.getMapConfig().setWarn(warnConfig);
+    }
+
+    public void setAuthorConfig(String authorName) {
+        this.getMapConfig().setAuthor(authorName);
+    }
+    
+    public void setImagePath(String path) {
+        this.getMapConfig().setImagePath(path);
+    }
+    
+    public MapConfig getMapConfig(){
+        return this.map.getConfigurationInfo();
+    }
+
 }
