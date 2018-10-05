@@ -31,6 +31,8 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
     private MapEditorController controler;
     protected ContinentListPanel continentsPanel;
     protected CustomListPanel toolsPanel;
+    protected MapConfigPanel mapConfigPanel;
+    
     
     /**
      * Constructor
@@ -66,12 +68,16 @@ public class MapEditorPanel extends javax.swing.JFrame implements MapModelObserv
         this.mapPanel.setCurrentTool(Tools.CREATE);
         this.toolsPanel = new ToolsListPanel(120,600, toolsList, getToolButtonListener());
         
+        //panel to set map configuration
+        this.mapConfigPanel = new MapConfigPanel();
+        
         //add elements
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(BorderLayout.NORTH, imageSelectorPanel);
         contentPanel.add(BorderLayout.WEST, toolsPanel);
         contentPanel.add(BorderLayout.EAST, continentsPanel);
         contentPanel.add(BorderLayout.CENTER, mapPanel);
+        contentPanel.add(BorderLayout.SOUTH, mapConfigPanel);
         setContentPane(contentPanel);
         
     }
