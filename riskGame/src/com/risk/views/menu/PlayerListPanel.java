@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 
 /**
  * Panel that contains multiple panels with players information
+ *
  * @author Nellybett
  */
 public class PlayerListPanel extends JPanel {
@@ -39,6 +40,7 @@ public class PlayerListPanel extends JPanel {
 
     /**
      * Constructor
+     *
      * @param riskModel model
      * @param menuAction mouse action listener for the menu
      */
@@ -64,7 +66,6 @@ public class PlayerListPanel extends JPanel {
         this.addPlayerPanel.add(addPlayerButton);
         addPlayerButton.addMouseListener(menuAction);
 
-
         //initialize players list
         LinkedList<PlayerModel> playerList = riskModel.getPlayerList();
 
@@ -76,6 +77,7 @@ public class PlayerListPanel extends JPanel {
 
     /**
      * Initialize the player from the model
+     *
      * @param playerList list of players
      */
     protected void initializePlayers(LinkedList<PlayerModel> playerList) {
@@ -89,6 +91,7 @@ public class PlayerListPanel extends JPanel {
 
     /**
      * Getter of the colorUsed attribute (list of colors already used)
+     *
      * @return the colorUsed
      */
     public LinkedList<Color> getColorUsed() {
@@ -97,6 +100,7 @@ public class PlayerListPanel extends JPanel {
 
     /**
      * Setter of the colorUsed attribute
+     *
      * @param colorUsed the colorUsed to set
      */
     public void setColorUsed(LinkedList<Color> colorUsed) {
@@ -104,7 +108,8 @@ public class PlayerListPanel extends JPanel {
     }
 
     /**
-     * Creates a name of a player 
+     * Creates a name of a player
+     *
      * @return string with a name for a player
      */
     public String getNewPlayerName() {
@@ -115,6 +120,7 @@ public class PlayerListPanel extends JPanel {
 
     /**
      * Select a new color from the list of options
+     *
      * @return color for a player
      */
     public Color getNewColor() {
@@ -128,9 +134,10 @@ public class PlayerListPanel extends JPanel {
         return Color.pink;
     }
 
-  
     /**
-     * Adds and creates a player panel to the main panel and the list of player panels
+     * Adds and creates a player panel to the main panel and the list of player
+     * panels
+     *
      * @param playerName name of the player
      * @param color color of the player
      */
@@ -172,7 +179,7 @@ public class PlayerListPanel extends JPanel {
         newPlayer.getDelButton().addMouseListener(this.menuListener);
         newPlayer.add(newPlayer.getDelButton());
         this.getPlayersArray().add(newPlayer);
-        System.out.println("Players name: " + newPlayer.getName());
+
         this.add(newPlayer);
 
         revalidate();
@@ -182,6 +189,7 @@ public class PlayerListPanel extends JPanel {
 
     /**
      * Getter of the playersArray attribute
+     *
      * @return the playersArray
      */
     public LinkedList<PlayerPanel> getPlayersArray() {
@@ -190,6 +198,7 @@ public class PlayerListPanel extends JPanel {
 
     /**
      * Setter of the playersArray attribute
+     *
      * @param playersArray the playersArray to set
      */
     public void setPlayersArray(LinkedList<PlayerPanel> playersArray) {

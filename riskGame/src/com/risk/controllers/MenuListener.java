@@ -13,7 +13,6 @@ import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.RiskView;
 import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.PlayerPanel;
-import com.risk.views.menu.StartMenuView;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -26,6 +25,7 @@ import javax.swing.JOptionPane;
 
 /**
  * It listens to Mouse events in the initial menu
+ *
  * @author Nellybett
  */
 public class MenuListener extends MouseAdapter {
@@ -34,23 +34,23 @@ public class MenuListener extends MouseAdapter {
     private RiskView riskView;
     private PlayerListPanel playerList;
     private RiskController riskController;
-   
-    
-/**
- * Constructor
- * @param riskModel the model to modify it
- * @param riskView the view to show elements
- * @param riskController the principal controller to start the game
- */
+
+    /**
+     * Constructor
+     *
+     * @param riskModel the model to modify it
+     * @param riskView the view to show elements
+     * @param riskController the principal controller to start the game
+     */
     public MenuListener(RiskModel riskModel, RiskView riskView, RiskController riskController) {
         this.riskModel = riskModel;
         this.riskView = riskView;
-        this.riskController=riskController;
+        this.riskController = riskController;
     }
 
     /**
-     * It manages mouse pressed event in the menu panel. 
-     * 
+     * It manages mouse pressed event in the menu panel.
+     *
      * It includes:
      * <ul>
      * <li>Changing the color</li>
@@ -59,18 +59,19 @@ public class MenuListener extends MouseAdapter {
      * <li>Addition of players </li>
      * <li>Start game event</li>
      * </ul>
+     *
      * @param e the event to be managed
      */
     @Override
     public void mousePressed(MouseEvent e) {
-            JComponent c = (JComponent) e.getSource();
-            JButton addPlayer = (JButton) c;
+        JComponent c = (JComponent) e.getSource();
+        JButton addPlayer = (JButton) c;
         switch (addPlayer.getText()) {
             case "+":
                 this.getPlayerList().addElement(this.getPlayerList().getNewPlayerName(), this.getPlayerList().getNewColor());
                 break;
             case "-":
-                
+
                 if ((this.getPlayerList().getPlayersArray().size()) <= 3) {
                     JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
                 } else {
@@ -105,50 +106,54 @@ public class MenuListener extends MouseAdapter {
                 }
                 break;
             case "PLAY":
-                StartMenuView aux1=(StartMenuView)this.getRiskView().getMenuPanel().getStartMenu();
-                NewGamePanel aux=(NewGamePanel) aux1.getTabbedPane().getComponent(0);
-                String selectedPath=aux.getSelectFileTextField().getText();
-                if(!selectedPath.equals("")){
-                    int resultReadingValidation=getRiskModel().setBoard(selectedPath);
-                    if(resultReadingValidation==0){         
-                        if((getRiskModel().getBoard()).connectedGraph()){
-                            this.getRiskView().getMenuPanel().setVisible(false);
-                            this.getRiskView().remove(this.getRiskView().getMenuPanel());
-                            this.getRiskView().setMenuPanel(null);
-                            this.getRiskView().getPhase().setVisible(true);
-                            
-                            LinkedList<PlayerPanel> aux2=aux.getPlayersPanel().getPlayersArray();
-                            LinkedList<PlayerModel> listPlayers=new LinkedList<>();
-                            for(int i=0; i<aux2.size();i++){
-                                PlayerPanel player=aux2.get(i);
-                                PlayerModel playerGame=new HumanPlayerModel(player.getPlayerNameTextField().getText(),player.getColorButton().getBackground(),true);
-                                listPlayers.add(playerGame);
-                            }
-                            
-                            this.getRiskModel().setPlayerList(listPlayers);
-                            this.getRiskController().playGame();
-                            
-                        }else{
-                            JOptionPane.showMessageDialog(null, "Countries are not connected. please selected a new file");
-                        }
-                    }else{
-                        JOptionPane.showMessageDialog(null,readingError(resultReadingValidation));
-                    }
-                } else {
+                NewGamePanel newGamePanel = (NewGamePanel) this.getRiskView().getMenuPanel().getStartMenu().getTabbedPane().getComponent(0);
+                String selectedPath = newGamePanel.getSelectFileTextField().getText();
+
+                if (selectedPath.equals("")) {
                     JOptionPane.showMessageDialog(null, "You have not selected a map");
-                }   break;
+                    break;
+                }
+
+                int resultReadingValidation = getRiskModel().loadMap(selectedPath);
+                if (resultReadingValidation != 0) {
+                    JOptionPane.showMessageDialog(null, readingError(resultReadingValidation));
+                    break;
+                }
+
+                if (!getRiskModel().getMap().isValid()) {
+                    JOptionPane.showMessageDialog(null, "The map is not valid.");
+                    break;
+                }
+
+                this.getRiskView().getMenuPanel().setVisible(false);
+                this.getRiskView().remove(this.getRiskView().getMenuPanel());
+                this.getRiskView().hideMenu();
+                this.getRiskView().getStagePanel().setVisible(true);
+
+                LinkedList<PlayerPanel> listPlayerPanels = newGamePanel.getPlayersPanel().getPlayersArray();
+                LinkedList<PlayerModel> listPlayers = new LinkedList<>();
+                for (int i = 0; i < listPlayerPanels.size(); i++) {
+                    PlayerPanel player = listPlayerPanels.get(i);
+                    PlayerModel playerGame = new HumanPlayerModel(player.getPlayerNameTextField().getText(), player.getColorButton().getBackground(), true);
+                    listPlayers.add(playerGame);
+                }
+                this.getRiskModel().setPlayerList(listPlayers);
+                this.getRiskController().playGame();
+                break;
             default:
                 break;
         }
     }
-    
+
     /**
      * It provides the message in case of error in reading the map from a file
-     * @param resultReadingValidation it has a value between -1 and -6, each value represent a different error
+     *
+     * @param resultReadingValidation it has a value between -1 and -6, each
+     * value represent a different error
      * @return A string with the error message
      */
     private String readingError(int resultReadingValidation) {
-        switch(resultReadingValidation){
+        switch (resultReadingValidation) {
             case -1:
                 return "Error reading the file";
             case -2:
@@ -165,9 +170,9 @@ public class MenuListener extends MouseAdapter {
         return "Error in file format";
     }
 
-    
     /**
      * Getter for the riskModel attribute
+     *
      * @return the riskModel
      */
     public RiskModel getRiskModel() {
@@ -176,6 +181,7 @@ public class MenuListener extends MouseAdapter {
 
     /**
      * Setter for the riskModel attribute
+     *
      * @param riskModel the riskModel to set
      */
     public void setRiskModel(RiskModel riskModel) {
@@ -184,6 +190,7 @@ public class MenuListener extends MouseAdapter {
 
     /**
      * Getter for the riskView attribute
+     *
      * @return the riskView
      */
     public RiskView getRiskView() {
@@ -192,6 +199,7 @@ public class MenuListener extends MouseAdapter {
 
     /**
      * Setter for the riskView attribute
+     *
      * @param riskView the riskView to set
      */
     public void setRiskView(RiskView riskView) {
@@ -200,6 +208,7 @@ public class MenuListener extends MouseAdapter {
 
     /**
      * Getter for the playerList attribute
+     *
      * @return the playerList
      */
     public PlayerListPanel getPlayerList() {
@@ -208,6 +217,7 @@ public class MenuListener extends MouseAdapter {
 
     /**
      * Setter for the playerList attribute
+     *
      * @param playerList the playerList to set
      */
     public void setPlayerList(PlayerListPanel playerList) {
@@ -216,6 +226,7 @@ public class MenuListener extends MouseAdapter {
 
     /**
      * Getter for the riskController attribute
+     *
      * @return the riskController
      */
     public RiskController getRiskController() {
@@ -224,11 +235,11 @@ public class MenuListener extends MouseAdapter {
 
     /**
      * Setter for the riskController attribute
+     *
      * @param riskController the riskController to set
      */
     public void setRiskController(RiskController riskController) {
         this.riskController = riskController;
     }
 
-    
 }

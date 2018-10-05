@@ -11,37 +11,37 @@ import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 
 /**
  * It is the Game-driver
+ *
  * @author Nellybett
  */
-public class RiskController implements ActionListener {
+public final class RiskController {
 
     private RiskView viewRisk;
     private RiskModel modelRisk;
     private MenuListener menuListener;
     private MapListener countryListener;
+    private GameController playGame;
     
     //temporary (tim)
     private MapEditorPanel mapEditor;
     
+
     /**
      * Constructor
+     *
      * @param riskModel the model of the game
-     * @param riskView  the view of the game
+     * @param riskView the view of the game
      */
-    public RiskController(RiskModel riskModel,RiskView riskView) {
-        this.modelRisk=riskModel;
+    public RiskController(RiskModel riskModel, RiskView riskView) {
+        this.modelRisk = riskModel;
         this.viewRisk = riskView;
-        this.viewRisk.setRiskController(this);
-        this.countryListener = new MapListener(getModelRisk());
-        this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this); 
         
-        //temporary (tim)
+	//temporary (tim)
         MapModel2 newMap = new MapModel2();
         MapEditorController editorController = new MapEditorController(newMap);
         this.mapEditor = new MapEditorPanel(1000,600, editorController, newMap);
@@ -51,70 +51,36 @@ public class RiskController implements ActionListener {
         newMap.addObserver(mapEditor.getContinentListPanel());
         
         //temporary (tim)
-        /**
+        /*
+	this.countryListener = new MapListener(this);
+        this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
         viewRisk.initialMenu(modelRisk, menuListener);
-        viewRisk.addMenuBar();
-        viewRisk.initStagePanel();
         viewRisk.setVisible(true);
-        * **/
-        //viewRisk.initialMap(modelRisk, countryListener);
-
+	*/
     }
-    
+
     /**
-     * It listens to de menu bar events that are part of the main view
-     * @param e the event to manage
+     * Display the NewGame Menu Called when user press on New Game MenuItem.
+     * 
      */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JComponent c = (JComponent) e.getSource();
-
-        if (c != null && c instanceof JMenuItem) {
-            JMenuItem source = (JMenuItem) c;
-            System.out.println(source.getText());
-            if(source.getText().equals("New Game")){
-                getViewRisk().initialMenu(getModelRisk(), getMenuListener());
-            }
-        }
+    public void newGameMenuItemPressed() {
+        getViewRisk().initialMenu(getModelRisk(), getMenuListener());
     }
 
     /**
-     * It represent the different phases of the game.
-     * It is called after setting the players and board information
+     * It executes a thread with the different phases of the game. It is called
+     * after setting the players and board information
      */
     void playGame() {
-      
-        this.getViewRisk().initialPlayer(getModelRisk());
-        this.getViewRisk().initialMap(getModelRisk(), getCountryListener());
-        // while(!this.modelRisk.getCurrentPlayer().getContriesOwned().containsAll(this.modelRisk.getBoard().getGraphTerritories().values())){
-            switch (this.getModelRisk().getStage()) {
-                case -1:
-                 //Start phase assign territories
-            	    this.getModelRisk().initializePlayers();
-                    this.getModelRisk().nextTurn(); 
-                    break;
-                case 0:
-                //Reinforcement phase create function
-                    getModelRisk().getCurrentPlayer().reinforcement();
-                    break;
-        
-                case 1:
-                //Attack phase
-                    break;
-                case 2:
-                //Fortification phase
-                    this.getModelRisk().nextTurn();
-                    break;
-                default:
-                    break;
-            }
-            
-            this.getModelRisk().nextStage();
-        //}
+        this.setPlayGame(new GameController(this.modelRisk, this.viewRisk));
+        this.modelRisk.initializePlayersArmies();
+        this.modelRisk.assignCoutriesToPlayers();
+        this.viewRisk.updateViewWithNewMap(modelRisk);
     }
-    
+
     /**
      * Getter of the viewRisk attribute
+     *
      * @return the viewRisk
      */
     public RiskView getViewRisk() {
@@ -123,6 +89,7 @@ public class RiskController implements ActionListener {
 
     /**
      * Setter of the viewRisk attribute
+     *
      * @param viewRisk the viewRisk to set
      */
     public void setViewRisk(RiskView viewRisk) {
@@ -131,6 +98,7 @@ public class RiskController implements ActionListener {
 
     /**
      * Getter of the modelRisk attribute
+     *
      * @return the modelRisk
      */
     public RiskModel getModelRisk() {
@@ -139,6 +107,7 @@ public class RiskController implements ActionListener {
 
     /**
      * Setter of the modelRisk attribute
+     *
      * @param modelRisk the modelRisk to set
      */
     public void setModelRisk(RiskModel modelRisk) {
@@ -147,6 +116,7 @@ public class RiskController implements ActionListener {
 
     /**
      * Getter of the menuListener attribute
+     *
      * @return the menuListener
      */
     public MenuListener getMenuListener() {
@@ -155,6 +125,7 @@ public class RiskController implements ActionListener {
 
     /**
      * Setter of the menuListener attribute
+     *
      * @param menuListener the menuListener to set
      */
     public void setMenuListener(MenuListener menuListener) {
@@ -163,6 +134,7 @@ public class RiskController implements ActionListener {
 
     /**
      * Getter of the countryListener attribute
+     *
      * @return the countryListener
      */
     public MapListener getCountryListener() {
@@ -171,11 +143,24 @@ public class RiskController implements ActionListener {
 
     /**
      * Setter of the countryListener attribute
+     *
      * @param countryListener the countryListener to set
      */
     public void setCountryListener(MapListener countryListener) {
         this.countryListener = countryListener;
     }
 
+    /**
+     * @return the playGame
+     */
+    public GameController getPlayGame() {
+        return playGame;
+    }
 
+    /**
+     * @param playGame the playGame to set
+     */
+    public void setPlayGame(GameController playGame) {
+        this.playGame = playGame;
+    }
 }

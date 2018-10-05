@@ -15,60 +15,73 @@ import java.util.LinkedList;
 
 /**
  * Represents the model of the game
+ *
  * @author Nellybett
  */
-public class RiskModel {
+public final class RiskModel {
 
-    private MapModel board;
+    private MapModel map;
     private LinkedList<PlayerModel> players;
     private int turn;
-    private int stage;
+    private PlayerModel winningPlayer;
+    private GamePhase phase;
     static Integer maxNbOfPlayers = 6;
     private PlayerModel currentPlayer;
     private LinkedList<CardModel> deck;
 
     /**
-     * Constructor of the model
-     * It includes son random players
+     * Constructor of the model It includes son random players
      */
     public RiskModel() {
         this.players = new LinkedList<>();
-        this.turn=-1;
-        this.stage=-1;
+        this.turn = 0;
+        this.phase = GamePhase.INITIAL_ARMY_PLACEMENT;
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, true);
         this.currentPlayer = this.players.getFirst();
 
     }
-    
+
     /**
      * It adds a human or AI player to the player list
+     *
      * @param name the name of the player
      * @param color color of the player
      * @param isHuman true if it is human
      */
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
-        if(isHuman){
+        if (isHuman) {
             players.add(new HumanPlayerModel(name, color, isHuman));
-            
-        }else{
+
+        } else {
             players.add(new AIPlayerModel(name, color, isHuman));
         }
-      
+
     }
 
     /**
      * It removes a player from the list
+     *
      * @param index the position in the list
      */
     public void removePlayer(int index) {
         players.remove(index);
     }
+    
+    /**
+     * It removes a player from the list
+     *
+     * @param player the player to remove
+     */
+    public void removePlayer(PlayerModel player) {
+        players.remove(player);
+    }
 
     /**
      * It set the playerList attribute and the current player
-     * @param playerList 
+     *
+     * @param playerList the list of the players in this game
      */
     public void setPlayerList(LinkedList<PlayerModel> playerList) {
         this.players = playerList;
@@ -77,6 +90,7 @@ public class RiskModel {
 
     /**
      * Getter of the currentPlayer attribute
+     *
      * @return currentPlayer
      */
     public PlayerModel getCurrentPlayer() {
@@ -85,36 +99,37 @@ public class RiskModel {
 
     /**
      * Setter of the board attribute from a file
+     *
      * @param path path of the file
      * @return 0 success, -1--6 error
      */
-    public int setBoard(String path){
-        this.board=new MapModel();
-        MapFileManagement aux=new MapFileManagement();
-        int result= aux.createBoard(path,this.board);
-        if(result==0){
+    public int loadMap(String path) {
+        this.map = new MapModel();
+        int result = new MapFileManagement().createBoard(path, this.map);
+        if (result == 0) {
             this.setDeck();
         }
         return result;
-        
     }
 
     /**
      * Creation of a map file from a board
+     *
      * @param fileContent path where the file content is going to be
      */
     public void createFile(String fileContent) {
-        MapFileManagement fileManagement= new MapFileManagement();
-        int result=fileManagement.generateBoardFile(fileContent, this.board);
-        
+        MapFileManagement fileManagement = new MapFileManagement();
+        int result = fileManagement.generateBoardFile(fileContent, this.map);
+
     }
 
     /**
      * Getter of the board attribute
+     *
      * @return board
      */
-    public MapModel getBoard() {
-        return board;
+    public MapModel getMap() {
+        return map;
     }
 
     /**
@@ -125,7 +140,7 @@ public class RiskModel {
             throw new IllegalArgumentException();
         }
 
-        List<TerritoryModel> countriesLeft = new ArrayList<>(board.getGraphTerritories().values());
+        List<TerritoryModel> countriesLeft = new ArrayList<>(map.getGraphTerritories().values());
         Collections.shuffle(countriesLeft);
 
         int countriesPerPlayer = (countriesLeft.size() / players.size());
@@ -141,10 +156,12 @@ public class RiskModel {
             int playerIndex = rnd.nextInt(players.size());
             players.get(playerIndex).addCountryOwned(countriesLeft.remove(0));
         }
+
     }
 
     /**
      * Getter of the maxNbOfPlayers attribute
+     *
      * @return maxNbOfPlayers
      */
     public int getMaxNumberOfPlayers() {
@@ -153,39 +170,31 @@ public class RiskModel {
 
     /**
      * Getter of the players attribute
+     *
      * @return players list
      */
     public LinkedList<PlayerModel> getPlayerList() {
         return this.players;
     }
-    
+
     /**
      * Assigns turn to a player from the list
      */
-    public void nextTurn(){
-        
-        if(this.getTurn()+1<this.getPlayerList().size()){
-            this.setTurn(this.getTurn() + 1);
-            this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
-        }else{
-            this.setTurn(-1);
-        }
-        
+    public void nextTurn() {
+        this.setTurn((this.getTurn() + 1) % this.getPlayerList().size());
+        this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
     }
 
     /**
-     * Changes the stage/phase of the game
+     * Changes the phase of the game
      */
-    public void nextStage(){    
-        this.setStage(this.getStage()+ 1);
-        if(this.getStage()>=3){
-            this.setStage(0);
-        }
+    public void nextPhase() {
+        this.setStage(this.getPhase().next());
     }
-    
-    
+
     /**
      * Getter of the turn attribute
+     *
      * @return the turn
      */
     public int getTurn() {
@@ -194,6 +203,7 @@ public class RiskModel {
 
     /**
      * Setter of the turn attribute
+     *
      * @param turn the turn to set
      */
     public void setTurn(int turn) {
@@ -202,6 +212,7 @@ public class RiskModel {
 
     /**
      * Setter of the currentPlayer attribute
+     *
      * @param currentPlayer the currentPlayer to set
      */
     public void setCurrentPlayer(PlayerModel currentPlayer) {
@@ -209,32 +220,35 @@ public class RiskModel {
     }
 
     /**
-     * Getter of the stage attribute
-     * @return the stage
+     * Getter of the phase attribute
+     *
+     * @return the current phase of the game
      */
-    public int getStage() {
-        return stage;
+    public GamePhase getPhase() {
+        return phase;
     }
 
     /**
      * Setter of the stage attribute
+     *
      * @param stage the stage to set
      */
-    public void setStage(int stage) {
-        this.stage = stage;
+    public void setStage(GamePhase stage) {
+        this.phase = stage;
     }
-    
+
     /**
      * Initialize the initial number of armies for each player
      */
-    public void initializePlayers() {
+    public void initializePlayersArmies() {
         this.players.stream().forEach((player) -> {
             player.initializeArmies(this.players.size());
-        });        
+        });
     }
 
     /**
      * Getter of the deck attribute
+     *
      * @return the deck
      */
     public LinkedList<CardModel> getDeck() {
@@ -245,25 +259,33 @@ public class RiskModel {
      * Setter of the deck attribute
      */
     public void setDeck() {
-        this.deck=new LinkedList();
-        int i=0;
-        for(String country:this.getBoard().getGraphTerritories().keySet()){
-            if(i<=14){
+        this.deck = new LinkedList();
+        int i = 0;
+        for (String country : this.getMap().getGraphTerritories().keySet()) {
+            if (i <= 14) {
                 this.deck.add(new CardModel(country, "Infantry"));
                 this.deck.add(new CardModel(country, "Cavalry"));
                 this.deck.add(new CardModel(country, "Artillery"));
-            }else{
+            } else {
                 break;
             }
             i++;
         }
         shuffleDeck();
     }
-    
+
     /**
      * Change the order of the cards
      */
-    public void shuffleDeck(){
+    public void shuffleDeck() {
         Collections.shuffle(this.getDeck());
+    }
+
+    public PlayerModel getWinningPlayer() {
+        return winningPlayer;
+    }
+
+    public void setWinningPlayer(PlayerModel winningPlayer) {
+        this.winningPlayer = winningPlayer;
     }
 }
