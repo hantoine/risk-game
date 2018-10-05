@@ -262,14 +262,22 @@ public final class RiskModel {
         this.deck = new LinkedList();
         int i = 0;
         for (String country : this.getMap().getGraphTerritories().keySet()) {
-            if (i <= 14) {
-                this.deck.add(new CardModel(country, "Infantry"));
-                this.deck.add(new CardModel(country, "Cavalry"));
-                this.deck.add(new CardModel(country, "Artillery"));
-            } else {
-                break;
+                
+            switch (i) {
+                case 0:
+                    this.deck.add(new CardModel(country, "infantry"));
+                    i=1;
+                    break;
+                case 1:
+                    this.deck.add(new CardModel(country, "cavalry"));
+                    i=2;
+                    break;
+                default:
+                    this.deck.add(new CardModel(country, "artillery"));
+                    i=0;
+                    break;
             }
-            i++;
+                
         }
         shuffleDeck();
     }

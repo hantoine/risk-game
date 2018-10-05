@@ -9,6 +9,10 @@ import com.risk.models.RiskModel;
 import com.risk.models.interfaces.PlayerModel;
 import java.awt.Image;
 import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,9 +23,9 @@ import javax.swing.JPanel;
  *
  * @author liyixuan
  */
-public final class PlayerGameHandPanel extends JPanel {
+public final class PlayerGameHandPanel extends JPanel implements Observer{
 
-    JButton handCard;
+    HashMap<String,JButton> handCards=new HashMap<>();
 
     /**
      * Constructor
@@ -54,8 +58,33 @@ public final class PlayerGameHandPanel extends JPanel {
                     aux.setIcon(cardIcon);
                     aux.setText("");
                     aux.setBackground(currentPlayer.getColor());
+                    handCards.put(card.getCountryName(),aux);
                     this.add(aux);
                 }
                 );
+        this.repaint();
     }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        
+        if(arg instanceof RiskModel){
+            this.updateView((RiskModel)arg);
+        }else{
+            LinkedList<String> receivedObj=(LinkedList<String>) arg;
+            ImageIcon cardIcon = new ImageIcon("." + File.separator + "images"
+                            + File.separator + receivedObj.get(2) + ".png");
+                    Image image = cardIcon.getImage();
+                    Image newImage = image.getScaledInstance(50, 70, java.awt.Image.SCALE_SMOOTH);
+                    cardIcon = new ImageIcon(newImage);
+                    JButton aux = new JButton();
+                    aux.setIcon(cardIcon);
+                    aux.setText("");
+                    aux.setBackground(((PlayerModel)o).getColor());
+                    handCards.put(receivedObj.get(1),aux);
+                    this.add(aux);
+        }
+        
+    }
+    
 }

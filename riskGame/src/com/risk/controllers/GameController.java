@@ -5,12 +5,14 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.HandModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import com.risk.models.interfaces.PlayerModel;
 import com.risk.views.RiskView;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  * It represents the game process. It contains all methods corresponding to the
@@ -22,6 +24,7 @@ public class GameController {
 
     RiskModel modelRisk;
     RiskView riskView;
+    int[] cardDuplicates=new int[3];
 
     /**
      * Constructor
@@ -32,6 +35,7 @@ public class GameController {
     public GameController(RiskModel riskModel, RiskView riskView) {
         this.modelRisk = riskModel;
         this.riskView = riskView;
+       
     }
 
     /**
@@ -68,6 +72,8 @@ public class GameController {
                 break;
             case REINFORCEMENT:
                 modelRisk.getCurrentPlayer().reinforcement(this);
+                this.validateHand();
+                this.showHandButton();
                 break;
             case ATTACK:
                 try {
@@ -76,6 +82,8 @@ public class GameController {
                     //since attack is not implemented yet, we skip it 
                     this.finishPhase();
                 }
+                
+                modelRisk.getCurrentPlayer().addCardToPlayerHand(modelRisk);    
                 break;
             case FORTIFICATION:
                 modelRisk.getCurrentPlayer().fortification(this);
@@ -108,13 +116,19 @@ public class GameController {
                 riskView.updateView(modelRisk);
                 break;
             case REINFORCEMENT:
-                if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
-                    break;
+                if(modelRisk.getCurrentPlayer().getCardsOwned().getCards().size()==5){
+                    JOptionPane.showMessageDialog(null, "You have 5 cards. Please hand some cards");
+                }else{
+                    if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
+                        break;
+                    }
+                    if (currentPlayer.getNumArmiesAvailable() == 0) {
+                        this.finishPhase();
+                    }
+                    riskView.updateView(modelRisk);
                 }
-                if (currentPlayer.getNumArmiesAvailable() == 0) {
-                    this.finishPhase();
-                }
-                riskView.updateView(modelRisk);
+                
+                
                 break;
         }
     }
@@ -191,5 +205,53 @@ public class GameController {
                     this.modelRisk.removePlayer(p);
                 });
     }
-
+    
+    private void validateHand(){
+        cardDuplicates[0]=cardDuplicates[1]=cardDuplicates[2]=0;
+        HandModel handCurrentPlayer=this.modelRisk.getCurrentPlayer().getCardsOwned();
+        
+        handCurrentPlayer.getCards().stream()
+                .forEach((c) ->{
+                    
+                    if(c.getTypeOfArmie().equals("infantry")){
+                        cardDuplicates[0]=cardDuplicates[0]+1;
+                    }else if(c.getTypeOfArmie().equals("cavalry")){
+                        cardDuplicates[1]=cardDuplicates[1]+1;
+                    }else if(c.getTypeOfArmie().equals("artillery")){
+                        cardDuplicates[2]=cardDuplicates[2]+1;
+                    }
+                });
+                    
+    }
+    
+    public void showHandButton(){
+        if((cardDuplicates[0]>=3 || cardDuplicates[1]>=3 || cardDuplicates[2]>=3) || (cardDuplicates[0]>=1 && cardDuplicates[1]>=1 && cardDuplicates[2]>=1)){
+            riskView.getStagePanel().getHandCards().setVisible(true);
+            riskView.updateView(modelRisk);
+        }
+    }
+    
+    public void clickHand(){
+        
+        this.assignArmiesToPlayerFromCards();
+        riskView.getStagePanel().getHandCards().setVisible(false);
+        riskView.getStagePanel().updateView(modelRisk);
+    }
+    
+    public void assignArmiesToPlayerFromCards(){
+        if(cardDuplicates[0]>=3){
+            modelRisk.getCurrentPlayer().removeCards("infantry",modelRisk);
+        }else if(cardDuplicates[1]>=3){
+            modelRisk.getCurrentPlayer().removeCards("cavalry",modelRisk);
+        }else if(cardDuplicates[2]>=3){
+            modelRisk.getCurrentPlayer().removeCards("artillery",modelRisk);
+        }else{
+            modelRisk.getCurrentPlayer().removeCards("different",modelRisk);
+        }
+        this.modelRisk.getCurrentPlayer().armiesCardAssignation();
+    }
+    
 }
+
+
+

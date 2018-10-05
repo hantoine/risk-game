@@ -6,12 +6,17 @@
 package com.risk.models.interfaces;
 
 import com.risk.controllers.GameController;
+import com.risk.models.CardModel;
 import com.risk.models.ContinentModel;
 import com.risk.models.HandModel;
+import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Observable;
 
 /**
  * It represents a Player in the game It is the parent of HumanPlayerModel and
@@ -19,7 +24,7 @@ import java.util.LinkedList;
  *
  * @author n_irahol
  */
-public abstract class PlayerModel {
+public abstract class PlayerModel extends Observable{
 
     private String name;
     private Color color;
@@ -210,6 +215,14 @@ public abstract class PlayerModel {
     public int decrementNumArmiesAvailable() {
         return --this.numArmiesAvailable;
     }
+    
+    /**
+     * Increase the number of armies this player has available
+     * @param i
+     */
+    public void addNumArmiesAvailable(int i) {
+        this.setNumArmiesAvailable(this.getNumArmiesAvailable()+i);
+    }
 
     /**
      * Initialize the number of initial armies of this player depending on the
@@ -300,22 +313,26 @@ public abstract class PlayerModel {
      *
      * @return number of armies to deploy
      */
-    private int armiesAssignation() {
+    public int armiesAssignation() {
         int extraCountries = (int) Math.floor(this.getContriesOwned().size() / 3);
         int extraContinent = 0;
         for (ContinentModel continent : this.getContinentsOwned()) {
             extraContinent += continent.getBonusScore();
         }
-        int extraCards = armiesAssignationCards();
-
-        System.out.println(extraContinent + extraCountries + extraCards);
-        if (extraContinent + extraCountries + extraCards < 3) {
+        
+        System.out.println(extraContinent + extraCountries);
+        if (extraContinent + extraCountries < 3) {
             return 3;
         } else {
-            return extraContinent + extraCountries + extraCards;
+            return extraContinent + extraCountries;
         }
     }
 
+    public void armiesCardAssignation() {
+        int numberArmiesCard=this.armiesAssignationCards();
+        this.addNumArmiesAvailable(numberArmiesCard);
+    }
+    
     /**
      * Assign extra armies depending on handed cards
      *
@@ -340,5 +357,60 @@ public abstract class PlayerModel {
             default:
                 return 15 + (((this.getReturnedCards() - 18) / 3) * 5); //after 18 you get 5 more for every 3 cards returned
         }
+        
+    
     }
+    
+    /**
+     * Removes the cards from a players hand depending on their type
+     * @param typeOfArmie 
+     */
+    public void removeCards(String typeOfArmie,RiskModel rm){
+        HandModel handCurrentPlayer=this.getCardsOwned();
+        String[] typeOfArmieDum={"infantry","artillery","cavalry"};
+        
+      
+        if(typeOfArmie.equals("different")){
+            
+            Arrays.stream(typeOfArmieDum).forEach(typeA -> {
+                CardModel card=handCurrentPlayer.getCards().stream()
+                            .filter(c -> c.getTypeOfArmie().equals(typeA))
+                            .findFirst()
+                            .get();
+                
+                rm.getDeck().addFirst(card);
+                handCurrentPlayer.getCards().remove(card);
+            });
+                  
+        }else{
+            for (Iterator<CardModel> iterator = handCurrentPlayer.getCards().iterator(); iterator.hasNext();) {
+                CardModel card = iterator.next();
+                if (card.getTypeOfArmie().equals(typeOfArmie)) {
+                    rm.getDeck().addFirst(card);
+                    iterator.remove();        
+                }
+            }        
+        }
+        
+        this.setChanged();
+        this.notifyObservers(rm);
+    
+    }
+    
+    public void addCardToPlayerHand(RiskModel rm){
+        LinkedList<String> cardsOperation=new LinkedList<>();
+        HandModel handCurrentPlayer=this.getCardsOwned();
+        CardModel card=rm.getDeck().getLast();
+        
+        cardsOperation.add("add");
+        cardsOperation.add(card.getCountryName());
+        cardsOperation.add(card.getTypeOfArmie());
+        handCurrentPlayer.getCards().add(card);
+        rm.getDeck().removeLast();
+        
+        this.setChanged();
+        this.notifyObservers(cardsOperation);
+    }
+    
+    
 }
