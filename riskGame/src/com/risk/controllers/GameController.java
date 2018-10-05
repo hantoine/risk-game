@@ -39,7 +39,7 @@ public class GameController {
      * the game
      *
      */
-    public void finishStage() {
+    public void finishPhase() {
         if (modelRisk.getMap().getGraphTerritories().values().stream()
                 .allMatch((t) -> (t.getOwner() == modelRisk.getCurrentPlayer()))) {
             modelRisk.setWinningPlayer(modelRisk.getCurrentPlayer());
@@ -48,7 +48,7 @@ public class GameController {
 
         // Finishing steps of current stage
         switch (modelRisk.getPhase()) {
-            case INITIAL_ARMY_PLACEMENT:
+            case STARTUP:
                 break;
             case REINFORCEMENT:
                 break;
@@ -64,7 +64,7 @@ public class GameController {
 
         // Beginning steps of new stage
         switch (modelRisk.getPhase()) {
-            case INITIAL_ARMY_PLACEMENT:
+            case STARTUP:
                 break;
             case REINFORCEMENT:
                 modelRisk.getCurrentPlayer().reinforcement(this);
@@ -74,7 +74,7 @@ public class GameController {
                     modelRisk.getCurrentPlayer().attack(this);
                 } catch (UnsupportedOperationException e) {
                     //since attack is not implemented yet, we skip it 
-                    this.finishStage();
+                    this.finishPhase();
                 }
                 break;
             case FORTIFICATION:
@@ -97,13 +97,13 @@ public class GameController {
         PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
 
         switch (this.modelRisk.getPhase()) {
-            case INITIAL_ARMY_PLACEMENT:
+            case STARTUP:
                 if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
                     break;
                 }
                 this.modelRisk.nextTurn();
                 if (currentPlayer.getNumArmiesAvailable() == 0 && modelRisk.getTurn() == 0) {
-                    this.finishStage();
+                    this.finishPhase();
                 }
                 riskView.updateView(modelRisk);
                 break;
@@ -112,7 +112,7 @@ public class GameController {
                     break;
                 }
                 if (currentPlayer.getNumArmiesAvailable() == 0) {
-                    this.finishStage();
+                    this.finishPhase();
                 }
                 riskView.updateView(modelRisk);
                 break;

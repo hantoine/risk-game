@@ -448,4 +448,29 @@ public class MapFileManagement {
         }
 
     }
+    
+        /**
+     * It provides the message in case of error in reading the map from a file
+     *
+     * @param resultReadingValidation it has a value between -1 and -6, each
+     * value represent a different error
+     * @return A string with the error message
+     */
+    public static String readingError(int resultReadingValidation) {
+        switch (resultReadingValidation) {
+            case -1:
+                return "Error reading the file";
+            case -2:
+                return "Error in parameters to configurate the map.";
+            case -3:
+                return "Error in continent information.";
+            case -4:
+                return "Error in country information.";
+            case -5:
+                return "No territories separator in file.";
+            case -6:
+                return "No continents separator in file.";
+        }
+        return "Error in file format";
+    }
 }

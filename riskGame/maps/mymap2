@@ -1,0 +1,14 @@
+[Map]
+author=new author
+image=null
+wrap=yes
+scroll=
+warn=yes
+
+[Continents]
+Continent0=1
+
+[Territories]
+Territory2,311,261,Continent0,Territory0,Territory1
+Territory0,175,166,Continent0,Territory2,Territory1
+Territory1,578,188,Continent0,Territory0,Territory2

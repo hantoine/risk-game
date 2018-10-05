@@ -34,7 +34,7 @@ public class PhasePanel extends JPanel {
     public void updateView(RiskModel rm) {
         PlayerModel currentPlayer = rm.getCurrentPlayer();
         switch (rm.getPhase()) {
-            case INITIAL_ARMY_PLACEMENT:
+            case STARTUP:
                 this.endPhase.setVisible(false);
                 this.text.setText(String.format("<html>Startup phase: Click on one of your territory to place an army on it. <br />Remaining armies to be placed: %d</html>",
                         currentPlayer.getNumArmiesAvailable()));
