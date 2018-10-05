@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.mapeditor;
+package com.risk.views.editor;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,6 +23,7 @@ public class CountryButton2 extends JButton {
 
     /**
      * Constructor
+     *
      * @param x position in x
      * @param y position y
      * @param name name of the country
@@ -34,30 +35,32 @@ public class CountryButton2 extends JButton {
         this.setBackground(Color.WHITE);
         this.setOpaque(true);
         this.setHorizontalAlignment(JLabel.CENTER);
-    
+
         this.buttonSize = dim;
-        
+
         this.positionX = x;
         this.positionY = y;
 
         this.setSize(buttonSize.width, buttonSize.height);
-        this.setBounds(x-buttonSize.width/2, y-buttonSize.height/2, buttonSize.width, buttonSize.height);
+        this.setBounds(x - buttonSize.width / 2, y - buttonSize.height / 2, buttonSize.width, buttonSize.height);
     }
 
     /**
      * Getter of the name attribute
+     *
      * @return the name
      */
     public String getName() {
         return name;
     }
 
-    public void setPosition(int x, int y){
+    public void setPosition(int x, int y) {
         this.setBounds(x, y, this.getWidth(), this.getHeight());
     }
-    
+
     /**
      * Setter of the name attribute
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -67,6 +70,7 @@ public class CountryButton2 extends JButton {
 
     /**
      * It gives a new location for the country in the map
+     *
      * @param x position in x
      * @param y position in y
      */
@@ -74,8 +78,8 @@ public class CountryButton2 extends JButton {
         this.positionX = x;
         this.positionY = y;
     }
-    
-    public Dimension getSize(){
+
+    public Dimension getSize() {
         return this.buttonSize;
     }
 }

@@ -97,8 +97,8 @@ public final class RiskView extends javax.swing.JFrame {
         this.getPlayerHandPanel().updateView(rm);
 
         this.setSize(
-                this.mapPanel.getImage().getWidth(null)+200,
-                this.mapPanel.getImage().getHeight(null)+200
+                rm.getMap().getMapWidth() + 200,
+                rm.getMap().getMapHeight() + 200
         );
 
         this.centerWindow();
@@ -123,7 +123,7 @@ public final class RiskView extends javax.swing.JFrame {
                 rc.newGameMenuItemPressed();
             });
         }
-        
+
         this.getMenuPanel().getStartMenu().getNewGamePanel().getOpenMapEditor().addActionListener(e -> {
             rc.openMapEditor();
         });

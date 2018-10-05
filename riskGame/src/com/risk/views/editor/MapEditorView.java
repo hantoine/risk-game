@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.mapeditor;
+package com.risk.views.editor;
 
+import com.risk.models.editor.EditableMapModel;
 import com.risk.controllers.MapEditorController;
+import com.risk.observers.UpdateTypes;
 import com.risk.observers.MapModelObserver;
 import java.awt.BorderLayout;
 import java.awt.Dimension;

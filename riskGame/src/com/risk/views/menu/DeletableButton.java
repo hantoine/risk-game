@@ -9,16 +9,18 @@ import javax.swing.JButton;
 
 /**
  * It represents the button that eliminates player from the menu
+ *
  * @author timot
  */
 public class DeletableButton extends JButton {
 
     int ID;
-    
+
     /**
      * Constructor
+     *
      * @param text text in the button
-     * @param ID  position in the list
+     * @param ID position in the list
      */
     public DeletableButton(String text, int ID) {
         this.ID = ID;
@@ -27,6 +29,7 @@ public class DeletableButton extends JButton {
 
     /**
      * Getter of the id attribute
+     *
      * @return id
      */
     public int getID() {

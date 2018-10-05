@@ -5,14 +5,11 @@
  */
 package com.risk.observers;
 
-import com.risk.mapeditor.UpdateTypes;
-
-
-
 /**
  *
  * @author timot
  */
 public interface MapModelObserver {
+
     public void update(UpdateTypes updateType, Object object);
 }

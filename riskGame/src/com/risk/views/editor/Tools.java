@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.mapeditor;
+package com.risk.views.editor;
 
 /**
  *
  * @author timot
  */
-public enum Tools{
-   CREATE, 
-   EDIT, 
-   LINK,
-   UNLINK;
+public enum Tools {
+    CREATE,
+    EDIT,
+    LINK,
+    UNLINK;
 }

@@ -33,10 +33,10 @@ public class ContinentModel {
         this.members = new LinkedList<>();
     }
 
-    public void removeMember(TerritoryModel member){
+    public void removeMember(TerritoryModel member) {
         this.members.remove(member);
     }
-    
+
     /**
      * Getter of the members attribute
      *
@@ -72,11 +72,11 @@ public class ContinentModel {
     public int getBonusScore() {
         return bonusScore;
     }
-    
-    public void setBonusScore(int newBonusScore){
-        this.bonusScore=newBonusScore;
+
+    public void setBonusScore(int newBonusScore) {
+        this.bonusScore = newBonusScore;
     }
-    
+
     /**
      * Getter of the name attribute
      *

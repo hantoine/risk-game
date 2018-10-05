@@ -119,7 +119,7 @@ public class MapPanel extends JPanel {
 
         this.adj = new HashMap<>();
     }
-    
+
     public Image getImage() {
         return image;
     }

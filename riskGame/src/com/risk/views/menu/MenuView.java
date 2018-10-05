@@ -5,19 +5,21 @@
  */
 package com.risk.views.menu;
 
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 /**
  * It contains all the panels of the menu
+ *
  * @author Nellybett
  */
-public class MenuView extends JDialog{
+public class MenuView extends JDialog {
+
     private StartMenuView startMenu;
 
     /**
      * Constructor
+     *
      * @param startMenu the principal panel of the menu
      * @param owner the frame that owns the JDialog
      * @param title tittle of the JDialog
@@ -29,6 +31,7 @@ public class MenuView extends JDialog{
 
     /**
      * Getter of the startMenu attribute
+     *
      * @return the startMenu
      */
     public StartMenuView getStartMenu() {
@@ -37,11 +40,11 @@ public class MenuView extends JDialog{
 
     /**
      * Setter of the startMenu attribute
+     *
      * @param startMenu the startMenu to set
      */
     public void setStartMenu(StartMenuView startMenu) {
         this.startMenu = startMenu;
     }
-    
-    
+
 }
