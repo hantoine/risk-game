@@ -1,0 +1,76 @@
+[Map]
+author=Ekij
+image=Twin Volcano.bmp
+wrap=no
+scroll=none
+warn=yes
+
+[Continents]
+Active Volcano=6
+Starfish Island=3
+Cone Island=1
+Humpback Island=2
+Boomerang Island=1
+Round Island=2
+Triangle Island=1
+Crescent Island=1
+Passive Volcano=5
+Slug Island=1
+
+[Territories]
+North Barren Rock,562,123,Round Island,Round East,Slug's Head,Round East,Slug's Head
+Oak Pass,390,280,Active Volcano,Merry Water,Middle Flats,Elm Pass,Elm Pass,Middle Flats,Merry Water
+Brine Bulge,122,344,Humpback Island,Landward Lump,Base Bump,Base Bump,Landward Lump
+River Side,264,434,Active Volcano,Volcano View,West Point,Magma Plains,Volcano View,Magma Plains,West Point
+Larch Pass,497,337,Passive Volcano,Mount-View,Grim Glade,Wide Beach,Ash Pass,Mount-View,Ash Pass,Wide Beach,Grim Glade
+Lava Land,358,437,Active Volcano,Bad Lands,Magma Plains,Land's End,Bad Lands,Magma Plains,Land's End
+Cone Tip,280,240,Cone Island,Swelling Shore,Merry Water,Cone Ring,Cone Ring,Swelling Shore,Merry Water
+Round South,455,153,Round Island,Round West,Round East,Beech Beach,Round East,Beech Beach,Round West
+North Pass,603,208,Passive Volcano,Grand Glade,Slug's Head,Grand Glade,Slug's Head
+Volcano View,260,388,Active Volcano,River Side,Lump View,West Point,River Side,Lump View,West Point
+Bad Lands,408,397,Active Volcano,Lava Land,Middle Flats,Ash Pass,Lava Land,Mid Barren Rock,Mid Barren Rock,Ash Pass,Middle Flats
+Scalene Sands,726,275,Triangle Island,Deltoid Dell,Pascal's Point,Slug Tail,Slug Tail,Pascal's Point,Deltoid Dell
+Lump View,255,345,Active Volcano,Volcano View,Fir Flats,Volcano View,Landward Lump,Fir Flats,Landward Lump
+Round North,447,92,Round Island,Round West,Round East,Round East,Round West
+Scythe Sands,85,475,Crescent Island,Falcate Forest,Base Bump,Base Bump,Falcate Forest
+Round East,485,120,Round Island,North Barren Rock,Round South,Round North,Round North,Round South,North Barren Rock
+Slug Tail,757,196,Slug Island,Scalene Sands,Slug Midriff,Scalene Sands,Slug Midriff
+Elm Pass,464,272,Passive Volcano,Oak Pass,Beech Beach,Mount-View,Oak Pass,Mount-View,Beech Beach
+Cone Ring,310,210,Cone Island,Cone Tip,Cone Tip,Cone End,Cone End
+Mid Barren Rock,501,452,Boomerang Island,Bad Lands,Bad Lands,Wide Beach,Pent-Ray,East Boomerang,Pent-Ray,Wide Beach,East Boomerang
+Mount-View,505,300,Passive Volcano,Larch Pass,Elm Pass,Beech Beach,Elm Pass,Grim Glade,Larch Pass,Beech Beach,Grim Glade
+Meth-Ray,611,442,Starfish Island,Body,Eth-Ray,Pent-Ray,Wide Beach,Pent-Ray,Body,Wide Beach,Eth-Ray
+Pent-Ray,575,475,Starfish Island,Mid Barren Rock,Meth-Ray,Body,Meth-Ray,Bute-Ray,Mid Barren Rock,Bute-Ray,Body
+Base Bump,132,389,Humpback Island,Brine Bulge,Scythe Sands,Brine Bulge,Landward Lump,Scythe Sands,Landward Lump
+Bute-Ray,612,510,Starfish Island,Pent-Ray,Body,Prope-Ray,Pent-Ray,East Boomerang,Prope-Ray,Body,East Boomerang
+Swelling Shore,170,295,Humpback Island,Cone Tip,Landward Lump,Cone Tip,Landward Lump
+Prope-Ray,658,492,Starfish Island,Bute-Ray,Body,Eth-Ray,Bute-Ray,Body,Eth-Ray
+Grand Glade,580,240,Passive Volcano,North Pass,North Pass,Beech Beach,Cone Shadow,Beech Beach,Cone Shadow
+Magma Plains,300,450,Active Volcano,River Side,Lava Land,River Side,Lava Land,Land's End,South Barren Rock,Land's End,South Barren Rock
+Pointless point,615,335,Passive Volcano,Cone Shadow,Grim Glade,Wide Beach,Wide Beach,Grim Glade,Cone Shadow
+Ash Pass,430,355,Active Volcano,Larch Pass,Bad Lands,Middle Flats,Bad Lands,Larch Pass,Middle Flats
+Mid Boomerang,420,562,Boomerang Island,West Boomerang,East Boomerang,West Boomerang,East Boomerang
+Cone End,345,185,Cone Island,Cone Ring,Cone Ring,Round West,Round West
+Fir Flats,315,340,Active Volcano,Lump View,Merry Water,Middle Flats,Lump View,Middle Flats,Merry Water
+Land's End,338,475,Active Volcano,Lava Land,Magma Plains,Lava Land,Magma Plains
+Beech Beach,510,242,Passive Volcano,Round South,Elm Pass,Mount-View,Grand Glade,Grand Glade,Elm Pass,Mount-View,Round South
+Round West,415,128,Round Island,Round South,Round North,Cone End,Round North,Round South,Cone End
+Landward Lump,160,340,Humpback Island,Brine Bulge,Lump View,Base Bump,Swelling Shore,Swelling Shore,Brine Bulge,Base Bump,Lump View,West Point,West Point
+West Boomerang,369,560,Boomerang Island,Mid Boomerang,Mid Boomerang,South Barren Rock,South Barren Rock
+Body,623,476,Starfish Island,Meth-Ray,Pent-Ray,Bute-Ray,Prope-Ray,Meth-Ray,Eth-Ray,Prope-Ray,Bute-Ray,Pent-Ray,Eth-Ray
+Pascal's Point,728,318,Triangle Island,Scalene Sands,Scalene Sands,Deltoid Dell,East Barren Rock,Deltoid Dell,East Barren Rock
+Waxing Strand,155,538,Crescent Island,Falcate Forest,South Barren Rock,South Barren Rock,Falcate Forest
+Deltoid Dell,765,290,Triangle Island,Scalene Sands,Pascal's Point,Scalene Sands,Pascal's Point
+Wide Beach,560,350,Passive Volcano,Larch Pass,Mid Barren Rock,Meth-Ray,Pointless point,Grim Glade,Larch Pass,Pointless point,Meth-Ray,Mid Barren Rock,Grim Glade
+Middle Flats,360,333,Active Volcano,Oak Pass,Bad Lands,Ash Pass,Fir Flats,Oak Pass,Merry Water,Fir Flats,Ash Pass,Bad Lands,Merry Water
+South Barren Rock,261,551,Crescent Island,Magma Plains,West Boomerang,Waxing Strand,Waxing Strand,Magma Plains,West Boomerang
+East Boomerang,464,525,Boomerang Island,Mid Barren Rock,Bute-Ray,Mid Boomerang,Mid Boomerang,Mid Barren Rock,Bute-Ray
+Eth-Ray,653,450,Starfish Island,Meth-Ray,Prope-Ray,Body,Body,Meth-Ray,Prope-Ray,East Barren Rock,East Barren Rock
+West Point,215,417,Active Volcano,River Side,Volcano View,Landward Lump,Volcano View,River Side,Landward Lump
+Falcate Forest,107,529,Crescent Island,Scythe Sands,Waxing Strand,Scythe Sands,Waxing Strand
+Slug Midriff,714,162,Slug Island,Slug Tail,Slug's Head,Slug Tail,Slug's Head
+East Barren Rock,705,387,Triangle Island,Pascal's Point,Eth-Ray,Pascal's Point,Eth-Ray
+Grim Glade,555,316,Passive Volcano,Larch Pass,Mount-View,Pointless point,Wide Beach,Mount-View,Cone Shadow,Larch Pass,Wide Beach,Pointless point,Cone Shadow
+Merry Water,315,305,Active Volcano,Oak Pass,Cone Tip,Fir Flats,Middle Flats,Oak Pass,Fir Flats,Middle Flats,Cone Tip
+Slug's Head,662,142,Slug Island,North Barren Rock,North Pass,Slug Midriff,North Barren Rock,North Pass,Slug Midriff
+Cone Shadow,615,290,Passive Volcano,Grand Glade,Pointless point,Grim Glade,Grand Glade,Grim Glade,Pointless point

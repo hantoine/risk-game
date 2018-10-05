@@ -5,6 +5,7 @@
  */
 package com.risk.views.player;
 
+import com.risk.models.RiskModel;
 import com.risk.models.interfaces.PlayerModel;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -18,7 +19,7 @@ import javax.swing.JPanel;
 public final class PlayerGameInfoPanel extends JPanel {
 
     private final JButton playerName;
-    private final JButton numArmies;
+    private final JButton numArmiesOwned;
     private final JButton numCountries;
     private final JButton numContinents;
     private final JButton numCards;
@@ -26,39 +27,40 @@ public final class PlayerGameInfoPanel extends JPanel {
     /**
      * Constructor
      *
-     * @param currentPlayer player that has the turn
      */
-    public PlayerGameInfoPanel(PlayerModel currentPlayer) {
+    public PlayerGameInfoPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setSize(150, 450);
+        this.setVisible(false);
 
         this.playerName = new JButton();
-        this.numArmies = new JButton();
+        this.numArmiesOwned = new JButton();
         this.numContinents = new JButton();
         this.numCountries = new JButton();
         this.numCards = new JButton();
 
         this.add(this.playerName);
-        this.add(this.numArmies);
+        this.add(this.numArmiesOwned);
         this.add(this.numCountries);
         this.add(this.numContinents);
         this.add(this.numCards);
-
-        updatePlayer(currentPlayer);
     }
 
     /**
-     * Updates player information
+     * Update the information displayed by the PlayerGameInfoPanel according to
+     * the information of the current player
      *
-     * @param currentPlayer
+     * @param rm The model of the game containing all information about the current player
      */
-    public void updatePlayer(PlayerModel currentPlayer) {
+    public void updateView(RiskModel rm) {
+        PlayerModel currentPlayer = rm.getCurrentPlayer();
+        this.setVisible(true);
+
         // update player name and color
         playerName.setText(currentPlayer.getName());
         playerName.setBackground(currentPlayer.getColor());
 
         //update the number of armies
-        this.numArmies.setText("Army Owned: " + currentPlayer.getNumArmies());
+        this.numArmiesOwned.setText("Army Owned: " + currentPlayer.getNumArmiesOwned());
 
         // update countries and continents
         this.numCountries.setText("Countries Owned: " + Integer.toString(currentPlayer

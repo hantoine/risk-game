@@ -1,6 +1,6 @@
 [Map]
 author=Sean O'Connor
-image=world.bmp
+image=World.bmp
 wrap=yes
 scroll=horizontal
 warn=yes

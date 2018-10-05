@@ -10,24 +10,24 @@ import com.risk.models.RiskModel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 /**
  * View that contains the different tabs of the menu
+ *
  * @author timot
  */
 public class StartMenuView extends JPanel {
 
     JPanel introPanel;
-    private JTabbedPane tabbedPane;
+    final private NewGamePanel newGamePanel;
 
     /**
      * Constructor
+     *
      * @param riskModel model of the game
-     * @param menuAction mouse event listener 
+     * @param menuAction mouse event listener
      */
     public StartMenuView(RiskModel riskModel, MenuListener menuAction) {
         //JFrame's params
@@ -43,37 +43,16 @@ public class StartMenuView extends JPanel {
         this.introPanel.add(introLabel);
 
         //get tabbed pane
-        this.tabbedPane = new JTabbedPane();
-        tabbedPane.setSize(300, 500);
-
-        //get tabbed pane content
-        String[] titles = {"New Game", "Map Editor"};
-        JComponent[] components = {new NewGamePanel(riskModel, menuAction), new MapEditorPanel()};
-
-        for (int i = 0; i < components.length; i++) {
-            components[i].setSize(200, 200);
-            tabbedPane.addTab(titles[i], components[i]);
-        }
+        this.newGamePanel = new NewGamePanel(riskModel, menuAction);
+        this.newGamePanel.setSize(200, 200);
 
         //add panes to current JFrame
         this.add(BorderLayout.PAGE_START, introPanel);
-        this.add(BorderLayout.CENTER, tabbedPane);
+        this.add(BorderLayout.CENTER, newGamePanel);
 
     }
 
-    /**
-     * Getter of the tabbedPane attribute
-     * @return the tabbedPane
-     */
-    public JTabbedPane getTabbedPane() {
-        return tabbedPane;
-    }
-
-    /**
-     * Setter of the tabbedPane attribute
-     * @param tabbedPane the tabbedPane to set
-     */
-    public void setTabbedPane(JTabbedPane tabbedPane) {
-        this.tabbedPane = tabbedPane;
+    public NewGamePanel getNewGamePanel() {
+        return newGamePanel;
     }
 }

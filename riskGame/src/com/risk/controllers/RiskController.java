@@ -5,26 +5,26 @@
  */
 package com.risk.controllers;
 
+import com.risk.views.editor.MapEditorView;
+import com.risk.models.editor.EditableMapModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
 
 /**
  * It is the Game-driver
  *
  * @author Nellybett
  */
-public class RiskController implements ActionListener {
+public final class RiskController {
 
     private RiskView viewRisk;
     private RiskModel modelRisk;
     private MenuListener menuListener;
     private MapListener countryListener;
-    private Thread playGame;
-    private Object syncObj;
+    private GameController playGame;
+
+    //temporary (tim)
+    private MapEditorView mapEditor;
 
     /**
      * Constructor
@@ -33,35 +33,38 @@ public class RiskController implements ActionListener {
      * @param riskView the view of the game
      */
     public RiskController(RiskModel riskModel, RiskView riskView) {
-        this.syncObj = new Object();
         this.modelRisk = riskModel;
         this.viewRisk = riskView;
-        this.viewRisk.setRiskController(this);
-        this.countryListener = new MapListener(getModelRisk(), getViewRisk(), this);
+
+        //temporary (tim)
+        /*
+
+         */
+        //temporary (tim)
+        //*
+        this.countryListener = new MapListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
         viewRisk.initialMenu(modelRisk, menuListener);
-        viewRisk.addMenuBar();
         viewRisk.setVisible(true);
-        //viewRisk.initialMap(modelRisk, countryListener);
+        //*/
+    }
 
+    public void openMapEditor() {
+        EditableMapModel newMap = new EditableMapModel();
+        MapEditorController editorController = new MapEditorController(newMap);
+        this.mapEditor = new MapEditorView(1000, 600, editorController, newMap);
+        this.mapEditor.setVisible(true);
+        newMap.addObserver(mapEditor);
+        newMap.addObserver(mapEditor.getMapView());
+        newMap.addObserver(mapEditor.getContinentListPanel());
     }
 
     /**
-     * It listens to de menu bar events that are part of the main view
+     * Display the NewGame Menu Called when user press on New Game MenuItem.
      *
-     * @param e the event to manage
      */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JComponent c = (JComponent) e.getSource();
-
-        if (c != null && c instanceof JMenuItem) {
-            JMenuItem source = (JMenuItem) c;
-            System.out.println(source.getText());
-            if (source.getText().equals("New Game")) {
-                getViewRisk().initialMenu(getModelRisk(), getMenuListener());
-            }
-        }
+    public void newGameMenuItemPressed() {
+        getViewRisk().initialMenu(getModelRisk(), getMenuListener());
     }
 
     /**
@@ -69,16 +72,10 @@ public class RiskController implements ActionListener {
      * after setting the players and board information
      */
     void playGame() {
-
-        this.getViewRisk().initialPlayer(getModelRisk());
-        this.getViewRisk().initialMap(getModelRisk(), getCountryListener());
-        this.getViewRisk().initialPlayerHandPanel(modelRisk);
-        GameController playStart = new GameController(this.getModelRisk(), this.getViewRisk(), this.getCountryListener(), this);
-
-        Thread thread = new Thread(playStart);
-        this.setPlayGame(thread);
-        thread.start();
-
+        this.setPlayGame(new GameController(this.modelRisk, this.viewRisk));
+        this.modelRisk.initializePlayersArmies();
+        this.modelRisk.assignCoutriesToPlayers();
+        this.viewRisk.updateViewWithNewMap(modelRisk);
     }
 
     /**
@@ -156,29 +153,14 @@ public class RiskController implements ActionListener {
     /**
      * @return the playGame
      */
-    public Thread getPlayGame() {
+    public GameController getPlayGame() {
         return playGame;
     }
 
     /**
      * @param playGame the playGame to set
      */
-    public void setPlayGame(Thread playGame) {
+    public void setPlayGame(GameController playGame) {
         this.playGame = playGame;
     }
-
-    /**
-     * @return the syncObj
-     */
-    public Object getSyncObj() {
-        return syncObj;
-    }
-
-    /**
-     * @param syncObj the syncObj to set
-     */
-    public void setSyncObj(Object syncObj) {
-        this.syncObj = syncObj;
-    }
-
 }

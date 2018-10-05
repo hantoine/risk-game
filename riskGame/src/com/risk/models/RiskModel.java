@@ -23,7 +23,8 @@ public final class RiskModel {
     private MapModel map;
     private LinkedList<PlayerModel> players;
     private int turn;
-    private GameStage stage;
+    private PlayerModel winningPlayer;
+    private GamePhase phase;
     static Integer maxNbOfPlayers = 6;
     private PlayerModel currentPlayer;
     private LinkedList<CardModel> deck;
@@ -33,8 +34,8 @@ public final class RiskModel {
      */
     public RiskModel() {
         this.players = new LinkedList<>();
-        this.turn = -1;
-        this.stage = GameStage.START;
+        this.turn = 0;
+        this.phase = GamePhase.STARTUP;
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, true);
@@ -69,9 +70,18 @@ public final class RiskModel {
     }
 
     /**
+     * It removes a player from the list
+     *
+     * @param player the player to remove
+     */
+    public void removePlayer(PlayerModel player) {
+        players.remove(player);
+    }
+
+    /**
      * It set the playerList attribute and the current player
      *
-     * @param playerList
+     * @param playerList the list of the players in this game
      */
     public void setPlayerList(LinkedList<PlayerModel> playerList) {
         this.players = playerList;
@@ -146,6 +156,7 @@ public final class RiskModel {
             int playerIndex = rnd.nextInt(players.size());
             players.get(playerIndex).addCountryOwned(countriesLeft.remove(0));
         }
+
     }
 
     /**
@@ -170,23 +181,15 @@ public final class RiskModel {
      * Assigns turn to a player from the list
      */
     public void nextTurn() {
-
-        if (this.getTurn() + 1 < this.getPlayerList().size()) {
-            this.setTurn(this.getTurn() + 1);
-            this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
-            System.out.println("En el modelo--" + this.getCurrentPlayer().getName());
-        } else {
-            this.setTurn(0);
-            this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
-        }
-
+        this.setTurn((this.getTurn() + 1) % this.getPlayerList().size());
+        this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
     }
 
     /**
-     * Changes the stage/phase of the game
+     * Changes the phase of the game
      */
-    public void nextStage() {
-        this.setStage(this.getStage().next());
+    public void nextPhase() {
+        this.setStage(this.getPhase().next());
     }
 
     /**
@@ -217,12 +220,12 @@ public final class RiskModel {
     }
 
     /**
-     * Getter of the stage attribute
+     * Getter of the phase attribute
      *
-     * @return the stage
+     * @return the current phase of the game
      */
-    public GameStage getStage() {
-        return stage;
+    public GamePhase getPhase() {
+        return phase;
     }
 
     /**
@@ -230,14 +233,14 @@ public final class RiskModel {
      *
      * @param stage the stage to set
      */
-    public void setStage(GameStage stage) {
-        this.stage = stage;
+    public void setStage(GamePhase stage) {
+        this.phase = stage;
     }
 
     /**
      * Initialize the initial number of armies for each player
      */
-    public void initializePlayers() {
+    public void initializePlayersArmies() {
         this.players.stream().forEach((player) -> {
             player.initializeArmies(this.players.size());
         });
@@ -276,5 +279,13 @@ public final class RiskModel {
      */
     public void shuffleDeck() {
         Collections.shuffle(this.getDeck());
+    }
+
+    public PlayerModel getWinningPlayer() {
+        return winningPlayer;
+    }
+
+    public void setWinningPlayer(PlayerModel winningPlayer) {
+        this.winningPlayer = winningPlayer;
     }
 }

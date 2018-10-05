@@ -21,14 +21,12 @@ import java.util.LinkedList;
  */
 public abstract class PlayerModel {
 
-    private boolean isHuman;
     private String name;
     private Color color;
     private Collection<TerritoryModel> contriesOwned;
     private Collection<ContinentModel> continentsOwned;
     private HandModel cardsOwned;
-    private int numArmies;
-    private int armiesDeploy;
+    private int numArmiesAvailable;
     private int returnedCards;
 
     /**
@@ -43,34 +41,48 @@ public abstract class PlayerModel {
         this.color = color;
         this.contriesOwned = new LinkedList<>();
         this.continentsOwned = new LinkedList<>();
-        this.isHuman = isHuman;
         this.cardsOwned = new HandModel();
-        this.numArmies = 0;
-        this.armiesDeploy = 0;
+        this.numArmiesAvailable = 0;
         this.returnedCards = 0;
     }
 
     /**
-     * Definition of the reinforcement phase
+     * Definition of the reinforcement phase. Called at the beginning of the
+     * phase. Depending on the type of player it will either initialize and
+     * update the UI for the human player to play or execute the action with the
+     * artificial intelligence
      *
-     * @param playGame
+     * @param playGame GameController reference used to access game informations
+     * and methods
      */
     public abstract void reinforcement(GameController playGame);
 
     /**
-     * Definition of the fortification phase
+     * Definition of the fortification phase. Called at the beginning of the
+     * phase. Depending on the type of player it will either initialize and
+     * update the UI for the human player to play or execute the action with the
+     * artificial intelligence
+     *
+     * @param playGame GameController reference used to access game informations
+     * and methods
      */
-    public abstract void fortification();
+    public abstract void fortification(GameController playGame);
 
     /**
-     * Definition of the attack phase
+     * Definition of the attack phase. Called at the beginning of the phase.
+     * Depending on the type of player it will either initialize and update the
+     * UI for the human player to play or execute the action with the artificial
+     * intelligence
+     *
+     * @param playGame GameController reference used to access game informations
+     * and methods
      */
-    public abstract void attack();
+    public abstract void attack(GameController playGame);
 
     /**
      * Getter of the name attribute
      *
-     * @return the name
+     * @return the name of this player
      */
     public String getName() {
         return name;
@@ -118,16 +130,40 @@ public abstract class PlayerModel {
      * @param contriesOwned the contriesOwned to set
      */
     public void setContriesOwned(Collection<TerritoryModel> contriesOwned) {
-        this.contriesOwned = contriesOwned;
+
+        this.contriesOwned.stream()
+                .filter(c -> c.getOwner() != null)
+                .forEach((c) -> {
+                    c.getOwner().removeCountryOwned(c);
+                });
+        this.contriesOwned = new LinkedList(contriesOwned);
+
+        this.contriesOwned.stream().forEach((c) -> {
+            c.setOwner(this);
+        });
     }
 
     /**
-     * Add a country to the conuntryOwned list
+     * Add a country to the list of countries owned by this player
      *
      * @param countryOwned the additional country owned by this player
      */
     public void addCountryOwned(TerritoryModel countryOwned) {
+        if (countryOwned.getOwner() != null) {
+            countryOwned.getOwner().removeCountryOwned(countryOwned);
+        }
         this.contriesOwned.add(countryOwned);
+        countryOwned.setOwner(this);
+    }
+
+    /**
+     * Remove a country from the list of countries owned by this player
+     *
+     * @param countryOwned the country no longer owned by this player
+     */
+    public void removeCountryOwned(TerritoryModel countryOwned) {
+        this.contriesOwned.remove(countryOwned);
+        countryOwned.setOwner(this);
     }
 
     /**
@@ -149,21 +185,30 @@ public abstract class PlayerModel {
     }
 
     /**
-     * Getter of the numArmies attribute
+     * Getter of the numArmiesAvailable attribute
      *
      * @return the numArmies
      */
-    public int getNumArmies() {
-        return numArmies;
+    public int getNumArmiesAvailable() {
+        return numArmiesAvailable;
     }
 
     /**
-     * Setter of the numArmies attribute
+     * Setter of the numArmiesAvailable attribute
      *
      * @param numArmies the numArmies to set
      */
-    public void setNumArmies(int numArmies) {
-        this.numArmies = numArmies;
+    private void setNumArmiesAvailable(int numArmies) {
+        this.numArmiesAvailable = numArmies;
+    }
+
+    /**
+     * Decrease by one the number of armies this player has available
+     *
+     * @return the new number of armies available for this player
+     */
+    public int decrementNumArmiesAvailable() {
+        return --this.numArmiesAvailable;
     }
 
     /**
@@ -175,19 +220,19 @@ public abstract class PlayerModel {
     public void initializeArmies(int nbPlayers) {
         switch (nbPlayers) {
             case 2:
-                this.numArmies = 40;
+                this.setNumArmiesAvailable(40);
                 break;
             case 3:
-                this.numArmies = 35;
+                this.setNumArmiesAvailable(3); //modified temporarily to speed up tests
                 break;
             case 4:
-                this.numArmies = 30;
+                this.setNumArmiesAvailable(30);
                 break;
             case 5:
-                this.numArmies = 25;
+                this.setNumArmiesAvailable(25);
                 break;
             case 6:
-                this.numArmies = 20;
+                this.setNumArmiesAvailable(20);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid number of players");
@@ -195,12 +240,11 @@ public abstract class PlayerModel {
     }
 
     /**
-     * Getter of the isHuman attribute
+     * Assign new armies to the player. Called at each reinforcement phase.
      *
-     * @return the isHuman
      */
-    public boolean getType() {
-        return this.isHuman;
+    public void assignNewArmies() {
+        this.setNumArmiesAvailable(this.armiesAssignation());
     }
 
     /**
@@ -240,17 +284,61 @@ public abstract class PlayerModel {
     }
 
     /**
-     * @return the armiesDeploy
+     * Return the total number of armies owned by this player
+     *
+     * @return Total number of armies owned by this player
      */
-    public int getArmiesDeploy() {
-        return armiesDeploy;
+    public int getNumArmiesOwned() {
+        int numArmiesDeployed = this.getContriesOwned().stream()
+                .mapToInt((country) -> country.getNumArmies()).sum();
+
+        return numArmiesDeployed + this.getNumArmiesAvailable();
     }
 
     /**
-     * @param armiesDeploy
+     * Assign the armies for reinforcement phase
+     *
+     * @return number of armies to deploy
      */
-    public void setArmiesDeploy(int armiesDeploy) {
-        this.armiesDeploy = armiesDeploy;
+    private int armiesAssignation() {
+        int extraCountries = (int) Math.floor(this.getContriesOwned().size() / 3);
+        int extraContinent = 0;
+        for (ContinentModel continent : this.getContinentsOwned()) {
+            extraContinent += continent.getBonusScore();
+        }
+        int extraCards = armiesAssignationCards();
+
+        System.out.println(extraContinent + extraCountries + extraCards);
+        if (extraContinent + extraCountries + extraCards < 3) {
+            return 3;
+        } else {
+            return extraContinent + extraCountries + extraCards;
+        }
     }
 
+    /**
+     * Assign extra armies depending on handed cards
+     *
+     * @return number of extra armies according to handed cards
+     */
+    private int armiesAssignationCards() {
+        this.setReturnedCards(this.getReturnedCards() + 3);
+
+        switch (this.getReturnedCards()) {
+            case 3:
+                return 4;
+            case 6:
+                return 6;
+            case 9:
+                return 8;
+            case 12:
+                return 10;
+            case 15:
+                return 12;
+            case 18:
+                return 15;
+            default:
+                return 15 + (((this.getReturnedCards() - 18) / 3) * 5); //after 18 you get 5 more for every 3 cards returned
+        }
+    }
 }

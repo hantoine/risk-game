@@ -3,75 +3,83 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.views.map;
+package com.risk.views.editor;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 
 /**
- * Jlabel that represents a country in the map
- * @author hantoine
+ *
+ * @author timot
  */
-public class CountryButton extends JLabel {
+public class CountryButton2 extends JButton {
 
-    
-    private static final int buttonSize = 25;
+    private Dimension buttonSize;
     private static int positionX;
     private static int positionY;
     private String name;
 
     /**
      * Constructor
+     *
      * @param x position in x
      * @param y position y
      * @param name name of the country
+     * @param dim
      */
-    public CountryButton(int x, int y, String name) {
-        super("0");
+    public CountryButton2(int x, int y, String name, Dimension dim) {
+        super(name);
         this.name = name;
         this.setBackground(Color.WHITE);
         this.setOpaque(true);
         this.setHorizontalAlignment(JLabel.CENTER);
-       
+
+        this.buttonSize = dim;
+
         this.positionX = x;
         this.positionY = y;
 
-        this.setLocation(positionX - buttonSize / 2, positionY - buttonSize / 2);
-        this.setSize(buttonSize, buttonSize);
+        this.setSize(buttonSize.width, buttonSize.height);
+        this.setBounds(x - buttonSize.width / 2, y - buttonSize.height / 2, buttonSize.width, buttonSize.height);
     }
 
- 
     /**
      * Getter of the name attribute
+     *
      * @return the name
      */
     public String getName() {
         return name;
     }
 
+    public void setPosition(int x, int y) {
+        this.setBounds(x, y, this.getWidth(), this.getHeight());
+    }
+
     /**
      * Setter of the name attribute
+     *
      * @param name the name to set
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * It increase or decrease the armies that a player has in a country
-     * @param numberOfArmies new number
-     */
-    public void updateArmies(String numberOfArmies) {
-
+        this.setText(name);
     }
 
     /**
      * It gives a new location for the country in the map
+     *
      * @param x position in x
      * @param y position in y
      */
     public void updateLocation(int x, int y) {
-
+        this.positionX = x;
+        this.positionY = y;
     }
 
+    public Dimension getSize() {
+        return this.buttonSize;
+    }
 }
