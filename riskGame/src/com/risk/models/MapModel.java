@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import com.risk.mapeditor.MapConfig;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 public class MapModel {
 
-    private HashMap<String, String> configurationInfo;
+    private MapConfig mapConfig;
     private BufferedImage image;
     private int mapHeight;
     private int mapWidth;
@@ -30,6 +31,10 @@ public class MapModel {
      * Constructor
      */
     public MapModel() {
+        graphContinents = new HashMap<>();
+        graphTerritories = new HashMap<>();
+        mapConfig = new MapConfig();
+        
     }
 
     /**
@@ -129,21 +134,21 @@ public class MapModel {
     }
 
     /**
-     * Getter of the configurationInfo attribute
+     * Getter of the mapConfig attribute
      *
      * @return the configuration information contained in the map file
      */
-    public HashMap<String, String> getConfigurationInfo() {
-        return configurationInfo;
+    public MapConfig getConfigurationInfo() {
+        return mapConfig;
     }
 
     /**
-     * Setter of the configurationInfo attribute
+     * Setter of the mapConfig attribute
      *
-     * @param configurationInfo the configuration information contained in the map file
+     * @param mapConfig the configuration information contained in the map file
      */
-    public void setConfigurationInfo(HashMap<String, String> configurationInfo) {
-        this.configurationInfo = configurationInfo;
+    public void setConfigurationInfo(MapConfig mapConfig) {
+        this.mapConfig = mapConfig;
     }
 
     /**
@@ -151,7 +156,7 @@ public class MapModel {
      *
      * @return the image
      */
-    public Image getImage() {
+    public BufferedImage getImage() {
         return image;
     }
 

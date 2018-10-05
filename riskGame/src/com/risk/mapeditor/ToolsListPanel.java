@@ -5,7 +5,7 @@
  */
 package com.risk.mapeditor;
 
-import com.risk.mapeditor.MapEditorPanel.ToolButtonListener;
+import com.risk.mapeditor.MapEditorView.ToolButtonListener;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;

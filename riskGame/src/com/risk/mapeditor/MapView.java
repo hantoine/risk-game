@@ -272,7 +272,7 @@ public class MapView extends JPanel implements MapModelObserver  {
                     territoryArray,
                     territoryArray[0]);
         
-        if(neighbour.equals(""))
+        if(neighbour == null || neighbour.equals(""))
             return neighbour;
         
         /*if neighbour name not empty

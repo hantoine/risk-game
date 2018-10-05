@@ -123,6 +123,10 @@ public final class RiskView extends javax.swing.JFrame {
                 rc.newGameMenuItemPressed();
             });
         }
+        
+        this.getMenuPanel().getStartMenu().getNewGamePanel().getOpenMapEditor().addActionListener(e -> {
+            rc.openMapEditor();
+        });
     }
 
     /**
