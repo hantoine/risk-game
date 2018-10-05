@@ -35,7 +35,7 @@ public final class RiskModel {
     public RiskModel() {
         this.players = new LinkedList<>();
         this.turn = 0;
-        this.phase = GamePhase.INITIAL_ARMY_PLACEMENT;
+        this.phase = GamePhase.STARTUP;
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, true);

@@ -137,7 +137,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
 
             if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 String filepath = fileChooser.getSelectedFile().getAbsolutePath();
-                editorController.loadMapFromFile(filepath);
+                editorController.loadMapFromFile(filepath, this.getMapView());
                 this.mapConfigPanel.update(this.controller.getNewMap().getMapConfig());
             }
         });

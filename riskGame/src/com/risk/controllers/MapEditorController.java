@@ -174,9 +174,13 @@ public class MapEditorController {
         }
     }
 
-    public void loadMapFromFile(String path) {
+    public void loadMapFromFile(String path, MapView view) {
         MapModel map = new MapModel();
-        MapFileManagement.createBoard(path, map);
+        int errorCode;
+        if ((errorCode = MapFileManagement.createBoard(path, map)) < 0) {
+            view.showError(MapFileManagement.readingError(errorCode));
+            return;
+        }
 
         ArrayList<TerritoryModel> territories = new ArrayList<>(this.newMap.getGraphTerritories().values());
         territories.stream().forEach((t) -> {
@@ -394,7 +398,8 @@ public class MapEditorController {
         public void insertUpdate(DocumentEvent e) {
             File sourceImage;
             try {
-                sourceImage = new File(e.getDocument().getText(0, e.getDocument().getLength()));
+                String imagePath = e.getDocument().getText(0, e.getDocument().getLength());
+                sourceImage = new File(imagePath);
                 if (sourceImage.getPath().equals("No file selected.")) {
                     return;
                 }
@@ -402,6 +407,7 @@ public class MapEditorController {
 
                 Dimension buttonDim = mapPanel.getButtonDimension();
                 mapModel.setImage(backgroundImage, buttonDim);
+                mapModel.setImagePath(imagePath);
 
             } catch (BadLocationException ex) {
                 Logger.getLogger(MapEditorView.class.getName()).log(Level.SEVERE, null, ex);

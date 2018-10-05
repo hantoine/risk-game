@@ -113,7 +113,7 @@ public final class RiskView extends javax.swing.JFrame {
         this.getMapPanel().setListener(rc.getCountryListener());
 
         this.getStagePanel().getEndPhase().addActionListener(e -> {
-            rc.getPlayGame().finishStage();
+            rc.getPlayGame().finishPhase();
         });
 
         Component c = this.getJMenuBar().getMenu(0).getMenuComponent(0);
