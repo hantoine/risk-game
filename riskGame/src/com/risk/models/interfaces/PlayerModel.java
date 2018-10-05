@@ -6,12 +6,17 @@
 package com.risk.models.interfaces;
 
 import com.risk.controllers.GameController;
+import com.risk.models.CardModel;
 import com.risk.models.ContinentModel;
 import com.risk.models.HandModel;
+import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Observable;
 
 /**
  * It represents a Player in the game It is the parent of HumanPlayerModel and
@@ -19,7 +24,7 @@ import java.util.LinkedList;
  *
  * @author n_irahol
  */
-public abstract class PlayerModel {
+public abstract class PlayerModel extends Observable{
 
     private String name;
     private Color color;
@@ -360,32 +365,52 @@ public abstract class PlayerModel {
      * Removes the cards from a players hand depending on their type
      * @param typeOfArmie 
      */
-    public void removeCards(String typeOfArmie){
+    public void removeCards(String typeOfArmie,RiskModel rm){
         HandModel handCurrentPlayer=this.getCardsOwned();
+        String[] typeOfArmieDum={"infantry","artillery","cavalry"};
+        
+      
         if(typeOfArmie.equals("different")){
-            handCurrentPlayer.getCards().remove(
-                    handCurrentPlayer.getCards().stream()
-                    .filter(c -> c.getTypeOfArmie().equals("infantry"))
-                    .findFirst()
-                    .get());
             
-            handCurrentPlayer.getCards().remove(
-                    handCurrentPlayer.getCards().stream()
-                    .filter(c -> c.getTypeOfArmie().equals("artillery"))
-                    .findFirst()
-                    .get());
-            
-            handCurrentPlayer.getCards().remove(
-                    handCurrentPlayer.getCards().stream()
-                    .filter(c -> c.getTypeOfArmie().equals("cavalry"))
-                    .findFirst()
-                    .get());
-             
+            Arrays.stream(typeOfArmieDum).forEach(typeA -> {
+                CardModel card=handCurrentPlayer.getCards().stream()
+                            .filter(c -> c.getTypeOfArmie().equals(typeA))
+                            .findFirst()
+                            .get();
+                
+                rm.getDeck().addFirst(card);
+                handCurrentPlayer.getCards().remove(card);
+            });
+                  
         }else{
-            handCurrentPlayer.getCards().removeIf(
-                    c->c.getTypeOfArmie().equals(typeOfArmie));
+            for (Iterator<CardModel> iterator = handCurrentPlayer.getCards().iterator(); iterator.hasNext();) {
+                CardModel card = iterator.next();
+                if (card.getTypeOfArmie().equals(typeOfArmie)) {
+                    rm.getDeck().addFirst(card);
+                    iterator.remove();        
+                }
+            }        
         }
         
+        this.setChanged();
+        this.notifyObservers(rm);
     
     }
+    
+    public void addCardToPlayerHand(RiskModel rm){
+        LinkedList<String> cardsOperation=new LinkedList<>();
+        HandModel handCurrentPlayer=this.getCardsOwned();
+        CardModel card=rm.getDeck().getLast();
+        
+        cardsOperation.add("add");
+        cardsOperation.add(card.getCountryName());
+        cardsOperation.add(card.getTypeOfArmie());
+        handCurrentPlayer.getCards().add(card);
+        rm.getDeck().removeLast();
+        
+        this.setChanged();
+        this.notifyObservers(cardsOperation);
+    }
+    
+    
 }
