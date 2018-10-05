@@ -14,35 +14,35 @@ import java.util.LinkedList;
 public class HandModel {
  
 
-    private LinkedList<CardModel> hand;
+    private LinkedList<CardModel> cards;
 
     /**
      * Constructor
      */
     public HandModel() {
-        this.hand = new LinkedList();
-        this.hand.add(new CardModel("Venezuela", "infantry"));
-        this.hand.add(new CardModel("France", "infantry"));
-        this.hand.add(new CardModel("China", "infantry"));
-        this.hand.add(new CardModel("India", "artillery"));
-        this.hand.add(new CardModel("Africa", "artillery"));
+        this.cards = new LinkedList();
+        this.cards.add(new CardModel("Venezuela", "infantry"));
+        this.cards.add(new CardModel("France", "infantry"));
+        this.cards.add(new CardModel("China", "infantry"));
+        this.cards.add(new CardModel("India", "artillery"));
+        this.cards.add(new CardModel("Africa", "artillery"));
     }
 
 
     /**
-     * Getter for the hand attribute
-     * @return the hand
+     * Getter for the cards attribute
+     * @return the cards
      */
-    public LinkedList<CardModel> getHand() {
-        return hand;
+    public LinkedList<CardModel> getCards() {
+        return cards;
     }
 
     /**
-     * Setter for the hand attribute
-     * @param hand the hand to set
+     * Setter for the cards attribute
+     * @param cards the hand to set
      */
-    public void setHand(LinkedList<CardModel> hand) {
-        this.hand = hand;
+    public void setCards(LinkedList<CardModel> cards) {
+        this.cards = cards;
     }
 
 }

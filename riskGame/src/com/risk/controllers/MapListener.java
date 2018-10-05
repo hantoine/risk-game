@@ -5,8 +5,7 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.RiskModel;
-import com.risk.views.map.CountryButton;
+import com.risk.views.map.CountryLabel;
 import com.risk.views.map.MapPanel;
 import java.awt.Color;
 import java.awt.Component;
@@ -16,45 +15,44 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 /**
- * It listens to Mouse events in the map
- * It includes:
+ * It listens to Mouse events in the map It includes:
  * <ul>
  * <li>Attack movements</li>
  * <li>Reinforcement movements</li>
  * <li>Fortification movements</li>
  * </ul>
+ *
  * @author Nellybett
  */
 public class MapListener extends MouseAdapter {
 
-    private String countrySource;
-    private String countryReceive;
-    private String countryReinforce;
-    private RiskModel riskModel;
+    private CountryLabel countrySource;
+    final private RiskController riskController;
 
     /**
      * Constructor
-     * @param riskModel receives the model to change it when an event occurs 
+     *
+     * @param riskController The RiskController controlling the main view of the game
      */
-    public MapListener(RiskModel riskModel) {
-        this.riskModel = riskModel;
+    public MapListener(RiskController riskController) {
+        this.riskController = riskController;
     }
 
     /**
      * It manages a pressed event in the map
+     *
      * @param e the event to manage
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        MapPanel mapPanel;
         JComponent c = (JComponent) e.getSource();
-        if (c != null && c instanceof MapPanel) {
-            mapPanel = (MapPanel) c;
+        if (c instanceof MapPanel) {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux != null && cAux instanceof CountryButton) {
-                CountryButton source = (CountryButton) cAux;
+            if (cAux instanceof CountryLabel) {
+                CountryLabel source = (CountryLabel) cAux;
                 source.setBackground(Color.gray);
-                this.setCountrySource(source.getName());
+                this.setCountrySource(source);
+
                 System.out.println(source.getName());
             }
 
@@ -64,21 +62,24 @@ public class MapListener extends MouseAdapter {
 
     /**
      * It manages a release event from the map
+     *
      * @param e the event to manage
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-        MapPanel mapPanel;
         JComponent c = (JComponent) e.getSource();
-        if (c != null && c instanceof MapPanel) {
-            mapPanel = (MapPanel) c;
+        if (c instanceof MapPanel) {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux != null && cAux instanceof CountryButton) {
-                CountryButton destiny = (CountryButton) cAux;
-                CountryButton source = mapPanel.getCountriesButtons().get(this.getCountrySource());
+            if (cAux instanceof CountryLabel) {
+                CountryLabel destiny = (CountryLabel) cAux;
+                CountryLabel source = this.getCountrySource();
+
                 source.setBackground(Color.white);
                 System.out.println(source.getName() + "--->" + destiny.getName());
-                this.setCountryReceive(source.getName());
+
+                this.riskController.getPlayGame().dragNDropTerritory(source.getName(), destiny.getName());
+
+                this.setCountrySource(null);
             }
 
         }
@@ -86,72 +87,28 @@ public class MapListener extends MouseAdapter {
 
     /**
      * It manages a click event in the map
+     *
      * @param e the event to manage
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-        MapPanel mapPanel;
         JComponent c = (JComponent) e.getSource();
-        if (c != null && c instanceof MapPanel) {
-            mapPanel = (MapPanel) c;
+        if (c instanceof MapPanel) {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux != null && cAux instanceof CountryButton) {
+            if (cAux instanceof CountryLabel) {
+                CountryLabel countryClicked = (CountryLabel) cAux;
+                countryClicked.setBackground(Color.white);
 
-                CountryButton reinforce = (CountryButton) cAux;
-                reinforce.setBackground(Color.white);
-                this.countryReinforce = reinforce.getName();
-
+                this.riskController.getPlayGame().clickOnTerritory(countryClicked.getName());
             }
-
         }
     }
 
-    
-    /**
-     * Getter of countrySource attribute
-     * @return the countrySource
-     */
-    public String getCountrySource() {
+    private CountryLabel getCountrySource() {
         return countrySource;
     }
 
-    /**
-     * Setter of countrySource attribute
-     * @param countrySource the countrySource to set
-     */
-    public void setCountrySource(String countrySource) {
+    private void setCountrySource(CountryLabel countrySource) {
         this.countrySource = countrySource;
-    }
-
-    /**
-     * Getter of countryReceive attribute
-     * @return the countryReceive
-     */
-    public String getCountryReceive() {
-        return countryReceive;
-    }
-
-    /**
-     * Setter of countryReceive attribute
-     * @param countryReceive the countryReceive to set
-     */
-    public void setCountryReceive(String countryReceive) {
-        this.countryReceive = countryReceive;
-    }
-
-    /**
-     * Getter of riskModel attribute attribute
-     * @return the riskModel
-     */
-    public RiskModel getRiskModel() {
-        return riskModel;
-    }
-
-    /**
-     * Setter of riskModel attribute
-     * @param riskModel the riskModel to set
-     */
-    public void setRiskModel(RiskModel riskModel) {
-        this.riskModel = riskModel;
     }
 }
