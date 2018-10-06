@@ -28,6 +28,7 @@ public class PhasePanel extends JPanel {
         
         this.text.setVisible(false);
         this.endPhase.setVisible(false);
+        this.handCards.setVisible(false);
 
         this.add(text);
         this.add(this.endPhase);
@@ -59,7 +60,7 @@ public class PhasePanel extends JPanel {
             case FORTIFICATION:
                 this.endPhase.setVisible(true);
                 this.handCards.setVisible(false);
-                this.text.setText("<html>Fortification phase: You can drag'n'drop between territories your own to move your armies <br /></html>");
+                this.text.setText("<html>Fortification phase: You can drag'n'drop between territories you own. <br />Move your armies <br /></html>");
                 this.text.setVisible(true);
                 break;
             default:
