@@ -32,6 +32,7 @@ public class MapModel {
         graphContinents = new HashMap<>();
         graphTerritories = new HashMap<>();
         mapConfig = new MapConfig();
+        image=null;
 
     }
 

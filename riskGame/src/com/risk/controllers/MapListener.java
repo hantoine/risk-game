@@ -81,8 +81,11 @@ public class MapListener extends MouseAdapter {
                 this.riskController.getPlayGame().dragNDropTerritory(source.getName(), destiny.getName());
             }
         }
-        this.getCountrySource().setBackground(Color.white);
-        this.setCountrySource(null);
+        if(this.getCountrySource()!=null){
+            this.getCountrySource().setBackground(Color.white);
+            this.setCountrySource(null);
+        }
+        
     }
 
     /**

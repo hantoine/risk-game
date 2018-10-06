@@ -5,10 +5,7 @@
  */
 package com.risk.models;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -17,32 +14,21 @@ import static org.junit.Assert.*;
  * @author Nellybett
  */
 public class MapFileManagementTest {
-    
+
+    /**
+     * Constructor
+     */
     public MapFileManagementTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
+ 
     /**
      * Test of createBoard method, of class MapFileManagement.
      */
     @Test
     public void testCreateBoard() {
         System.out.println("createBoard");
+        //Change to a valid .map file in your computer
         String path = "C:\\Users\\Nellybett\\Desktop\\Old Yorkshire.map";
         MapModel board = null;
         MapFileManagement instance = new MapFileManagement();
@@ -84,11 +70,6 @@ public class MapFileManagementTest {
         result = instance.readFile(path);
         assertEquals(expResult, result);
         
-        //Test case empty .map file 
-        path="C:\\Users\\Nellybett\\Desktop\\Old Yorkshire.map";
-        result = instance.readFile(path);
-        expResult="";
-        assertEquals(expResult, result);
     }
 
     /**
@@ -109,18 +90,21 @@ public class MapFileManagementTest {
         
         //Test Case only with image parameter and valid file path
         info = "[Map]\n" +"image=old yorkshire.bmp\n";
+        board = new MapModel();
         result = instance.configurationInf(info, path, board);
         assertEquals(expResult, result);
         
         //Test Case only with image parameter and invalid file path
         info = "[Map]\n" +"image=old yorkshire.bmp\n";
         path = "";
+        board = new MapModel();
         expResult=-1;
         result = instance.configurationInf(info, path, board);
         assertEquals(expResult, result);
     
         //Test Case only without image parameter and valid file path
         info ="[Map]\n" +"author=Stewart Ainsworth\n" +"wrap=no\n" +"scroll=horizontal";
+        board = new MapModel();
         path = "C:\\Users\\Nellybett\\Desktop\\Old Yorkshire.map";
         expResult=-1;
         result = instance.configurationInf(info, path, board);
@@ -192,10 +176,11 @@ public class MapFileManagementTest {
         
     }
 
+   
     /**
      * Test of generateBoardFile method, of class MapFileManagement.
-     */
-    @Test
+    */
+    /*@Test
     public void testGenerateBoardFile() {
         System.out.println("generateBoardFile");
         String path = "";
@@ -206,5 +191,5 @@ public class MapFileManagementTest {
         assertEquals(expResult, result);
      
     }
-    
+   */
 }

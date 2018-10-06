@@ -328,6 +328,9 @@ public abstract class PlayerModel extends Observable{
         }
     }
 
+    /**
+     * Calls the function to add the armies of the handed cards
+     */
     public void armiesCardAssignation() {
         int numberArmiesCard=this.armiesAssignationCards();
         this.addNumArmiesAvailable(numberArmiesCard);
@@ -338,7 +341,7 @@ public abstract class PlayerModel extends Observable{
      *
      * @return number of extra armies according to handed cards
      */
-    private int armiesAssignationCards() {
+    public int armiesAssignationCards() {
         this.setReturnedCards(this.getReturnedCards() + 3);
 
         switch (this.getReturnedCards()) {
@@ -363,7 +366,7 @@ public abstract class PlayerModel extends Observable{
     
     /**
      * Removes the cards from a players hand depending on their type
-     * @param typeOfArmie 
+     * @param typeOfArmie type of card
      */
     public void removeCards(String typeOfArmie,RiskModel rm){
         HandModel handCurrentPlayer=this.getCardsOwned();
@@ -397,6 +400,10 @@ public abstract class PlayerModel extends Observable{
     
     }
     
+    /**
+     * Adds a card to the player's hand from the deck
+     * @param rm model of the game
+     */
     public void addCardToPlayerHand(RiskModel rm){
         LinkedList<String> cardsOperation=new LinkedList<>();
         HandModel handCurrentPlayer=this.getCardsOwned();

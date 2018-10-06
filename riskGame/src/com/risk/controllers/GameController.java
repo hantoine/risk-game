@@ -193,6 +193,9 @@ public class GameController {
         return true;
     }
 
+    /**
+     * 
+     */
     private void checkForDeadPlayers() {
         List<PlayerModel> currentPlayerList = new LinkedList(this.modelRisk.getPlayerList());
         currentPlayerList.stream()
@@ -206,6 +209,9 @@ public class GameController {
                 });
     }
     
+    /**
+     * Function to check if the player has repeated cards
+     */
     private void validateHand(){
         cardDuplicates[0]=cardDuplicates[1]=cardDuplicates[2]=0;
         HandModel handCurrentPlayer=this.modelRisk.getCurrentPlayer().getCardsOwned();
@@ -224,6 +230,11 @@ public class GameController {
                     
     }
     
+    /**
+     * Function that shows hand button if the player has:
+     * 3 different cards
+     * 3 equal cards
+     */
     public void showHandButton(){
         if((cardDuplicates[0]>=3 || cardDuplicates[1]>=3 || cardDuplicates[2]>=3) || (cardDuplicates[0]>=1 && cardDuplicates[1]>=1 && cardDuplicates[2]>=1)){
             riskView.getStagePanel().getHandCards().setVisible(true);
@@ -231,6 +242,9 @@ public class GameController {
         }
     }
     
+    /**
+     * Function to execute when the player hand cards
+     */
     public void clickHand(){
         
         this.assignArmiesToPlayerFromCards();
@@ -238,6 +252,10 @@ public class GameController {
         riskView.getStagePanel().updateView(modelRisk);
     }
     
+    /**
+     * Function that removes the cards and calls a function that assigns armies
+     * depending on the number of cards the player has handed
+     */
     public void assignArmiesToPlayerFromCards(){
         if(cardDuplicates[0]>=3){
             modelRisk.getCurrentPlayer().removeCards("infantry",modelRisk);
