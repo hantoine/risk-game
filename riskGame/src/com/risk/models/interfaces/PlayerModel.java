@@ -400,6 +400,23 @@ public abstract class PlayerModel extends Observable{
     
     }
     
+       /**
+     * Function that removes the cards and calls a function that assigns armies
+     * depending on the number of cards the player has handed
+     */
+    public void assignArmiesToPlayerFromCards(int[] cardDuplicates, RiskModel rm){
+        if(cardDuplicates[0]>=3){
+            removeCards("infantry",rm);
+        }else if(cardDuplicates[1]>=3){
+            removeCards("cavalry",rm);
+        }else if(cardDuplicates[2]>=3){
+            removeCards("artillery",rm);
+        }else{
+            removeCards("different",rm);
+        }
+        armiesCardAssignation();
+    }
+    
     /**
      * Adds a card to the player's hand from the deck
      * @param rm model of the game

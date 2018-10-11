@@ -46,6 +46,7 @@ public class PhasePanel extends JPanel {
                 this.text.setVisible(true);
                 break;
             case REINFORCEMENT:
+                this.handCards.setVisible(rm.getCurrentPlayer().getCardsOwned().isHandCards());
                 this.endPhase.setVisible(false);
                 this.text.setText(String.format("<html>Reinforcement phase: Click on one of your territory to place an army on it. <br />Remaining armies to be placed: %d</html>",
                         currentPlayer.getNumArmiesAvailable()));
