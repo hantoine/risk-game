@@ -45,5 +45,27 @@ public class HandModel {
     public void setCards(LinkedList<CardModel> cards) {
         this.cards = cards;
     }
+    
+    /**
+     * Function to check if the player has repeated cards
+     */
+    public int[] validateHand(){
+        int[] cardDuplicates=new int[3];
+        cardDuplicates[0]=cardDuplicates[1]=cardDuplicates[2]=0;
+        
+        this.getCards().stream()
+                .forEach((c) ->{
+                    
+                    if(c.getTypeOfArmie().equals("infantry")){
+                        cardDuplicates[0]=cardDuplicates[0]+1;
+                    }else if(c.getTypeOfArmie().equals("cavalry")){
+                        cardDuplicates[1]=cardDuplicates[1]+1;
+                    }else if(c.getTypeOfArmie().equals("artillery")){
+                        cardDuplicates[2]=cardDuplicates[2]+1;
+                    }
+                });
+                 
+        return cardDuplicates;
+    }
 
 }

@@ -72,7 +72,7 @@ public class GameController {
                 break;
             case REINFORCEMENT:
                 modelRisk.getCurrentPlayer().reinforcement(this);
-                this.validateHand();
+                cardDuplicates=modelRisk.getCurrentPlayer().getCardsOwned().validateHand();
                 this.showHandButton();
                 break;
             case ATTACK:
@@ -116,8 +116,8 @@ public class GameController {
                 riskView.updateView(modelRisk);
                 break;
             case REINFORCEMENT:
-                if(modelRisk.getCurrentPlayer().getCardsOwned().getCards().size()==5){
-                    JOptionPane.showMessageDialog(null, "You have 5 cards. Please hand some cards");
+                if(currentPlayer.getCardsOwned().getCards().size()==5){
+                    riskView.showMessage("You have 5 cards. Please hand some cards");
                 }else{
                     if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
                         break;
@@ -209,26 +209,7 @@ public class GameController {
                 });
     }
     
-    /**
-     * Function to check if the player has repeated cards
-     */
-    private void validateHand(){
-        cardDuplicates[0]=cardDuplicates[1]=cardDuplicates[2]=0;
-        HandModel handCurrentPlayer=this.modelRisk.getCurrentPlayer().getCardsOwned();
-        
-        handCurrentPlayer.getCards().stream()
-                .forEach((c) ->{
-                    
-                    if(c.getTypeOfArmie().equals("infantry")){
-                        cardDuplicates[0]=cardDuplicates[0]+1;
-                    }else if(c.getTypeOfArmie().equals("cavalry")){
-                        cardDuplicates[1]=cardDuplicates[1]+1;
-                    }else if(c.getTypeOfArmie().equals("artillery")){
-                        cardDuplicates[2]=cardDuplicates[2]+1;
-                    }
-                });
-                    
-    }
+    
     
     /**
      * Function that shows hand button if the player has:
@@ -247,27 +228,12 @@ public class GameController {
      */
     public void clickHand(){
         
-        this.assignArmiesToPlayerFromCards();
+        modelRisk.getCurrentPlayer().assignArmiesToPlayerFromCards(cardDuplicates,modelRisk);
         riskView.getStagePanel().getHandCards().setVisible(false);
         riskView.getStagePanel().updateView(modelRisk);
     }
     
-    /**
-     * Function that removes the cards and calls a function that assigns armies
-     * depending on the number of cards the player has handed
-     */
-    public void assignArmiesToPlayerFromCards(){
-        if(cardDuplicates[0]>=3){
-            modelRisk.getCurrentPlayer().removeCards("infantry",modelRisk);
-        }else if(cardDuplicates[1]>=3){
-            modelRisk.getCurrentPlayer().removeCards("cavalry",modelRisk);
-        }else if(cardDuplicates[2]>=3){
-            modelRisk.getCurrentPlayer().removeCards("artillery",modelRisk);
-        }else{
-            modelRisk.getCurrentPlayer().removeCards("different",modelRisk);
-        }
-        this.modelRisk.getCurrentPlayer().armiesCardAssignation();
-    }
+ 
     
 }
 
