@@ -15,6 +15,7 @@ import java.util.LinkedList;
 public class HandModel {
 
     private LinkedList<CardModel> cards;
+    private boolean handCards;
 
     /**
      * Constructor
@@ -67,5 +68,21 @@ public class HandModel {
                  
         return cardDuplicates;
     }
+
+    /**
+     * @return the handCards
+     */
+    public boolean isHandCards() {
+        return handCards;
+    }
+
+    /**
+     * @param handCards the handCards to set
+     */
+    public void setHandCards(boolean handCards) {
+        this.handCards = handCards;
+    }
+    
+    
 
 }

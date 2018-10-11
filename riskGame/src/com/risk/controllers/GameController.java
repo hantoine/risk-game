@@ -217,10 +217,8 @@ public class GameController {
      * 3 equal cards
      */
     public void showHandButton(){
-        if((cardDuplicates[0]>=3 || cardDuplicates[1]>=3 || cardDuplicates[2]>=3) || (cardDuplicates[0]>=1 && cardDuplicates[1]>=1 && cardDuplicates[2]>=1)){
-            riskView.getStagePanel().getHandCards().setVisible(true);
-            riskView.updateView(modelRisk);
-        }
+        modelRisk.getCurrentPlayer().getCardsOwned().setHandCards((cardDuplicates[0]>=3 || cardDuplicates[1]>=3 || cardDuplicates[2]>=3) || (cardDuplicates[0]>=1 && cardDuplicates[1]>=1 && cardDuplicates[2]>=1));
+        riskView.updateView(modelRisk);
     }
     
     /**
@@ -229,7 +227,7 @@ public class GameController {
     public void clickHand(){
         
         modelRisk.getCurrentPlayer().assignArmiesToPlayerFromCards(cardDuplicates,modelRisk);
-        riskView.getStagePanel().getHandCards().setVisible(false);
+        modelRisk.getCurrentPlayer().getCardsOwned().setHandCards(false);
         riskView.getStagePanel().updateView(modelRisk);
     }
     
