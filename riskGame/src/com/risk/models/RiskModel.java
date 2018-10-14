@@ -6,12 +6,12 @@
 package com.risk.models;
 
 import com.risk.models.interfaces.PlayerModel;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.awt.Color;
-import java.util.LinkedList;
 
 /**
  * Represents the model of the game
@@ -52,10 +52,10 @@ public final class RiskModel {
      */
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
         if (isHuman) {
-            players.add(new HumanPlayerModel(name, color, isHuman));
+            players.add(new HumanPlayerModel(name, color));
 
         } else {
-            players.add(new AIPlayerModel(name, color, isHuman));
+            players.add(new AIPlayerModel(name, color));
         }
 
     }
