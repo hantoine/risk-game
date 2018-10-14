@@ -25,6 +25,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -106,6 +107,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
         JMenu menuFile;
         JMenuItem menuItemOpen;
         JMenuItem menuItemSave;
+        JMenuItem menuItemNew;
 
         //Create the menu bar.
         menuBar = new JMenuBar();
@@ -119,14 +121,24 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
 
         //a group of JMenuItems
         menuFile.setLayout(new BoxLayout(menuFile, BoxLayout.Y_AXIS));
+        
+        //add open file item
         menuItemOpen = new JMenuItem("Open File");
         menuItemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
         menuItemOpen.getAccessibleContext().setAccessibleDescription("Open Map File");
+        menuFile.add(menuItemOpen);
+        
+        //add save file item
         menuItemSave = new JMenuItem("Save File");
         menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
         menuItemSave.getAccessibleContext().setAccessibleDescription("Save Map File");
-        menuFile.add(menuItemOpen);
         menuFile.add(menuItemSave);
+        
+        //add new map item
+        menuItemNew = new JMenuItem("New map");
+        menuItemNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+        menuItemNew.getAccessibleContext().setAccessibleDescription("Clear the map being edited");
+        menuFile.add(menuItemNew);
 
         //listener to open a map from file
         menuItemOpen.addActionListener(e -> {
@@ -164,6 +176,22 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                 
                 //map saving
                 editorController.saveMapToFile(filepath);
+            }
+        });
+        
+        //listener to clear the map being edited and get a new one
+        menuItemNew.addActionListener(e -> {
+            //open dialog
+            int v = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to delete the current map ?",
+                "Confirm deletion",
+                JOptionPane.YES_NO_OPTION);
+            
+            //if confirm
+            if (v == JFileChooser.APPROVE_OPTION) {
+                //clear map
+                editorController.clearMapModel();
             }
         });
 

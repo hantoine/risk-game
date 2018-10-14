@@ -49,14 +49,23 @@ public class MapEditorController {
 
     public EditableMapModel newMap;
 
-    public EditableMapModel getNewMap() {
-        return newMap;
-    }
-
+    
+    /**
+     * Constructor
+     * @param mapModel 
+     */
     public MapEditorController(EditableMapModel mapModel) {
         newMap = mapModel;
     }
 
+    /**
+     * Get reference to the map being edited
+     * @return 
+     */
+    public EditableMapModel getNewMap() {
+        return newMap;
+    }
+    
     /**
      * Getters
      *
@@ -82,6 +91,10 @@ public class MapEditorController {
         return new selectBackImgListener(mapPanel, editorPanel, this.newMap);
     }
 
+    public void clearMapModel(){
+        this.newMap.clearMap();
+    }
+    
     /**
      * Class to handle clicks on the "add" button listener to add continents
      */
@@ -182,18 +195,22 @@ public class MapEditorController {
             return;
         }
 
+        //remove territories
         ArrayList<TerritoryModel> territories = new ArrayList<>(this.newMap.getGraphTerritories().values());
         territories.stream().forEach((t) -> {
             this.newMap.removeTerritory(t.getName());
         });
 
+        //remove continents
         ArrayList<ContinentModel> continents = new ArrayList<>(this.newMap.getGraphContinents().values());
         continents.stream().forEach((c) -> {
             this.newMap.removeContinent(c.getName());
         });
 
+        //set new image
         this.newMap.setImage(map.getImage(), new Dimension(200, 50));
 
+        //add continents
         map.getGraphContinents().values().stream().forEach((c) -> {
             this.newMap.addContinent();
             Map<String, String> updateContinentData = new HashMap<>();
@@ -204,6 +221,7 @@ public class MapEditorController {
             this.newMap.updateContinent(updateContinentData);
         });
 
+        //add territories
         map.getGraphTerritories().values().stream().forEach((t) -> {
             this.newMap.addTerritory(t.getPositionX(), t.getPositionY());
 

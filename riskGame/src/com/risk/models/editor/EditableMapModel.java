@@ -41,7 +41,7 @@ public final class EditableMapModel implements MapModelObservable {
         observers = new LinkedList<>();
         addContinent();
     }
-
+    
     /**
      * Add an edge between two vertices (territories)
      *
@@ -154,6 +154,35 @@ public final class EditableMapModel implements MapModelObservable {
         }
     }
 
+    /**
+     * Clear the map being edited
+     */
+    public void clearMap(){
+        String[] territoryList = this.getTerritoryList();
+        String[] continentList = this.getContinentList();
+        
+        //delete components
+        for(String territoryName : territoryList){
+            this.removeTerritory(territoryName);
+        }
+        for(String continentName : continentList){
+            this.removeContinent(continentName);
+        }
+        
+        //add first continent
+        this.addContinent();
+        
+        //reset map configuration
+        this.setScrollConfig("none");
+        this.setWarnConfig(false);
+        this.setWrapConfig(false);
+        this.setAuthorConfig("New Author");
+    }
+    
+    /**
+     * Get the original map model in attribute 
+     * @return 
+     */
     public MapModel getInternalMap() {
         return map;
     }

@@ -1,0 +1,16 @@
+[Map]
+author=tim
+image=null
+wrap=no
+scroll=horizontal
+warn=yes
+
+[Continents]
+Continent1=1
+Continent0=1
+
+[Territories]
+Territory2,332,240,Continent0,Territory3,Territory1,Territory0
+Territory3,549,165,Continent0,Territory2,Territory1,Territory0
+Territory0,261,87,Continent0,Territory2,Territory1,Territory3
+Territory1,234,232,Continent0,Territory2,Territory3,Territory0
