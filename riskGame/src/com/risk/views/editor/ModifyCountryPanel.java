@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -49,7 +50,9 @@ public class ModifyCountryPanel extends JPanel {
         this.add(namePanel);
         this.add(listPanel);
     }
-
+    
+    
+    
     public String getTerritoryName() {
         return this.territoryNameField.getText();
     }

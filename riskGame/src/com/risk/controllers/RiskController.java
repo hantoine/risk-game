@@ -22,8 +22,6 @@ public final class RiskController {
     private MenuListener menuListener;
     private MapListener countryListener;
     private GameController playGame;
-
-    //temporary (tim)
     private MapEditorView mapEditor;
 
     /**
