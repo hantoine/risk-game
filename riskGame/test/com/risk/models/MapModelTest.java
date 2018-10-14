@@ -13,21 +13,25 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Class to test methods in the map model
  * @author hantoine
  */
 public class MapModelTest {
 
+    /**
+     * mapModel instance of the map model
+     */
     MapModel mapModel;
 
     public MapModelTest() {
     }
 
-    @Before
+    
     /**
      * Create a valid MapModel that will be the base for all test cases
      *
      */
+    @Before
     public void setUp() {
         mapModel = new MapModel();
 
@@ -99,6 +103,9 @@ public class MapModelTest {
         mapModel.setGraphContinents(graphContinents);
     }
 
+    /**
+     * After the execution assigns null to the instance
+     */
     @After
     public void tearDown() {
         mapModel = null;

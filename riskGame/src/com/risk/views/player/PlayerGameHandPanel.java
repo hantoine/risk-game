@@ -26,6 +26,9 @@ import javax.swing.JPanel;
  */
 public final class PlayerGameHandPanel extends JPanel implements Observer {
 
+    /**
+     * The view of the cards of the current player
+     */
     HashMap<String, JButton> handCards = new HashMap<>();
 
     /**
@@ -53,6 +56,11 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
         this.repaint();
     }
 
+    /**
+     * Observer patter implementation
+     * @param o
+     * @param arg 
+     */
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof RiskModel) {

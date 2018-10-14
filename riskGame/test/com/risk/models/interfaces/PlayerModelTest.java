@@ -15,11 +15,14 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Class to test player model class 
  * @author Nellybett
  */
 public class PlayerModelTest {
 
+    /**
+     * player reference to an instance of the class to be tested
+     */
     PlayerModel player;
 
     /**

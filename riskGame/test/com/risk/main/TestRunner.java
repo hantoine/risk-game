@@ -16,6 +16,10 @@ import org.junit.runner.notification.Failure;
  */
 public class TestRunner {
 
+    /**
+     * Main of the runner class
+     * @param args 
+     */
     public static void main(String[] args) {
         Result result;
         result = JUnitCore.runClasses(JUnitTestSuite.class);
