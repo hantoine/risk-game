@@ -6,13 +6,16 @@
 package com.risk.models.interfaces;
 
 import com.risk.controllers.GameController;
+import com.risk.models.CardModel;
 import com.risk.models.ContinentModel;
 import com.risk.models.FortificationMove;
 import com.risk.models.HandModel;
+import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import java.awt.Color;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Observable;
 
 /**
  * It represents a Player in the game It is the parent of HumanPlayerModel and
@@ -20,7 +23,7 @@ import java.util.LinkedList;
  *
  * @author n_irahol
  */
-public abstract class PlayerModel {
+public abstract class PlayerModel extends Observable {
 
     private String name;
     private Color color;
@@ -29,7 +32,12 @@ public abstract class PlayerModel {
     private HandModel cardsOwned;
     private int numArmiesAvailable;
     private int returnedCards;
+    /**
+     * The game in which this player belongs to
+     */
+    private RiskModel game;
     private FortificationMove currentFortificationMove;
+
 
     /**
      * Constructor
@@ -37,8 +45,9 @@ public abstract class PlayerModel {
      * @param name name of a player
      * @param color color of a player
      * @param isHuman true if the player is human
+     * @param game Game in which this player belongs
      */
-    public PlayerModel(String name, Color color, boolean isHuman) {
+    public PlayerModel(String name, Color color, boolean isHuman, RiskModel game) {
         this.name = name;
         this.color = color;
         this.contriesOwned = new LinkedList<>();
@@ -46,6 +55,7 @@ public abstract class PlayerModel {
         this.cardsOwned = new HandModel();
         this.numArmiesAvailable = 0;
         this.returnedCards = 0;
+        this.game = game;
     }
 
     /**
@@ -106,6 +116,14 @@ public abstract class PlayerModel {
      */
     public Color getColor() {
         return this.color;
+    }
+
+    public RiskModel getGame() {
+        return game;
+    }
+
+    public void setGame(RiskModel game) {
+        this.game = game;
     }
 
     /**
@@ -214,6 +232,15 @@ public abstract class PlayerModel {
     }
 
     /**
+     * Increase the number of armies this player has available
+     *
+     * @param i
+     */
+    public void addNumArmiesAvailable(int i) {
+        this.setNumArmiesAvailable(this.getNumArmiesAvailable() + i);
+    }
+
+    /**
      * Initialize the number of initial armies of this player depending on the
      * number of players in the game
      *
@@ -302,20 +329,27 @@ public abstract class PlayerModel {
      *
      * @return number of armies to deploy
      */
-    private int armiesAssignation() {
+    public int armiesAssignation() {
         int extraCountries = (int) Math.floor(this.getContriesOwned().size() / 3);
         int extraContinent = 0;
         for (ContinentModel continent : this.getContinentsOwned()) {
             extraContinent += continent.getBonusScore();
         }
-        int extraCards = armiesAssignationCards();
 
-        System.out.println(extraContinent + extraCountries + extraCards);
-        if (extraContinent + extraCountries + extraCards < 3) {
+        System.out.println(extraContinent + extraCountries);
+        if (extraContinent + extraCountries < 3) {
             return 3;
         } else {
-            return extraContinent + extraCountries + extraCards;
+            return extraContinent + extraCountries;
         }
+    }
+
+    /**
+     * Calls the function to add the armies of the handed cards
+     */
+    public void armiesCardAssignation() {
+        int numberArmiesCard = this.armiesAssignationCards();
+        this.addNumArmiesAvailable(numberArmiesCard);
     }
 
     /**
@@ -323,7 +357,7 @@ public abstract class PlayerModel {
      *
      * @return number of extra armies according to handed cards
      */
-    private int armiesAssignationCards() {
+    public int armiesAssignationCards() {
         this.setReturnedCards(this.getReturnedCards() + 3);
 
         switch (this.getReturnedCards()) {
@@ -342,6 +376,47 @@ public abstract class PlayerModel {
             default:
                 return 15 + (((this.getReturnedCards() - 18) / 3) * 5); //after 18 you get 5 more for every 3 cards returned
         }
+
+    }
+
+    /**
+     * Function that removes the cards and calls a function that assigns armies
+     * depending on the number of cards the player has handed
+     */
+    public void exchangeCardsToArmies() {
+        int[] cardDuplicates = this.getCardsOwned().getCardDuplicates();
+
+        if (cardDuplicates[0] >= 3) {
+            this.getCardsOwned().removeCards("infantry", this.game.getDeck());
+        } else if (cardDuplicates[1] >= 3) {
+            this.getCardsOwned().removeCards("cavalry", this.game.getDeck());
+        } else if (cardDuplicates[2] >= 3) {
+            this.getCardsOwned().removeCards("artillery", this.game.getDeck());
+        } else {
+            this.getCardsOwned().removeCards("different", this.game.getDeck());
+        }
+        armiesCardAssignation();
+
+        this.setChanged();
+        this.notifyObservers(this.game);
+    }
+
+    /**
+     * Adds a card to the player's hand from the deck
+     */
+    public void addCardToPlayerHand() {
+        LinkedList<String> cardsOperation = new LinkedList<>();
+        HandModel handCurrentPlayer = this.getCardsOwned();
+        CardModel card = this.game.getDeck().getLast();
+
+        cardsOperation.add("add");
+        cardsOperation.add(card.getCountryName());
+        cardsOperation.add(card.getTypeOfArmie());
+        handCurrentPlayer.getCards().add(card);
+        this.game.getDeck().removeLast();
+
+        this.setChanged();
+        this.notifyObservers(cardsOperation);
     }
 
     public FortificationMove getCurrentFortificationMove() {

@@ -33,6 +33,7 @@ public class GameController {
     public GameController(RiskModel riskModel, RiskView riskView) {
         this.modelRisk = riskModel;
         this.riskView = riskView;
+
     }
 
     /**
@@ -41,13 +42,19 @@ public class GameController {
      *
      */
     public void finishPhase() {
-        if (modelRisk.getMap().getGraphTerritories().values().stream()
-                .allMatch((t) -> (t.getOwner() == modelRisk.getCurrentPlayer()))) {
-            modelRisk.setWinningPlayer(modelRisk.getCurrentPlayer());
+        if (modelRisk.getWinningPlayer() != null) {
+            riskView.showMessage("The player " + this.modelRisk.getWinningPlayer().getName() + " has won the game");
             return;
         }
 
-        // Finishing steps of current stage
+        executeEndOfPhaseSteps();
+        modelRisk.nextPhase();
+        executeBeginningOfPhaseSteps();
+
+        riskView.updateView(modelRisk);
+    }
+
+    private void executeEndOfPhaseSteps() {
         switch (modelRisk.getPhase()) {
             case STARTUP:
                 break;
@@ -61,10 +68,9 @@ public class GameController {
                 modelRisk.nextTurn();
                 break;
         }
+    }
 
-        modelRisk.nextPhase();
-
-        // Beginning steps of new stage
+    private void executeBeginningOfPhaseSteps() {
         switch (modelRisk.getPhase()) {
             case STARTUP:
                 break;
@@ -78,13 +84,13 @@ public class GameController {
                     //since attack is not implemented yet, we skip it
                     this.finishPhase();
                 }
+
+                modelRisk.getCurrentPlayer().addCardToPlayerHand();
                 break;
             case FORTIFICATION:
                 modelRisk.getCurrentPlayer().fortification(this);
                 break;
         }
-
-        riskView.updateView(modelRisk);
     }
 
     /**
@@ -110,13 +116,18 @@ public class GameController {
                 riskView.updateView(modelRisk);
                 break;
             case REINFORCEMENT:
-                if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
-                    break;
+                if (currentPlayer.getCardsOwned().getCards().size() == 5) {
+                    riskView.showMessage("You have 5 cards. Please hand some cards");
+                } else {
+                    if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
+                        break;
+                    }
+                    if (currentPlayer.getNumArmiesAvailable() == 0) {
+                        this.finishPhase();
+                    }
+                    riskView.updateView(modelRisk);
                 }
-                if (currentPlayer.getNumArmiesAvailable() == 0) {
-                    this.finishPhase();
-                }
-                riskView.updateView(modelRisk);
+
                 break;
         }
     }
@@ -188,6 +199,10 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Check if any player has no more territories owned and remove these player
+     * from the game
+     */
     private void checkForDeadPlayers() {
         List<PlayerModel> currentPlayerList = new LinkedList(this.modelRisk.getPlayerList());
         currentPlayerList.stream()
@@ -201,4 +216,13 @@ public class GameController {
                 });
     }
 
+    /**
+     * Called when the player click on the Hand cards button during the
+     * reinforcement phase
+     */
+    public void clickHand() {
+
+        modelRisk.getCurrentPlayer().exchangeCardsToArmies();
+        riskView.getStagePanel().updateView(modelRisk);
+    }
 }

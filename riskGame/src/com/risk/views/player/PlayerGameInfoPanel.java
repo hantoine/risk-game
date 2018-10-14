@@ -49,7 +49,8 @@ public final class PlayerGameInfoPanel extends JPanel {
      * Update the information displayed by the PlayerGameInfoPanel according to
      * the information of the current player
      *
-     * @param rm The model of the game containing all information about the current player
+     * @param rm The model of the game containing all information about the
+     * current player
      */
     public void updateView(RiskModel rm) {
         PlayerModel currentPlayer = rm.getCurrentPlayer();
