@@ -34,7 +34,7 @@ public class MapModel {
         mapConfig = new MapConfig();
 
     }
-
+    
     /**
      * It prints the countries and relationships between them
      */

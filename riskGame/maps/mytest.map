@@ -1,0 +1,15 @@
+[Map]
+author=new author
+image=null
+wrap=no
+scroll=none
+warn=no
+
+[Continents]
+Continent0=1
+
+[Territories]
+Territory2,329,316,Continent0,
+Territory3,540,215,Continent0,
+Territory0,227,91,Continent0,
+Territory1,211,315,Continent0,
