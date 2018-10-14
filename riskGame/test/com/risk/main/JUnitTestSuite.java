@@ -13,9 +13,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * Suite for the group of test Classes
+ *
  * @author Nellybett
  */
 @RunWith(Suite.class)
 @SuiteClasses({MapFileManagementTest.class, PlayerModelTest.class})
-public class JUnitTestSuite {   
-}  
+public class JUnitTestSuite {
+}

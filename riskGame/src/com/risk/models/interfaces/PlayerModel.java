@@ -12,9 +12,7 @@ import com.risk.models.HandModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import java.awt.Color;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Observable;
 
@@ -395,7 +393,7 @@ public abstract class PlayerModel extends Observable {
             this.getCardsOwned().removeCards("different", this.game.getDeck());
         }
         armiesCardAssignation();
-        
+
         this.setChanged();
         this.notifyObservers(this.game);
     }

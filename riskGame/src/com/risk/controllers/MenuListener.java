@@ -7,12 +7,12 @@ package com.risk.controllers;
 
 import com.risk.models.HumanPlayerModel;
 import com.risk.models.MapFileManagement;
-import com.risk.models.interfaces.PlayerModel;
 import com.risk.models.RiskModel;
-import com.risk.views.menu.DeletableButton;
-import com.risk.views.menu.PlayerListPanel;
+import com.risk.models.interfaces.PlayerModel;
 import com.risk.views.RiskView;
+import com.risk.views.menu.DeletableButton;
 import com.risk.views.menu.NewGamePanel;
+import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.menu.PlayerPanel;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -136,9 +136,9 @@ public class MenuListener extends MouseAdapter {
                 for (int i = 0; i < listPlayerPanels.size(); i++) {
                     PlayerPanel player = listPlayerPanels.get(i);
                     PlayerModel playerGame = new HumanPlayerModel(
-                            player.getPlayerNameTextField().getText(), 
-                            player.getColorButton().getBackground(), 
-                            true, 
+                            player.getPlayerNameTextField().getText(),
+                            player.getColorButton().getBackground(),
+                            true,
                             this.getRiskModel()
                     );
                     listPlayers.add(playerGame);

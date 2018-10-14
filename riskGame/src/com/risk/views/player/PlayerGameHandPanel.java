@@ -65,7 +65,9 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
 
     /**
      * Add a card to be displayed in this panel
-     * @param typeofArmies The name of the type of armies associated with the card
+     *
+     * @param typeofArmies The name of the type of armies associated with the
+     * card
      * @param territoryName The name of the territory associated with the card
      * @param backgroundColor The background color of the card
      */

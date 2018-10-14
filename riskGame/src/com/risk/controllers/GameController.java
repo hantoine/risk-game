@@ -19,7 +19,7 @@ import java.util.List;
  * @author Nellybett
  */
 public class GameController {
-    
+
     RiskModel modelRisk;
     RiskView riskView;
 
@@ -32,7 +32,7 @@ public class GameController {
     public GameController(RiskModel riskModel, RiskView riskView) {
         this.modelRisk = riskModel;
         this.riskView = riskView;
-        
+
     }
 
     /**
@@ -45,14 +45,14 @@ public class GameController {
             riskView.showMessage("The player " + this.modelRisk.getWinningPlayer().getName() + " has won the game");
             return;
         }
-        
+
         executeEndOfPhaseSteps();
         modelRisk.nextPhase();
         executeBeginningOfPhaseSteps();
-        
+
         riskView.updateView(modelRisk);
     }
-    
+
     private void executeEndOfPhaseSteps() {
         switch (modelRisk.getPhase()) {
             case STARTUP:
@@ -67,7 +67,7 @@ public class GameController {
                 break;
         }
     }
-    
+
     private void executeBeginningOfPhaseSteps() {
         switch (modelRisk.getPhase()) {
             case STARTUP:
@@ -79,10 +79,10 @@ public class GameController {
                 try {
                     modelRisk.getCurrentPlayer().attack(this);
                 } catch (UnsupportedOperationException e) {
-                    //since attack is not implemented yet, we skip it 
+                    //since attack is not implemented yet, we skip it
                     this.finishPhase();
                 }
-                
+
                 modelRisk.getCurrentPlayer().addCardToPlayerHand();
                 break;
             case FORTIFICATION:
@@ -101,7 +101,7 @@ public class GameController {
     public void clickOnTerritory(String territoryClickedName) {
         TerritoryModel territoryClicked = this.modelRisk.getMap().getGraphTerritories().get(territoryClickedName);
         PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
-        
+
         switch (this.modelRisk.getPhase()) {
             case STARTUP:
                 if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
@@ -125,7 +125,7 @@ public class GameController {
                     }
                     riskView.updateView(modelRisk);
                 }
-                
+
                 break;
         }
     }
@@ -143,7 +143,7 @@ public class GameController {
         TerritoryModel sourceTerritory = this.modelRisk.getMap().getGraphTerritories().get(sourceTerritoryName);
         TerritoryModel destTerritory = this.modelRisk.getMap().getGraphTerritories().get(destTerritoryName);
         PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
-        
+
         switch (this.modelRisk.getPhase()) {
             case FORTIFICATION:
                 if (!sourceTerritory.getAdj().contains(destTerritory)) {
@@ -154,7 +154,7 @@ public class GameController {
                     this.riskView.showMessage("You don't own this country !");
                     break;
                 }
-                
+
                 try {
                     sourceTerritory.decrementNumArmies();
                     destTerritory.incrementNumArmies();
@@ -164,7 +164,7 @@ public class GameController {
                 }
                 break;
         }
-        
+
     }
 
     /**
@@ -183,10 +183,10 @@ public class GameController {
             this.riskView.showMessage("You don't own this country !");
             return false;
         }
-        
+
         territory.incrementNumArmies();
         player.decrementNumArmiesAvailable();
-        
+
         return true;
     }
 
@@ -212,7 +212,7 @@ public class GameController {
      * reinforcement phase
      */
     public void clickHand() {
-        
+
         modelRisk.getCurrentPlayer().exchangeCardsToArmies();
         riskView.getStagePanel().updateView(modelRisk);
     }
