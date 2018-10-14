@@ -12,9 +12,7 @@ import com.risk.models.HandModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import java.awt.Color;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Observable;
 
@@ -24,7 +22,7 @@ import java.util.Observable;
  *
  * @author n_irahol
  */
-public abstract class PlayerModel extends Observable{
+public abstract class PlayerModel extends Observable {
 
     private String name;
     private Color color;
@@ -33,6 +31,10 @@ public abstract class PlayerModel extends Observable{
     private HandModel cardsOwned;
     private int numArmiesAvailable;
     private int returnedCards;
+    /**
+     * The game in which this player belongs to
+     */
+    private RiskModel game;
 
     /**
      * Constructor
@@ -40,8 +42,9 @@ public abstract class PlayerModel extends Observable{
      * @param name name of a player
      * @param color color of a player
      * @param isHuman true if the player is human
+     * @param game Game in which this player belongs
      */
-    public PlayerModel(String name, Color color, boolean isHuman) {
+    public PlayerModel(String name, Color color, boolean isHuman, RiskModel game) {
         this.name = name;
         this.color = color;
         this.contriesOwned = new LinkedList<>();
@@ -49,6 +52,7 @@ public abstract class PlayerModel extends Observable{
         this.cardsOwned = new HandModel();
         this.numArmiesAvailable = 0;
         this.returnedCards = 0;
+        this.game = game;
     }
 
     /**
@@ -109,6 +113,14 @@ public abstract class PlayerModel extends Observable{
      */
     public Color getColor() {
         return this.color;
+    }
+
+    public RiskModel getGame() {
+        return game;
+    }
+
+    public void setGame(RiskModel game) {
+        this.game = game;
     }
 
     /**
@@ -215,13 +227,14 @@ public abstract class PlayerModel extends Observable{
     public int decrementNumArmiesAvailable() {
         return --this.numArmiesAvailable;
     }
-    
+
     /**
      * Increase the number of armies this player has available
+     *
      * @param i
      */
     public void addNumArmiesAvailable(int i) {
-        this.setNumArmiesAvailable(this.getNumArmiesAvailable()+i);
+        this.setNumArmiesAvailable(this.getNumArmiesAvailable() + i);
     }
 
     /**
@@ -319,7 +332,7 @@ public abstract class PlayerModel extends Observable{
         for (ContinentModel continent : this.getContinentsOwned()) {
             extraContinent += continent.getBonusScore();
         }
-        
+
         System.out.println(extraContinent + extraCountries);
         if (extraContinent + extraCountries < 3) {
             return 3;
@@ -332,10 +345,10 @@ public abstract class PlayerModel extends Observable{
      * Calls the function to add the armies of the handed cards
      */
     public void armiesCardAssignation() {
-        int numberArmiesCard=this.armiesAssignationCards();
+        int numberArmiesCard = this.armiesAssignationCards();
         this.addNumArmiesAvailable(numberArmiesCard);
     }
-    
+
     /**
      * Assign extra armies depending on handed cards
      *
@@ -360,81 +373,47 @@ public abstract class PlayerModel extends Observable{
             default:
                 return 15 + (((this.getReturnedCards() - 18) / 3) * 5); //after 18 you get 5 more for every 3 cards returned
         }
-        
-    
+
     }
-    
+
     /**
-     * Removes the cards from a players hand depending on their type
-     * @param typeOfArmie type of card
-     */
-    public void removeCards(String typeOfArmie,RiskModel rm){
-        HandModel handCurrentPlayer=this.getCardsOwned();
-        String[] typeOfArmieDum={"infantry","artillery","cavalry"};
-        
-      
-        if(typeOfArmie.equals("different")){
-            
-            Arrays.stream(typeOfArmieDum).forEach(typeA -> {
-                CardModel card=handCurrentPlayer.getCards().stream()
-                            .filter(c -> c.getTypeOfArmie().equals(typeA))
-                            .findFirst()
-                            .get();
-                
-                rm.getDeck().addFirst(card);
-                handCurrentPlayer.getCards().remove(card);
-            });
-                  
-        }else{
-            for (Iterator<CardModel> iterator = handCurrentPlayer.getCards().iterator(); iterator.hasNext();) {
-                CardModel card = iterator.next();
-                if (card.getTypeOfArmie().equals(typeOfArmie)) {
-                    rm.getDeck().addFirst(card);
-                    iterator.remove();        
-                }
-            }        
-        }
-        
-        this.setChanged();
-        this.notifyObservers(rm);
-    
-    }
-    
-       /**
      * Function that removes the cards and calls a function that assigns armies
      * depending on the number of cards the player has handed
      */
-    public void assignArmiesToPlayerFromCards(int[] cardDuplicates, RiskModel rm){
-        if(cardDuplicates[0]>=3){
-            removeCards("infantry",rm);
-        }else if(cardDuplicates[1]>=3){
-            removeCards("cavalry",rm);
-        }else if(cardDuplicates[2]>=3){
-            removeCards("artillery",rm);
-        }else{
-            removeCards("different",rm);
+    public void exchangeCardsToArmies() {
+        int[] cardDuplicates = this.getCardsOwned().getCardDuplicates();
+
+        if (cardDuplicates[0] >= 3) {
+            this.getCardsOwned().removeCards("infantry", this.game.getDeck());
+        } else if (cardDuplicates[1] >= 3) {
+            this.getCardsOwned().removeCards("cavalry", this.game.getDeck());
+        } else if (cardDuplicates[2] >= 3) {
+            this.getCardsOwned().removeCards("artillery", this.game.getDeck());
+        } else {
+            this.getCardsOwned().removeCards("different", this.game.getDeck());
         }
         armiesCardAssignation();
+
+        this.setChanged();
+        this.notifyObservers(this.game);
     }
-    
+
     /**
      * Adds a card to the player's hand from the deck
-     * @param rm model of the game
      */
-    public void addCardToPlayerHand(RiskModel rm){
-        LinkedList<String> cardsOperation=new LinkedList<>();
-        HandModel handCurrentPlayer=this.getCardsOwned();
-        CardModel card=rm.getDeck().getLast();
-        
+    public void addCardToPlayerHand() {
+        LinkedList<String> cardsOperation = new LinkedList<>();
+        HandModel handCurrentPlayer = this.getCardsOwned();
+        CardModel card = this.game.getDeck().getLast();
+
         cardsOperation.add("add");
         cardsOperation.add(card.getCountryName());
         cardsOperation.add(card.getTypeOfArmie());
         handCurrentPlayer.getCards().add(card);
-        rm.getDeck().removeLast();
-        
+        this.game.getDeck().removeLast();
+
         this.setChanged();
         this.notifyObservers(cardsOperation);
     }
-    
-    
+
 }

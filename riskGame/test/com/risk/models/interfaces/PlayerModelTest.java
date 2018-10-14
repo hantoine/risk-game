@@ -19,24 +19,24 @@ import static org.junit.Assert.*;
  * @author Nellybett
  */
 public class PlayerModelTest {
-    
+
     PlayerModel player;
-    
+
     /**
      * Constructor
      */
     public PlayerModelTest() {
     }
-    
+
     /**
      * Setting the player attributes
      */
     @Before
     public void setUp() {
-        player=new HumanPlayerModel("Player 1", Color.yellow, true);
-        LinkedList<TerritoryModel> territories=new LinkedList<>();
-        LinkedList<ContinentModel> continents=new LinkedList<>();
-        
+        player = new HumanPlayerModel("Player 1", Color.yellow, true, null);
+        LinkedList<TerritoryModel> territories = new LinkedList<>();
+        LinkedList<ContinentModel> continents = new LinkedList<>();
+
         territories.add(new TerritoryModel("Venezuela"));
         territories.add(new TerritoryModel("Argetina"));
         territories.add(new TerritoryModel("Peru"));
@@ -44,16 +44,15 @@ public class PlayerModelTest {
         territories.add(new TerritoryModel("Canada"));
         territories.add(new TerritoryModel("USA"));
         territories.add(new TerritoryModel("Ecuador"));
-        
+
         continents.add(new ContinentModel("South America", 4));
         continents.add(new ContinentModel("North America", 3));
-        
+
         player.setContinentsOwned(continents);
         player.setContriesOwned(territories);
-        
+
     }
-    
-   
+
     /**
      * Test of armiesAssignation method, of class PlayerModel.
      */
@@ -74,12 +73,13 @@ public class PlayerModelTest {
     @Test
     public void testArmiesAssignationCards() {
         System.out.println("armiesAssignationCards");
-        
+
         //returned cards >18
         player.setReturnedCards(27);
         int expResult = 35;
         int result = player.armiesAssignationCards();
         assertEquals(expResult, result);
+
     }
     
     /**
@@ -87,14 +87,14 @@ public class PlayerModelTest {
      */
     @Test
     public void testArmiesAssignationCards1() {
+
         //First time returnig cards =0
         
         player.setReturnedCards(0);
         int expResult = 4;
         int result = player.armiesAssignationCards();
         assertEquals(expResult, result);
-        
+
     }
 
-    
 }

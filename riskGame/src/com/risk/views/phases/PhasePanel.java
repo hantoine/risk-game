@@ -24,8 +24,8 @@ public class PhasePanel extends JPanel {
     public PhasePanel() {
         this.text = new JLabel();
         this.endPhase = new JButton("End Phase");
-        this.handCards=new JButton("Hand");
-        
+        this.handCards = new JButton("Hand");
+
         this.text.setVisible(false);
         this.endPhase.setVisible(false);
         this.handCards.setVisible(false);
@@ -46,7 +46,7 @@ public class PhasePanel extends JPanel {
                 this.text.setVisible(true);
                 break;
             case REINFORCEMENT:
-                this.handCards.setVisible(rm.getCurrentPlayer().getCardsOwned().isHandCards());
+                this.handCards.setVisible(rm.getCurrentPlayer().getCardsOwned().threeDifferentCardsOrThreeEqualCards());
                 this.endPhase.setVisible(false);
                 this.text.setText(String.format("<html>Reinforcement phase: Click on one of your territory to place an army on it. <br />Remaining armies to be placed: %d</html>",
                         currentPlayer.getNumArmiesAvailable()));
@@ -74,8 +74,8 @@ public class PhasePanel extends JPanel {
     public JButton getEndPhase() {
         return endPhase;
     }
-    
-    public JButton getHandCards(){
+
+    public JButton getHandCards() {
         return handCards;
     }
 }

@@ -5,14 +5,15 @@
  */
 package com.risk.models;
 
-
-import org.junit.Test;
+import java.io.File;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * It proves all the functions in the MapFileManagement class
+ *
  * @author Nellybett
  */
 public class MapFileManagementTest {
@@ -54,7 +55,7 @@ public class MapFileManagementTest {
         //Good path with correct file but not initialize board
         
         assertEquals(expResult, result);
-        
+
     }
 
     /**
@@ -79,9 +80,10 @@ public class MapFileManagementTest {
         path = "";
         String result = instance.readFile(path);
         String expResult = "-1";
-        
+
         //Test case path=""
         assertEquals(expResult, result);
+
     }
     
     /**
@@ -89,6 +91,7 @@ public class MapFileManagementTest {
      */
     @Test
     public void testReadFile1() {
+
         //Test case path="&&"
         path="&&";
         String expResult = "-1";
@@ -107,7 +110,7 @@ public class MapFileManagementTest {
         String result = instance.readFile(path);
         String expResult = "-1";
         assertEquals(expResult, result);
-        
+
     }
 
     /**
@@ -118,7 +121,7 @@ public class MapFileManagementTest {
         System.out.println("configurationInf");
         String info = "[Map]\n" +"author=Stewart Ainsworth\n" +"image=old yorkshire.bmp\n" +"wrap=no\n" +"scroll=horizontal";
         int expResult = 0;
-        
+
         //Test Case with all the parameters and a valid file path
         int result = instance.configurationInf(info, path, board);
         assertEquals(expResult, result);
@@ -173,7 +176,7 @@ public class MapFileManagementTest {
     public void testContinentCreator() {
         String info = "York=2\n" +"East Riding=6\n" +"North Riding=8\n" +"West Riding=11";
         int expResult = 0;
-        
+
         // String with continents information
         int result = instance.continentCreator(info, board);
         assertEquals(expResult, result);
@@ -212,7 +215,7 @@ public class MapFileManagementTest {
         board=new MapModel();
         String info = "Anisty Liberty,363,300,York,Tadcaster\n" +"Tadcaster,370,327,York,Anisty Liberty";
         int expResult = -1;
-        
+
         //Country with not existing continent
         int result = instance.countryCreator(info, board);
         assertEquals(expResult, result);
@@ -226,8 +229,7 @@ public class MapFileManagementTest {
         
         //Country without adj
         String info = "Anisty Liberty,363,300,York\n" +"Tadcaster,370,327,York,Anisty Liberty";
-        int expResult = -1;
-        
+        int expResult = -1;        
         int result = instance.countryCreator(info, board);
         assertEquals(expResult, result);
     }
@@ -256,11 +258,9 @@ public class MapFileManagementTest {
         int result = instance.countryCreator(info, board);
         int expResult = 0;
         assertEquals(expResult, result);
-       
-        
+
     }
 
-   
     /**
      * Test of generateBoardFile method, of class MapFileManagement.
     */
@@ -273,7 +273,6 @@ public class MapFileManagementTest {
         int expResult = 0;
         int result = instance.generateBoardFile(path, board);
         assertEquals(expResult, result);
-     
+
     }
-   
 }
