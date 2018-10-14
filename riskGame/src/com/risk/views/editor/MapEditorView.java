@@ -80,7 +80,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
         this.toolsPanel = new ToolsListPanel(120, 600, toolsList, getToolButtonListener());
 
         //panel to set map configuration
-        this.mapConfigPanel = new MapConfigPanel(editorController);
+        this.mapConfigPanel = new MapConfigPanel(editorController, initMapModel.getMapConfig());
 
         //add elements
         contentPanel.setLayout(new BorderLayout());
@@ -110,6 +110,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
         //Create the menu bar.
         menuBar = new JMenuBar();
         menuBar.setLayout(new FlowLayout(FlowLayout.LEFT));
+        
         //Build the first menu.
         menuFile = new JMenu("File");
         menuFile.setMnemonic(KeyEvent.VK_A);
@@ -127,6 +128,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
         menuFile.add(menuItemOpen);
         menuFile.add(menuItemSave);
 
+        //listener to open a map from file
         menuItemOpen.addActionListener(e -> {
             JFileChooser fileChooser;
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -135,13 +137,19 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
             fileChooser.setFileFilter(filter);
             fileChooser.setCurrentDirectory(new File("." + File.separator + "maps"));
 
+            //open dialog
             if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 String filepath = fileChooser.getSelectedFile().getAbsolutePath();
+                
+                //map loading 
                 editorController.loadMapFromFile(filepath, this.getMapView());
-                this.mapConfigPanel.update(this.controller.getNewMap().getMapConfig());
+                
+                //update map configuration
+                this.mapConfigPanel.setView(this.controller.getNewMap().getMapConfig());
             }
         });
 
+        //listener to save a map being edited
         menuItemSave.addActionListener(e -> {
             JFileChooser fileChooser;
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -150,8 +158,11 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
             fileChooser.setFileFilter(filter);
             fileChooser.setCurrentDirectory(new File("." + File.separator + "maps"));
 
+            //open dialog
             if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                 String filepath = fileChooser.getSelectedFile().getAbsolutePath();
+                
+                //map saving
                 editorController.saveMapToFile(filepath);
             }
         });

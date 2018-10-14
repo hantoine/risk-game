@@ -26,19 +26,22 @@ public class MapConfigPanel extends JPanel {
     protected JCheckBox isWrapBox;
     protected JComboBox scrollTypeBox;
 
-    public MapConfigPanel(MapEditorController controler) {
+    public MapConfigPanel(MapEditorController controler, MapConfig configModel) {
         this.setLayout(new FlowLayout());
 
-        init(controler);
+        init(controler, configModel);
     }
 
-    private void init(MapEditorController controler) {
+    private void init(MapEditorController controler, MapConfig configModel) {
         //create components
-        this.authorField = new JTextField("new author");
+        this.authorField = new JTextField(configModel.getAuthor());
         this.isWarnBox = new JCheckBox();
+        this.isWarnBox.setSelected(configModel.isWarn());
         this.isWrapBox = new JCheckBox();
+        this.isWrapBox.setSelected(configModel.isWrap());
         String[] scrollTypes = {"horizontal", "vertical", "none"};
         this.scrollTypeBox = new JComboBox(scrollTypes);
+        this.scrollTypeBox.setSelectedItem(configModel.getScroll());
 
         //add listeners
         this.isWarnBox.addItemListener(controler.getWarnCheckBoxListener());
@@ -72,7 +75,7 @@ public class MapConfigPanel extends JPanel {
         this.add(scrollPanel);
     }
 
-    public void update(MapConfig mapConfig) {
+    public void setView(MapConfig mapConfig) {
         authorField.setText(mapConfig.getAuthor());
         isWarnBox.setSelected(mapConfig.isWarn());
         isWrapBox.setSelected(mapConfig.isWrap());
