@@ -7,6 +7,7 @@ package com.risk.models.interfaces;
 
 import com.risk.controllers.GameController;
 import com.risk.models.ContinentModel;
+import com.risk.models.FortificationMove;
 import com.risk.models.HandModel;
 import com.risk.models.TerritoryModel;
 import java.awt.Color;
@@ -28,6 +29,7 @@ public abstract class PlayerModel {
     private HandModel cardsOwned;
     private int numArmiesAvailable;
     private int returnedCards;
+    private FortificationMove currentFortificationMove;
 
     /**
      * Constructor
@@ -340,5 +342,13 @@ public abstract class PlayerModel {
             default:
                 return 15 + (((this.getReturnedCards() - 18) / 3) * 5); //after 18 you get 5 more for every 3 cards returned
         }
+    }
+
+    public FortificationMove getCurrentFortificationMove() {
+        return currentFortificationMove;
+    }
+
+    public void setCurrentFortificationMove(FortificationMove currentFortificationMove) {
+        this.currentFortificationMove = currentFortificationMove;
     }
 }

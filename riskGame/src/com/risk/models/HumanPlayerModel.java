@@ -21,10 +21,9 @@ public class HumanPlayerModel extends PlayerModel {
      *
      * @param name name of the player
      * @param color color of the player
-     * @param isHuman true if it is human
      */
-    public HumanPlayerModel(String name, Color color, boolean isHuman) {
-        super(name, color, isHuman);
+    public HumanPlayerModel(String name, Color color) {
+        super(name, color, true);
     }
 
     /**
