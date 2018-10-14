@@ -139,9 +139,10 @@ public class MapFileManagement {
                             mapConfig.setAuthor(aux[1]);
                             break;
                         case "image":
-                            if (aux[1].isEmpty()) {
+                            if (aux[1].isEmpty() || aux[1].equals("null")) {
                                 break;
                             }
+                            
                             mapConfig.setImagePath(aux[1]);
                             Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
                             try {
