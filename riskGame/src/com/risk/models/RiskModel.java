@@ -52,10 +52,9 @@ public final class RiskModel {
      */
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
         if (isHuman) {
-            players.add(new HumanPlayerModel(name, color, isHuman, this));
-
+            players.add(new HumanPlayerModel(name, color, this));
         } else {
-            players.add(new AIPlayerModel(name, color, isHuman, this));
+            players.add(new AIPlayerModel(name, color, this));
         }
 
     }
