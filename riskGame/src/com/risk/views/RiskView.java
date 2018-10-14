@@ -5,15 +5,15 @@
  */
 package com.risk.views;
 
-import com.risk.views.player.PlayerGameInfoPanel;
-import com.risk.views.map.MapPanel;
-import com.risk.views.menu.StartMenuView;
 import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
+import com.risk.views.map.MapPanel;
 import com.risk.views.menu.MenuView;
+import com.risk.views.menu.StartMenuView;
 import com.risk.views.phases.PhasePanel;
 import com.risk.views.player.PlayerGameHandPanel;
+import com.risk.views.player.PlayerGameInfoPanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -114,6 +114,10 @@ public final class RiskView extends javax.swing.JFrame {
 
         this.getStagePanel().getEndPhase().addActionListener(e -> {
             rc.getPlayGame().finishPhase();
+        });
+
+        this.getStagePanel().getHandCards().addActionListener(e -> {
+            rc.getPlayGame().clickHand();
         });
 
         Component c = this.getJMenuBar().getMenu(0).getMenuComponent(0);

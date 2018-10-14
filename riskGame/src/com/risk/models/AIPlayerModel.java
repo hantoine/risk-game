@@ -21,9 +21,10 @@ public class AIPlayerModel extends PlayerModel {
      *
      * @param name name of the player
      * @param color color of the player
+     * @param game Game in which this players belongs
      */
-    public AIPlayerModel(String name, Color color) {
-        super(name, color, false);
+    public AIPlayerModel(String name, Color color, RiskModel game) {
+        super(name, color, false, game);
     }
 
     /**
