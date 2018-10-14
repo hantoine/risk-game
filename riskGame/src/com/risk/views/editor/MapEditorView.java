@@ -54,7 +54,6 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
      * @param editorController
      */
     public MapEditorView(int width, int height, MapEditorController editorController, EditableMapModel initMapModel) {
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(width, height));
         controller = editorController;
         this.setTitle("Map Editor");
@@ -264,7 +263,10 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                 break;
             case UPDATE_BACKGROUND_IMAGE:
                 if(object==null)
+                {
+                    this.mapPanel.setImage(null);
                     break;
+                }
                 
                 BufferedImage backgroundImage = (BufferedImage) object;
 

@@ -177,6 +177,7 @@ public final class EditableMapModel implements MapModelObservable {
         this.setWarnConfig(false);
         this.setWrapConfig(false);
         this.setAuthorConfig("New Author");
+        this.setImage(null, new Dimension(200, 50));
     }
     
     /**
@@ -420,7 +421,8 @@ public final class EditableMapModel implements MapModelObservable {
     public void setImage(BufferedImage image, Dimension buttonDims) {
         this.map.setImage(image);
         notifyObservers(UpdateTypes.UPDATE_BACKGROUND_IMAGE, image);
-        checkTerritoriesPositions(image.getWidth(), image.getHeight(), buttonDims);
+        if(image!=null)
+            checkTerritoriesPositions(image.getWidth(), image.getHeight(), buttonDims);
     }
 
     /**
