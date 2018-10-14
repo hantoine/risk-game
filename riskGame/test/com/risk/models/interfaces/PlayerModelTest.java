@@ -10,9 +10,9 @@ import com.risk.models.HumanPlayerModel;
 import com.risk.models.TerritoryModel;
 import java.awt.Color;
 import java.util.LinkedList;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -33,7 +33,7 @@ public class PlayerModelTest {
      */
     @Before
     public void setUp() {
-        player = new HumanPlayerModel("Player 1", Color.yellow, true, null);
+        player = new HumanPlayerModel("Player 1", Color.yellow, null);
         LinkedList<TerritoryModel> territories = new LinkedList<>();
         LinkedList<ContinentModel> continents = new LinkedList<>();
 
@@ -59,12 +59,11 @@ public class PlayerModelTest {
     @Test
     public void testArmiesAssignation() {
         System.out.println("armiesAssignation");
-       
+
         int expResult = 9;
         int result = player.armiesAssignation();
         assertEquals(expResult, result);
-        
-        
+
     }
 
     /**
@@ -81,7 +80,7 @@ public class PlayerModelTest {
         assertEquals(expResult, result);
 
     }
-    
+
     /**
      * Test of armiesCardAssignation method, of class PlayerModel.
      */
@@ -89,7 +88,6 @@ public class PlayerModelTest {
     public void testArmiesAssignationCards1() {
 
         //First time returnig cards =0
-        
         player.setReturnedCards(0);
         int expResult = 4;
         int result = player.armiesAssignationCards();

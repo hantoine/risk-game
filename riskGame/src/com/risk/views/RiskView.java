@@ -10,6 +10,7 @@ import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
 import com.risk.views.map.MapPanel;
 import com.risk.views.menu.MenuView;
+import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.StartMenuView;
 import com.risk.views.phases.PhasePanel;
 import com.risk.views.player.PlayerGameHandPanel;
@@ -105,6 +106,15 @@ public final class RiskView extends javax.swing.JFrame {
     }
 
     /**
+     * Open a Message Dialog to show message to user
+     *
+     * @param message Text to be displayed in the message dialog
+     */
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(null, message);
+    }
+
+    /**
      * Link the view to the controller by setting all required listeners
      *
      * @param rc Controller
@@ -151,11 +161,17 @@ public final class RiskView extends javax.swing.JFrame {
         aux.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
     }
 
-    public void hideMenu() {
+    public void closeMenu() {
         this.menuPanel.setVisible(false);
+        this.remove(this.menuPanel);
+        this.setMenuPanel(null);
     }
 
-    public PlayerGameHandPanel getPlayerHandPanel() {
+    public NewGamePanel getNewGamePanel() {
+        return this.getMenuPanel().getStartMenu().getNewGamePanel();
+    }
+
+    PlayerGameHandPanel getPlayerHandPanel() {
         return playerHandPanel;
     }
 
@@ -199,7 +215,7 @@ public final class RiskView extends javax.swing.JFrame {
      *
      * @return the menuPanel
      */
-    public MenuView getMenuPanel() {
+    MenuView getMenuPanel() {
         return menuPanel;
     }
 
@@ -208,7 +224,7 @@ public final class RiskView extends javax.swing.JFrame {
      *
      * @param menuPanel the menuPanel to set
      */
-    private void setMenuPanel(MenuView menuPanel) {
+    void setMenuPanel(MenuView menuPanel) {
         this.menuPanel = menuPanel;
     }
 
@@ -217,7 +233,7 @@ public final class RiskView extends javax.swing.JFrame {
      *
      * @return the mapPanel
      */
-    public MapPanel getMapPanel() {
+    MapPanel getMapPanel() {
         return mapPanel;
     }
 
@@ -231,24 +247,14 @@ public final class RiskView extends javax.swing.JFrame {
      *
      * @return the playerPanel
      */
-    public PlayerGameInfoPanel getPlayerPanel() {
+    PlayerGameInfoPanel getPlayerPanel() {
         return playerPanel;
     }
 
     /**
      * @return the reinforcementArmies
      */
-    public PhasePanel getStagePanel() {
+    PhasePanel getStagePanel() {
         return stagePanel;
     }
-
-    /**
-     * Open a Message Dialog to show message to user
-     *
-     * @param message Text to be displayed in the message dialog
-     */
-    public void showMessage(String message) {
-        JOptionPane.showMessageDialog(null, message);
-    }
-
 }

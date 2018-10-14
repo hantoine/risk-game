@@ -223,6 +223,6 @@ public class GameController {
     public void clickHand() {
 
         modelRisk.getCurrentPlayer().exchangeCardsToArmies();
-        riskView.getStagePanel().updateView(modelRisk);
+        riskView.updateView(modelRisk);
     }
 }
