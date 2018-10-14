@@ -5,6 +5,7 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.FortificationMove;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import com.risk.models.interfaces.PlayerModel;
@@ -56,6 +57,7 @@ public class GameController {
                 checkForDeadPlayers();
                 break;
             case FORTIFICATION:
+                modelRisk.getCurrentPlayer().setCurrentFortificationMove(null);
                 modelRisk.nextTurn();
                 break;
         }
@@ -73,7 +75,7 @@ public class GameController {
                 try {
                     modelRisk.getCurrentPlayer().attack(this);
                 } catch (UnsupportedOperationException e) {
-                    //since attack is not implemented yet, we skip it 
+                    //since attack is not implemented yet, we skip it
                     this.finishPhase();
                 }
                 break;
@@ -143,10 +145,17 @@ public class GameController {
                     this.riskView.showMessage("You don't own this country !");
                     break;
                 }
+                FortificationMove attemptedMove = new FortificationMove(sourceTerritory, destTerritory);
+                FortificationMove lastMove = currentPlayer.getCurrentFortificationMove();
+                if (lastMove != null && !lastMove.equals(attemptedMove)) {
+                    this.riskView.showMessage("You can only make one move !");
+                    break;
+                }
 
                 try {
                     sourceTerritory.decrementNumArmies();
                     destTerritory.incrementNumArmies();
+                    currentPlayer.setCurrentFortificationMove(attemptedMove);
                     riskView.updateView(modelRisk);
                 } catch (IllegalStateException e) {
                     this.riskView.showMessage("There is no armies in the source country !");
