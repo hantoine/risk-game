@@ -7,8 +7,13 @@ package com.risk.views.player;
 
 import com.risk.models.RiskModel;
 import com.risk.models.interfaces.PlayerModel;
+import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,9 +24,9 @@ import javax.swing.JPanel;
  *
  * @author liyixuan
  */
-public final class PlayerGameHandPanel extends JPanel {
+public final class PlayerGameHandPanel extends JPanel implements Observer {
 
-    JButton handCard;
+    HashMap<String, JButton> handCards = new HashMap<>();
 
     /**
      * Constructor
@@ -43,19 +48,40 @@ public final class PlayerGameHandPanel extends JPanel {
         this.removeAll();
         currentPlayer.getCardsOwned().getCards().stream()
                 .forEach((card) -> {
-                    System.out.println("printing cards");
-                    // get the corresponding card ImageIcon and resize the card image
-                    ImageIcon cardIcon = new ImageIcon("." + File.separator + "images"
-                            + File.separator + card.getTypeOfArmie() + ".png");
-                    Image image = cardIcon.getImage();
-                    Image newImage = image.getScaledInstance(50, 70, java.awt.Image.SCALE_SMOOTH);
-                    cardIcon = new ImageIcon(newImage);
-                    JButton aux = new JButton();
-                    aux.setIcon(cardIcon);
-                    aux.setText("");
-                    aux.setBackground(currentPlayer.getColor());
-                    this.add(aux);
-                }
-                );
+                    addCard(card.getTypeOfArmie(), card.getCountryName(), currentPlayer.getColor());
+                });
+        this.repaint();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof RiskModel) {
+            this.updateView((RiskModel) arg);
+        } else {
+            LinkedList<String> receivedObj = (LinkedList<String>) arg;
+            addCard(receivedObj.get(2), receivedObj.get(1), ((PlayerModel) o).getColor());
+        }
+    }
+
+    /**
+     * Add a card to be displayed in this panel
+     *
+     * @param typeofArmies The name of the type of armies associated with the
+     * card
+     * @param territoryName The name of the territory associated with the card
+     * @param backgroundColor The background color of the card
+     */
+    public void addCard(String typeofArmies, String territoryName, Color backgroundColor) {
+        ImageIcon cardIcon = new ImageIcon("." + File.separator + "images"
+                + File.separator + typeofArmies + ".png");
+        Image image = cardIcon.getImage();
+        Image newImage = image.getScaledInstance(50, 70, java.awt.Image.SCALE_SMOOTH);
+        cardIcon = new ImageIcon(newImage);
+        JButton aux = new JButton();
+        aux.setIcon(cardIcon);
+        aux.setText("");
+        aux.setBackground(backgroundColor);
+        handCards.put(territoryName, aux);
+        this.add(aux);
     }
 }

@@ -6,12 +6,12 @@
 package com.risk.models;
 
 import com.risk.models.interfaces.PlayerModel;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.awt.Color;
-import java.util.LinkedList;
 
 /**
  * Represents the model of the game
@@ -52,10 +52,9 @@ public final class RiskModel {
      */
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
         if (isHuman) {
-            players.add(new HumanPlayerModel(name, color, isHuman));
-
+            players.add(new HumanPlayerModel(name, color, this));
         } else {
-            players.add(new AIPlayerModel(name, color, isHuman));
+            players.add(new AIPlayerModel(name, color, this));
         }
 
     }
@@ -76,6 +75,9 @@ public final class RiskModel {
      */
     public void removePlayer(PlayerModel player) {
         players.remove(player);
+        if (players.size() == 1) {
+            this.winningPlayer = this.players.getFirst();
+        }
     }
 
     /**
@@ -107,7 +109,7 @@ public final class RiskModel {
         this.map = new MapModel();
         int result = new MapFileManagement().createBoard(path, this.map);
         if (result == 0) {
-            this.setDeck();
+            this.initializeDeck();
         }
         return result;
     }
@@ -256,20 +258,26 @@ public final class RiskModel {
     }
 
     /**
-     * Setter of the deck attribute
+     * Fill up the deck with cards generated from the territories in the map
      */
-    public void setDeck() {
+    public void initializeDeck() {
         this.deck = new LinkedList();
         int i = 0;
         for (String country : this.getMap().getGraphTerritories().keySet()) {
-            if (i <= 14) {
-                this.deck.add(new CardModel(country, "Infantry"));
-                this.deck.add(new CardModel(country, "Cavalry"));
-                this.deck.add(new CardModel(country, "Artillery"));
-            } else {
-                break;
+
+            switch (i) {
+                case 0:
+                    this.deck.add(new CardModel(country, "infantry"));
+                    break;
+                case 1:
+                    this.deck.add(new CardModel(country, "cavalry"));
+                    break;
+                case 2:
+                    this.deck.add(new CardModel(country, "artillery"));
+                    break;
             }
-            i++;
+            i = (i + 1) % 3;
+
         }
         shuffleDeck();
     }
