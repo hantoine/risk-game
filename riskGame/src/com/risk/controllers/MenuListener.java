@@ -138,7 +138,6 @@ public class MenuListener extends MouseAdapter {
                     PlayerModel playerGame = new HumanPlayerModel(
                             player.getPlayerNameTextField().getText(),
                             player.getColorButton().getBackground(),
-                            true,
                             this.getRiskModel()
                     );
                     listPlayers.add(playerGame);
