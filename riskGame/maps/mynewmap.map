@@ -1,0 +1,14 @@
+[Map]
+author=new author
+image=C:\Users\timot\Documents\NetBeansProjects\SOEN6441-fall-2018\riskGame\maps\World.bmp
+wrap=no
+scroll=none
+warn=no
+
+[Continents]
+Continent0=1
+
+[Territories]
+Territory2,415,210,Continent0,Territory0,Territory1
+Territory0,240,99,Continent0,Territory2
+Territory1,218,243,Continent0,Territory2

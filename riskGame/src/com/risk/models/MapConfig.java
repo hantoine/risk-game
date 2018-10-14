@@ -19,9 +19,9 @@ public class MapConfig {
 
     public MapConfig() {
         this.author = "new author";
-        this.scroll = "";
-        this.warn = true;
-        this.wrap = true;
+        this.scroll = "none";
+        this.warn = false;
+        this.wrap = false;
     }
 
     public boolean isWrap() {
