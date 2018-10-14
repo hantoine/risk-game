@@ -10,10 +10,7 @@ import com.risk.models.HumanPlayerModel;
 import com.risk.models.TerritoryModel;
 import java.awt.Color;
 import java.util.LinkedList;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -63,10 +60,11 @@ public class PlayerModelTest {
     @Test
     public void testArmiesAssignation() {
         System.out.println("armiesAssignation");
-        PlayerModel instance = player;
+       
         int expResult = 9;
-        int result = instance.armiesAssignation();
+        int result = player.armiesAssignation();
         assertEquals(expResult, result);
+        
         
     }
 
@@ -76,18 +74,24 @@ public class PlayerModelTest {
     @Test
     public void testArmiesAssignationCards() {
         System.out.println("armiesAssignationCards");
-        PlayerModel instance = player;
         
         //returned cards >18
-        instance.setReturnedCards(27);
+        player.setReturnedCards(27);
         int expResult = 35;
-        int result = instance.armiesAssignationCards();
+        int result = player.armiesAssignationCards();
         assertEquals(expResult, result);
-        
+    }
+    
+    /**
+     * Test of armiesCardAssignation method, of class PlayerModel.
+     */
+    @Test
+    public void testArmiesAssignationCards1() {
         //First time returnig cards =0
-        instance.setReturnedCards(0);
-        expResult = 4;
-        result = instance.armiesAssignationCards();
+        
+        player.setReturnedCards(0);
+        int expResult = 4;
+        int result = player.armiesAssignationCards();
         assertEquals(expResult, result);
         
     }
