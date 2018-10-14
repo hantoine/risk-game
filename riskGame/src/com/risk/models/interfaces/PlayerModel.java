@@ -8,6 +8,7 @@ package com.risk.models.interfaces;
 import com.risk.controllers.GameController;
 import com.risk.models.CardModel;
 import com.risk.models.ContinentModel;
+import com.risk.models.FortificationMove;
 import com.risk.models.HandModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
@@ -35,6 +36,8 @@ public abstract class PlayerModel extends Observable {
      * The game in which this player belongs to
      */
     private RiskModel game;
+    private FortificationMove currentFortificationMove;
+
 
     /**
      * Constructor
@@ -416,4 +419,11 @@ public abstract class PlayerModel extends Observable {
         this.notifyObservers(cardsOperation);
     }
 
+    public FortificationMove getCurrentFortificationMove() {
+        return currentFortificationMove;
+    }
+
+    public void setCurrentFortificationMove(FortificationMove currentFortificationMove) {
+        this.currentFortificationMove = currentFortificationMove;
+    }
 }
