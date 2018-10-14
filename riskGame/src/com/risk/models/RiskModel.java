@@ -6,12 +6,12 @@
 package com.risk.models;
 
 import com.risk.models.interfaces.PlayerModel;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.awt.Color;
-import java.util.LinkedList;
 
 /**
  * Represents the model of the game
@@ -76,7 +76,7 @@ public final class RiskModel {
      */
     public void removePlayer(PlayerModel player) {
         players.remove(player);
-        if(players.size() == 1 ){
+        if (players.size() == 1) {
             this.winningPlayer = this.players.getFirst();
         }
     }
@@ -265,7 +265,7 @@ public final class RiskModel {
         this.deck = new LinkedList();
         int i = 0;
         for (String country : this.getMap().getGraphTerritories().keySet()) {
-                
+
             switch (i) {
                 case 0:
                     this.deck.add(new CardModel(country, "infantry"));
@@ -277,8 +277,8 @@ public final class RiskModel {
                     this.deck.add(new CardModel(country, "artillery"));
                     break;
             }
-            i = (i+1)%3;
-                
+            i = (i + 1) % 3;
+
         }
         shuffleDeck();
     }

@@ -24,8 +24,8 @@ public class PhasePanel extends JPanel {
     public PhasePanel() {
         this.text = new JLabel();
         this.endPhase = new JButton("End Phase");
-        this.handCards=new JButton("Hand");
-        
+        this.handCards = new JButton("Hand");
+
         this.text.setVisible(false);
         this.endPhase.setVisible(false);
         this.handCards.setVisible(false);
@@ -74,8 +74,8 @@ public class PhasePanel extends JPanel {
     public JButton getEndPhase() {
         return endPhase;
     }
-    
-    public JButton getHandCards(){
+
+    public JButton getHandCards() {
         return handCards;
     }
 }
