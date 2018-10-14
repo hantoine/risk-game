@@ -12,6 +12,10 @@ package com.risk.models;
  */
 public class CardModel {
 
+    /**
+     * countryName There is as many cards as countries in the game
+     * typeOfArmie Type of armie in the card
+     */
     private String countryName;
     private String typeOfArmie;
 

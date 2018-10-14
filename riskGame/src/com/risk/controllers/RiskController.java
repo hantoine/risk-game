@@ -17,6 +17,12 @@ import com.risk.views.RiskView;
  */
 public final class RiskController {
 
+    /**
+     * viewRisk it is a reference to the view of the game
+     * modelRisk it is a reference to the model of the game
+     * countryListener it is a reference to the listener of country events
+     * playGame it is a reference to the controller of the game flow
+     */
     private RiskView viewRisk;
     private RiskModel modelRisk;
     private MenuListener menuListener;
