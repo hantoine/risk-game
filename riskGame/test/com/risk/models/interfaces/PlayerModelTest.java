@@ -10,9 +10,9 @@ import com.risk.models.HumanPlayerModel;
 import com.risk.models.TerritoryModel;
 import java.awt.Color;
 import java.util.LinkedList;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -45,9 +45,6 @@ public class PlayerModelTest {
         territories.add(new TerritoryModel("USA"));
         territories.add(new TerritoryModel("Ecuador"));
 
-        continents.add(new ContinentModel("South America", 4));
-        continents.add(new ContinentModel("North America", 3));
-
         player.setContinentsOwned(continents);
         player.setContriesOwned(territories);
 
@@ -57,14 +54,47 @@ public class PlayerModelTest {
      * Test of armiesAssignation method, of class PlayerModel.
      */
     @Test
-    public void testArmiesAssignation() {
+    public void testArmiesAssignationMinimum() {
         System.out.println("armiesAssignation");
-       
+
+        int expResult = 3;
+        int result = player.armiesAssignation();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of armiesAssignation method, of class PlayerModel.
+     */
+    @Test
+    public void testArmiesAssignationWithMoreCountries() {
+        System.out.println("armiesAssignation");
+
+        player.getContriesOwned().add(new TerritoryModel("France"));
+        player.getContriesOwned().add(new TerritoryModel("Germany"));
+        player.getContriesOwned().add(new TerritoryModel("Italy"));
+        player.getContriesOwned().add(new TerritoryModel("UK"));
+        player.getContriesOwned().add(new TerritoryModel("Spain"));
+
+        int expResult = 4;
+        int result = player.armiesAssignation();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of armiesAssignation method, of class PlayerModel.
+     */
+    @Test
+    public void testArmiesAssignationWithContinents() {
+        System.out.println("armiesAssignation");
+
+        LinkedList<ContinentModel> continents = new LinkedList<>();
+        continents.add(new ContinentModel("South America", 4));
+        continents.add(new ContinentModel("North America", 3));
+        player.setContinentsOwned(continents);
+
         int expResult = 9;
         int result = player.armiesAssignation();
         assertEquals(expResult, result);
-        
-        
     }
 
     /**
@@ -81,15 +111,14 @@ public class PlayerModelTest {
         assertEquals(expResult, result);
 
     }
-    
+
     /**
      * Test of armiesCardAssignation method, of class PlayerModel.
      */
     @Test
-    public void testArmiesAssignationCards1() {
+    public void testArmiesAssignationCardsWithoutReturnedCards() {
 
         //First time returnig cards =0
-        
         player.setReturnedCards(0);
         int expResult = 4;
         int result = player.armiesAssignationCards();
