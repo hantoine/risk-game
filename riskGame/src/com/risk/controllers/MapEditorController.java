@@ -208,7 +208,8 @@ public class MapEditorController {
         });
 
         //set new image
-        this.newMap.setImage(map.getImage(), new Dimension(200, 50));
+        if(map.getImage()!=null)
+            this.newMap.setImage(map.getImage(), new Dimension(200, 50));
 
         //add continents
         map.getGraphContinents().values().stream().forEach((c) -> {
@@ -223,15 +224,7 @@ public class MapEditorController {
 
         //add territories
         map.getGraphTerritories().values().stream().forEach((t) -> {
-            this.newMap.addTerritory(t.getPositionX(), t.getPositionY());
-
-            Map<String, String> updateTerritoryData = new HashMap<>();
-
-            updateTerritoryData.put("name", "Territory0");
-            updateTerritoryData.put("newName", t.getName());
-            updateTerritoryData.put("continent", t.getContinentName());
-
-            this.newMap.updateTerritory(updateTerritoryData);
+            this.newMap.loadTerritory(t.getPositionX(), t.getPositionY(), t.getName(), t.getContinentName());
         });
 
         map.getGraphTerritories().values().stream().forEach((t) -> {

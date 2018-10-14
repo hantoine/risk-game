@@ -53,9 +53,9 @@ public final class EditableMapModel implements MapModelObservable {
         TerritoryModel neighbourModel = this.getGraphTerritories().get(neighbour);
         TerritoryModel territoryModel = this.getGraphTerritories().get(territoryName);
 
-        if (neighbourModel.getAdj().contains(neighbourModel)) {
+        if (neighbourModel.getAdj().contains(neighbourModel)) 
             return;
-        }
+        
 
         //add neighbours
         this.getGraphTerritories().get(territoryName).addNeighbour(neighbourModel);
@@ -224,6 +224,31 @@ public final class EditableMapModel implements MapModelObservable {
 
         //add it to a continent
         String continentName = this.getGraphContinents().entrySet().iterator().next().getKey();
+        newTerritory.setContinentName(continentName);
+        this.getGraphContinents().get(continentName).setMember(newTerritory);
+
+        //add territory to list
+        this.getGraphTerritories().put(newName, newTerritory);
+
+        //update views
+        notifyObservers(UpdateTypes.ADD_TERRITORY, newTerritory);
+        return true;
+    }
+    
+    /**
+     * Add terrotiry from file
+     * @param posX
+     * @param posY
+     * @param newName
+     * @param continentName
+     * @return 
+     */
+    public boolean loadTerritory(int posX, int posY, String newName, String continentName) {
+
+        //create territory
+        TerritoryModel newTerritory = new TerritoryModel(newName, posX, posY);
+
+        //add it to its continent
         newTerritory.setContinentName(continentName);
         this.getGraphContinents().get(continentName).setMember(newTerritory);
 

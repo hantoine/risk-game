@@ -7,6 +7,7 @@ package com.risk.views.editor;
 
 import com.risk.models.editor.EditableMapModel;
 import com.risk.controllers.MapEditorController;
+import com.risk.models.MapConfig;
 import com.risk.observers.UpdateTypes;
 import com.risk.observers.MapModelObserver;
 import java.awt.BorderLayout;
@@ -192,6 +193,8 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
             if (v == JFileChooser.APPROVE_OPTION) {
                 //clear map
                 editorController.clearMapModel();
+                MapConfig newConfig = editorController.getNewMap().getMapConfig();
+                this.mapConfigPanel.setView(newConfig);
             }
         });
 
@@ -260,6 +263,9 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
             case UPDATE_TERRITORY_POS:
                 break;
             case UPDATE_BACKGROUND_IMAGE:
+                if(object==null)
+                    break;
+                
                 BufferedImage backgroundImage = (BufferedImage) object;
 
                 //get current sizes of components
