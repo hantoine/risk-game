@@ -107,7 +107,7 @@ public class MenuListener extends MouseAdapter {
                 }
                 break;
             case "PLAY":
-                NewGamePanel newGamePanel = this.getRiskView().getMenuPanel().getStartMenu().getNewGamePanel();
+                NewGamePanel newGamePanel = this.getRiskView().getNewGamePanel();
                 String selectedPath = newGamePanel.getSelectFileTextField().getText();
 
                 if (selectedPath.equals("")) {
@@ -126,10 +126,7 @@ public class MenuListener extends MouseAdapter {
                     break;
                 }
 
-                this.getRiskView().getMenuPanel().setVisible(false);
-                this.getRiskView().remove(this.getRiskView().getMenuPanel());
-                this.getRiskView().hideMenu();
-                this.getRiskView().getStagePanel().setVisible(true);
+                this.getRiskView().closeMenu();
 
                 LinkedList<PlayerPanel> listPlayerPanels = newGamePanel.getPlayersPanel().getPlayersArray();
                 LinkedList<PlayerModel> listPlayers = new LinkedList<>();
@@ -138,11 +135,9 @@ public class MenuListener extends MouseAdapter {
                     PlayerModel playerGame = new HumanPlayerModel(
                             player.getPlayerNameTextField().getText(),
                             player.getColorButton().getBackground(),
-                            true,
                             this.getRiskModel()
                     );
                     listPlayers.add(playerGame);
-                    playerGame.addObserver(riskView.getPlayerHandPanel());
                 }
                 this.getRiskModel().setPlayerList(listPlayers);
                 this.getRiskController().playGame();

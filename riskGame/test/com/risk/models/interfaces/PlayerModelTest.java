@@ -33,7 +33,7 @@ public class PlayerModelTest {
      */
     @Before
     public void setUp() {
-        player = new HumanPlayerModel("Player 1", Color.yellow, true, null);
+        player = new HumanPlayerModel("Player 1", Color.yellow, null);
         LinkedList<TerritoryModel> territories = new LinkedList<>();
         LinkedList<ContinentModel> continents = new LinkedList<>();
 
