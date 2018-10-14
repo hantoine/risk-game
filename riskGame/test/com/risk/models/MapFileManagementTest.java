@@ -6,6 +6,7 @@
 package com.risk.models;
 
 
+import java.io.File;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -29,7 +30,7 @@ public class MapFileManagementTest {
     public void testCreateBoard() {
         System.out.println("createBoard");
         //Change to a valid .map file in your computer
-        String path = "C:\\Users\\Nellybett\\Desktop\\Old Yorkshire.map";
+        String path = "." + File.separator + "maps"+ File.separator + "Old Yorkshire.map";
         MapModel board = null;
         MapFileManagement instance = new MapFileManagement();
         int expResult = -7;
@@ -79,7 +80,7 @@ public class MapFileManagementTest {
     public void testConfigurationInf() {
         System.out.println("configurationInf");
         String info = "[Map]\n" +"author=Stewart Ainsworth\n" +"image=old yorkshire.bmp\n" +"wrap=no\n" +"scroll=horizontal";
-        String path = "C:\\Users\\Nellybett\\Desktop\\Old Yorkshire.map";
+        String path = "." + File.separator + "maps"+ File.separator + "Old Yorkshire.map";
         MapModel board = new MapModel();
         MapFileManagement instance = new MapFileManagement();
         int expResult = 0;
