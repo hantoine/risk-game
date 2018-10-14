@@ -52,10 +52,10 @@ public final class RiskModel {
      */
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
         if (isHuman) {
-            players.add(new HumanPlayerModel(name, color, isHuman));
+            players.add(new HumanPlayerModel(name, color, isHuman, this));
 
         } else {
-            players.add(new AIPlayerModel(name, color, isHuman));
+            players.add(new AIPlayerModel(name, color, isHuman, this));
         }
 
     }
@@ -76,6 +76,9 @@ public final class RiskModel {
      */
     public void removePlayer(PlayerModel player) {
         players.remove(player);
+        if(players.size() == 1 ){
+            this.winningPlayer = this.players.getFirst();
+        }
     }
 
     /**
@@ -107,7 +110,7 @@ public final class RiskModel {
         this.map = new MapModel();
         int result = new MapFileManagement().createBoard(path, this.map);
         if (result == 0) {
-            this.setDeck();
+            this.initializeDeck();
         }
         return result;
     }
@@ -256,9 +259,9 @@ public final class RiskModel {
     }
 
     /**
-     * Setter of the deck attribute
+     * Fill up the deck with cards generated from the territories in the map
      */
-    public void setDeck() {
+    public void initializeDeck() {
         this.deck = new LinkedList();
         int i = 0;
         for (String country : this.getMap().getGraphTerritories().keySet()) {
@@ -266,17 +269,15 @@ public final class RiskModel {
             switch (i) {
                 case 0:
                     this.deck.add(new CardModel(country, "infantry"));
-                    i=1;
                     break;
                 case 1:
                     this.deck.add(new CardModel(country, "cavalry"));
-                    i=2;
                     break;
-                default:
+                case 2:
                     this.deck.add(new CardModel(country, "artillery"));
-                    i=0;
                     break;
             }
+            i = (i+1)%3;
                 
         }
         shuffleDeck();

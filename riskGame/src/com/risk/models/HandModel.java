@@ -5,6 +5,8 @@
  */
 package com.risk.models;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -15,7 +17,6 @@ import java.util.LinkedList;
 public class HandModel {
 
     private LinkedList<CardModel> cards;
-    private boolean handCards;
 
     /**
      * Constructor
@@ -50,7 +51,7 @@ public class HandModel {
     /**
      * Function to check if the player has repeated cards
      */
-    public int[] validateHand(){
+    public int[] getCardDuplicates(){
         int[] cardDuplicates=new int[3];
         cardDuplicates[0]=cardDuplicates[1]=cardDuplicates[2]=0;
         
@@ -70,19 +71,51 @@ public class HandModel {
     }
 
     /**
-     * @return the handCards
+     * Function that return if the hand button should be displayed:
+     * if the player has 3 different cards or if it has 3 equal cards
+     * @return true if the player has 3 different cards or 3 identical ones
      */
-    public boolean isHandCards() {
-        return handCards;
-    }
-
-    /**
-     * @param handCards the handCards to set
-     */
-    public void setHandCards(boolean handCards) {
-        this.handCards = handCards;
+    public boolean threeDifferentCardsOrThreeEqualCards()
+    {
+        int[] cardDuplicates = this.getCardDuplicates();
+        
+        return cardDuplicates[0]>=3 || 
+                cardDuplicates[1]>=3 ||
+                cardDuplicates[2]>=3 ||
+        (cardDuplicates[0]>=1 && cardDuplicates[1]>=1 && cardDuplicates[2]>=1);
     }
     
+        /**
+     * Removes the cards from a players hand depending on their type
+     *
+     * @param typeOfArmie type of card
+     * @param the deck of card in which to put the card removed
+     */
+    public void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
+        String[] typeOfArmieDum = {"infantry", "artillery", "cavalry"};
+
+        if (typeOfArmie.equals("different")) {
+
+            Arrays.stream(typeOfArmieDum).forEach(typeA -> {
+                CardModel card = this.getCards().stream()
+                        .filter(c -> c.getTypeOfArmie().equals(typeA))
+                        .findFirst()
+                        .get();
+
+                deck.addFirst(card);
+                this.getCards().remove(card);
+            });
+
+        } else {
+            for (Iterator<CardModel> iterator = this.getCards().iterator(); iterator.hasNext();) {
+                CardModel card = iterator.next();
+                if (card.getTypeOfArmie().equals(typeOfArmie)) {
+                    deck.addFirst(card);
+                    iterator.remove();
+                }
+            }
+        }
+    }
     
 
 }

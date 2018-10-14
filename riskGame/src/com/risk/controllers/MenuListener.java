@@ -135,7 +135,12 @@ public class MenuListener extends MouseAdapter {
                 LinkedList<PlayerModel> listPlayers = new LinkedList<>();
                 for (int i = 0; i < listPlayerPanels.size(); i++) {
                     PlayerPanel player = listPlayerPanels.get(i);
-                    PlayerModel playerGame = new HumanPlayerModel(player.getPlayerNameTextField().getText(), player.getColorButton().getBackground(), true);
+                    PlayerModel playerGame = new HumanPlayerModel(
+                            player.getPlayerNameTextField().getText(), 
+                            player.getColorButton().getBackground(), 
+                            true, 
+                            this.getRiskModel()
+                    );
                     listPlayers.add(playerGame);
                     playerGame.addObserver(riskView.getPlayerHandPanel());
                 }
