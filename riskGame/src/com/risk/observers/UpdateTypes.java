@@ -6,18 +6,18 @@
 package com.risk.observers;
 
 /**
- *
+ * Types of updates that are possible when map model notifies the observers.
  * @author timot
  */
 public enum UpdateTypes {
     ADD_TERRITORY,
     REMOVE_TERRITORY,
     UPDATE_TERRITORY_NAME,
-    UPDATE_TERRITORY_POS,
+    UPDATE_TERRITORY_POS, //update the position of a territory on the map
     ADD_CONTINENT,
     REMOVE_CONTINENT,
     UPDATE_CONTINENT,
     UPDATE_BACKGROUND_IMAGE,
-    ADD_LINK,
-    REMOVE_LINK;
+    ADD_LINK, //add a link between two countries
+    REMOVE_LINK; //remove a link between two countries
 }

@@ -24,17 +24,23 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * MAP object temporary model to replace the former later
+ * MAP object temporary model to replace the former later.
  *
  * @author timot
  */
 public final class EditableMapModel implements MapModelObservable {
-
+    /**
+     * Former map model which contains the core features of the map model.
+     */
     MapModel map;
+    
+    /**
+     * List of the observers of the model.
+     */
     private LinkedList<MapModelObserver> observers;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public EditableMapModel() {
         this.map = new MapModel();
@@ -43,9 +49,9 @@ public final class EditableMapModel implements MapModelObservable {
     }
     
     /**
-     * Add an edge between two vertices (territories)
+     * Add an edge between two vertices (territories).
      *
-     * @param territoryName
+     * @param territoryName 
      * @param neighbour
      */
     public void addLink(String territoryName, String neighbour) {
@@ -56,7 +62,6 @@ public final class EditableMapModel implements MapModelObservable {
         if (neighbourModel.getAdj().contains(neighbourModel)) 
             return;
         
-
         //add neighbours
         this.getGraphTerritories().get(territoryName).addNeighbour(neighbourModel);
         this.getGraphTerritories().get(neighbour).addNeighbour(territoryModel);
@@ -65,6 +70,11 @@ public final class EditableMapModel implements MapModelObservable {
         notifyObservers(UpdateTypes.ADD_LINK, newLink);
     }
 
+    /**
+     * Remove a link between two vertices.
+     * @param territoryName
+     * @param neighbour 
+     */
     public void removeLink(String territoryName, String neighbour) {
         //get models
         TerritoryModel neighbourModel = this.getGraphTerritories().get(neighbour);
@@ -237,7 +247,7 @@ public final class EditableMapModel implements MapModelObservable {
     }
     
     /**
-     * Add terrotiry from file
+     * Add territory from file.
      * @param posX
      * @param posY
      * @param newName
@@ -290,9 +300,9 @@ public final class EditableMapModel implements MapModelObservable {
     }
 
     /**
-     * Update a territory model and update the views
+     * Update a territory model and update the views.
      *
-     * @param data
+     * @param data contains information to update the territory.
      */
     public void updateTerritory(Map<String, String> data) {
         //get data
@@ -314,6 +324,11 @@ public final class EditableMapModel implements MapModelObservable {
         notifyObservers(UpdateTypes.UPDATE_TERRITORY_NAME, data);
     }
 
+    /**
+     * Update a continent model and update the views.
+     *
+     * @param data contains information to update the continent.
+     */
     public void updateContinent(Map<String, String> data) {
         String formerName = data.get("name");
         String newName = data.get("newName");
@@ -336,21 +351,22 @@ public final class EditableMapModel implements MapModelObservable {
 
         notifyObservers(UpdateTypes.UPDATE_CONTINENT, data);
     }
-
-    @Override
+    
     /**
-     * Add a new view that will be informed of changes in the model to update
-     * itself
+     * Add a new view that will be informed of changes in the model to update itself.
+     * @param newObserver 
      */
+    @Override
     public void addObserver(MapModelObserver newObserver) {
         observers.add(newObserver);
     }
 
-    @Override
     /**
-     * Notify the views that a change occurred in the model so that they update
-     * themselves
+     * Notify the views that a change occurred in the model so that they update themselves.
+     * @param updateType type of the update.
+     * @param object data to update the observers.
      */
+    @Override
     public void notifyObservers(UpdateTypes updateType, Object object) {
         for (MapModelObserver observer : observers) {
             observer.update(updateType, object);
@@ -366,6 +382,13 @@ public final class EditableMapModel implements MapModelObservable {
         return this.map.getImage();
     }
 
+    /**
+     * Check if an Dimension element is in the list.
+     * @param list
+     * @param element
+     * @return a boolean value to tell if the element is in the list.
+     * @see Dimension
+     */
     public boolean isInDimList(Dimension[] list, Dimension element) {
         return Stream.of(list).anyMatch(x -> x.equals(element));
     }
@@ -376,7 +399,7 @@ public final class EditableMapModel implements MapModelObservable {
      *
      * @param width
      * @param height
-     * @param buttonDims
+     * @param buttonDims Dimension of the buttons on the map.
      */
     public void checkTerritoriesPositions(int width, int height, Dimension buttonDims) {
         int x, y;
@@ -494,26 +517,50 @@ public final class EditableMapModel implements MapModelObservable {
         return territoryArray;
     }
 
+    /**
+     * Setter of the scroll configuration parameter of the map.
+     * @param scrollConfig 
+     */
     public void setScrollConfig(String scrollConfig) {
         this.getMapConfig().setScroll(scrollConfig);
     }
 
+    /**
+     * Setter of the wrap configuration parameter of the map.
+     * @param wrapConfig 
+     */
     public void setWrapConfig(boolean wrapConfig) {
         this.getMapConfig().setWrap(wrapConfig);
     }
 
+    /**
+     * Setter of the warn configuration parameter of the map.
+     * @param warnConfig 
+     */
     public void setWarnConfig(boolean warnConfig) {
         this.getMapConfig().setWarn(warnConfig);
     }
 
+    /**
+     * Setter of the author of the map.
+     * @param authorName 
+     */
     public void setAuthorConfig(String authorName) {
         this.getMapConfig().setAuthor(authorName);
     }
 
+    /**
+     * Setter of the path to the image of background
+     * @param path 
+     */
     public void setImagePath(String path) {
         this.getMapConfig().setImagePath(path);
     }
 
+    /**
+     * Getter of the whole map configuration model of the map model
+     * @return the object containing all the configuration parameters.
+     */
     public MapConfig getMapConfig() {
         return this.map.getConfigurationInfo();
     }

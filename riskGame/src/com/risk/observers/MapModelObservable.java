@@ -6,12 +6,21 @@
 package com.risk.observers;
 
 /**
- *
+ * Custom interface for the map model being observable.
  * @author timot
  */
 public interface MapModelObservable {
 
+    /**
+     * Allows to add a new observer.
+     * @param newObserver 
+     */
     public void addObserver(MapModelObserver newObserver);
 
+    /**
+     * Allows to notify the observers that a change occured in the model.
+     * @param updateType
+     * @param object 
+     */
     public void notifyObservers(UpdateTypes updateType, Object object);
 }

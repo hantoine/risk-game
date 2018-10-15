@@ -41,6 +41,9 @@ public final class RiskController {
   
     }
 
+    /**
+     * Opens a new map editor view.
+     */
     public void openMapEditor() {
         EditableMapModel newMap = new EditableMapModel();
         MapEditorController editorController = new MapEditorController(newMap);
