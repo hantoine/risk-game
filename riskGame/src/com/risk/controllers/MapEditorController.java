@@ -42,17 +42,22 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 /**
+ * Controller of the map editor
  *
  * @author timot
  */
 public class MapEditorController {
 
+    /**
+     * Model of the map that is edited.
+     */
     public EditableMapModel newMap;
 
-    
     /**
      * Constructor
-     * @param mapModel 
+     *
+     * @param mapModel model of the map being edited that will be called by the
+     * controller for updates.
      */
     public MapEditorController(EditableMapModel mapModel) {
         newMap = mapModel;
@@ -60,52 +65,94 @@ public class MapEditorController {
 
     /**
      * Get reference to the map being edited
-     * @return 
+     *
+     * @return the map being edited
      */
     public EditableMapModel getNewMap() {
         return newMap;
     }
-    
+
     /**
-     * Getters
+     * getter of the mouse listener which listens on the map editor panels
      *
-     * @return
+     * @return the mouse listener of the view of the map being edited
      */
     public MapMouseController getMapMouseListener() {
         return new MapMouseController(newMap);
     }
 
+    /**
+     * getter of the button listener which listens on the map editor panels
+     *
+     * @return the button listener used for the territories' buttons
+     */
     public ButtonMouseController getCountryMouseListener() {
         return new ButtonMouseController(newMap);
     }
 
+    /**
+     * getter of the continent button listener which listens on the continent
+     * list panel.
+     *
+     * @return the listener of the button for adding new continents
+     */
     public AddContinentButtonListener getAddContinentButtonListener() {
         return new AddContinentButtonListener(newMap);
     }
 
+    /**
+     * getter on the mouse listener which listens on the continent list panel.
+     *
+     * @return the mouse listener to edit or delete a continent from the list.
+     */
     public ContinentMouseListener getContinentMouseListener() {
         return new ContinentMouseListener(newMap);
     }
 
+    /**
+     * getter on the listener for the background image selector
+     *
+     * @param mapPanel view on the map being edited
+     * @param editorPanel view of the whole map editor
+     * @return the listener that will tells the model if a new image has been
+     * selected.
+     */
     public selectBackImgListener getSelectBackImgListener(MapView mapPanel, MapEditorView editorPanel) {
         return new selectBackImgListener(mapPanel, editorPanel, this.newMap);
     }
 
-    public void clearMapModel(){
+    /**
+     * Method that tells the map model to clear itself. That will automatically
+     * updates the views too.
+     */
+    public void clearMapModel() {
         this.newMap.clearMap();
     }
-    
+
     /**
      * Class to handle clicks on the "add" button listener to add continents
      */
     public class AddContinentButtonListener implements ActionListener {
 
+        /**
+         * map that is being edited
+         */
         protected EditableMapModel newMap;
 
+        /**
+         * constructor
+         *
+         * @param mapModel map that is being edited
+         */
         public AddContinentButtonListener(EditableMapModel mapModel) {
             newMap = mapModel;
         }
 
+        /**
+         * listener
+         *
+         * @param e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             boolean success = newMap.addContinent();
@@ -122,21 +169,43 @@ public class MapEditorController {
      */
     public class ContinentMouseListener implements MouseListener {
 
+        /**
+         * map that is being edited
+         */
         public EditableMapModel newMap;
 
+        /**
+         * Constructor
+         *
+         * @param mapModel
+         */
         public ContinentMouseListener(EditableMapModel mapModel) {
             newMap = mapModel;
         }
 
+        /**
+         * handles clicks
+         *
+         * @param e
+         */
         @Override
         public void mouseClicked(MouseEvent e) {
         }
 
+        /**
+         * handles pressings of mouse
+         *
+         * @param e
+         */
         @Override
         public void mousePressed(MouseEvent e) {
-
         }
 
+        /**
+         * handles the releases of the mouse
+         *
+         * @param e
+         */
         @Override
         public void mouseReleased(MouseEvent e) {
 
@@ -149,6 +218,16 @@ public class MapEditorController {
                 return;
             }
 
+            releaseHandling(e, sourceObj);
+        }
+
+        /**
+         * updates of the model when the mouse has been released
+         *
+         * @param e mouse event
+         * @param sourceObj object that has been clicked on
+         */
+        private void releaseHandling(MouseEvent e, Object sourceObj) {
             JLabel clickedLabel = (JLabel) sourceObj;
             ContinentListPanel clickedPanel = (ContinentListPanel) clickedLabel.getParent();
 
@@ -176,17 +255,32 @@ public class MapEditorController {
             }
         }
 
+        /**
+         * handles the entering of the mouse into a component
+         *
+         * @param e
+         */
         @Override
         public void mouseEntered(MouseEvent e) {
-
         }
 
+        /**
+         * handles the exiting of the mouse out of a component
+         *
+         * @param e
+         */
         @Override
         public void mouseExited(MouseEvent e) {
-
         }
     }
 
+    /**
+     * Load a map from a map file that contains all informations.
+     *
+     * @param path path to the file that contains the information on the map
+     * being loaded
+     * @param view view of the map being edited
+     */
     public void loadMapFromFile(String path, MapView view) {
         MapModel map = new MapModel();
         int errorCode;
@@ -208,8 +302,9 @@ public class MapEditorController {
         });
 
         //set new image
-        if(map.getImage()!=null)
+        if (map.getImage() != null) {
             this.newMap.setImage(map.getImage(), new Dimension(200, 50));
+        }
 
         //add continents
         map.getGraphContinents().values().stream().forEach((c) -> {
@@ -233,6 +328,15 @@ public class MapEditorController {
             });
         });
 
+        updateConfigurationInfo(map);
+    }
+
+    /**
+     * Update the map model being edited with new configuration parameters
+     *
+     * @param map model of a map that contains the new configuration parameters
+     */
+    public void updateConfigurationInfo(MapModel map) {
         this.newMap.setAuthorConfig(map.getConfigurationInfo().getAuthor());
         this.newMap.setScrollConfig(map.getConfigurationInfo().getScroll());
         this.newMap.setWarnConfig(map.getConfigurationInfo().isWarn());
@@ -240,6 +344,12 @@ public class MapEditorController {
         this.newMap.setImagePath(map.getConfigurationInfo().getImagePath());
     }
 
+    /**
+     * call to the method that will save the current map being edited into a
+     * file
+     *
+     * @param path path to the new file
+     */
     public void saveMapToFile(String path) {
         MapFileManagement.generateBoardFile(path, this.newMap.getInternalMap());
     }
@@ -249,24 +359,62 @@ public class MapEditorController {
      */
     protected class MapMouseController implements MouseListener {
 
+        /**
+         * Map being edited
+         */
         public EditableMapModel newMap;
 
+        /**
+         * Constructor
+         *
+         * @param mapModel map being edited
+         */
         public MapMouseController(EditableMapModel mapModel) {
             newMap = mapModel;
         }
 
+        /**
+         * handles clicks
+         *
+         * @param e
+         */
+        @Override
         public void mouseClicked(MouseEvent e) {
         }
 
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        public void mouseExited(MouseEvent e) {
-        }
-
+        /**
+         * handles pressings of mouse
+         *
+         * @param e
+         */
+        @Override
         public void mousePressed(MouseEvent e) {
         }
 
+        /**
+         * handles the entering of the mouse into a component
+         *
+         * @param e
+         */
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        /**
+         * handles the exiting of the mouse out of a component
+         *
+         * @param e
+         */
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+
+        /**
+         * handles the releasing of the mouse
+         *
+         * @param e
+         */
+        @Override
         public void mouseReleased(MouseEvent e) {
             if (SwingUtilities.isLeftMouseButton(e)) {
                 MapView clickedPanel = (MapView) e.getSource();
@@ -293,94 +441,157 @@ public class MapEditorController {
     }
 
     /**
-     * Listeners for buttons
+     * Function to tell the model to update a territory
+     * @param territoryName terirtory to be updated
+     * @param targetButton button of the territory on the map view
+     */
+    public void updateTerritory(String territoryName, CountryButton2 targetButton) {
+        String[] continentList = newMap.getContinentList();
+        TerritoryModel territoryModel = newMap.getTerritoryByName(territoryName);
+        String continentName = territoryModel.getContinentName();
+
+        //get information from the user
+        JPanel mapPanel = (JPanel) targetButton.getParent();
+        Map<String, String> data = ((MapView) mapPanel).modifyTerritory(continentList, territoryName, continentName);
+
+        //if succeeded update the model's data
+        if (!data.isEmpty()) {
+            data.put("name", territoryName);
+            this.newMap.updateTerritory(data);
+        }
+    }
+
+    /**
+     * Function to tell the model to add a new link between two territories
+     * @param territoryName name of the territory
+     * @param clickedPanel panel that have been clicked which contains the button of the territory
+     */
+    public void linkTerritory(String territoryName, MapView clickedPanel) {
+        String[] territoryList = newMap.getPotentialNeighbours(territoryName);
+        String neighbourName;
+
+        if (territoryList.length == 0) {
+            clickedPanel.showError("No potential neighbour available.");
+            return;
+        }
+
+        neighbourName = clickedPanel.createLink(territoryList, territoryName);
+
+        if (!"".equals(neighbourName) && neighbourName != null) {
+            newMap.addLink(territoryName, neighbourName);
+        }
+    }
+
+    /**
+     * Function to tell the model to remove link between two territories
+     * @param territoryName name of the territory
+     * @param clickedPanel panel that have been clicked which contains the button of the territory
+     */
+    public void unLinkTerritories(String territoryName, MapView clickedPanel) {
+        String neighbourName;
+        
+        //get list of neighbours' names
+        LinkedList<TerritoryModel> neighbourList = newMap.getTerritoryByName(territoryName).getAdj();
+
+        if (neighbourList.isEmpty()) {
+            clickedPanel.showError("No neighbour found for this territory");
+            return;
+        }
+
+        LinkedList<String> neighbourStringList = new LinkedList<>();
+        for (TerritoryModel neighbourModel : neighbourList) {
+            neighbourStringList.add(neighbourModel.getName());
+        }
+
+        neighbourName = clickedPanel.removeLink(neighbourStringList);
+        if (!"".equals(neighbourName) && neighbourName != null) {
+            newMap.removeLink(territoryName, neighbourName);
+        }
+    }
+
+    /**
+     * Listeners for territories buttons on the map view
      */
     protected class ButtonMouseController implements MouseListener {
 
+        /**
+         * map model being edited
+         */
         public EditableMapModel newMap;
 
+        /**
+         * Constructor
+         *
+         * @param mapModel ma pmodel being edited
+         */
         public ButtonMouseController(EditableMapModel mapModel) {
             newMap = mapModel;
         }
 
+        /**
+         * handles clicks
+         *
+         * @param e
+         */
+        @Override
         public void mouseClicked(MouseEvent e) {
             if (SwingUtilities.isLeftMouseButton(e)) {
-
                 CountryButton2 targetButton = (CountryButton2) e.getSource();
-                String className = targetButton.getClass().getName();
-
                 MapView clickedPanel = (MapView) targetButton.getParent();
                 Tools toolName = clickedPanel.getCurrentTool();
                 String territoryName = targetButton.getName();
-                String neighbourName;
 
                 switch (toolName) {
                     case CREATE:
                         break;
 
                     case EDIT:
-                        String[] continentList = newMap.getContinentList();
-                        TerritoryModel territoryModel = newMap.getTerritoryByName(territoryName);
-                        String continentName = territoryModel.getContinentName();
-
-                        //get information from the user
-                        JPanel mapPanel = (JPanel) targetButton.getParent();
-                        Map<String, String> data = ((MapView) mapPanel).modifyTerritory(continentList, territoryName, continentName);
-
-                        //if succeeded update the model's data
-                        if (!data.isEmpty()) {
-                            data.put("name", territoryName);
-                            this.newMap.updateTerritory(data);
-                        }
+                        updateTerritory(territoryName, targetButton);
                         break;
 
                     case LINK:
-                        String[] territoryList = newMap.getPotentialNeighbours(territoryName);
-
-                        if (territoryList.length == 0) {
-                            clickedPanel.showError("No potential neighbour available.");
-                            return;
-                        }
-
-                        neighbourName = clickedPanel.createLink(territoryList, territoryName);
-
-                        if (!"".equals(neighbourName) && neighbourName != null) {
-                            newMap.addLink(territoryName, neighbourName);
-                        }
+                        linkTerritory(territoryName, clickedPanel);
                         break;
 
                     case UNLINK:
-                        //get list of neighbours' names
-                        LinkedList<TerritoryModel> neighbourList = newMap.getTerritoryByName(territoryName).getAdj();
-
-                        if (neighbourList.isEmpty()) {
-                            clickedPanel.showError("No neighbour found for this territory");
-                            return;
-                        }
-
-                        LinkedList<String> neighbourStringList = new LinkedList<>();
-                        for (TerritoryModel neighbourModel : neighbourList) {
-                            neighbourStringList.add(neighbourModel.getName());
-                        }
-
-                        neighbourName = clickedPanel.removeLink(neighbourStringList);
-                        if (!"".equals(neighbourName) && neighbourName != null) {
-                            newMap.removeLink(territoryName, neighbourName);
-                        }
+                        unLinkTerritories(territoryName, clickedPanel);
                         break;
                 }
             }
         }
 
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        public void mouseExited(MouseEvent e) {
-        }
-
+        /**
+         * handles pressings of mouse
+         *
+         * @param e
+         */
+        @Override
         public void mousePressed(MouseEvent e) {
         }
 
+        /**
+         * handles the entering of the mouse into a component
+         *
+         * @param e
+         */
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        /**
+         * handles the exiting of the mouse out of a component
+         *
+         * @param e
+         */
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+
+        /**
+         * handles the releasing of the mouse
+         *
+         * @param e
+         */
         public void mouseReleased(MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e)) {
                 Object sourceObj = e.getSource();
@@ -393,18 +604,42 @@ public class MapEditorController {
         }
     }
 
+    /**
+     * Listener of the background image selector for the map being edited
+     */
     public class selectBackImgListener implements DocumentListener {
 
+        /**
+         * view for the edition of the map
+         */
         protected MapView mapPanel;
+        
+        /**
+         * the whole map editor panel which contains the mapPanel
+         */
         protected MapEditorView editorPanel;
+        
+        /**
+         * map being edited
+         */
         public EditableMapModel mapModel;
 
+        /**
+         * Constructor.
+         * @param mapPanel view for the edition of the map
+         * @param editorPanel the whole map editor panel which contains the mapPanel
+         * @param mapModel map being edited
+         */
         public selectBackImgListener(MapView mapPanel, MapEditorView editorPanel, EditableMapModel mapModel) {
             this.mapPanel = mapPanel;
             this.editorPanel = editorPanel;
             this.mapModel = mapModel;
         }
 
+        /**
+         * Update the path of the selected image into the model when it has been selected on the view
+         * @param e 
+         */
         @Override
         public void insertUpdate(DocumentEvent e) {
             File sourceImage;
@@ -437,86 +672,173 @@ public class MapEditorController {
 
     }
 
+    /**
+     * getter for WarnCheckBoxListener
+     * @return a WarnCheckBoxListener
+     */
     public WarnCheckBoxListener getWarnCheckBoxListener() {
         return new WarnCheckBoxListener(this.newMap);
     }
 
+    /**
+     * getter for WrapCheckBoxListener
+     * @return a WrapCheckBoxListener
+     */
     public WrapCheckBoxListener getWrapCheckBoxListener() {
         return new WrapCheckBoxListener(this.newMap);
     }
 
+    /**
+     * getter for ScrollBoxListener
+     * @return a ScrollBoxListener
+     */
     public ScrollBoxListener getScrollBoxListener() {
         return new ScrollBoxListener(this.newMap);
     }
 
+    /**
+     * getter for AuthorTextFieldListener
+     * @return a AuthorTextFieldListener
+     */
     public AuthorTextFieldListener getAuthorTextFieldListener() {
         return new AuthorTextFieldListener(this.newMap);
     }
 
+    /**
+     * Listener of the warn checkbox, one of the parameters of the map
+     */
     public class WarnCheckBoxListener implements ItemListener {
 
+        /**
+         * Model to be edited
+         */
         public EditableMapModel newMap;
 
+        /**
+         * Constructor
+         * @param newMap 
+         */
         public WarnCheckBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
         }
 
+        /**
+         * Called when the state of the box has changed
+         * @param e 
+         */
+        @Override
         public void itemStateChanged(ItemEvent e) {
             JCheckBox box = (JCheckBox) e.getItem();
             this.newMap.setWarnConfig(box.isSelected());
         }
     }
 
+    /**
+     * Listener of the wrap checkbox, one of the parameters of the map
+     */
     public class WrapCheckBoxListener implements ItemListener {
 
+        /**
+         * Map being edited
+         */
         public EditableMapModel newMap;
 
+        /**
+         * Constructor
+         * @param newMap 
+         */
         public WrapCheckBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
         }
 
+        /**
+         * Called when the state of the box has changed
+         * @param e 
+         */
+        @Override
         public void itemStateChanged(ItemEvent e) {
             JCheckBox box = (JCheckBox) e.getItem();
             this.newMap.setWrapConfig(box.isSelected());
         }
     }
 
+    /**
+     * Listener to change the scroll style of the map 
+     */
     public class ScrollBoxListener implements ItemListener {
 
+        /**
+         * Map being edited
+         */
         public EditableMapModel newMap;
 
+        /**
+         * Constructor
+         * @param newMap 
+         */
         public ScrollBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
         }
 
+        /**
+         * Called when a new item has been selected 
+         * @param e 
+         */
+        @Override
         public void itemStateChanged(ItemEvent e) {
             this.newMap.setScrollConfig((String) e.getItem());
         }
     }
 
+    /**
+     * Listener on the text field of the parameters panel which enables to enter a new author name.
+     */
     public class AuthorTextFieldListener implements DocumentListener {
 
+        /**
+         * Map being edited
+         */
         public EditableMapModel newMap;
 
+        /**
+         * Constructor
+         * @param newMap 
+         */
         public AuthorTextFieldListener(EditableMapModel newMap) {
             this.newMap = newMap;
         }
 
+        /**
+         * Updates the model when a new character has been inserted
+         * @param e 
+         */
         @Override
         public void insertUpdate(DocumentEvent e) {
             update(e);
         }
 
+        /**
+         * Updates the model when a character has been removed
+         * @param e 
+         */
         @Override
         public void removeUpdate(DocumentEvent e) {
             update(e);
         }
 
+        /**
+         * Updates the model when there have been changes in the document
+         * @param e 
+         */
         @Override
         public void changedUpdate(DocumentEvent e) {
             update(e);
         }
 
+        /**
+         * Updates the model when the text has been updated.
+         * @param e 
+         */
         private void update(DocumentEvent e) {
             String text = null;
             try {
