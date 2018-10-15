@@ -24,16 +24,43 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
+ * View on the map being edited. Part of the map editor.
  *
  * @author timot
+ * @see MapModelObserver
  */
 public class MapView extends JPanel implements MapModelObserver {
 
+    /**
+     * Background image of the map being edited.
+     */
     protected Image backgroundImage;
+
+    /**
+     * List of the buttons representing countries.
+     */
     protected HashMap<String, CountryButton2> countriesButtons;
+
+    /**
+     * Dimension of the buttons representing territories.
+     */
     protected Dimension buttonsDims = new Dimension(100, 20);
+
+    /**
+     * *
+     * Controller of the map editor
+     */
     private MapEditorController controller;
+
+    /**
+     * *
+     * Current tool in use.
+     */
     protected Tools selectedTool;
+
+    /**
+     * Links between countries to be rendered calling the repaint method.
+     */
     protected HashMap<String, Line2D> links;
 
     /**
@@ -45,21 +72,30 @@ public class MapView extends JPanel implements MapModelObserver {
         this.links = new HashMap<>();
         this.setBackground(Color.white);
         this.setLayout(null);
-
         controller = editorController;
         this.addMouseListener(controller.getMapMouseListener());
     }
 
+    /**
+     * Getter of the current tool in use
+     *
+     * @return the current tool in use in the editor
+     */
     public Tools getCurrentTool() {
         return this.selectedTool;
     }
 
+    /**
+     * Set the new tool to use in the editor
+     *
+     * @param toolInUse tool which gets the focus.
+     */
     public void setCurrentTool(Tools toolInUse) {
         this.selectedTool = toolInUse;
     }
 
     /**
-     * Change background image of the map
+     * Change the background image of the map
      *
      * @param backgroundImage
      */
@@ -70,14 +106,18 @@ public class MapView extends JPanel implements MapModelObserver {
 
     @Override
     /**
-     * To paint the images into the JPanel
+     * To paint the background image and the links between territories into the
+     * JPanel
      */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        //background image
         if (backgroundImage != null) {
             g.drawImage(backgroundImage, 0, 0, null);
         }
 
+        //links
         Graphics2D g2 = (Graphics2D) g;
         this.links.values().forEach((link) -> {
             g2.draw(link);
@@ -104,10 +144,22 @@ public class MapView extends JPanel implements MapModelObserver {
         }
     }
 
+    /**
+     * Getter on the button's dimensions
+     *
+     * @return the dimension of the buttons
+     */
     public Dimension getButtonDimension() {
         return buttonsDims;
     }
 
+    /**
+     * Add a new territory on the map.
+     *
+     * @param posX
+     * @param posY
+     * @param newName Name of the new territory
+     */
     protected void addTerritory(int posX, int posY, String newName) {
         //add to view
         CountryButton2 newCountryButton = new CountryButton2(posX, posY, newName, buttonsDims);
@@ -123,14 +175,104 @@ public class MapView extends JPanel implements MapModelObserver {
         repaint();
     }
 
+    /**
+     * Update the name of a territory in response to a notification from observable model.
+     * @param object New name of the territory
+     */
+    public void updateTerritoryName(Object object) {
+        CountryButton2 territoryButton;
+        Map<String, String> data = (Map<String, String>) object;
+        String formerName = data.get("name");
+        String newName = data.get("newName");
+
+        territoryButton = this.countriesButtons.remove(formerName);
+        if (territoryButton != null) {
+            territoryButton.setName(newName);
+            countriesButtons.put(newName, territoryButton);
+        }
+    }
+
+    /**
+     * Update the position of a button representing a territory in response to a notification from observable model.
+     * @param object model of the territory to get its coordinates.
+     */
+    public void updateTerritoryPos(Object object) {
+        CountryButton2 territoryButton;
+        TerritoryModel territoryModel = (TerritoryModel) object;
+        territoryButton = this.countriesButtons.get(territoryModel.getName());
+        territoryButton.setPosition(territoryModel.getPositionX(), territoryModel.getPositionY());
+    }
+
+    /**
+     * Remove a link between two territories in response to a notification from observable model.
+     * @param object names of the two countries that are linked.
+     */
+    public void removeLink(Object object) {
+        String name1;
+        String name2;
+        String[] linkNames = (String[]) object;
+
+        //get key of the link
+        if (getAsciiValue(linkNames[0]) > getAsciiValue(linkNames[1])) {
+            name1 = linkNames[0];
+            name2 = linkNames[1];
+        } else {
+            name1 = linkNames[1];
+            name2 = linkNames[0];
+        }
+        String linkName = name1 + ";" + name2;
+
+        //remove from list of links
+        links.remove(linkName);
+
+        //undraw
+        repaint();
+    }
+
+    /**
+     * Add a new link on the map between two territories in response to a notification from observable model.
+     * @param object Names of the territories to be linked.
+     */
+    public void addLink(Object object) {
+        String[] linkNames = (String[]) object;
+        String name1;
+        String name2;
+
+        CountryButton2 firstItem = this.countriesButtons.get(linkNames[0]);
+        CountryButton2 secondItem = this.countriesButtons.get(linkNames[1]);
+
+        //create line to be drawn
+        Line2D newLink = new Line2D.Double();
+        newLink.setLine(firstItem.getBounds().x + ((double) this.buttonsDims.width / 2.),
+                firstItem.getBounds().y + ((double) this.buttonsDims.height / 2.),
+                secondItem.getBounds().x + ((double) this.buttonsDims.width / 2.),
+                secondItem.getBounds().y + ((double) this.buttonsDims.height / 2.));
+
+        //define a name
+        if (getAsciiValue(linkNames[0]) > getAsciiValue(linkNames[1])) {
+            name1 = linkNames[0];
+            name2 = linkNames[1];
+        } else {
+            name1 = linkNames[1];
+            name2 = linkNames[0];
+        }
+
+        //add to list
+        links.put(name1 + ";" + name2, newLink);
+
+        //draw line
+        repaint();
+    }
+
+    /**
+     * Function of the observer interface that update the view in response to an update of the model.
+     * @param updateType type of the change that has been performed on the model.
+     * @param object Can be different regarding the update type.
+     */
     @Override
     public void update(UpdateTypes updateType, Object object) {
         String territoryName;
-        CountryButton2 territoryButton;
         TerritoryModel territoryModel;
-        String name1;
-        String name2;
-        String[] linkNames;
 
         switch (updateType) {
             case ADD_TERRITORY:
@@ -142,79 +284,31 @@ public class MapView extends JPanel implements MapModelObserver {
                 removeTerritory(territoryName);
                 break;
             case UPDATE_TERRITORY_NAME:
-                Map<String, String> data = (Map<String, String>) object;
-                String formerName = data.get("name");
-                String newName = data.get("newName");
-
-                territoryButton = this.countriesButtons.remove(formerName);
-                if (territoryButton != null) {
-                    territoryButton.setName(newName);
-                    countriesButtons.put(newName, territoryButton);
-                }
+                updateTerritoryName(object);
                 break;
             case UPDATE_TERRITORY_POS:
-                territoryModel = (TerritoryModel) object;
-                territoryButton = this.countriesButtons.get(territoryModel.getName());
-                territoryButton.setPosition(territoryModel.getPositionX(), territoryModel.getPositionY());
+                updateTerritoryPos(object);
                 break;
             case UPDATE_BACKGROUND_IMAGE:
                 break;
             case UPDATE_CONTINENT:
                 break;
             case REMOVE_LINK:
-                linkNames = (String[]) object;
-
-                //get key of the link
-                if (getAsciiValue(linkNames[0]) > getAsciiValue(linkNames[1])) {
-                    name1 = linkNames[0];
-                    name2 = linkNames[1];
-                } else {
-                    name1 = linkNames[1];
-                    name2 = linkNames[0];
-                }
-                String linkName = name1 + ";" + name2;
-
-                //remove from list of links
-                links.remove(linkName);
-
-                //undraw
-                repaint();
+                removeLink(object);
                 break;
             case ADD_LINK:
-                linkNames = (String[]) object;
-                CountryButton2 firstItem = this.countriesButtons.get(linkNames[0]);
-                CountryButton2 secondItem = this.countriesButtons.get(linkNames[1]);
-
-                //create line to be drawn
-                Line2D newLink = new Line2D.Double();
-                newLink.setLine(firstItem.getBounds().x + ((double) this.buttonsDims.width / 2.),
-                        firstItem.getBounds().y + ((double) this.buttonsDims.height / 2.),
-                        secondItem.getBounds().x + ((double) this.buttonsDims.width / 2.),
-                        secondItem.getBounds().y + ((double) this.buttonsDims.height / 2.));
-
-                //define a name
-                if (getAsciiValue(linkNames[0]) > getAsciiValue(linkNames[1])) {
-                    name1 = linkNames[0];
-                    name2 = linkNames[1];
-                } else {
-                    name1 = linkNames[1];
-                    name2 = linkNames[0];
-                }
-
-                //add to list
-                links.put(name1 + ";" + name2, newLink);
-
-                //draw line
-                repaint();
+                addLink(object);
                 break;
         }
     }
 
     /**
-     * Trick to find an order between two Strings
+     * Trick to find an order between two Strings Compute the sum of the ascii
+     * values of the characters of the string.
      *
      * @param string
-     * @return
+     * @return the value of the sum of the ascii values of the String in
+     * parameter.
      */
     public int getAsciiValue(String string) {
         int sum = 0;
@@ -228,10 +322,10 @@ public class MapView extends JPanel implements MapModelObserver {
      * Ask the user to modify a Territory's informations. It shows up when the
      * user clicked left on a Territory button.
      *
-     * @param continentsList
-     * @param territoryName
-     * @param continentName
-     * @return
+     * @param continentsList list of the continents that can be selected as continent by the territory.
+     * @param territoryName name of the current territory that will be modified.
+     * @param continentName name of the current continent of the territory to be modified.
+     * @return the new territory informations gathered from the user.
      */
     public Map<String, String> modifyTerritory(String[] continentsList, String territoryName, String continentName) {
         Map<String, String> data = new HashMap<>();
@@ -258,6 +352,12 @@ public class MapView extends JPanel implements MapModelObserver {
         }
     }
 
+    /**
+     * When this tool is selected, opens a dialog to ask the user to add a neighbour to a given territory he/she selected.
+     * @param territoryArray List of the territories that can be neighbours.
+     * @param territoryName name of the territory that is modified.
+     * @return the name of the new neighbour that has been selected by the user.
+     */
     public String createLink(String[] territoryArray, String territoryName) {
 
         String boxName = "Add link to " + territoryName;
@@ -298,6 +398,11 @@ public class MapView extends JPanel implements MapModelObserver {
         return neighbour;
     }
 
+    /**
+     * Tool of the map panel that allows the user to remove a link between two territories.
+     * @param neighbourStringList
+     * @return the name of the neighbour that the user wants to remove.
+     */
     public String removeLink(LinkedList<String> neighbourStringList) {
         String boxName = "Remove link";
         String[] territoryArray = neighbourStringList.toArray(new String[neighbourStringList.size()]);
@@ -315,7 +420,7 @@ public class MapView extends JPanel implements MapModelObserver {
     /**
      * Show a popup error to the user to inform of an error
      *
-     * @param errorMessage
+     * @param errorMessage message to be displayed into the dialog.
      */
     public void showError(String errorMessage) {
         JOptionPane.showMessageDialog(null,

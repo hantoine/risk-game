@@ -16,6 +16,9 @@ import java.util.LinkedList;
  */
 public class HandModel {
 
+    /**
+     * cards it is the group of cards of the hand
+     */
     private LinkedList<CardModel> cards;
 
     /**
@@ -85,11 +88,11 @@ public class HandModel {
         (cardDuplicates[0]>=1 && cardDuplicates[1]>=1 && cardDuplicates[2]>=1);
     }
     
-        /**
+    /**
      * Removes the cards from a players hand depending on their type
      *
      * @param typeOfArmie type of card
-     * @param the deck of card in which to put the card removed
+     * @param deck deck of card in which to put the card removed
      */
     public void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
         String[] typeOfArmieDum = {"infantry", "artillery", "cavalry"};

@@ -12,15 +12,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
+ * This class represents the phase panel
  * @author Nellybett
  */
 public class PhasePanel extends JPanel {
 
+    /**
+     * endPhase button to finish a phase
+     */
     final private JButton endPhase;
+    /**
+     * handCards button to hand cards
+     */
     final private JButton handCards;
+    /**
+     * text information that informs a player about the current phase
+     */
     final private JLabel text;
 
+    /**
+     * Constructor
+     */
     public PhasePanel() {
         this.text = new JLabel();
         this.endPhase = new JButton("End Phase");
@@ -35,6 +47,10 @@ public class PhasePanel extends JPanel {
         this.add(this.handCards);
     }
 
+    /**
+     * Updates the view to the current phase
+     * @param rm receives a model
+     */
     public void updateView(RiskModel rm) {
         PlayerModel currentPlayer = rm.getCurrentPlayer();
         switch (rm.getPhase()) {
@@ -71,10 +87,18 @@ public class PhasePanel extends JPanel {
         this.setVisible(true);
     }
 
+    /**
+     * Getter of the endPhase attribute
+     * @return endPhase
+     */
     public JButton getEndPhase() {
         return endPhase;
     }
 
+    /**
+     * Getter of the handCards attribute
+     * @return handCards
+     */
     public JButton getHandCards() {
         return handCards;
     }

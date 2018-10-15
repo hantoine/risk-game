@@ -25,16 +25,23 @@ import java.util.Observable;
  */
 public abstract class PlayerModel extends Observable {
 
+    /**
+     * name the name of the player
+     * color the color of the player
+     * contriesOwned countries owned by a player
+     * cardsOwned cards owned by a player
+     * numArmiesAvailable the number of armies available to place
+     * returnedCards the number of cards that have been returned
+     * game the game in which this player belongs to
+     * currentFortificationMove the current movement in the fortification phase
+     */
     private String name;
     private Color color;
     private Collection<TerritoryModel> contriesOwned;
     private Collection<ContinentModel> continentsOwned;
     private HandModel cardsOwned;
     private int numArmiesAvailable;
-    private int returnedCards;
-    /**
-     * The game in which this player belongs to
-     */
+    private int returnedCards;  
     private RiskModel game;
     private FortificationMove currentFortificationMove;
 
@@ -419,10 +426,18 @@ public abstract class PlayerModel extends Observable {
         this.notifyObservers(cardsOperation);
     }
 
+    /**
+     * Getter of the currentFortificationMove attribute
+     * @return 
+     */
     public FortificationMove getCurrentFortificationMove() {
         return currentFortificationMove;
     }
 
+    /**
+     * Setter of the currentFortificationMove attribute
+     * @param currentFortificationMove 
+     */
     public void setCurrentFortificationMove(FortificationMove currentFortificationMove) {
         this.currentFortificationMove = currentFortificationMove;
     }

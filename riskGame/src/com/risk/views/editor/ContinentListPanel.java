@@ -20,15 +20,34 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Panel that contains the informations of the continents and that allows to update the list.
  * @author timot
+ * @see MapModelObserver
+ * @see CustomListPanel
  */
 public class ContinentListPanel extends CustomListPanel implements MapModelObserver {
-
+    /**
+     * Controller of the map editor useful to get the listeners to be attached on this panel's components. 
+     */
     private MapEditorController controller;
+    
+    /**
+     * Hashmap containing the list of continents.
+     */
     private HashMap<String, Component> items;
+    
+    /**
+     * Button to add new continents.
+     */
     private JButton addButton;
 
+    /**
+     * Constructor.
+     * @param width
+     * @param height
+     * @param editorController Controller of the map editor.
+     * @param continentList List of the continents to be added on this panel.
+     */
     public ContinentListPanel(Integer width, Integer height, MapEditorController editorController, String[] continentList) {
         //setup component
         super(width, height);
@@ -40,17 +59,20 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
 
         //setup add button
         this.addButton = new JButton("Add Continent");
-
         this.addButton.addActionListener(editorController.getAddContinentButtonListener());
-
         this.add(addButton, gbc);
 
+        //add a dummy label for the display
         addDummyLabel();
         for (String continentName : continentList) {
             this.addContinent(continentName);
         }
     }
 
+    /**
+     * Add a dummy label for having a good display of the elements using GridBagConstraints.
+     * @see GridBagConstraints
+     */
     public void addDummyLabel() {
         GridBagConstraints dummyGbc = new GridBagConstraints();
         dummyGbc.weighty = 1;
@@ -60,12 +82,22 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
         this.add(this.dummyLabel, dummyGbc);
     }
 
+    /**
+     * Function that will be called any time a new continent is created in order to customize its appearance.
+     * @param label JLabel to be customized.
+     * @param name Name of the continent.
+     */
     private void customize(JLabel label, String name) {
         label.setText(name);
         label.setBackground(Color.white);
         label.setFont(new java.awt.Font("Arial", Font.PLAIN, 12));
     }
 
+    /**
+     * Add a new continent to the list of continents.
+     * @param newComponent Continent's container.
+     * @param name Name of the continent.
+     */
     @Override
     public void addElement(Component newComponent, String name) {
         if (!"javax.swing.JLabel".equals(newComponent.getClass().getName())) {
@@ -92,12 +124,11 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
         repaint();
     }
 
-    @Override
     /**
-     * Remove a component by name
-     *
-     * @param name
+     * Remove a continent from the list.
+     * @param name 
      */
+    @Override
     public void removeElement(String name) {
         this.remove(items.get(name));
         this.items.remove(name);
@@ -106,14 +137,29 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
         repaint();
     }
 
+    /**
+     * Add a new continent calling the inherited method from CustomListPanel. 
+     * @param continentName 
+     * @see CustomListPanel
+     */
     public void addContinent(String continentName) {
         addElement(new JLabel(continentName), continentName);
     }
 
+    /**
+     * Remove a new continent calling the inherited method from CustomListPanel. 
+     * @param continentName 
+     * @see CustomListPanel
+     */
     public void removeContinent(String continentName) {
         removeElement(continentName);
     }
 
+    /**
+     * Method from the MapModelObserver interface that will update the view when the model will change. 
+     * @param updateType Nature of the update.
+     * @param object Object to be used to do the update. 
+     */
     @Override
     public void update(UpdateTypes updateType, Object object) {
         String continentName;
@@ -145,6 +191,12 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
         }
     }
 
+    /**
+     * Get modification informations from the user. 
+     * @param formerName Current name to be printed which will become the former name of the continent to be modified.
+     * @param bonusScore Bonus score to be printed.
+     * @return an object containing the user inputs.
+     */
     public Map<String, String> modifyContinent(String formerName, int bonusScore) {
         Map<String, String> data = new HashMap<>();
 

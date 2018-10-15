@@ -21,7 +21,13 @@ import java.util.List;
  */
 public class GameController {
 
+    /**
+     * modelRisk It is an attribute that represents a reference to the model
+     */
     RiskModel modelRisk;
+    /**
+     * riskView It is an attribute that represents a reference to the view
+     */
     RiskView riskView;
 
     /**
@@ -54,6 +60,9 @@ public class GameController {
         riskView.updateView(modelRisk);
     }
 
+    /**
+     * Final steps after finishing a phase
+     */
     private void executeEndOfPhaseSteps() {
         switch (modelRisk.getPhase()) {
             case STARTUP:
@@ -70,6 +79,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Steps at the beginning of a phase
+     */
     private void executeBeginningOfPhaseSteps() {
         switch (modelRisk.getPhase()) {
             case STARTUP:

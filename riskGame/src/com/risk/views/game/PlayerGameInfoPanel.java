@@ -18,10 +18,25 @@ import javax.swing.JPanel;
  */
 public final class PlayerGameInfoPanel extends JPanel {
 
+    /**
+     * playerName name of the player
+     */
     private final JButton playerName;
+    /**
+     * numArmiesOwned the number of armies owned by the player
+     */
     private final JButton numArmiesOwned;
+    /**
+     * numCountries the number of countries owned by the player
+     */
     private final JButton numCountries;
+    /**
+     * numContinents the number of continent owned by the player
+     */
     private final JButton numContinents;
+    /**
+     * numCards the number of cards owned by the player
+     */
     private final JButton numCards;
 
     /**
