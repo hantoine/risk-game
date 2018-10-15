@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.views.player;
+package com.risk.views.game;
 
 import com.risk.models.RiskModel;
-import com.risk.models.interfaces.PlayerModel;
+import com.risk.models.PlayerModel;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;

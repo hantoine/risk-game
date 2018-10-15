@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.models.interfaces;
+package com.risk.models;
 
 import com.risk.controllers.GameController;
 import com.risk.models.CardModel;

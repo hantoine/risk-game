@@ -8,7 +8,7 @@ package com.risk.controllers;
 import com.risk.models.FortificationMove;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
-import com.risk.models.interfaces.PlayerModel;
+import com.risk.models.PlayerModel;
 import com.risk.views.RiskView;
 import java.util.LinkedList;
 import java.util.List;

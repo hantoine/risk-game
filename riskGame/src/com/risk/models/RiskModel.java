@@ -5,7 +5,6 @@
  */
 package com.risk.models;
 
-import com.risk.models.interfaces.PlayerModel;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -5,7 +5,6 @@
  */
 package com.risk.models;
 
-import com.risk.models.interfaces.PlayerModel;
 import java.util.LinkedList;
 
 /**
