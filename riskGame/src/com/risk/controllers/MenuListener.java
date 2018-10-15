@@ -7,12 +7,12 @@ package com.risk.controllers;
 
 import com.risk.models.HumanPlayerModel;
 import com.risk.models.MapFileManagement;
-import com.risk.models.interfaces.PlayerModel;
 import com.risk.models.RiskModel;
-import com.risk.views.menu.DeletableButton;
-import com.risk.views.menu.PlayerListPanel;
+import com.risk.models.interfaces.PlayerModel;
 import com.risk.views.RiskView;
+import com.risk.views.menu.DeletableButton;
 import com.risk.views.menu.NewGamePanel;
+import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.menu.PlayerPanel;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -31,9 +31,21 @@ import javax.swing.JOptionPane;
  */
 public class MenuListener extends MouseAdapter {
 
+    /**
+     * riskModel it represents the model of the game
+     */
     private RiskModel riskModel;
+    /**
+     * riskView it is a reference to the main view in the game
+     */
     private RiskView riskView;
+    /**
+     * playerList it is a reference to the view that has a list of player panels in the menu
+     */
     private PlayerListPanel playerList;
+    /**
+     * riskController it is a reference to the controller of the game
+     */
     private RiskController riskController;
 
     /**
@@ -107,7 +119,7 @@ public class MenuListener extends MouseAdapter {
                 }
                 break;
             case "PLAY":
-                NewGamePanel newGamePanel = this.getRiskView().getMenuPanel().getStartMenu().getNewGamePanel();
+                NewGamePanel newGamePanel = this.getRiskView().getNewGamePanel();
                 String selectedPath = newGamePanel.getSelectFileTextField().getText();
 
                 if (selectedPath.equals("")) {
@@ -126,16 +138,17 @@ public class MenuListener extends MouseAdapter {
                     break;
                 }
 
-                this.getRiskView().getMenuPanel().setVisible(false);
-                this.getRiskView().remove(this.getRiskView().getMenuPanel());
-                this.getRiskView().hideMenu();
-                this.getRiskView().getStagePanel().setVisible(true);
+                this.getRiskView().closeMenu();
 
                 LinkedList<PlayerPanel> listPlayerPanels = newGamePanel.getPlayersPanel().getPlayersArray();
                 LinkedList<PlayerModel> listPlayers = new LinkedList<>();
                 for (int i = 0; i < listPlayerPanels.size(); i++) {
                     PlayerPanel player = listPlayerPanels.get(i);
-                    PlayerModel playerGame = new HumanPlayerModel(player.getPlayerNameTextField().getText(), player.getColorButton().getBackground(), true);
+                    PlayerModel playerGame = new HumanPlayerModel(
+                            player.getPlayerNameTextField().getText(),
+                            player.getColorButton().getBackground(),
+                            this.getRiskModel()
+                    );
                     listPlayers.add(playerGame);
                 }
                 this.getRiskModel().setPlayerList(listPlayers);

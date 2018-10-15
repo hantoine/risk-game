@@ -88,7 +88,7 @@ public class MapConfig {
 
     /**
      * Setter on the wrap parameter.
-     * @param wrap
+     * @param wrap new wrap value
      */
     public void setWrap(boolean wrap) {
         this.wrap = wrap;
@@ -96,7 +96,7 @@ public class MapConfig {
 
     /**
      * Setter on the warn parameter.
-     * @param warn 
+     * @param warn new warn value
      */
     public void setWarn(boolean warn) {
         this.warn = warn;
@@ -112,7 +112,7 @@ public class MapConfig {
 
     /***
      * Setter of the author.
-     * @param author 
+     * @param author new author
      */
     public void setAuthor(String author) {
         this.author = author;
@@ -120,7 +120,7 @@ public class MapConfig {
 
     /**
      * Setter of the image path.
-     * @param imagePath 
+     * @param imagePath new path of the image
      */
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;

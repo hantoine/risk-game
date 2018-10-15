@@ -61,7 +61,7 @@ public class StartMenuView extends JPanel {
 
     /**
      * Getter of the new game panel.
-     * @return 
+     * @return the new game panel
      */
     public NewGamePanel getNewGamePanel() {
         return newGamePanel;
