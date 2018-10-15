@@ -56,21 +56,15 @@ public final class RiskController {
         this.modelRisk = riskModel;
         this.viewRisk = riskView;
 
-        //temporary (tim)
-        /*
-
-         */
-        //temporary (tim)
-        //*
         this.countryListener = new MapListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.setVisible(true);
-        //*/
+  
     }
 
     /**
-     * The visibility and configuration of the map editor
+     * Opens a new map editor view.
      */
     public void openMapEditor() {
         EditableMapModel newMap = new EditableMapModel();

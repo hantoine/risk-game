@@ -11,16 +11,30 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
- *
+ * Panel that is showed when editing a territory.
  * @author timot
  */
 public class ModifyCountryPanel extends JPanel {
 
+    /**
+     * Used to select a continent for the territory being edited
+     */
     protected JComboBox continentListBox;
+    
+    /**
+     * Used to modify the name of the territory being edited
+     */
     protected JTextField territoryNameField;
 
+    /**
+     * Constructor
+     * @param continentList List of the continents that can be the continent of the territory
+     * @param territoryName name of the territory being edited
+     * @param territoryContinent continent of the territory beign edited.
+     */
     public ModifyCountryPanel(String[] continentList, String territoryName, String territoryContinent) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(500, 500);
@@ -49,11 +63,20 @@ public class ModifyCountryPanel extends JPanel {
         this.add(namePanel);
         this.add(listPanel);
     }
-
+    
+    
+    /**
+     * Getter of the territory name
+     * @return the territory name
+     */
     public String getTerritoryName() {
         return this.territoryNameField.getText();
     }
 
+    /**
+     * Getter on the territory's continent
+     * @return the continent of the territory
+     */
     public String getTerritoryContinent() {
         return (String) this.continentListBox.getSelectedItem();
     }

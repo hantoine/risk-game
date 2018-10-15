@@ -26,10 +26,24 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author timot
  */
 public class FileSelectorPanel extends JPanel {
-
+    /**
+     * Button to launch the file chooser.
+     */
     protected JButton selectFileButton;
+    
+    /**
+     * Text field that displays the path to the selected file.
+     */
     protected JTextField textField;
+    
+    /**
+     * Label to inform the user.
+     */
     protected JLabel label;
+    
+    /**
+     * Selection panel which contains all the above elements.
+     */
     protected JPanel selectionPanel;
 
     /**
@@ -37,7 +51,7 @@ public class FileSelectorPanel extends JPanel {
      *
      * @param width
      * @param height
-     * @param exts : available extensions
+     * @param exts Available extensions of the files that can be selected.
      */
     public FileSelectorPanel(int width, int height, FileNameExtensionFilter exts) {
         //parameterize the panel
@@ -72,7 +86,7 @@ public class FileSelectorPanel extends JPanel {
     /**
      * Add a listener to the button so that it opens a FileChooser when clicked.
      *
-     * @param exts
+     * @param exts Available extensions of the files that can be selected.
      */
     public void addFileChooserListener(FileNameExtensionFilter exts) {
         //add an action listener so that when one click on the button it opens the file chooser
@@ -93,6 +107,10 @@ public class FileSelectorPanel extends JPanel {
         });
     }
 
+    /**
+     * Getter of the JTextfield that contains the path to the selected file.
+     * @return a JTextfield that contains the path to the selected file.
+     */
     public JTextField getTextField() {
         return this.textField;
     }

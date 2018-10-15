@@ -16,29 +16,58 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- *
+ * Panel that allows to set the parameters of the map.
+ * This panel comes into the map editor.
  * @author timot
+ * @see MapConfig
  */
 public class MapConfigPanel extends JPanel {
 
+    /**
+     * Field to set the author name.
+     */
     protected JTextField authorField;
+    
+    /**
+     * Checkbox for the warn parameter 
+     */
     protected JCheckBox isWarnBox;
+    
+    /**
+     * Checkbox for the wrap parameter 
+     */
     protected JCheckBox isWrapBox;
+
+    /**
+     * Allow to choose the type of scrolling for the map. 
+     */
     protected JComboBox scrollTypeBox;
 
-    public MapConfigPanel(MapEditorController controler) {
+    /**
+     * Constructor.
+     * @param controler Controller of the map editor that contains the listeners for the components of this panel.
+     * @param configModel Model to initialize the configuration parameters.
+     */
+    public MapConfigPanel(MapEditorController controler, MapConfig configModel) {
         this.setLayout(new FlowLayout());
-
-        init(controler);
+        init(controler, configModel);
     }
 
-    private void init(MapEditorController controler) {
+    /**
+     * Function to initialize the components of the panel.
+     * @param controler Controller of the map editor that contains the listeners for the components of this panel.
+     * @param configModel Model to initialize the configuration parameters.
+     */
+    private void init(MapEditorController controler, MapConfig configModel) {
         //create components
-        this.authorField = new JTextField("new author");
+        this.authorField = new JTextField(configModel.getAuthor());
         this.isWarnBox = new JCheckBox();
+        this.isWarnBox.setSelected(configModel.isWarn());
         this.isWrapBox = new JCheckBox();
+        this.isWrapBox.setSelected(configModel.isWrap());
         String[] scrollTypes = {"horizontal", "vertical", "none"};
         this.scrollTypeBox = new JComboBox(scrollTypes);
+        this.scrollTypeBox.setSelectedItem(configModel.getScroll());
 
         //add listeners
         this.isWarnBox.addItemListener(controler.getWarnCheckBoxListener());
@@ -46,6 +75,13 @@ public class MapConfigPanel extends JPanel {
         this.scrollTypeBox.addItemListener(controler.getScrollBoxListener());
         this.authorField.getDocument().addDocumentListener(controler.getAuthorTextFieldListener());
 
+        createContainers();
+    }
+
+    /**
+     * Function to put the elements into containers and add it to the view.
+     */
+    public void createContainers(){
         //create container panels 
         JPanel authorPanel = new JPanel();
         authorPanel.setLayout(new BoxLayout(authorPanel, BoxLayout.Y_AXIS));
@@ -71,8 +107,12 @@ public class MapConfigPanel extends JPanel {
         scrollPanel.add(this.scrollTypeBox);
         this.add(scrollPanel);
     }
-
-    public void update(MapConfig mapConfig) {
+    
+    /**
+     * Setter for the view, using the model.
+     * @param mapConfig model for the configuration of the map.
+     */
+    public void setView(MapConfig mapConfig) {
         authorField.setText(mapConfig.getAuthor());
         isWarnBox.setSelected(mapConfig.isWarn());
         isWrapBox.setSelected(mapConfig.isWrap());
