@@ -6,7 +6,7 @@
 package com.risk.views.menu;
 
 import com.risk.controllers.MenuListener;
-import com.risk.models.interfaces.PlayerModel;
+import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import java.awt.Color;
 import java.awt.FlowLayout;

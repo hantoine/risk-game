@@ -5,10 +5,10 @@
  */
 package com.risk.controllers;
 
-import com.risk.views.editor.MapEditorView;
-import com.risk.models.editor.EditableMapModel;
 import com.risk.models.RiskModel;
+import com.risk.models.editor.EditableMapModel;
 import com.risk.views.RiskView;
+import com.risk.views.editor.MapEditorView;
 
 /**
  * It is the Game-driver
@@ -22,8 +22,6 @@ public final class RiskController {
     private MenuListener menuListener;
     private MapListener countryListener;
     private GameController playGame;
-
-    //temporary (tim)
     private MapEditorView mapEditor;
 
     /**
@@ -36,17 +34,10 @@ public final class RiskController {
         this.modelRisk = riskModel;
         this.viewRisk = riskView;
 
-        //temporary (tim)
-        /*
-
-         */
-        //temporary (tim)
-        //*
         this.countryListener = new MapListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.setVisible(true);
-        //*/
     }
 
     public void openMapEditor() {

@@ -8,7 +8,7 @@ package com.risk.controllers;
 import com.risk.models.HumanPlayerModel;
 import com.risk.models.MapFileManagement;
 import com.risk.models.RiskModel;
-import com.risk.models.interfaces.PlayerModel;
+import com.risk.models.PlayerModel;
 import com.risk.views.RiskView;
 import com.risk.views.menu.DeletableButton;
 import com.risk.views.menu.NewGamePanel;

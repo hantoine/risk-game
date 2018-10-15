@@ -5,6 +5,7 @@
  */
 package com.risk.models.interfaces;
 
+import com.risk.models.PlayerModel;
 import com.risk.models.ContinentModel;
 import com.risk.models.HumanPlayerModel;
 import com.risk.models.TerritoryModel;

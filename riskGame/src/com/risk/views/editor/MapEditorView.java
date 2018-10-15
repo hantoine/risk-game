@@ -7,8 +7,8 @@ package com.risk.views.editor;
 
 import com.risk.models.editor.EditableMapModel;
 import com.risk.controllers.MapEditorController;
-import com.risk.observers.UpdateTypes;
-import com.risk.observers.MapModelObserver;
+import com.risk.observable.UpdateTypes;
+import com.risk.observable.MapModelObserver;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
