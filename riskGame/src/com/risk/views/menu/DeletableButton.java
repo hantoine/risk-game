@@ -14,6 +14,9 @@ import javax.swing.JButton;
  */
 public class DeletableButton extends JButton {
 
+    /**
+     * ID of the button so that it can be identified.
+     */
     int ID;
 
     /**
