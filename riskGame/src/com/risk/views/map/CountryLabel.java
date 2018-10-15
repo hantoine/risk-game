@@ -15,9 +15,21 @@ import javax.swing.JLabel;
  */
 public class CountryLabel extends JLabel {
 
+    /**
+     * Size of the button that represents the country
+     */
     private static final int buttonSize = 25;
+    /**
+     * Position in the x axe
+     */
     private static int positionX;
+    /**
+     * Position in the y axe
+     */
     private static int positionY;
+    /**
+     * Name of the country in the button
+     */
     private String name;
 
     /**

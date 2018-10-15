@@ -15,9 +15,17 @@ import java.util.List;
  * @author n_irahol
  */
 public class ContinentModel {
-
+    /**
+     * members countries that are part of the continent
+     */
     private LinkedList<TerritoryModel> members;
+    /**
+     * bonusScore the number of extra armies per continent
+     */
     private int bonusScore;
+    /**
+     * name the name of the continent
+     */
     private String name;
 
     /**
@@ -33,6 +41,10 @@ public class ContinentModel {
         this.members = new LinkedList<>();
     }
 
+    /**
+     * It removes a member from the continent
+     * @param member 
+     */
     public void removeMember(TerritoryModel member) {
         this.members.remove(member);
     }
