@@ -83,12 +83,14 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
 
         //all content is being stored in this panel
         contentPanel = new JPanel();
-        contentPanel.setSize(width - imageSelectorPanel.getMaximumSize().width, height - imageSelectorPanel.getMaximumSize().height);
+        
 
         //selector of a background image
         imageSelectorPanel = new FileSelectorPanel(210, 30, new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()));
         imageSelectorPanel.setMaximumSize(new Dimension(600, 20));
         imageSelectorPanel.setLabel("Select a background image for your map.");
+        
+        contentPanel.setSize(width - imageSelectorPanel.getMaximumSize().width, height - imageSelectorPanel.getMaximumSize().height);
 
         //panel for the map being edited
         mapPanel = new MapView(editorController);
