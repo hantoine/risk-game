@@ -53,7 +53,7 @@ public class MapModel {
         image=null;
 
     }
-
+    
     /**
      * It prints the countries and relationships between them
      */

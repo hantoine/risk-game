@@ -22,43 +22,49 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * It represents the new game tab in the menu
+ * It represents the new game tab in the start menu.
  *
  * @author timot
  */
 public class NewGamePanel extends JPanel {
-
+    
     /**
-     * playerPanel the panel with the players color and name features in the menu 
+     * List of the players.
      */
     private PlayerListPanel playersPanel;
+    
     /**
-     * mapSelector the view with the file chooser
+     * Panel to select a map on which to play the game.
      */
     private JPanel mapSelector;
+    
     /**
-     * play the button to start the game
+     * Button to launch the game.
      */
     private JButton play;
+    
     /**
-     * openMapEditor the button to open the map editor
+     * Button to open the map editor.
      */
     private final JButton openMapEditor;
+    
     /**
-     * mapSelectAndEdit the panel of the map editor
+     * Panel to either select or edit a new map.
      */
     JPanel mapSelectAndEdit;
+    
     /**
-     * text text for the map editor
+     * Dummy text field to be a separator.
      */
     JLabel text;
+    
     /**
-     * selectFileTextField the path of the file selected
+     * Field that displays the current map being selected.
      */
     private JTextField selectFileTextField;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param riskModel model of the game
      * @param menuAction listener of mouse actions
@@ -138,6 +144,10 @@ public class NewGamePanel extends JPanel {
         this.playersPanel = playersPanel;
     }
 
+    /**
+     * Getter of the button to open the map editor.
+     * @return 
+     */
     public JButton getOpenMapEditor() {
         return this.openMapEditor;
     }

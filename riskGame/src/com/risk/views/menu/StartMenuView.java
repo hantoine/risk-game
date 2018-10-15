@@ -21,11 +21,12 @@ import javax.swing.JPanel;
 public class StartMenuView extends JPanel {
 
     /**
-     * introPanel panel with an introduction
+     * Panel that says a message to welcome the user.
      */
     JPanel introPanel;
+    
     /**
-     * newGamePanel panel for a new game from a file
+     * Panel that contains the features to create a new game and launch it.
      */
     final private NewGamePanel newGamePanel;
 
@@ -59,8 +60,8 @@ public class StartMenuView extends JPanel {
     }
 
     /**
-     * Getter for the newGamePanel attribute
-     * @return newGamePanel 
+     * Getter of the new game panel.
+     * @return the new game panel
      */
     public NewGamePanel getNewGamePanel() {
         return newGamePanel;
