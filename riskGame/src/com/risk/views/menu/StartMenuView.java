@@ -20,7 +20,13 @@ import javax.swing.JPanel;
  */
 public class StartMenuView extends JPanel {
 
+    /**
+     * introPanel panel with an introduction
+     */
     JPanel introPanel;
+    /**
+     * newGamePanel panel for a new game from a file
+     */
     final private NewGamePanel newGamePanel;
 
     /**
@@ -52,6 +58,10 @@ public class StartMenuView extends JPanel {
 
     }
 
+    /**
+     * Getter for the newGamePanel attribute
+     * @return newGamePanel 
+     */
     public NewGamePanel getNewGamePanel() {
         return newGamePanel;
     }
