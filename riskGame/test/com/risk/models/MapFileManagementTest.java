@@ -21,11 +21,16 @@ import org.junit.Ignore;
 public class MapFileManagementTest {
 
     /**
-     * board is a not null instance of the map instance is the instance of the
-     * class being tested path is a valid path of a map in the client's computer
+     * board is a not null instance of the map instance is the instance of the class being tested 
      */
     MapModel board;
+    /**
+     * instance it is a reference to the class to be tested
+     */
     MapFileManagement instance;
+    /**
+     * path is a valid path of a map in the client's computer
+     */
     String path;
 
     /**

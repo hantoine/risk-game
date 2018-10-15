@@ -26,7 +26,13 @@ import javax.swing.SwingUtilities;
  */
 public class MapListener extends MouseAdapter {
 
+    /**
+     * countrySource It represents the country where the drag and drop action starts
+     */
     private CountryLabel countrySource;
+    /**
+     * riskController It is a reference to the principal controller of the game
+     */
     final private RiskController riskController;
 
     /**
@@ -107,10 +113,18 @@ public class MapListener extends MouseAdapter {
         }
     }
 
+    /**
+     * Getter of the countrySource attribute
+     * @return countrySource it is a label that represents a country
+     */
     private CountryLabel getCountrySource() {
         return countrySource;
     }
 
+    /**
+     * Setter of the countrySource attribute
+     * @param countrySource a label that represents a country in the map
+     */
     private void setCountrySource(CountryLabel countrySource) {
         this.countrySource = countrySource;
     }
