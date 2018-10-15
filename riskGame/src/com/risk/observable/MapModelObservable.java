@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.observers;
+package com.risk.observable;
 
 /**
  * Custom interface for the map model being observable.

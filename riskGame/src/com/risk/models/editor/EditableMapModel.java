@@ -6,12 +6,12 @@ package com.risk.models.editor;
  * in the editor.
  */
 import com.risk.models.MapConfig;
-import com.risk.observers.UpdateTypes;
+import com.risk.observable.UpdateTypes;
 import com.risk.models.ContinentModel;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
-import com.risk.observers.MapModelObservable;
-import com.risk.observers.MapModelObserver;
+import com.risk.observable.MapModelObservable;
+import com.risk.observable.MapModelObserver;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

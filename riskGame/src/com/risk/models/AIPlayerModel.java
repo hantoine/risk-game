@@ -6,7 +6,6 @@
 package com.risk.models;
 
 import com.risk.controllers.GameController;
-import com.risk.models.interfaces.PlayerModel;
 import java.awt.Color;
 
 /**
