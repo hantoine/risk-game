@@ -10,12 +10,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * It represents the view for the attributes of a player
+ * It represents the view for the attributes of a player in the menu
  *
  * @author Nellybett
  */
 public class PlayerPanel extends JPanel {
 
+    /**
+     * name the name of the player
+     * playerNameTextField the field for the new player name
+     * colorButton the button with the players color
+     * delButton the button to delete a player from the menu
+     */
     private String name;
     private JTextField playerNameTextField;
     private JButton colorButton;

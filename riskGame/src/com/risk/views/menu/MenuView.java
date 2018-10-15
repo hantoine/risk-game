@@ -15,6 +15,9 @@ import javax.swing.JFrame;
  */
 public class MenuView extends JDialog {
 
+    /**
+     * Reference to the view that contains the panels of the menu
+     */
     private StartMenuView startMenu;
 
     /**

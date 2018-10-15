@@ -15,6 +15,15 @@ import java.util.LinkedList;
  */
 public class TerritoryModel {
 
+    /**
+     * adj list of adjacent countries
+     * positionX x coordinate of the location of the country
+     * positionY y coordinate of the location of the country
+     * continentName the name of the continent which it belongs
+     * numArmies the number of armies in the country
+     * owner reference to the player that owns the country
+     * name the name of the country
+     */
     private LinkedList<TerritoryModel> adj;
     private int positionX;
     private int positionY;
@@ -53,10 +62,18 @@ public class TerritoryModel {
         this.adj = new LinkedList();
     }
 
+    /**
+     * Add an adjacent country
+     * @param neighbour 
+     */
     public void addNeighbour(TerritoryModel neighbour) {
         this.adj.add(neighbour);
     }
 
+    /**
+     * Eliminates an adjacent country
+     * @param neighbour 
+     */
     public void removeNeighbour(TerritoryModel neighbour) {
         this.adj.remove(neighbour);
     }

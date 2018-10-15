@@ -6,27 +6,50 @@
 package com.risk.models;
 
 /**
- *
+ * This class represents a fortification move
  * @author hantoine
  */
 public class FortificationMove {
 
+    /**
+     * territorySource the country with the armies
+     * territoryDest the countries where the player wants to move the armies
+     */
     private TerritoryModel territorySource;
     private TerritoryModel territoryDest;
 
+    /**
+     * Constructor
+     * @param territorySource
+     * @param territoryDest 
+     */
     public FortificationMove(TerritoryModel territorySource, TerritoryModel territoryDest) {
         this.territorySource = territorySource;
         this.territoryDest = territoryDest;
     }
 
+    /**
+     * Getter of the territorySource attribute
+     * @return territorySource
+     */
     public TerritoryModel getTerritorySource() {
         return territorySource;
     }
 
+    /**
+     * Getter of the territoryDest attribute
+     * @return 
+     */
     public TerritoryModel getTerritoryDest() {
         return territoryDest;
     }
 
+    /**
+     * It compares two countries for the fortification move
+     * If the move its comming from the same country
+     * @param obj
+     * @return true if it is the same country; false if it is not
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

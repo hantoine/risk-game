@@ -20,6 +20,16 @@ import java.util.Random;
  */
 public final class RiskModel {
 
+    /**
+     * map a reference to the map of the game
+     * players the list of players of the game
+     * turn  reference with the player current turn
+     * winningPlayer a reference to the player who won
+     * phase the current phase of the game
+     * maxNbOfPlayers max number of players
+     * currentPlayer the player with the turn
+     * deck the deck of cards of the game
+     */
     private MapModel map;
     private LinkedList<PlayerModel> players;
     private int turn;
@@ -289,10 +299,18 @@ public final class RiskModel {
         Collections.shuffle(this.getDeck());
     }
 
+    /**
+     * Getter of the winningPlayer attribute
+     * @return 
+     */
     public PlayerModel getWinningPlayer() {
         return winningPlayer;
     }
 
+    /**
+     * Setter of the winningPlayer attribute
+     * @param winningPlayer 
+     */
     public void setWinningPlayer(PlayerModel winningPlayer) {
         this.winningPlayer = winningPlayer;
     }

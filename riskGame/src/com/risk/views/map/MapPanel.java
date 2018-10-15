@@ -19,6 +19,11 @@ import javax.swing.JPanel;
  */
 public class MapPanel extends JPanel {
 
+    /**
+     * image reference to the image of the map
+     * adj lines that represent the adjacencies
+     * countriesButtons the countries in the map
+     */
     Image image;
     HashMap<String, Line2D> adj = new HashMap<>();
     private HashMap<String, CountryLabel> countriesButtons;
@@ -33,6 +38,10 @@ public class MapPanel extends JPanel {
         setSize(400, 600);
     }
 
+    /**
+     * Creates the map of the game from the model
+     * @param mapModel 
+     */
     private void createMap(MapModel mapModel) {
         clearMap();
         this.image = mapModel.getImage();
@@ -55,10 +64,19 @@ public class MapPanel extends JPanel {
         });
     }
 
+    /**
+     * Attach the listener to the map
+     * @param countryListener 
+     */
     public void setListener(MouseListener countryListener) {
         this.addMouseListener(countryListener);
     }
 
+    /**
+     * Updates the view with the changes in the model
+     * @param rm model reference
+     * @param mapChanged 
+     */
     public void updateView(RiskModel rm, boolean mapChanged) {
         if (mapChanged) {
             this.createMap(rm.getMap());
@@ -109,6 +127,9 @@ public class MapPanel extends JPanel {
         this.countriesButtons = countriesButtons;
     }
 
+    /**
+     * Clears the map to its initial state
+     */
     private void clearMap() {
         if (this.countriesButtons != null) {
             this.countriesButtons.values().stream().forEach((cb) -> {
@@ -120,6 +141,10 @@ public class MapPanel extends JPanel {
         this.adj = new HashMap<>();
     }
 
+    /**
+     * Getter of the image of the map
+     * @return 
+     */
     public Image getImage() {
         return image;
     }

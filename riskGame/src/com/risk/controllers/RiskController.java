@@ -22,14 +22,13 @@ public final class RiskController {
      * modelRisk it is a reference to the model of the game
      * countryListener it is a reference to the listener of country events
      * playGame it is a reference to the controller of the game flow
+     * mapEditorView the reference to the map editor
      */
     private RiskView viewRisk;
     private RiskModel modelRisk;
     private MenuListener menuListener;
     private MapListener countryListener;
     private GameController playGame;
-
-    //temporary (tim)
     private MapEditorView mapEditor;
 
     /**
@@ -55,6 +54,9 @@ public final class RiskController {
         //*/
     }
 
+    /**
+     * The visibility and configuration of the map editor
+     */
     public void openMapEditor() {
         EditableMapModel newMap = new EditableMapModel();
         MapEditorController editorController = new MapEditorController(newMap);

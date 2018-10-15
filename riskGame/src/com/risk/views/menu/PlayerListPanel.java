@@ -24,6 +24,15 @@ import javax.swing.JTextField;
  */
 public class PlayerListPanel extends JPanel {
 
+    /**
+     * addPlayerPanel the panel to add a players panel
+     * playersArray an array of the panels with the players information
+     * nbBots the number of elements
+     * uniqueID identifier for the delete button
+     * maxNbPlayers max number of players
+     * colorUsed a list of the colors that has been used
+     * menuListener a reference to the controller that manages the events
+     */
     final private JPanel addPlayerPanel;
     private LinkedList<PlayerPanel> playersArray;
     int nbBots;
