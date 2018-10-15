@@ -18,13 +18,19 @@ public class PlayerPanel extends JPanel {
 
     /**
      * name the name of the player
-     * playerNameTextField the field for the new player name
-     * colorButton the button with the players color
-     * delButton the button to delete a player from the menu
      */
     private String name;
+    /**
+     * playerNameTextField the field for the new player name
+     */
     private JTextField playerNameTextField;
+    /**
+     * colorButton the button with the players color
+     */
     private JButton colorButton;
+    /**
+     * delButton the button to delete a player from the menu
+     */
     private DeletableButton delButton;
 
     public PlayerPanel() {

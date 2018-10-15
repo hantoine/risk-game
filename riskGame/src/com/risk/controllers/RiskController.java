@@ -19,16 +19,31 @@ public final class RiskController {
 
     /**
      * viewRisk it is a reference to the view of the game
-     * modelRisk it is a reference to the model of the game
-     * countryListener it is a reference to the listener of country events
-     * playGame it is a reference to the controller of the game flow
+     * 
+     * 
+     * 
      * mapEditorView the reference to the map editor
      */
     private RiskView viewRisk;
+    /**
+     * modelRisk it is a reference to the model of the game
+     */
     private RiskModel modelRisk;
-    private MenuListener menuListener;
+    /**
+     * countryListener it is a reference to the listener of country events
+     */
     private MapListener countryListener;
+    /**
+     * playGame it is a reference to the controller of the game flow
+     */
     private GameController playGame;
+    /**
+     * Listener for the menu events
+     */
+    private MenuListener menuListener;
+    /**
+     * mapEditor reference to the map editor view
+     */
     private MapEditorView mapEditor;
 
     /**

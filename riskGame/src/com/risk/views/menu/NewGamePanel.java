@@ -29,20 +29,32 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class NewGamePanel extends JPanel {
 
     /**
-     * playerPanel the panel with the players color and name features in the menu
-     * mapSelector the view with the file chooser
-     * play the button to start the game
-     * openMapEditor the button to open the map editor
-     * mapSelectAndEdit the panel of the map editor
-     * text text for the map editor
-     * selectFileTextField the path of the file selected
+     * playerPanel the panel with the players color and name features in the menu 
      */
     private PlayerListPanel playersPanel;
+    /**
+     * mapSelector the view with the file chooser
+     */
     private JPanel mapSelector;
+    /**
+     * play the button to start the game
+     */
     private JButton play;
+    /**
+     * openMapEditor the button to open the map editor
+     */
     private final JButton openMapEditor;
+    /**
+     * mapSelectAndEdit the panel of the map editor
+     */
     JPanel mapSelectAndEdit;
+    /**
+     * text text for the map editor
+     */
     JLabel text;
+    /**
+     * selectFileTextField the path of the file selected
+     */
     private JTextField selectFileTextField;
 
     /**

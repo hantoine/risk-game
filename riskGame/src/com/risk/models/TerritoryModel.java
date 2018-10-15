@@ -17,19 +17,31 @@ public class TerritoryModel {
 
     /**
      * adj list of adjacent countries
-     * positionX x coordinate of the location of the country
-     * positionY y coordinate of the location of the country
-     * continentName the name of the continent which it belongs
-     * numArmies the number of armies in the country
-     * owner reference to the player that owns the country
-     * name the name of the country
      */
     private LinkedList<TerritoryModel> adj;
+    /**
+     * positionX x coordinate of the location of the country
+     */
     private int positionX;
+    /**
+     * positionY y coordinate of the location of the country
+     */
     private int positionY;
+    /**
+     * continentName the name of the continent which it belongs
+     */
     private String continentName;
+    /**
+     * numArmies the number of armies in the country
+     */
     private int numArmies;
+    /**
+     * owner reference to the player that owns the country
+     */
     private PlayerModel owner;
+    /**
+     * name the name of the country
+     */
     private String name;
 
     /**

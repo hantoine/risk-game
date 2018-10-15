@@ -28,9 +28,11 @@ public class MapListener extends MouseAdapter {
 
     /**
      * countrySource It represents the country where the drag and drop action starts
-     * riskController It is a reference to the principal controller of the game
      */
     private CountryLabel countrySource;
+    /**
+     * riskController It is a reference to the principal controller of the game
+     */
     final private RiskController riskController;
 
     /**

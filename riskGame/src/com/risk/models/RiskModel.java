@@ -22,21 +22,35 @@ public final class RiskModel {
 
     /**
      * map a reference to the map of the game
-     * players the list of players of the game
-     * turn  reference with the player current turn
-     * winningPlayer a reference to the player who won
-     * phase the current phase of the game
-     * maxNbOfPlayers max number of players
-     * currentPlayer the player with the turn
-     * deck the deck of cards of the game
      */
     private MapModel map;
+    /**
+     * players the list of players of the game
+     */
     private LinkedList<PlayerModel> players;
+    /**
+     * turn  reference with the player current turn
+     */
     private int turn;
+    /**
+     * winningPlayer a reference to the player who won
+     */
     private PlayerModel winningPlayer;
+    /**
+     * phase the current phase of the game
+     */
     private GamePhase phase;
+    /**
+     * maxNbOfPlayers max number of players
+     */
     static Integer maxNbOfPlayers = 6;
+    /**
+     * currentPlayer the player with the turn
+     */
     private PlayerModel currentPlayer;
+    /**
+     * deck the deck of cards of the game
+     */
     private LinkedList<CardModel> deck;
 
     /**

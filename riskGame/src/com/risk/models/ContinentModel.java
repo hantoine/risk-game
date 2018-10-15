@@ -17,11 +17,15 @@ import java.util.List;
 public class ContinentModel {
     /**
      * members countries that are part of the continent
-     * bonusScore the number of extra armies per continent
-     * name the name of the continent
      */
     private LinkedList<TerritoryModel> members;
+    /**
+     * bonusScore the number of extra armies per continent
+     */
     private int bonusScore;
+    /**
+     * name the name of the continent
+     */
     private String name;
 
     /**

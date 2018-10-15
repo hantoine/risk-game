@@ -22,9 +22,11 @@ public class StartMenuView extends JPanel {
 
     /**
      * introPanel panel with an introduction
-     * newGamePanel panel for a new game from a file
      */
     JPanel introPanel;
+    /**
+     * newGamePanel panel for a new game from a file
+     */
     final private NewGamePanel newGamePanel;
 
     /**

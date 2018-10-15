@@ -13,9 +13,11 @@ public class FortificationMove {
 
     /**
      * territorySource the country with the armies
-     * territoryDest the countries where the player wants to move the armies
      */
     private TerritoryModel territorySource;
+    /**
+     * territoryDest the countries where the player wants to move the armies
+     */
     private TerritoryModel territoryDest;
 
     /**

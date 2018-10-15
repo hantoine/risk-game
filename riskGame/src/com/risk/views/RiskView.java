@@ -39,15 +39,23 @@ public final class RiskView extends javax.swing.JFrame {
 
     /**
      * menuPanel reference to the menu panel
-     * mapPanel reference to the view that manages the map
-     * playerPanel reference to the view that manages the player information
-     * playerHandPanel reference to the view that has the cards of the plater
-     * stagePanel reference to the view that manages the information of the current stage
      */
     private MenuView menuPanel;
+    /**
+     * mapPanel reference to the view that manages the map
+     */
     final private MapPanel mapPanel;
+    /**
+     * playerPanel reference to the view that manages the player information
+     */
     final private PlayerGameInfoPanel playerPanel;
+    /**
+     * playerHandPanel reference to the view that has the cards of the plater
+     */
     final private PlayerGameHandPanel playerHandPanel;
+    /**
+     * stagePanel reference to the view that manages the information of the current stage
+     */
     final private PhasePanel stagePanel;
 
     /**

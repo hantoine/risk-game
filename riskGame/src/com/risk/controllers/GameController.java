@@ -23,9 +23,11 @@ public class GameController {
 
     /**
      * modelRisk It is an attribute that represents a reference to the model
-     * riskView It is an attribute that represents a reference to the view
      */
     RiskModel modelRisk;
+    /**
+     * riskView It is an attribute that represents a reference to the view
+     */
     RiskView riskView;
 
     /**

@@ -19,11 +19,15 @@ public class PhasePanel extends JPanel {
 
     /**
      * endPhase button to finish a phase
-     * handCards button to hand cards
-     * text information that informs a player about the current phase
      */
     final private JButton endPhase;
+    /**
+     * handCards button to hand cards
+     */
     final private JButton handCards;
+    /**
+     * text information that informs a player about the current phase
+     */
     final private JLabel text;
 
     /**

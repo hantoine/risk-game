@@ -20,12 +20,16 @@ import javax.swing.JPanel;
 public class MapPanel extends JPanel {
 
     /**
-     * image reference to the image of the map
-     * adj lines that represent the adjacencies
-     * countriesButtons the countries in the map
+     * image Reference to the image of the map
      */
     Image image;
+    /**
+     * adj lines that represent the adjacencies
+     */
     HashMap<String, Line2D> adj = new HashMap<>();
+    /**
+     * countriesButtons the countries in the map
+     */
     private HashMap<String, CountryLabel> countriesButtons;
 
     /**

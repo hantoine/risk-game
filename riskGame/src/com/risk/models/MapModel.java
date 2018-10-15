@@ -20,17 +20,27 @@ public class MapModel {
 
     /**
      * mapConfig configurations of the map like author, wrap, image, and others
+    */
+    private MapConfig mapConfig;
+    /**
      * image the image of the map
+     */
+    private BufferedImage image;
+    /**
      * mapHeight the height of the map
+     */
+    private int mapHeight;
+    /**
      * mapWidth the width of the map
+     */
+    private int mapWidth;
+    /**
      * graphContinents the continents of the map
+     */
+    private HashMap<String, ContinentModel> graphContinents;
+    /**
      * graphTerritories the territories of the map
      */
-    private MapConfig mapConfig;
-    private BufferedImage image;
-    private int mapHeight;
-    private int mapWidth;
-    private HashMap<String, ContinentModel> graphContinents;
     private HashMap<String, TerritoryModel> graphTerritories;
 
     /**

@@ -33,13 +33,19 @@ public class MenuListener extends MouseAdapter {
 
     /**
      * riskModel it represents the model of the game
-     * riskView it is a reference to the main view in the game
-     * playerList it is a reference to the view that has a list of player panels in the menu
-     * riskController it is a reference to the controller of the game
      */
     private RiskModel riskModel;
+    /**
+     * riskView it is a reference to the main view in the game
+     */
     private RiskView riskView;
+    /**
+     * playerList it is a reference to the view that has a list of player panels in the menu
+     */
     private PlayerListPanel playerList;
+    /**
+     * riskController it is a reference to the controller of the game
+     */
     private RiskController riskController;
 
     /**
