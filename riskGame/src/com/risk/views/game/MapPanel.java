@@ -1,4 +1,4 @@
-package com.risk.views.map;
+package com.risk.views.game;
 
 import com.risk.models.MapModel;
 import com.risk.models.RiskModel;

@@ -5,8 +5,8 @@
  */
 package com.risk.controllers;
 
-import com.risk.views.map.CountryLabel;
-import com.risk.views.map.MapPanel;
+import com.risk.views.game.CountryLabel;
+import com.risk.views.game.MapPanel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
