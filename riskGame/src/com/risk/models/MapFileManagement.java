@@ -185,7 +185,6 @@ public class MapFileManagement {
             }
 
             map.setConfigurationInfo(mapConfig);
-            return 0;
 
         }
 
@@ -367,6 +366,9 @@ public class MapFileManagement {
         String territories = "[Territories]\n";
         int result = 0;
 
+        if(board==null)
+            return -1;
+        
         MapConfig mapConfig = board.getConfigurationInfo();
         configuration += "author=" + mapConfig.getAuthor() + "\r\n";
         configuration += "image=" + mapConfig.getImagePath() + "\r\n";

@@ -18,10 +18,25 @@ import javax.swing.JPanel;
  */
 public final class PlayerGameInfoPanel extends JPanel {
 
+    /**
+     * playerName name of the player
+     */
     private final JButton playerName;
+    /**
+     * numArmiesOwned the number of armies owned by the player
+     */
     private final JButton numArmiesOwned;
+    /**
+     * numCountries the number of countries owned by the player
+     */
     private final JButton numCountries;
+    /**
+     * numContinents the number of continent owned by the player
+     */
     private final JButton numContinents;
+    /**
+     * numCards the number of cards owned by the player
+     */
     private final JButton numCards;
 
     /**
@@ -49,7 +64,8 @@ public final class PlayerGameInfoPanel extends JPanel {
      * Update the information displayed by the PlayerGameInfoPanel according to
      * the information of the current player
      *
-     * @param rm The model of the game containing all information about the current player
+     * @param rm The model of the game containing all information about the
+     * current player
      */
     public void updateView(RiskModel rm) {
         PlayerModel currentPlayer = rm.getCurrentPlayer();

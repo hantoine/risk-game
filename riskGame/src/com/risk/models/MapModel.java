@@ -18,11 +18,29 @@ import java.util.List;
  */
 public class MapModel {
 
+    /**
+     * mapConfig configurations of the map like author, wrap, image, and others
+    */
     private MapConfig mapConfig;
+    /**
+     * image the image of the map
+     */
     private BufferedImage image;
+    /**
+     * mapHeight the height of the map
+     */
     private int mapHeight;
+    /**
+     * mapWidth the width of the map
+     */
     private int mapWidth;
+    /**
+     * graphContinents the continents of the map
+     */
     private HashMap<String, ContinentModel> graphContinents;
+    /**
+     * graphTerritories the territories of the map
+     */
     private HashMap<String, TerritoryModel> graphTerritories;
 
     /**
@@ -171,18 +189,30 @@ public class MapModel {
         this.image = image;
     }
 
+    /**
+     * Setter of the mapHeight attribute
+     * @param mapHeight 
+     */
     public void setMapHeight(int mapHeight) {
         if (this.getImage() == null) {
             this.mapHeight = mapHeight;
         }
     }
 
+    /**
+     * Setter of the mapWith attribute
+     * @param mapWidth 
+     */
     public void setMapWidth(int mapWidth) {
         if (this.getImage() == null) {
             this.mapWidth = mapWidth;
         }
     }
 
+    /**
+     * It returns the height of the map or the image
+     * @return mapHeight
+     */
     public int getMapHeight() {
         if (this.getImage() == null) {
             return mapHeight;
@@ -191,6 +221,10 @@ public class MapModel {
         }
     }
 
+    /**
+     * It returns the width of the map or the image
+     * @return mapWidth
+     */
     public int getMapWidth() {
         if (this.getImage() == null) {
             return mapWidth;

@@ -5,6 +5,7 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.FortificationMove;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import com.risk.models.interfaces.PlayerModel;
@@ -20,7 +21,13 @@ import java.util.List;
  */
 public class GameController {
 
+    /**
+     * modelRisk It is an attribute that represents a reference to the model
+     */
     RiskModel modelRisk;
+    /**
+     * riskView It is an attribute that represents a reference to the view
+     */
     RiskView riskView;
 
     /**
@@ -32,6 +39,7 @@ public class GameController {
     public GameController(RiskModel riskModel, RiskView riskView) {
         this.modelRisk = riskModel;
         this.riskView = riskView;
+
     }
 
     /**
@@ -40,13 +48,22 @@ public class GameController {
      *
      */
     public void finishPhase() {
-        if (modelRisk.getMap().getGraphTerritories().values().stream()
-                .allMatch((t) -> (t.getOwner() == modelRisk.getCurrentPlayer()))) {
-            modelRisk.setWinningPlayer(modelRisk.getCurrentPlayer());
+        if (modelRisk.getWinningPlayer() != null) {
+            riskView.showMessage("The player " + this.modelRisk.getWinningPlayer().getName() + " has won the game");
             return;
         }
 
-        // Finishing steps of current stage
+        executeEndOfPhaseSteps();
+        modelRisk.nextPhase();
+        executeBeginningOfPhaseSteps();
+
+        riskView.updateView(modelRisk);
+    }
+
+    /**
+     * Final steps after finishing a phase
+     */
+    private void executeEndOfPhaseSteps() {
         switch (modelRisk.getPhase()) {
             case STARTUP:
                 break;
@@ -56,13 +73,16 @@ public class GameController {
                 checkForDeadPlayers();
                 break;
             case FORTIFICATION:
+                modelRisk.getCurrentPlayer().setCurrentFortificationMove(null);
                 modelRisk.nextTurn();
                 break;
         }
+    }
 
-        modelRisk.nextPhase();
-
-        // Beginning steps of new stage
+    /**
+     * Steps at the beginning of a phase
+     */
+    private void executeBeginningOfPhaseSteps() {
         switch (modelRisk.getPhase()) {
             case STARTUP:
                 break;
@@ -73,16 +93,16 @@ public class GameController {
                 try {
                     modelRisk.getCurrentPlayer().attack(this);
                 } catch (UnsupportedOperationException e) {
-                    //since attack is not implemented yet, we skip it 
+                    //since attack is not implemented yet, we skip it
                     this.finishPhase();
                 }
+
+                modelRisk.getCurrentPlayer().addCardToPlayerHand();
                 break;
             case FORTIFICATION:
                 modelRisk.getCurrentPlayer().fortification(this);
                 break;
         }
-
-        riskView.updateView(modelRisk);
     }
 
     /**
@@ -108,13 +128,18 @@ public class GameController {
                 riskView.updateView(modelRisk);
                 break;
             case REINFORCEMENT:
-                if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
-                    break;
+                if (currentPlayer.getCardsOwned().getCards().size() == 5) {
+                    riskView.showMessage("You have 5 cards. Please hand some cards");
+                } else {
+                    if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
+                        break;
+                    }
+                    if (currentPlayer.getNumArmiesAvailable() == 0) {
+                        this.finishPhase();
+                    }
+                    riskView.updateView(modelRisk);
                 }
-                if (currentPlayer.getNumArmiesAvailable() == 0) {
-                    this.finishPhase();
-                }
-                riskView.updateView(modelRisk);
+
                 break;
         }
     }
@@ -143,10 +168,17 @@ public class GameController {
                     this.riskView.showMessage("You don't own this country !");
                     break;
                 }
+                FortificationMove attemptedMove = new FortificationMove(sourceTerritory, destTerritory);
+                FortificationMove lastMove = currentPlayer.getCurrentFortificationMove();
+                if (lastMove != null && !lastMove.equals(attemptedMove)) {
+                    this.riskView.showMessage("You can only make one move !");
+                    break;
+                }
 
                 try {
                     sourceTerritory.decrementNumArmies();
                     destTerritory.incrementNumArmies();
+                    currentPlayer.setCurrentFortificationMove(attemptedMove);
                     riskView.updateView(modelRisk);
                 } catch (IllegalStateException e) {
                     this.riskView.showMessage("There is no armies in the source country !");
@@ -179,6 +211,10 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Check if any player has no more territories owned and remove these player
+     * from the game
+     */
     private void checkForDeadPlayers() {
         List<PlayerModel> currentPlayerList = new LinkedList(this.modelRisk.getPlayerList());
         currentPlayerList.stream()
@@ -192,4 +228,13 @@ public class GameController {
                 });
     }
 
+    /**
+     * Called when the player click on the Hand cards button during the
+     * reinforcement phase
+     */
+    public void clickHand() {
+
+        modelRisk.getCurrentPlayer().exchangeCardsToArmies();
+        riskView.getStagePanel().updateView(modelRisk);
+    }
 }
