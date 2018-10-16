@@ -114,8 +114,8 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Get a new name when creating a new element (territory or continent)
      *
-     * @param continent
-     * @return
+     * @param continent boolean that the continent is in the list or not
+     * @return the new name of the contient
      */
     protected String getNewName(boolean continent) {
         int i = 0;
