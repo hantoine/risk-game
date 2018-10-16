@@ -521,7 +521,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the scroll configuration parameter of the map.
-     * @param scrollConfig 
+     * @param scrollConfig the string of the config
      */
     public void setScrollConfig(String scrollConfig) {
         this.getMapConfig().setScroll(scrollConfig);
@@ -537,7 +537,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the warn configuration parameter of the map.
-     * @param warnConfig 
+     * @param warnConfig the boolean of warning config
      */
     public void setWarnConfig(boolean warnConfig) {
         this.getMapConfig().setWarn(warnConfig);
@@ -545,7 +545,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the author of the map.
-     * @param authorName 
+     * @param authorName the author of the map
      */
     public void setAuthorConfig(String authorName) {
         this.getMapConfig().setAuthor(authorName);
@@ -553,7 +553,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the path to the image of background
-     * @param path 
+     * @param path the path of the img
      */
     public void setImagePath(String path) {
         this.getMapConfig().setImagePath(path);
