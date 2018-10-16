@@ -25,7 +25,6 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -289,17 +288,7 @@ public class MapEditorController {
             return;
         }
 
-        //remove territories
-        ArrayList<TerritoryModel> territories = new ArrayList<>(this.newMap.getGraphTerritories().values());
-        territories.stream().forEach((t) -> {
-            this.newMap.removeTerritory(t.getName());
-        });
-
-        //remove continents
-        ArrayList<ContinentModel> continents = new ArrayList<>(this.newMap.getGraphContinents().values());
-        continents.stream().forEach((c) -> {
-            this.newMap.removeContinent(c.getName());
-        });
+        this.newMap.clearMap();
 
         //set new image
         if (map.getImage() != null) {
