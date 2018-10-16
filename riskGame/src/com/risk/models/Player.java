@@ -24,8 +24,8 @@ public class Player {
     public Player(String name, Color color, boolean isHuman) {
         this.name = name;
         this.color = null;
-        this.contriesOwned = null;
-        this.continentsOwned = null;
+        this.contriesOwned = new LinkedList<>();
+        this.continentsOwned = new LinkedList<>();
         this.numArmies = 0;
         this.isHuman = isHuman;
         this.cardsOwned = new Hand();
