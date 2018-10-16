@@ -386,8 +386,8 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Check if an Dimension element is in the list.
-     * @param list
-     * @param element
+     * @param list list of the dimension
+     * @param element the element inside of the link
      * @return a boolean value to tell if the element is in the list.
      * @see Dimension
      */
