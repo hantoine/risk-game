@@ -144,7 +144,7 @@ public final class EditableMapModel implements MapModelObservable {
      * Add a new continent to the model and notify the observers to change the
      * view
      *
-     * @return
+     * @return whether the continent is added or not
      */
     public boolean addContinent() {
         String newName = getNewName(true);
