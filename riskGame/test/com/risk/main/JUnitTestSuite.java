@@ -6,7 +6,7 @@
 package com.risk.main;
 
 import com.risk.models.MapFileManagementTest;
-import com.risk.models.interfaces.PlayerModelTest;
+import com.risk.models.PlayerModelTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
