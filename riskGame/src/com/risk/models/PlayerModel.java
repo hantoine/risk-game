@@ -6,12 +6,6 @@
 package com.risk.models;
 
 import com.risk.controllers.GameController;
-import com.risk.models.CardModel;
-import com.risk.models.ContinentModel;
-import com.risk.models.FortificationMove;
-import com.risk.models.HandModel;
-import com.risk.models.RiskModel;
-import com.risk.models.TerritoryModel;
 import java.awt.Color;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -26,14 +20,12 @@ import java.util.Observable;
 public abstract class PlayerModel extends Observable {
 
     /**
-     * name the name of the player
-     * color the color of the player
-     * contriesOwned countries owned by a player
-     * cardsOwned cards owned by a player
-     * numArmiesAvailable the number of armies available to place
-     * returnedCards the number of cards that have been returned
-     * game the game in which this player belongs to
-     * currentFortificationMove the current movement in the fortification phase
+     * name the name of the player color the color of the player contriesOwned
+     * countries owned by a player cardsOwned cards owned by a player
+     * numArmiesAvailable the number of armies available to place returnedCards
+     * the number of cards that have been returned game the game in which this
+     * player belongs to currentFortificationMove the current movement in the
+     * fortification phase
      */
     private String name;
     private Color color;
@@ -41,10 +33,9 @@ public abstract class PlayerModel extends Observable {
     private Collection<ContinentModel> continentsOwned;
     private HandModel cardsOwned;
     private int numArmiesAvailable;
-    private int returnedCards;  
+    private int returnedCards;
     private RiskModel game;
     private FortificationMove currentFortificationMove;
-
 
     /**
      * Constructor
@@ -209,6 +200,19 @@ public abstract class PlayerModel extends Observable {
      */
     public void setContinentsOwned(Collection<ContinentModel> continentsOwned) {
         this.continentsOwned = continentsOwned;
+    }
+
+    /**
+     * Add a continent in the list of continents owned by this player
+     *
+     * @param newContinentOwned New continent owned by this player
+     */
+    public void addContinentOwned(ContinentModel newContinentOwned) {
+        if (this.continentsOwned == null) {
+            this.continentsOwned = new LinkedList<>();
+        }
+
+        this.continentsOwned.add(newContinentOwned);
     }
 
     /**
@@ -428,7 +432,8 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * Getter of the currentFortificationMove attribute
-     * @return 
+     *
+     * @return
      */
     public FortificationMove getCurrentFortificationMove() {
         return currentFortificationMove;
@@ -436,7 +441,8 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * Setter of the currentFortificationMove attribute
-     * @param currentFortificationMove 
+     *
+     * @param currentFortificationMove
      */
     public void setCurrentFortificationMove(FortificationMove currentFortificationMove) {
         this.currentFortificationMove = currentFortificationMove;
