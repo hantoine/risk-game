@@ -471,7 +471,7 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Return an array containing all the names of the continents
      *
-     * @return
+     * @return the list of the continent
      */
     public String[] getContinentList() {
         Set<String> continentsList = this.getGraphContinents().keySet();
