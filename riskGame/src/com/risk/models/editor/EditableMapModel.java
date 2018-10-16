@@ -192,7 +192,7 @@ public final class EditableMapModel implements MapModelObservable {
     
     /**
      * Get the original map model in attribute 
-     * @return 
+     * @return return the internal map
      */
     public MapModel getInternalMap() {
         return map;
