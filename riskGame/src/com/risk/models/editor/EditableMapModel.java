@@ -356,7 +356,7 @@ public final class EditableMapModel implements MapModelObservable {
     
     /**
      * Add a new view that will be informed of changes in the model to update itself.
-     * @param newObserver 
+     * @param newObserver the new map model observer
      */
     @Override
     public void addObserver(MapModelObserver newObserver) {
