@@ -92,8 +92,8 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Get one territory model instance by its name
      *
-     * @param territoryName
-     * @return
+     * @param territoryName name of territory 
+     * @return target 
      */
     public TerritoryModel getTerritoryByName(String territoryName) {
         TerritoryModel target = this.getGraphTerritories().get(territoryName);
