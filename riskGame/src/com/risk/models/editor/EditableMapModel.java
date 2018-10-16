@@ -484,7 +484,7 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Return an array containing all the names of the territories
      *
-     * @return
+     * @return the array of the territory
      */
     public String[] getTerritoryList() {
         Set<String> territorySet = this.getGraphTerritories().keySet();
