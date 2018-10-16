@@ -104,7 +104,7 @@ public class MapConfig {
 
     /**
      * Setter on the scroll parameter.
-     * @param scroll 
+     * @param scroll scroll of the map
      */
     public void setScroll(String scroll) {
         this.scroll = scroll;
