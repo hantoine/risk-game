@@ -18,7 +18,7 @@ public class TestRunner {
 
     /**
      * Main of the runner class
-     * @param args 
+     * @param args the argument array
      */
     public static void main(String[] args) {
         Result result;
