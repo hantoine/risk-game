@@ -498,8 +498,8 @@ public final class EditableMapModel implements MapModelObservable {
      * Get territories that can be neighbours of a given territory passed in
      * parameter
      *
-     * @param territoryName
-     * @return
+     * @param territoryName the name of the territory
+     * @return the array of the territory
      */
     public String[] getPotentialNeighbours(String territoryName) {
         Set<String> territorySet = this.getGraphTerritories().keySet();
