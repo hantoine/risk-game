@@ -10,11 +10,9 @@ import com.risk.models.Country;
 import com.risk.views.menu.PlayerPanel;
 import java.awt.Color;
 import java.awt.geom.Line2D;
-import java.util.Iterator;
 import java.util.LinkedList;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+
 
 /**
  *

@@ -6,8 +6,6 @@
 package com.risk.views.player;
 
 import com.risk.models.Player;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,31 +17,29 @@ import javax.swing.JPanel;
  */
 public class PlayerGameInfoPanel extends JPanel {
 
-
     private Player currentPlayer;
     private JButton playerName;
     JLabel numArmies;
-    
+
     public PlayerGameInfoPanel(Player currentPlayer) {
-        this.currentPlayer=currentPlayer;
+        this.currentPlayer = currentPlayer;
         this.setLayout(new FlowLayout());
-        this.setSize(150,200);
-        this.playerName=new JButton("Player 1");
+        this.setSize(150, 200);
+        this.playerName = new JButton("Player 1");
         this.add(playerName);
-       
-        
+
     }
-    
-    public void updatePlayer(Player currentPlayer){
-        playerName.setText("Player "+currentPlayer.getName());
+
+    public void updatePlayer(Player currentPlayer) {
+        playerName.setText("Player " + currentPlayer.getName());
         playerName.setBackground(currentPlayer.getColor());
     }
-    
+
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
-    
-        /**
+
+    /**
      * @return the playerName
      */
     public JButton getPlayerName() {
@@ -56,6 +52,5 @@ public class PlayerGameInfoPanel extends JPanel {
     public void setPlayerName(JButton playerName) {
         this.playerName = playerName;
     }
-    
 
 }
