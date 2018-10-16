@@ -146,7 +146,7 @@ public class NewGamePanel extends JPanel {
 
     /**
      * Getter of the button to open the map editor.
-     * @return 
+     * @return return the map edistor
      */
     public JButton getOpenMapEditor() {
         return this.openMapEditor;

@@ -49,8 +49,8 @@ public class FileSelectorPanel extends JPanel {
     /**
      * Constructor method.
      *
-     * @param width
-     * @param height
+     * @param width the width of the panel
+     * @param height the height of the panel
      * @param exts Available extensions of the files that can be selected.
      */
     public FileSelectorPanel(int width, int height, FileNameExtensionFilter exts) {
@@ -129,7 +129,7 @@ public class FileSelectorPanel extends JPanel {
     /**
      * Update message being displayed in the textfield.
      *
-     * @param message
+     * @param message the message which is sent to the text field
      */
     public void setTextFieldMessage(String message) {
         this.textField.setText(message);
@@ -138,7 +138,7 @@ public class FileSelectorPanel extends JPanel {
     /**
      * Update message being displayed on the button.
      *
-     * @param message
+     * @param message the message which is sent to the text field
      */
     public void setButtonMessage(String message) {
         this.selectFileButton.setText(message);
