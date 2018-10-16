@@ -130,66 +130,62 @@ public class MapFileManagement {
 
         if (!info.equals("")) {
             linesInfo = info.split("\\r?\\n");
-            if (linesInfo[0].equals("[Map]")) {
-                for (int i = 1; i < linesInfo.length && !linesInfo[i].equals(""); i++) {
-                    aux = linesInfo[i].split("=", 2);
-
-                    switch (aux[0]) {
-                        case "author":
-                            mapConfig.setAuthor(aux[1]);
-                            break;
-                        case "image":
-                            if (aux[1].isEmpty() || aux[1].equals("null")) {
-                                break;
-                            }
-                            
-                            mapConfig.setImagePath(aux[1]);
-                            Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
-                            try {
-                                BufferedImage image = ImageIO.read(new File(imagePath.toString()));
-                                map.setImage(image);
-                            } catch (FileNotFoundException e) {
-                                return -1;
-                            } catch (IOException e) {
-                                return -1;
-                            }
-                            break;
-                        case "wrap":
-                            if ((aux[1].equals("no") || aux[1].equals("yes"))) {
-                                mapConfig.setWrap(aux[1].equals("yes"));
-                            } else {
-                                return -1;
-                            }
-                            break;
-                        case "scroll":
-                            if ((aux[1].equals("horizontal") || aux[1].equals("vertical") || aux[1].equals("none"))) {
-                                mapConfig.setScroll(aux[1]);
-                            } else {
-                                return -1;
-                            }
-                            break;
-                        case "warn":
-                            if ((aux[1].equals("no") || aux[1].equals("yes"))) {
-                                mapConfig.setWarn(aux[1].equals("yes"));
-                            } else {
-                                return -1;
-                            }
-                            break;
-                        default:
-                            return -1;
-                    }
-
-                }
-            } else {
+            if (!linesInfo[0].equals("[Map]")) {
                 return -1;
+            }
+
+            for (int i = 1; i < linesInfo.length && !linesInfo[i].equals(""); i++) {
+                aux = linesInfo[i].split("=", 2);
+
+                switch (aux[0]) {
+                    case "author":
+                        mapConfig.setAuthor(aux[1]);
+                        break;
+                    case "image":
+                        if (aux[1].isEmpty() || aux[1].equals("null")) {
+                            break;
+                        }
+
+                        mapConfig.setImagePath(aux[1]);
+                        Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
+                        try {
+                            BufferedImage image = ImageIO.read(new File(imagePath.toString()));
+                            map.setImage(image);
+                        } catch (FileNotFoundException e) {
+                            return -1;
+                        } catch (IOException e) {
+                            return -1;
+                        }
+                        break;
+                    case "wrap":
+                        if ((aux[1].equals("no") || aux[1].equals("yes"))) {
+                            mapConfig.setWrap(aux[1].equals("yes"));
+                        } else {
+                            return -1;
+                        }
+                        break;
+                    case "scroll":
+                        if ((aux[1].equals("horizontal") || aux[1].equals("vertical") || aux[1].equals("none"))) {
+                            mapConfig.setScroll(aux[1]);
+                        } else {
+                            return -1;
+                        }
+                        break;
+                    case "warn":
+                        if ((aux[1].equals("no") || aux[1].equals("yes"))) {
+                            mapConfig.setWarn(aux[1].equals("yes"));
+                        } else {
+                            return -1;
+                        }
+                        break;
+                    default:
+                        return -1;
+                }
+
             }
 
             map.setConfigurationInfo(mapConfig);
 
-        }
-
-        if (map.getImage() == null) {
-            return -1;
         }
 
         return 0;
@@ -366,9 +362,13 @@ public class MapFileManagement {
         String territories = "[Territories]\n";
         int result = 0;
 
-        if(board==null)
+        if (!board.isValid()) {
+            return -7;
+        }
+        if (board == null) {
             return -1;
-        
+        }
+
         MapConfig mapConfig = board.getConfigurationInfo();
         configuration += "author=" + mapConfig.getAuthor() + "\r\n";
         configuration += "image=" + mapConfig.getImagePath() + "\r\n";
@@ -385,7 +385,11 @@ public class MapFileManagement {
             String adj = getAdj(aux);
 
             if (result == 0) {
-                territories += aux.getName() + "," + aux.getPositionX() + "," + aux.getPositionY() + "," + aux.getContinentName() + "," + adj + "\n";
+                territories += aux.getName() + "," + aux.getPositionX() + "," + aux.getPositionY() + "," + aux.getContinentName();
+                if (!adj.isEmpty()) {
+                    territories += "," + adj;
+                }
+                territories += "\n";
             } else {
                 return -1;
             }
@@ -451,8 +455,8 @@ public class MapFileManagement {
         }
 
     }
-    
-        /**
+
+    /**
      * It provides the message in case of error in reading the map from a file
      *
      * @param resultReadingValidation it has a value between -1 and -6, each
@@ -473,6 +477,8 @@ public class MapFileManagement {
                 return "No territories separator in file.";
             case -6:
                 return "No continents separator in file.";
+            case -7:
+                return "The map is not valid.";
         }
         return "Error in file format";
     }

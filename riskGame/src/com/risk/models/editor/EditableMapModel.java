@@ -103,9 +103,9 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Check if a given string is in a given list of strings
      *
-     * @param list
+     * @param list 
      * @param element
-     * @return
+     * @return 
      */
     public boolean isInList(String[] list, String element) {
         return Stream.of(list).anyMatch(x -> x.equals(element));

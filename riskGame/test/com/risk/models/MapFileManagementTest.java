@@ -52,7 +52,7 @@ public class MapFileManagementTest {
     /**
      * Test of createBoard method, of class MapFileManagement.Null board.
      */
-    @Ignore
+    @Test
     public void testCreateBoard() {
 
         int expResult = -7;
@@ -80,7 +80,7 @@ public class MapFileManagementTest {
     /**
      * Test of readFile method, of class MapFileManagement.
      */
-    @Ignore
+    @Test
     public void testReadFile() {
         System.out.println("readFile");
         path = "";
@@ -121,7 +121,7 @@ public class MapFileManagementTest {
     /**
      * Test of configurationInf method, of class MapFileManagement.
      */
-    @Ignore
+    @Test
     public void testConfigurationInf() {
         System.out.println("configurationInf");
         String info = "[Map]\n" + "author=Stewart Ainsworth\n" + "image=old yorkshire.bmp\n" + "wrap=no\n" + "scroll=horizontal";
@@ -163,7 +163,7 @@ public class MapFileManagementTest {
      * Test of configurationInf method, of class MapFileManagement. Without
      * image parameter and valid file path
      */
-    @Test
+    @Ignore
     public void testConfigurationInf3() {
 
         //Test Case only without image parameter and valid file path

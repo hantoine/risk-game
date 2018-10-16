@@ -259,7 +259,7 @@ public abstract class PlayerModel extends Observable {
                 this.setNumArmiesAvailable(40);
                 break;
             case 3:
-                this.setNumArmiesAvailable(3); //modified temporarily to speed up tests
+                this.setNumArmiesAvailable(35);
                 break;
             case 4:
                 this.setNumArmiesAvailable(30);
