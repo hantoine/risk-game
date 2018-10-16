@@ -202,6 +202,7 @@ public final class EditableMapModel implements MapModelObservable {
      * Remove a continent and notify the observers
      *
      * @param continentName the name of the continent
+     * @return return if the continent is removed or not
      */
     public boolean removeContinent(String continentName) {
         ContinentModel continentToDel = this.getGraphContinents().get(continentName);
