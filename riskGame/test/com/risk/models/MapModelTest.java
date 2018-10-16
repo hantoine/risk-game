@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 
 /**
  * Class to test methods in the map model
+ * 
  * @author hantoine
  */
 public class MapModelTest {
@@ -23,13 +24,14 @@ public class MapModelTest {
      */
     MapModel mapModel;
 
+    /**
+     * Constructor
+     */
     public MapModelTest() {
     }
 
-    
     /**
      * Create a valid MapModel that will be the base for all test cases
-     *
      */
     @Before
     public void setUp() {
@@ -162,7 +164,6 @@ public class MapModelTest {
     /**
      * Test of isValid method, of class MapModel. Test that the method returns
      * false with a map containing an empty continent
-     *
      */
     @Test
     public void testIsValidonEmptyContinentMap() {
