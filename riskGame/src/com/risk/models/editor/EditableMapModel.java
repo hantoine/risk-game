@@ -72,8 +72,8 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Remove a link between two vertices.
-     * @param territoryName
-     * @param neighbour 
+     * @param territoryName name of territory
+     * @param neighbour name of the neighbour
      */
     public void removeLink(String territoryName, String neighbour) {
         //get models
