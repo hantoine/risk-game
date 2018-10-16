@@ -248,10 +248,10 @@ public final class EditableMapModel implements MapModelObservable {
     
     /**
      * Add territory from file.
-     * @param posX
-     * @param posY
-     * @param newName
-     * @param continentName
+     * @param posX the coordinate x
+     * @param posY the coordinate y
+     * @param newName the new terriroty's name
+     * @param continentName the name of the continent
      * @return 
      */
     public boolean loadTerritory(int posX, int posY, String newName, String continentName) {
