@@ -3,12 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.models.interfaces;
+package com.risk.models;
 
-import com.risk.models.PlayerModel;
-import com.risk.models.ContinentModel;
-import com.risk.models.HumanPlayerModel;
-import com.risk.models.TerritoryModel;
 import java.awt.Color;
 import java.util.LinkedList;
 import static org.junit.Assert.*;
@@ -16,7 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Class to test player model class 
+ * Class to test player model class
+ * 
  * @author Nellybett
  */
 public class PlayerModelTest {
