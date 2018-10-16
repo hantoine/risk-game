@@ -9,7 +9,6 @@ import java.io.File;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Ignore;
 
 /**
  * It proves all the functions in the MapFileManagement class
@@ -19,7 +18,8 @@ import org.junit.Ignore;
 public class MapFileManagementTest {
 
     /**
-     * board is a not null instance of the map instance is the instance of the class being tested 
+     * board is a not null instance of the map instance is the instance of the
+     * class being tested
      */
     MapModel board;
     /**
@@ -34,8 +34,8 @@ public class MapFileManagementTest {
     }
 
     /**
-     * Load the map and create a valid MapModel that will be the base for 
-     * all test cases
+     * Load the map and create a valid MapModel that will be the base for all
+     * test cases
      */
     @Before
     public void before() {
@@ -49,7 +49,7 @@ public class MapFileManagementTest {
     /**
      * Test of createBoard method, of class MapFileManagement.Null board.
      */
-    @Ignore
+    @Test
     public void testCreateBoard() {
 
         int expResult = -7;
@@ -77,7 +77,7 @@ public class MapFileManagementTest {
     /**
      * Test of readFile method, of class MapFileManagement.
      */
-    @Ignore
+    @Test
     public void testReadFile() {
         System.out.println("readFile");
         path = "";
@@ -118,7 +118,7 @@ public class MapFileManagementTest {
     /**
      * Test of configurationInf method, of class MapFileManagement.
      */
-    @Ignore
+    @Test
     public void testConfigurationInf() {
         System.out.println("configurationInf");
         String info = "[Map]\n" + "author=Stewart Ainsworth\n" + "image=old yorkshire.bmp\n" + "wrap=no\n" + "scroll=horizontal";
@@ -258,21 +258,6 @@ public class MapFileManagementTest {
         String info = "Anisty Liberty,363,294,York,Tadcaster\n" + "Tadcaster,370,327,York,Anisty Liberty";
         int result = MapFileManagement.countryCreator(info, board);
         int expResult = 0;
-        assertEquals(expResult, result);
-
-    }
-
-    /**
-     * Test of generateBoardFile method, of class MapFileManagement.
-     */
-    @Ignore
-    public void testGenerateBoardFile() {
-        System.out.println("generateBoardFile");
-        String path = "";
-        MapModel board = null;
-        MapFileManagement instance = new MapFileManagement();
-        int expResult = 0;
-        int result = MapFileManagement.generateBoardFile(path, board);
         assertEquals(expResult, result);
 
     }
