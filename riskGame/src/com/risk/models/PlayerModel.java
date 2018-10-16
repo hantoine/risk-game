@@ -202,6 +202,11 @@ public abstract class PlayerModel extends Observable {
         this.continentsOwned = continentsOwned;
     }
 
+    /**
+     * Add a continent in the list of continents owned by this player
+     *
+     * @param newContinentOwned New continent owned by this player
+     */
     public void addContinentOwned(ContinentModel newContinentOwned) {
         if (this.continentsOwned == null) {
             this.continentsOwned = new LinkedList<>();
