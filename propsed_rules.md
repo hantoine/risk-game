@@ -1,6 +1,5 @@
 # Coding conventions
 
-- Let's try not to commit code without tests
 - All committed code should be properly formated. The function Source/Format should be used on every modified file before commiting.
 	- Indentation: the curly bracket at the beginning of a block (function, if, while, etc) should be on the same line as the previous instruction. (arbitrary choice)
 	  	
@@ -55,8 +54,6 @@
 			doThings(dataObject);
 		}
 		```
-- After refactoring, lets try to  always do peer programming
-- Trye to ensure the source code in master should always be running. Always work on a dedicated branch.
 
 - Naming conventions:
 	- class name:		should start with uppercase letter and be a noun e.g. String, Color, Button, System, Thread etc.
@@ -68,7 +65,7 @@
 
 
 - A method should not be longer than 50 lines.
-- We should commit as frequently as possible. It is considered possible to commit when an atomic modification of the source code as been completed.
+
 - Let's try not to commit code without comments
 	- Each methods should be commented using JavaDoc format with a brief description of the function, a description of each of its parameters and a description of what it returns 
 	- more comments can be added inside the function if necessary when the function can be hard to understand 
