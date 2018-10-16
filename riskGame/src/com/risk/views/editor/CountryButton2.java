@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 
 /**
  * Button representing a territory in the map editor.
+ *
  * @author timot
  */
 public class CountryButton2 extends JButton {
@@ -20,17 +21,17 @@ public class CountryButton2 extends JButton {
      * Dimension of the button
      */
     private Dimension buttonSize;
-    
+
     /**
      * X position on the map panel.
      */
     private static int positionX;
-    
+
     /**
      * Y position on the map panel.
      */
     private static int positionY;
-    
+
     /**
      * Name of the territory that will be displayed on the button.
      */
@@ -60,6 +61,7 @@ public class CountryButton2 extends JButton {
 
     /**
      * Getter of the name attribute
+     *
      * @return the name
      */
     public String getName() {
@@ -72,6 +74,7 @@ public class CountryButton2 extends JButton {
 
     /**
      * Setter of the name attribute
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -81,6 +84,7 @@ public class CountryButton2 extends JButton {
 
     /**
      * It gives a new location for the country in the map
+     *
      * @param x position in x
      * @param y position in y
      */
@@ -91,6 +95,7 @@ public class CountryButton2 extends JButton {
 
     /**
      * Getter for the dimension of the button.
+     *
      * @return the dimension of the button.
      */
     public Dimension getSize() {

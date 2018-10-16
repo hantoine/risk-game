@@ -5,14 +5,15 @@
  */
 package com.risk.views.game;
 
-import com.risk.models.RiskModel;
 import com.risk.models.PlayerModel;
+import com.risk.models.RiskModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
  * This class represents the phase panel
+ *
  * @author Nellybett
  */
 public class PhasePanel extends JPanel {
@@ -49,6 +50,7 @@ public class PhasePanel extends JPanel {
 
     /**
      * Updates the view to the current phase
+     *
      * @param rm receives a model
      */
     public void updateView(RiskModel rm) {
@@ -89,6 +91,7 @@ public class PhasePanel extends JPanel {
 
     /**
      * Getter of the endPhase attribute
+     *
      * @return endPhase
      */
     public JButton getEndPhase() {
@@ -97,6 +100,7 @@ public class PhasePanel extends JPanel {
 
     /**
      * Getter of the handCards attribute
+     *
      * @return handCards
      */
     public JButton getHandCards() {

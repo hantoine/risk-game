@@ -9,12 +9,12 @@ import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
 import com.risk.views.game.MapPanel;
-import com.risk.views.menu.MenuView;
-import com.risk.views.menu.NewGamePanel;
-import com.risk.views.menu.StartMenuView;
 import com.risk.views.game.PhasePanel;
 import com.risk.views.game.PlayerGameHandPanel;
 import com.risk.views.game.PlayerGameInfoPanel;
+import com.risk.views.menu.MenuView;
+import com.risk.views.menu.NewGamePanel;
+import com.risk.views.menu.StartMenuView;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -54,7 +54,8 @@ public final class RiskView extends javax.swing.JFrame {
      */
     final private PlayerGameHandPanel playerHandPanel;
     /**
-     * stagePanel reference to the view that manages the information of the current stage
+     * stagePanel reference to the view that manages the information of the
+     * current stage
      */
     final private PhasePanel stagePanel;
 
@@ -187,7 +188,8 @@ public final class RiskView extends javax.swing.JFrame {
 
     /**
      * Getter of the new game panel inside the menu panel
-     * @return 
+     *
+     * @return
      */
     public NewGamePanel getNewGamePanel() {
         return this.getMenuPanel().getStartMenu().getNewGamePanel();
@@ -195,7 +197,8 @@ public final class RiskView extends javax.swing.JFrame {
 
     /**
      * Getter of the player hands panel
-     * @return 
+     *
+     * @return
      */
     PlayerGameHandPanel getPlayerHandPanel() {
         return playerHandPanel;

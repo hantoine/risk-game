@@ -7,8 +7,8 @@ package com.risk.controllers;
 
 import com.risk.models.HumanPlayerModel;
 import com.risk.models.MapFileManagement;
-import com.risk.models.RiskModel;
 import com.risk.models.PlayerModel;
+import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import com.risk.views.menu.DeletableButton;
 import com.risk.views.menu.NewGamePanel;
@@ -40,7 +40,8 @@ public class MenuListener extends MouseAdapter {
      */
     private RiskView riskView;
     /**
-     * playerList it is a reference to the view that has a list of player panels in the menu
+     * playerList it is a reference to the view that has a list of player panels
+     * in the menu
      */
     private PlayerListPanel playerList;
     /**

@@ -44,7 +44,8 @@ public class MapPanel extends JPanel {
 
     /**
      * Creates the map of the game from the model
-     * @param mapModel 
+     *
+     * @param mapModel
      */
     private void createMap(MapModel mapModel) {
         clearMap();
@@ -70,7 +71,8 @@ public class MapPanel extends JPanel {
 
     /**
      * Attach the listener to the map
-     * @param countryListener 
+     *
+     * @param countryListener
      */
     public void setListener(MouseListener countryListener) {
         this.addMouseListener(countryListener);
@@ -78,8 +80,9 @@ public class MapPanel extends JPanel {
 
     /**
      * Updates the view with the changes in the model
+     *
      * @param rm model reference
-     * @param mapChanged 
+     * @param mapChanged
      */
     public void updateView(RiskModel rm, boolean mapChanged) {
         if (mapChanged) {
@@ -147,7 +150,8 @@ public class MapPanel extends JPanel {
 
     /**
      * Getter of the image of the map
-     * @return 
+     *
+     * @return
      */
     public Image getImage() {
         return image;

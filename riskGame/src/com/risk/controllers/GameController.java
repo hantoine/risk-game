@@ -6,9 +6,9 @@
 package com.risk.controllers;
 
 import com.risk.models.FortificationMove;
+import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
-import com.risk.models.PlayerModel;
 import com.risk.views.RiskView;
 import java.util.LinkedList;
 import java.util.List;
@@ -235,6 +235,6 @@ public class GameController {
     public void clickHand() {
 
         modelRisk.getCurrentPlayer().exchangeCardsToArmies();
-        riskView.getStagePanel().updateView(modelRisk);
+        riskView.updateView(modelRisk);
     }
 }

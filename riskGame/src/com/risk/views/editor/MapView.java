@@ -6,9 +6,9 @@
 package com.risk.views.editor;
 
 import com.risk.controllers.MapEditorController;
-import com.risk.observable.UpdateTypes;
 import com.risk.models.TerritoryModel;
 import com.risk.observable.MapModelObserver;
+import com.risk.observable.UpdateTypes;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -176,7 +176,9 @@ public class MapView extends JPanel implements MapModelObserver {
     }
 
     /**
-     * Update the name of a territory in response to a notification from observable model.
+     * Update the name of a territory in response to a notification from
+     * observable model.
+     *
      * @param object New name of the territory
      */
     public void updateTerritoryName(Object object) {
@@ -193,7 +195,9 @@ public class MapView extends JPanel implements MapModelObserver {
     }
 
     /**
-     * Update the position of a button representing a territory in response to a notification from observable model.
+     * Update the position of a button representing a territory in response to a
+     * notification from observable model.
+     *
      * @param object model of the territory to get its coordinates.
      */
     public void updateTerritoryPos(Object object) {
@@ -204,7 +208,9 @@ public class MapView extends JPanel implements MapModelObserver {
     }
 
     /**
-     * Remove a link between two territories in response to a notification from observable model.
+     * Remove a link between two territories in response to a notification from
+     * observable model.
+     *
      * @param object names of the two countries that are linked.
      */
     public void removeLink(Object object) {
@@ -230,7 +236,9 @@ public class MapView extends JPanel implements MapModelObserver {
     }
 
     /**
-     * Add a new link on the map between two territories in response to a notification from observable model.
+     * Add a new link on the map between two territories in response to a
+     * notification from observable model.
+     *
      * @param object Names of the territories to be linked.
      */
     public void addLink(Object object) {
@@ -265,8 +273,11 @@ public class MapView extends JPanel implements MapModelObserver {
     }
 
     /**
-     * Function of the observer interface that update the view in response to an update of the model.
-     * @param updateType type of the change that has been performed on the model.
+     * Function of the observer interface that update the view in response to an
+     * update of the model.
+     *
+     * @param updateType type of the change that has been performed on the
+     * model.
      * @param object Can be different regarding the update type.
      */
     @Override
@@ -322,9 +333,11 @@ public class MapView extends JPanel implements MapModelObserver {
      * Ask the user to modify a Territory's informations. It shows up when the
      * user clicked left on a Territory button.
      *
-     * @param continentsList list of the continents that can be selected as continent by the territory.
+     * @param continentsList list of the continents that can be selected as
+     * continent by the territory.
      * @param territoryName name of the current territory that will be modified.
-     * @param continentName name of the current continent of the territory to be modified.
+     * @param continentName name of the current continent of the territory to be
+     * modified.
      * @return the new territory informations gathered from the user.
      */
     public Map<String, String> modifyTerritory(String[] continentsList, String territoryName, String continentName) {
@@ -353,7 +366,9 @@ public class MapView extends JPanel implements MapModelObserver {
     }
 
     /**
-     * When this tool is selected, opens a dialog to ask the user to add a neighbour to a given territory he/she selected.
+     * When this tool is selected, opens a dialog to ask the user to add a
+     * neighbour to a given territory he/she selected.
+     *
      * @param territoryArray List of the territories that can be neighbours.
      * @param territoryName name of the territory that is modified.
      * @return the name of the new neighbour that has been selected by the user.
@@ -374,8 +389,8 @@ public class MapView extends JPanel implements MapModelObserver {
             return neighbour;
         }
 
-        /*if neighbour name not empty
-        get name of the future link to check if it already exists*/
+        /* if neighbour name not empty
+        get name of the future link to check if it already exists */
         String name1;
         String name2;
         if (getAsciiValue(neighbour) > getAsciiValue(territoryName)) {
@@ -399,7 +414,9 @@ public class MapView extends JPanel implements MapModelObserver {
     }
 
     /**
-     * Tool of the map panel that allows the user to remove a link between two territories.
+     * Tool of the map panel that allows the user to remove a link between two
+     * territories.
+     *
      * @param neighbourStringList
      * @return the name of the neighbour that the user wants to remove.
      */

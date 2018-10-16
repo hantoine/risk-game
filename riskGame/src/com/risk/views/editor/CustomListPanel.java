@@ -16,26 +16,29 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- * Panel that will be used to build lists of components, allowing to dynamically add/remove new components on it.
+ * Panel that will be used to build lists of components, allowing to dynamically
+ * add/remove new components on it.
+ *
  * @author timot
  */
 public class CustomListPanel extends JPanel {
 
     /**
-     * Items of the list with each item being a component to be displayed on the panel.
+     * Items of the list with each item being a component to be displayed on the
+     * panel.
      */
     protected HashMap<String, Component> items;
-    
+
     /**
      * Button that can be clicked by the user to add new Components.
      */
     protected JButton addButton;
-    
+
     /**
      * Tool of the layout to display the components.
      */
     protected GridBagConstraints gbc;
-    
+
     /**
      * Dummy label to be used to make the list good looking.
      */

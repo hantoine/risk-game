@@ -5,8 +5,8 @@
  */
 package com.risk.views.editor;
 
-import com.risk.models.MapConfig;
 import com.risk.controllers.MapEditorController;
+import com.risk.models.MapConfig;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
@@ -16,8 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * Panel that allows to set the parameters of the map.
- * This panel comes into the map editor.
+ * Panel that allows to set the parameters of the map. This panel comes into the
+ * map editor.
+ *
  * @author timot
  * @see MapConfig
  */
@@ -27,25 +28,27 @@ public class MapConfigPanel extends JPanel {
      * Field to set the author name.
      */
     protected JTextField authorField;
-    
+
     /**
-     * Checkbox for the warn parameter 
+     * Checkbox for the warn parameter
      */
     protected JCheckBox isWarnBox;
-    
+
     /**
-     * Checkbox for the wrap parameter 
+     * Checkbox for the wrap parameter
      */
     protected JCheckBox isWrapBox;
 
     /**
-     * Allow to choose the type of scrolling for the map. 
+     * Allow to choose the type of scrolling for the map.
      */
     protected JComboBox scrollTypeBox;
 
     /**
      * Constructor.
-     * @param controler Controller of the map editor that contains the listeners for the components of this panel.
+     *
+     * @param controler Controller of the map editor that contains the listeners
+     * for the components of this panel.
      * @param configModel Model to initialize the configuration parameters.
      */
     public MapConfigPanel(MapEditorController controler, MapConfig configModel) {
@@ -55,7 +58,9 @@ public class MapConfigPanel extends JPanel {
 
     /**
      * Function to initialize the components of the panel.
-     * @param controler Controller of the map editor that contains the listeners for the components of this panel.
+     *
+     * @param controler Controller of the map editor that contains the listeners
+     * for the components of this panel.
      * @param configModel Model to initialize the configuration parameters.
      */
     private void init(MapEditorController controler, MapConfig configModel) {
@@ -81,8 +86,8 @@ public class MapConfigPanel extends JPanel {
     /**
      * Function to put the elements into containers and add it to the view.
      */
-    public void createContainers(){
-        //create container panels 
+    public void createContainers() {
+        //create container panels
         JPanel authorPanel = new JPanel();
         authorPanel.setLayout(new BoxLayout(authorPanel, BoxLayout.Y_AXIS));
         authorPanel.add(new JLabel("Author Name"));
@@ -107,9 +112,10 @@ public class MapConfigPanel extends JPanel {
         scrollPanel.add(this.scrollTypeBox);
         this.add(scrollPanel);
     }
-    
+
     /**
      * Setter for the view, using the model.
+     *
      * @param mapConfig model for the configuration of the map.
      */
     public void setView(MapConfig mapConfig) {

@@ -8,13 +8,13 @@ package com.risk.models;
 import java.util.HashMap;
 import java.util.LinkedList;
 import org.junit.After;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Class to test methods in the map model
- * 
+ *
  * @author hantoine
  */
 public class MapModelTest {

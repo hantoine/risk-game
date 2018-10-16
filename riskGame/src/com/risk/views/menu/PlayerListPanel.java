@@ -26,12 +26,12 @@ public class PlayerListPanel extends JPanel {
 
     /**
      * addPlayerPanel the panel to add a players panel
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
+     *
+     *
+     *
+     *
+     *
+     *
      */
     final private JPanel addPlayerPanel;
     /**

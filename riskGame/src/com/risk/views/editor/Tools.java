@@ -7,6 +7,7 @@ package com.risk.views.editor;
 
 /**
  * Enum that describes the different tools that can be selected by the user.
+ *
  * @author timot
  */
 public enum Tools {

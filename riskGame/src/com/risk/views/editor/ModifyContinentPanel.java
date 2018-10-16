@@ -13,6 +13,7 @@ import javax.swing.SpinnerNumberModel;
 
 /**
  * Panel that is showed when editing a continent.
+ *
  * @author timot
  */
 public class ModifyContinentPanel extends JPanel {
@@ -21,7 +22,7 @@ public class ModifyContinentPanel extends JPanel {
      * Textfield that contains the name of the continent
      */
     protected JTextField continentNameField;
-    
+
     /**
      * Spinner that contains the bonus score of the continent being edited.
      */
@@ -29,7 +30,8 @@ public class ModifyContinentPanel extends JPanel {
 
     /**
      * Constructor.
-     * @param continentName 
+     *
+     * @param continentName
      * @param bonusScore bonus score of the continent.
      */
     public ModifyContinentPanel(String continentName, int bonusScore) {
@@ -38,8 +40,8 @@ public class ModifyContinentPanel extends JPanel {
 
         this.continentNameField = new JTextField(continentName);
         SpinnerNumberModel bonusScoreModel = new SpinnerNumberModel(bonusScore, //initial value
-                0,      //min
-                20,     //max
+                0, //min
+                20, //max
                 1);     //step
         this.bonusScore = new JSpinner(bonusScoreModel);
 
@@ -49,6 +51,7 @@ public class ModifyContinentPanel extends JPanel {
 
     /**
      * Getter on the continent's name
+     *
      * @return the continent's name
      */
     public String getContinentName() {
@@ -57,6 +60,7 @@ public class ModifyContinentPanel extends JPanel {
 
     /**
      * Getter on the bonus score
+     *
      * @return the bonus score converted into a String
      */
     public String getBonusScore() {

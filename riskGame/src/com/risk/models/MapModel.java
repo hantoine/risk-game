@@ -20,7 +20,7 @@ public class MapModel {
 
     /**
      * mapConfig configurations of the map like author, wrap, image, and others
-    */
+     */
     private MapConfig mapConfig;
     /**
      * image the image of the map
@@ -50,10 +50,10 @@ public class MapModel {
         graphContinents = new HashMap<>();
         graphTerritories = new HashMap<>();
         mapConfig = new MapConfig();
-        image=null;
+        image = null;
 
     }
-    
+
     /**
      * It prints the countries and relationships between them
      */
@@ -191,7 +191,8 @@ public class MapModel {
 
     /**
      * Setter of the mapHeight attribute
-     * @param mapHeight 
+     *
+     * @param mapHeight
      */
     public void setMapHeight(int mapHeight) {
         if (this.getImage() == null) {
@@ -201,7 +202,8 @@ public class MapModel {
 
     /**
      * Setter of the mapWith attribute
-     * @param mapWidth 
+     *
+     * @param mapWidth
      */
     public void setMapWidth(int mapWidth) {
         if (this.getImage() == null) {
@@ -211,6 +213,7 @@ public class MapModel {
 
     /**
      * It returns the height of the map or the image
+     *
      * @return mapHeight
      */
     public int getMapHeight() {
@@ -223,6 +226,7 @@ public class MapModel {
 
     /**
      * It returns the width of the map or the image
+     *
      * @return mapWidth
      */
     public int getMapWidth() {

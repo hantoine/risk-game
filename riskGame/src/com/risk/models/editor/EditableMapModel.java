@@ -5,13 +5,13 @@ package com.risk.models.editor;
  * To change this template file, choose Tools | Templates and open the template
  * in the editor.
  */
-import com.risk.models.MapConfig;
-import com.risk.observable.UpdateTypes;
 import com.risk.models.ContinentModel;
+import com.risk.models.MapConfig;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
 import com.risk.observable.MapModelObservable;
 import com.risk.observable.MapModelObserver;
+import com.risk.observable.UpdateTypes;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -29,11 +29,12 @@ import java.util.stream.Stream;
  * @author timot
  */
 public final class EditableMapModel implements MapModelObservable {
+
     /**
      * Former map model which contains the core features of the map model.
      */
     MapModel map;
-    
+
     /**
      * List of the observers of the model.
      */
@@ -47,7 +48,7 @@ public final class EditableMapModel implements MapModelObservable {
         observers = new LinkedList<>();
         addContinent();
     }
-    
+
     /**
      * Add an edge between two vertices (territories).
      *
@@ -59,9 +60,10 @@ public final class EditableMapModel implements MapModelObservable {
         TerritoryModel neighbourModel = this.getGraphTerritories().get(neighbour);
         TerritoryModel territoryModel = this.getGraphTerritories().get(territoryName);
 
-        if (neighbourModel.getAdj().contains(neighbourModel)) 
+        if (neighbourModel.getAdj().contains(neighbourModel)) {
             return;
-        
+        }
+
         //add neighbours
         this.getGraphTerritories().get(territoryName).addNeighbour(neighbourModel);
         this.getGraphTerritories().get(neighbour).addNeighbour(territoryModel);
@@ -72,6 +74,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Remove a link between two vertices.
+     *
      * @param territoryName name of territory
      * @param neighbour name of the neighbour
      */
@@ -92,7 +95,7 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Get one territory model instance by its name
      *
-     * @param territoryName name of territory 
+     * @param territoryName name of territory
      * @return the target name get from the method
      */
     public TerritoryModel getTerritoryByName(String territoryName) {
@@ -167,21 +170,21 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Clear the map being edited
      */
-    public void clearMap(){
+    public void clearMap() {
         String[] territoryList = this.getTerritoryList();
         String[] continentList = this.getContinentList();
-        
+
         //delete components
-        for(String territoryName : territoryList){
+        for (String territoryName : territoryList) {
             this.removeTerritory(territoryName);
         }
-        for(String continentName : continentList){
+        for (String continentName : continentList) {
             this.removeContinent(continentName);
         }
-        
+
         //add first continent
         this.addContinent();
-        
+
         //reset map configuration
         this.setScrollConfig("none");
         this.setWarnConfig(false);
@@ -189,9 +192,10 @@ public final class EditableMapModel implements MapModelObservable {
         this.setAuthorConfig("New Author");
         this.setImage(null, new Dimension(200, 50));
     }
-    
+
     /**
-     * Get the original map model in attribute 
+     * Get the original map model in attribute
+     *
      * @return return the internal map
      */
     public MapModel getInternalMap() {
@@ -247,9 +251,10 @@ public final class EditableMapModel implements MapModelObservable {
         notifyObservers(UpdateTypes.ADD_TERRITORY, newTerritory);
         return true;
     }
-    
+
     /**
      * Add territory from file.
+     *
      * @param posX the coordinate x
      * @param posY the coordinate y
      * @param newName the new terriroty's name
@@ -353,9 +358,11 @@ public final class EditableMapModel implements MapModelObservable {
 
         notifyObservers(UpdateTypes.UPDATE_CONTINENT, data);
     }
-    
+
     /**
-     * Add a new view that will be informed of changes in the model to update itself.
+     * Add a new view that will be informed of changes in the model to update
+     * itself.
+     *
      * @param newObserver the new map model observer
      */
     @Override
@@ -364,7 +371,9 @@ public final class EditableMapModel implements MapModelObservable {
     }
 
     /**
-     * Notify the views that a change occurred in the model so that they update themselves.
+     * Notify the views that a change occurred in the model so that they update
+     * themselves.
+     *
      * @param updateType type of the update.
      * @param object data to update the observers.
      */
@@ -386,6 +395,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Check if an Dimension element is in the list.
+     *
      * @param list list of the dimension
      * @param element the element inside of the link
      * @return a boolean value to tell if the element is in the list.
@@ -446,8 +456,9 @@ public final class EditableMapModel implements MapModelObservable {
     public void setImage(BufferedImage image, Dimension buttonDims) {
         this.map.setImage(image);
         notifyObservers(UpdateTypes.UPDATE_BACKGROUND_IMAGE, image);
-        if(image!=null)
+        if (image != null) {
             checkTerritoriesPositions(image.getWidth(), image.getHeight(), buttonDims);
+        }
     }
 
     /**
@@ -521,6 +532,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the scroll configuration parameter of the map.
+     *
      * @param scrollConfig the string of the config
      */
     public void setScrollConfig(String scrollConfig) {
@@ -529,7 +541,8 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the wrap configuration parameter of the map.
-     * @param wrapConfig 
+     *
+     * @param wrapConfig
      */
     public void setWrapConfig(boolean wrapConfig) {
         this.getMapConfig().setWrap(wrapConfig);
@@ -537,6 +550,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the warn configuration parameter of the map.
+     *
      * @param warnConfig the boolean of warning config
      */
     public void setWarnConfig(boolean warnConfig) {
@@ -545,6 +559,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the author of the map.
+     *
      * @param authorName the author of the map
      */
     public void setAuthorConfig(String authorName) {
@@ -553,6 +568,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the path to the image of background
+     *
      * @param path the path of the img
      */
     public void setImagePath(String path) {
@@ -561,6 +577,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Getter of the whole map configuration model of the map model
+     *
      * @return the object containing all the configuration parameters.
      */
     public MapConfig getMapConfig() {

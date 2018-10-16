@@ -5,10 +5,10 @@
  */
 package com.risk.controllers;
 
-import com.risk.views.editor.MapEditorView;
-import com.risk.models.editor.EditableMapModel;
 import com.risk.models.RiskModel;
+import com.risk.models.editor.EditableMapModel;
 import com.risk.views.RiskView;
+import com.risk.views.editor.MapEditorView;
 
 /**
  * It is the Game-driver
@@ -19,9 +19,9 @@ public final class RiskController {
 
     /**
      * viewRisk it is a reference to the view of the game
-     * 
-     * 
-     * 
+     *
+     *
+     *
      * mapEditorView the reference to the map editor
      */
     private RiskView viewRisk;
@@ -60,7 +60,7 @@ public final class RiskController {
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.setVisible(true);
-  
+
     }
 
     /**

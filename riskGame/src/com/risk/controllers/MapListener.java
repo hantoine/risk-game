@@ -27,7 +27,8 @@ import javax.swing.SwingUtilities;
 public class MapListener extends MouseAdapter {
 
     /**
-     * countrySource It represents the country where the drag and drop action starts
+     * countrySource It represents the country where the drag and drop action
+     * starts
      */
     private CountryLabel countrySource;
     /**
@@ -115,6 +116,7 @@ public class MapListener extends MouseAdapter {
 
     /**
      * Getter of the countrySource attribute
+     *
      * @return countrySource it is a label that represents a country
      */
     private CountryLabel getCountrySource() {
@@ -123,6 +125,7 @@ public class MapListener extends MouseAdapter {
 
     /**
      * Setter of the countrySource attribute
+     *
      * @param countrySource a label that represents a country in the map
      */
     private void setCountrySource(CountryLabel countrySource) {

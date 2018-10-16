@@ -6,8 +6,8 @@
 package com.risk.views.editor;
 
 import com.risk.controllers.MapEditorController;
-import com.risk.observable.UpdateTypes;
 import com.risk.observable.MapModelObserver;
+import com.risk.observable.UpdateTypes;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -20,22 +20,26 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
- * Panel that contains the informations of the continents and that allows to update the list.
+ * Panel that contains the informations of the continents and that allows to
+ * update the list.
+ *
  * @author timot
  * @see MapModelObserver
  * @see CustomListPanel
  */
 public class ContinentListPanel extends CustomListPanel implements MapModelObserver {
+
     /**
-     * Controller of the map editor useful to get the listeners to be attached on this panel's components. 
+     * Controller of the map editor useful to get the listeners to be attached
+     * on this panel's components.
      */
     private MapEditorController controller;
-    
+
     /**
      * Hashmap containing the list of continents.
      */
     private HashMap<String, Component> items;
-    
+
     /**
      * Button to add new continents.
      */
@@ -43,6 +47,7 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
 
     /**
      * Constructor.
+     *
      * @param width
      * @param height
      * @param editorController Controller of the map editor.
@@ -70,7 +75,9 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     }
 
     /**
-     * Add a dummy label for having a good display of the elements using GridBagConstraints.
+     * Add a dummy label for having a good display of the elements using
+     * GridBagConstraints.
+     *
      * @see GridBagConstraints
      */
     public void addDummyLabel() {
@@ -83,7 +90,9 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     }
 
     /**
-     * Function that will be called any time a new continent is created in order to customize its appearance.
+     * Function that will be called any time a new continent is created in order
+     * to customize its appearance.
+     *
      * @param label JLabel to be customized.
      * @param name Name of the continent.
      */
@@ -95,6 +104,7 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
 
     /**
      * Add a new continent to the list of continents.
+     *
      * @param newComponent Continent's container.
      * @param name Name of the continent.
      */
@@ -126,7 +136,8 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
 
     /**
      * Remove a continent from the list.
-     * @param name 
+     *
+     * @param name
      */
     @Override
     public void removeElement(String name) {
@@ -138,8 +149,9 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     }
 
     /**
-     * Add a new continent calling the inherited method from CustomListPanel. 
-     * @param continentName 
+     * Add a new continent calling the inherited method from CustomListPanel.
+     *
+     * @param continentName
      * @see CustomListPanel
      */
     public void addContinent(String continentName) {
@@ -147,8 +159,9 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     }
 
     /**
-     * Remove a new continent calling the inherited method from CustomListPanel. 
-     * @param continentName 
+     * Remove a new continent calling the inherited method from CustomListPanel.
+     *
+     * @param continentName
      * @see CustomListPanel
      */
     public void removeContinent(String continentName) {
@@ -156,9 +169,11 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     }
 
     /**
-     * Method from the MapModelObserver interface that will update the view when the model will change. 
+     * Method from the MapModelObserver interface that will update the view when
+     * the model will change.
+     *
      * @param updateType Nature of the update.
-     * @param object Object to be used to do the update. 
+     * @param object Object to be used to do the update.
      */
     @Override
     public void update(UpdateTypes updateType, Object object) {
@@ -192,8 +207,10 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     }
 
     /**
-     * Get modification informations from the user. 
-     * @param formerName Current name to be printed which will become the former name of the continent to be modified.
+     * Get modification informations from the user.
+     *
+     * @param formerName Current name to be printed which will become the former
+     * name of the continent to be modified.
      * @param bonusScore Bonus score to be printed.
      * @return an object containing the user inputs.
      */

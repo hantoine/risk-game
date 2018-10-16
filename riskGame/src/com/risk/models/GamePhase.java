@@ -7,6 +7,7 @@ package com.risk.models;
 
 /**
  * This class represents the different phases of the game
+ *
  * @author hantoine
  */
 public enum GamePhase {
@@ -27,7 +28,8 @@ public enum GamePhase {
 
     /**
      * This method change the execution order of the phases
-     * @return 
+     *
+     * @return
      */
     public GamePhase next() {
         return vals[(this.ordinal() + 1) % vals.length];

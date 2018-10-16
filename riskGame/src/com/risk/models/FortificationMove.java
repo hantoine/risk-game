@@ -7,6 +7,7 @@ package com.risk.models;
 
 /**
  * This class represents a fortification move
+ *
  * @author hantoine
  */
 public class FortificationMove {
@@ -22,8 +23,9 @@ public class FortificationMove {
 
     /**
      * Constructor
+     *
      * @param territorySource
-     * @param territoryDest 
+     * @param territoryDest
      */
     public FortificationMove(TerritoryModel territorySource, TerritoryModel territoryDest) {
         this.territorySource = territorySource;
@@ -32,6 +34,7 @@ public class FortificationMove {
 
     /**
      * Getter of the territorySource attribute
+     *
      * @return territorySource
      */
     public TerritoryModel getTerritorySource() {
@@ -40,15 +43,17 @@ public class FortificationMove {
 
     /**
      * Getter of the territoryDest attribute
-     * @return 
+     *
+     * @return
      */
     public TerritoryModel getTerritoryDest() {
         return territoryDest;
     }
 
     /**
-     * It compares two countries for the fortification move
-     * If the move its comming from the same country
+     * It compares two countries for the fortification move If the move its
+     * comming from the same country
+     *
      * @param obj
      * @return true if it is the same country; false if it is not
      */

@@ -26,21 +26,22 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author timot
  */
 public class FileSelectorPanel extends JPanel {
+
     /**
      * Button to launch the file chooser.
      */
     protected JButton selectFileButton;
-    
+
     /**
      * Text field that displays the path to the selected file.
      */
     protected JTextField textField;
-    
+
     /**
      * Label to inform the user.
      */
     protected JLabel label;
-    
+
     /**
      * Selection panel which contains all the above elements.
      */
@@ -109,6 +110,7 @@ public class FileSelectorPanel extends JPanel {
 
     /**
      * Getter of the JTextfield that contains the path to the selected file.
+     *
      * @return a JTextfield that contains the path to the selected file.
      */
     public JTextField getTextField() {

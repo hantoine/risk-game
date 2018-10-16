@@ -14,14 +14,17 @@ import java.util.HashMap;
 import javax.swing.JButton;
 
 /**
- * Panel that lists the tools that can be used while editing a map and highlight the current tool.
+ * Panel that lists the tools that can be used while editing a map and highlight
+ * the current tool.
+ *
  * @author timot
  */
 public class ToolsListPanel extends CustomListPanel {
 
     /**
      * Constructor.
-     * @param width 
+     *
+     * @param width
      * @param height
      * @param toolsList list of the tools that can be used into the editor.
      * @param buttonListener listener to attach to the buttons of the tools.
@@ -43,9 +46,11 @@ public class ToolsListPanel extends CustomListPanel {
     }
 
     /**
-     * Listener on the buttons that update the buttons' colours when the selection changes. 
+     * Listener on the buttons that update the buttons' colours when the
+     * selection changes.
      */
     protected class selectButtonListener implements ActionListener {
+
         /**
          * container of the buttons
          */
@@ -53,7 +58,8 @@ public class ToolsListPanel extends CustomListPanel {
 
         /**
          * Constructor
-         * @param panel 
+         *
+         * @param panel
          */
         private selectButtonListener(ToolsListPanel panel) {
             this.panel = panel;
@@ -61,19 +67,20 @@ public class ToolsListPanel extends CustomListPanel {
 
         /**
          * Listener
+         *
          * @param e event that will be catched.
          */
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton target = (JButton) e.getSource();
             HashMap<String, Component> currentmap = this.panel.items;
-            
+
             //update the colours of the buttons
             for (HashMap.Entry<String, Component> buttonEntry : currentmap.entrySet()) {
-                
+
                 //retrieve button
                 JButton button = (JButton) buttonEntry.getValue();
-                
+
                 //update colour
                 if (target.getText().equals(button.getText())) {
                     button.setBackground(Color.cyan);

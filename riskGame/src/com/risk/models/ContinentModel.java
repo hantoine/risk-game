@@ -15,6 +15,7 @@ import java.util.List;
  * @author n_irahol
  */
 public class ContinentModel {
+
     /**
      * members countries that are part of the continent
      */
@@ -43,7 +44,8 @@ public class ContinentModel {
 
     /**
      * It removes a member from the continent
-     * @param member 
+     *
+     * @param member
      */
     public void removeMember(TerritoryModel member) {
         this.members.remove(member);

@@ -5,16 +5,16 @@
  */
 package com.risk.controllers;
 
-import com.risk.views.editor.ContinentListPanel;
-import com.risk.views.editor.CountryButton2;
-import com.risk.views.editor.MapEditorView;
-import com.risk.models.editor.EditableMapModel;
-import com.risk.views.editor.MapView;
-import com.risk.views.editor.Tools;
 import com.risk.models.ContinentModel;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
+import com.risk.models.editor.EditableMapModel;
+import com.risk.views.editor.ContinentListPanel;
+import com.risk.views.editor.CountryButton2;
+import com.risk.views.editor.MapEditorView;
+import com.risk.views.editor.MapView;
+import com.risk.views.editor.Tools;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -443,6 +443,7 @@ public class MapEditorController {
 
     /**
      * Function to tell the model to update a territory
+     *
      * @param territoryName terirtory to be updated
      * @param targetButton button of the territory on the map view
      */
@@ -464,8 +465,10 @@ public class MapEditorController {
 
     /**
      * Function to tell the model to add a new link between two territories
+     *
      * @param territoryName name of the territory
-     * @param clickedPanel panel that have been clicked which contains the button of the territory
+     * @param clickedPanel panel that have been clicked which contains the
+     * button of the territory
      */
     public void linkTerritory(String territoryName, MapView clickedPanel) {
         String[] territoryList = newMap.getPotentialNeighbours(territoryName);
@@ -485,12 +488,14 @@ public class MapEditorController {
 
     /**
      * Function to tell the model to remove link between two territories
+     *
      * @param territoryName name of the territory
-     * @param clickedPanel panel that have been clicked which contains the button of the territory
+     * @param clickedPanel panel that have been clicked which contains the
+     * button of the territory
      */
     public void unLinkTerritories(String territoryName, MapView clickedPanel) {
         String neighbourName;
-        
+
         //get list of neighbours' names
         LinkedList<TerritoryModel> neighbourList = newMap.getTerritoryByName(territoryName).getAdj();
 
@@ -614,12 +619,12 @@ public class MapEditorController {
          * view for the edition of the map
          */
         protected MapView mapPanel;
-        
+
         /**
          * the whole map editor panel which contains the mapPanel
          */
         protected MapEditorView editorPanel;
-        
+
         /**
          * map being edited
          */
@@ -627,8 +632,10 @@ public class MapEditorController {
 
         /**
          * Constructor.
+         *
          * @param mapPanel view for the edition of the map
-         * @param editorPanel the whole map editor panel which contains the mapPanel
+         * @param editorPanel the whole map editor panel which contains the
+         * mapPanel
          * @param mapModel map being edited
          */
         public selectBackImgListener(MapView mapPanel, MapEditorView editorPanel, EditableMapModel mapModel) {
@@ -638,8 +645,10 @@ public class MapEditorController {
         }
 
         /**
-         * Update the path of the selected image into the model when it has been selected on the view
-         * @param e 
+         * Update the path of the selected image into the model when it has been
+         * selected on the view
+         *
+         * @param e
          */
         @Override
         public void insertUpdate(DocumentEvent e) {
@@ -675,6 +684,7 @@ public class MapEditorController {
 
     /**
      * getter for WarnCheckBoxListener
+     *
      * @return a WarnCheckBoxListener
      */
     public WarnCheckBoxListener getWarnCheckBoxListener() {
@@ -683,6 +693,7 @@ public class MapEditorController {
 
     /**
      * getter for WrapCheckBoxListener
+     *
      * @return a WrapCheckBoxListener
      */
     public WrapCheckBoxListener getWrapCheckBoxListener() {
@@ -691,6 +702,7 @@ public class MapEditorController {
 
     /**
      * getter for ScrollBoxListener
+     *
      * @return a ScrollBoxListener
      */
     public ScrollBoxListener getScrollBoxListener() {
@@ -699,6 +711,7 @@ public class MapEditorController {
 
     /**
      * getter for AuthorTextFieldListener
+     *
      * @return a AuthorTextFieldListener
      */
     public AuthorTextFieldListener getAuthorTextFieldListener() {
@@ -717,7 +730,8 @@ public class MapEditorController {
 
         /**
          * Constructor
-         * @param newMap 
+         *
+         * @param newMap
          */
         public WarnCheckBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
@@ -725,7 +739,8 @@ public class MapEditorController {
 
         /**
          * Called when the state of the box has changed
-         * @param e 
+         *
+         * @param e
          */
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -746,7 +761,8 @@ public class MapEditorController {
 
         /**
          * Constructor
-         * @param newMap 
+         *
+         * @param newMap
          */
         public WrapCheckBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
@@ -754,7 +770,8 @@ public class MapEditorController {
 
         /**
          * Called when the state of the box has changed
-         * @param e 
+         *
+         * @param e
          */
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -764,7 +781,7 @@ public class MapEditorController {
     }
 
     /**
-     * Listener to change the scroll style of the map 
+     * Listener to change the scroll style of the map
      */
     public class ScrollBoxListener implements ItemListener {
 
@@ -775,15 +792,17 @@ public class MapEditorController {
 
         /**
          * Constructor
-         * @param newMap 
+         *
+         * @param newMap
          */
         public ScrollBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
         }
 
         /**
-         * Called when a new item has been selected 
-         * @param e 
+         * Called when a new item has been selected
+         *
+         * @param e
          */
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -792,7 +811,8 @@ public class MapEditorController {
     }
 
     /**
-     * Listener on the text field of the parameters panel which enables to enter a new author name.
+     * Listener on the text field of the parameters panel which enables to enter
+     * a new author name.
      */
     public class AuthorTextFieldListener implements DocumentListener {
 
@@ -803,7 +823,8 @@ public class MapEditorController {
 
         /**
          * Constructor
-         * @param newMap 
+         *
+         * @param newMap
          */
         public AuthorTextFieldListener(EditableMapModel newMap) {
             this.newMap = newMap;
@@ -811,7 +832,8 @@ public class MapEditorController {
 
         /**
          * Updates the model when a new character has been inserted
-         * @param e 
+         *
+         * @param e
          */
         @Override
         public void insertUpdate(DocumentEvent e) {
@@ -820,7 +842,8 @@ public class MapEditorController {
 
         /**
          * Updates the model when a character has been removed
-         * @param e 
+         *
+         * @param e
          */
         @Override
         public void removeUpdate(DocumentEvent e) {
@@ -829,7 +852,8 @@ public class MapEditorController {
 
         /**
          * Updates the model when there have been changes in the document
-         * @param e 
+         *
+         * @param e
          */
         @Override
         public void changedUpdate(DocumentEvent e) {
@@ -838,7 +862,8 @@ public class MapEditorController {
 
         /**
          * Updates the model when the text has been updated.
-         * @param e 
+         *
+         * @param e
          */
         private void update(DocumentEvent e) {
             String text = null;

@@ -5,8 +5,8 @@
  */
 package com.risk.views.game;
 
-import com.risk.models.RiskModel;
 import com.risk.models.PlayerModel;
+import com.risk.models.RiskModel;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
@@ -58,8 +58,9 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
 
     /**
      * Observer patter implementation
+     *
      * @param o
-     * @param arg 
+     * @param arg
      */
     @Override
     public void update(Observable o, Object arg) {

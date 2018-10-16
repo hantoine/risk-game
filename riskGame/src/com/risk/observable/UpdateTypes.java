@@ -7,6 +7,7 @@ package com.risk.observable;
 
 /**
  * Types of updates that are possible when map model notifies the observers.
+ *
  * @author timot
  */
 public enum UpdateTypes {
