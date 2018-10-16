@@ -10,6 +10,7 @@ import com.risk.controllers.MapEditorController;
 import com.risk.observable.UpdateTypes;
 import com.risk.observable.MapModelObserver;
 import com.risk.models.MapConfig;
+import com.risk.models.MapFileManagement;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -219,7 +220,11 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                 String filepath = fileChooser.getSelectedFile().getAbsolutePath();
                 
                 //map saving
-                editorController.saveMapToFile(filepath);
+                int errorCode = editorController.saveMapToFile(filepath);
+                if(errorCode != 0) {
+                    
+                    this.mapPanel.showError(MapFileManagement.readingError(errorCode));
+                }
             }
         });
     }

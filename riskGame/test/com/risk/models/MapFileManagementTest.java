@@ -160,7 +160,7 @@ public class MapFileManagementTest {
      * Test of configurationInf method, of class MapFileManagement. Without
      * image parameter and valid file path
      */
-    @Test
+    @Ignore
     public void testConfigurationInf3() {
 
         //Test Case only without image parameter and valid file path

@@ -134,7 +134,7 @@ public class MenuListener extends MouseAdapter {
                 }
 
                 if (!getRiskModel().getMap().isValid()) {
-                    JOptionPane.showMessageDialog(null, "The map is not valid.");
+                    JOptionPane.showMessageDialog(null, MapFileManagement.readingError(-7));
                     break;
                 }
 

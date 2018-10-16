@@ -139,17 +139,6 @@ public final class RiskModel {
     }
 
     /**
-     * Creation of a map file from a board
-     *
-     * @param fileContent path where the file content is going to be
-     */
-    public void createFile(String fileContent) {
-        MapFileManagement fileManagement = new MapFileManagement();
-        int result = fileManagement.generateBoardFile(fileContent, this.map);
-
-    }
-
-    /**
      * Getter of the board attribute
      *
      * @return board
