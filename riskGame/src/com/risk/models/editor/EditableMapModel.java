@@ -274,7 +274,7 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Remove a territory and notify the observers
      *
-     * @param territoryName
+     * @param territoryName the name of the territory
      */
     public void removeTerritory(String territoryName) {
 
