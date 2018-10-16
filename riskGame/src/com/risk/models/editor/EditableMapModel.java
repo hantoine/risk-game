@@ -254,7 +254,7 @@ public final class EditableMapModel implements MapModelObservable {
      * @param posY the coordinate y
      * @param newName the new terriroty's name
      * @param continentName the name of the continent
-     * @return 
+     * @return if the territory is loaded or not
      */
     public boolean loadTerritory(int posX, int posY, String newName, String continentName) {
 
