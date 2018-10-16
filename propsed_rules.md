@@ -59,6 +59,7 @@
 - Trye to ensure the source code in master should always be running. Always work on a dedicated branch.
 
 - Naming conventions:
+
 	- class name:		should start with uppercase letter and be a noun e.g. String, Color, Button, System, Thread etc.
 	- interface name:	should start with uppercase letter and be an adjective e.g. Runnable, Remote, ActionListener etc.
 	- method name:		should start with lowercase letter and be a verb e.g. actionPerformed(), main(), print(), println() etc.
@@ -72,5 +73,6 @@
 - Let's try not to commit code without comments
 	- Each methods should be commented using JavaDoc format with a brief description of the function, a description of each of its parameters and a description of what it returns 
 	- more comments can be added inside the function if necessary when the function can be hard to understand 
-- A variable should be declared in the deepest block using it 
-- Variable names should be meaningful, we should not use generic variable names like tmp or aux.
+	－At the beginning of each file there should be a comment explaining the purpose of this file in the project. 
+	－Each class declaration should be preceded by a comment explaining what the class is for.
+	－Each method or function should have comments explaining what it does and how it works, as well as what is the purpose 	of its parameters. 
