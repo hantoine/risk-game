@@ -93,7 +93,7 @@ public final class EditableMapModel implements MapModelObservable {
      * Get one territory model instance by its name
      *
      * @param territoryName name of territory 
-     * @return target 
+     * @return the target name get from the method
      */
     public TerritoryModel getTerritoryByName(String territoryName) {
         TerritoryModel target = this.getGraphTerritories().get(territoryName);
@@ -103,9 +103,9 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Check if a given string is in a given list of strings
      *
-     * @param list
-     * @param element
-     * @return
+     * @param list the country list
+     * @param element the element you want to check
+     * @return 
      */
     public boolean isInList(String[] list, String element) {
         return Stream.of(list).anyMatch(x -> x.equals(element));
