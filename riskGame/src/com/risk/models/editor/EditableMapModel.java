@@ -51,8 +51,8 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Add an edge between two vertices (territories).
      *
-     * @param territoryName 
-     * @param neighbour
+     * @param territoryName the name of the territory
+     * @param neighbour the name of the neighbour
      */
     public void addLink(String territoryName, String neighbour) {
         //get models
