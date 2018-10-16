@@ -399,8 +399,8 @@ public final class EditableMapModel implements MapModelObservable {
      * Check if all territories are inside the map image and move them if it is
      * not the case
      *
-     * @param width
-     * @param height
+     * @param width the width of the map
+     * @param height the height of the map
      * @param buttonDims Dimension of the buttons on the map.
      */
     public void checkTerritoriesPositions(int width, int height, Dimension buttonDims) {
