@@ -51,8 +51,8 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Add an edge between two vertices (territories).
      *
-     * @param territoryName 
-     * @param neighbour
+     * @param territoryName the name of the territory
+     * @param neighbour the name of the neighbour
      */
     public void addLink(String territoryName, String neighbour) {
         //get models
@@ -72,8 +72,8 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Remove a link between two vertices.
-     * @param territoryName
-     * @param neighbour 
+     * @param territoryName name of territory
+     * @param neighbour name of the neighbour
      */
     public void removeLink(String territoryName, String neighbour) {
         //get models
@@ -92,8 +92,8 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Get one territory model instance by its name
      *
-     * @param territoryName
-     * @return
+     * @param territoryName name of territory 
+     * @return the target name get from the method
      */
     public TerritoryModel getTerritoryByName(String territoryName) {
         TerritoryModel target = this.getGraphTerritories().get(territoryName);
@@ -103,9 +103,9 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Check if a given string is in a given list of strings
      *
-     * @param list 
-     * @param element
-     * @return 
+     * @param list the country list
+     * @param element the element you want to check
+     * @return wheather the string is in the list
      */
     public boolean isInList(String[] list, String element) {
         return Stream.of(list).anyMatch(x -> x.equals(element));
@@ -114,8 +114,8 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Get a new name when creating a new element (territory or continent)
      *
-     * @param continent
-     * @return
+     * @param continent boolean that the continent is in the list or not
+     * @return the new name of the contient
      */
     protected String getNewName(boolean continent) {
         int i = 0;
@@ -144,7 +144,7 @@ public final class EditableMapModel implements MapModelObservable {
      * Add a new continent to the model and notify the observers to change the
      * view
      *
-     * @return
+     * @return whether the continent is added or not
      */
     public boolean addContinent() {
         String newName = getNewName(true);
@@ -192,7 +192,7 @@ public final class EditableMapModel implements MapModelObservable {
     
     /**
      * Get the original map model in attribute 
-     * @return 
+     * @return return the internal map
      */
     public MapModel getInternalMap() {
         return map;
@@ -201,7 +201,8 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Remove a continent and notify the observers
      *
-     * @param continentName
+     * @param continentName the name of the continent
+     * @return return if the continent is removed or not
      */
     public boolean removeContinent(String continentName) {
         ContinentModel continentToDel = this.getGraphContinents().get(continentName);
@@ -224,8 +225,9 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Add a new territory to the model and notify the observers
      *
-     * @param posX
-     * @param posY
+     * @param posX the coordinate x
+     * @param posY the coordinate Y
+     * @return if the territory is added or not
      */
     public boolean addTerritory(int posX, int posY) {
         String newName = getNewName(false);
@@ -248,11 +250,11 @@ public final class EditableMapModel implements MapModelObservable {
     
     /**
      * Add territory from file.
-     * @param posX
-     * @param posY
-     * @param newName
-     * @param continentName
-     * @return 
+     * @param posX the coordinate x
+     * @param posY the coordinate y
+     * @param newName the new terriroty's name
+     * @param continentName the name of the continent
+     * @return if the territory is loaded or not
      */
     public boolean loadTerritory(int posX, int posY, String newName, String continentName) {
 
@@ -274,7 +276,7 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Remove a territory and notify the observers
      *
-     * @param territoryName
+     * @param territoryName the name of the territory
      */
     public void removeTerritory(String territoryName) {
 
@@ -354,7 +356,7 @@ public final class EditableMapModel implements MapModelObservable {
     
     /**
      * Add a new view that will be informed of changes in the model to update itself.
-     * @param newObserver 
+     * @param newObserver the new map model observer
      */
     @Override
     public void addObserver(MapModelObserver newObserver) {
@@ -384,8 +386,8 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Check if an Dimension element is in the list.
-     * @param list
-     * @param element
+     * @param list list of the dimension
+     * @param element the element inside of the link
      * @return a boolean value to tell if the element is in the list.
      * @see Dimension
      */
@@ -397,8 +399,8 @@ public final class EditableMapModel implements MapModelObservable {
      * Check if all territories are inside the map image and move them if it is
      * not the case
      *
-     * @param width
-     * @param height
+     * @param width the width of the map
+     * @param height the height of the map
      * @param buttonDims Dimension of the buttons on the map.
      */
     public void checkTerritoriesPositions(int width, int height, Dimension buttonDims) {
@@ -469,7 +471,7 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Return an array containing all the names of the continents
      *
-     * @return
+     * @return the list of the continent
      */
     public String[] getContinentList() {
         Set<String> continentsList = this.getGraphContinents().keySet();
@@ -482,7 +484,7 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Return an array containing all the names of the territories
      *
-     * @return
+     * @return the array of the territory
      */
     public String[] getTerritoryList() {
         Set<String> territorySet = this.getGraphTerritories().keySet();
@@ -496,8 +498,8 @@ public final class EditableMapModel implements MapModelObservable {
      * Get territories that can be neighbours of a given territory passed in
      * parameter
      *
-     * @param territoryName
-     * @return
+     * @param territoryName the name of the territory
+     * @return the array of the territory
      */
     public String[] getPotentialNeighbours(String territoryName) {
         Set<String> territorySet = this.getGraphTerritories().keySet();
@@ -519,7 +521,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the scroll configuration parameter of the map.
-     * @param scrollConfig 
+     * @param scrollConfig the string of the config
      */
     public void setScrollConfig(String scrollConfig) {
         this.getMapConfig().setScroll(scrollConfig);
@@ -535,7 +537,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the warn configuration parameter of the map.
-     * @param warnConfig 
+     * @param warnConfig the boolean of warning config
      */
     public void setWarnConfig(boolean warnConfig) {
         this.getMapConfig().setWarn(warnConfig);
@@ -543,7 +545,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the author of the map.
-     * @param authorName 
+     * @param authorName the author of the map
      */
     public void setAuthorConfig(String authorName) {
         this.getMapConfig().setAuthor(authorName);
@@ -551,7 +553,7 @@ public final class EditableMapModel implements MapModelObservable {
 
     /**
      * Setter of the path to the image of background
-     * @param path 
+     * @param path the path of the img
      */
     public void setImagePath(String path) {
         this.getMapConfig().setImagePath(path);
