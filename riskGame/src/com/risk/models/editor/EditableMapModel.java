@@ -201,7 +201,7 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Remove a continent and notify the observers
      *
-     * @param continentName
+     * @param continentName the name of the continent
      */
     public boolean removeContinent(String continentName) {
         ContinentModel continentToDel = this.getGraphContinents().get(continentName);
@@ -224,8 +224,8 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Add a new territory to the model and notify the observers
      *
-     * @param posX
-     * @param posY
+     * @param posX the coordinate x
+     * @param posY the coordinate Y
      */
     public boolean addTerritory(int posX, int posY) {
         String newName = getNewName(false);
