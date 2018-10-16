@@ -349,9 +349,10 @@ public class MapEditorController {
      * file
      *
      * @param path path to the new file
+     * @return the erroCode returned by the mqp sqving method
      */
-    public void saveMapToFile(String path) {
-        MapFileManagement.generateBoardFile(path, this.newMap.getInternalMap());
+    public int saveMapToFile(String path) {
+        return MapFileManagement.generateBoardFile(path, this.newMap.getInternalMap());
     }
 
     /**
