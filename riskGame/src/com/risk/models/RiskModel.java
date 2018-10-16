@@ -7,6 +7,7 @@ package com.risk.models;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +29,7 @@ public final class RiskModel {
      */
     private LinkedList<PlayerModel> players;
     /**
-     * turn  reference with the player current turn
+     * turn reference with the player current turn
      */
     private int turn;
     /**
@@ -171,6 +172,16 @@ public final class RiskModel {
             players.get(playerIndex).addCountryOwned(countriesLeft.remove(0));
         }
 
+        // update continents owned accordingly
+        Collection<ContinentModel> continents = map.getGraphContinents().values();
+        continents.stream().forEach((c) -> {
+            PlayerModel ownerFirstTerritories = c.getMembers().getFirst().getOwner();
+            if (c.getMembers().stream()
+                    .allMatch((t) -> (t.getOwner() == ownerFirstTerritories))) {
+                ownerFirstTerritories.addContinentOwned(c);
+            }
+        });
+
     }
 
     /**
@@ -303,7 +314,8 @@ public final class RiskModel {
 
     /**
      * Getter of the winningPlayer attribute
-     * @return 
+     *
+     * @return
      */
     public PlayerModel getWinningPlayer() {
         return winningPlayer;
@@ -311,7 +323,8 @@ public final class RiskModel {
 
     /**
      * Setter of the winningPlayer attribute
-     * @param winningPlayer 
+     *
+     * @param winningPlayer
      */
     public void setWinningPlayer(PlayerModel winningPlayer) {
         this.winningPlayer = winningPlayer;
