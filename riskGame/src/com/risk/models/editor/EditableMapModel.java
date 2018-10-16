@@ -227,6 +227,7 @@ public final class EditableMapModel implements MapModelObservable {
      *
      * @param posX the coordinate x
      * @param posY the coordinate Y
+     * @return if the territory is added or not
      */
     public boolean addTerritory(int posX, int posY) {
         String newName = getNewName(false);
