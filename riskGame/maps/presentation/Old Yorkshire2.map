@@ -1,0 +1,12 @@
+[Map]
+author=Stewart Ainsworth
+image=old yorkshire.bmp
+wrap=no
+scroll=horizontal
+
+[Continents]
+York=2
+
+[Territories]
+Anisty Liberty,363,300,York,Tadcaster
+Tadcaster,370,327,York,Anisty Liberty

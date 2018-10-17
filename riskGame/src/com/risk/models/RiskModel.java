@@ -329,4 +329,8 @@ public final class RiskModel {
     public void setWinningPlayer(PlayerModel winningPlayer) {
         this.winningPlayer = winningPlayer;
     }
+
+    public boolean validateCountries() {
+        return (map.getGraphTerritories().values().size()>=players.size());
+    }
 }
