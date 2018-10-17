@@ -139,8 +139,6 @@ public class MenuListener extends MouseAdapter {
                     break;
                 }
 
-                this.getRiskView().closeMenu();
-
                 LinkedList<PlayerPanel> listPlayerPanels = newGamePanel.getPlayersPanel().getPlayersArray();
                 LinkedList<PlayerModel> listPlayers = new LinkedList<>();
                 for (int i = 0; i < listPlayerPanels.size(); i++) {
@@ -153,7 +151,15 @@ public class MenuListener extends MouseAdapter {
                     listPlayers.add(playerGame);
                 }
                 this.getRiskModel().setPlayerList(listPlayers);
+                
+                if(!this.getRiskModel().validateCountries()){
+                    JOptionPane.showMessageDialog(null, "No enough countries in this map for the number of players. Select another map.");
+                    break;
+                }    
+                this.getRiskView().closeMenu();
                 this.getRiskController().playGame();
+                
+                
                 break;
             default:
                 break;
