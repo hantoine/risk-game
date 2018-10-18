@@ -197,15 +197,7 @@ public class GameController {
      */
     private boolean tryPlaceArmy(PlayerModel player, TerritoryModel territory) {
         
-        if(territory.getNumArmies()!=0){
-            TerritoryModel validateEmptyCountries= modelRisk.getMap().getGraphTerritories().values().stream()
-                                                                .findAny()
-                                                                .orElse(null);
-            if(validateEmptyCountries!=null){
-                this.riskView.showMessage("Place it in a country without armies");
-                return false;
-            }
-        }
+        
         if (player.getNumArmiesAvailable() <= 0) { //should never happen
             this.riskView.showMessage("You have no armies left to deploy !");
             return false;
@@ -213,6 +205,17 @@ public class GameController {
         if (!player.getContriesOwned().contains(territory)) {
             this.riskView.showMessage("You don't own this country !");
             return false;
+        }
+        
+        if(territory.getNumArmies()!=0){
+            TerritoryModel validateEmptyCountries= player.getContriesOwned().stream()
+                                                                .filter(c-> c.getNumArmies()==0)
+                                                                .findAny()
+                                                                .orElse(null);
+            if(validateEmptyCountries!=null){
+                this.riskView.showMessage("Place it in a country without armies");
+                return false;
+            }
         }
 
         territory.incrementNumArmies();
