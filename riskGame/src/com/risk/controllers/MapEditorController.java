@@ -517,7 +517,7 @@ public class MapEditorController {
         /**
          * Constructor
          *
-         * @param mapModel ma pmodel being edited
+         * @param mapModel map model being edited
          */
         public ButtonMouseController(EditableMapModel mapModel) {
             newMap = mapModel;
@@ -526,7 +526,7 @@ public class MapEditorController {
         /**
          * handles clicks
          *
-         * @param e the mouse clicked wich is captured
+         * @param e the mouse clicked wHich is captured
          */
         @Override
         public void mouseClicked(MouseEvent e) {

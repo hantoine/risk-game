@@ -330,6 +330,10 @@ public final class RiskModel {
         this.winningPlayer = winningPlayer;
     }
 
+    /**
+     * It validates that the number of territories is bigger than the number of players
+     * @return true if there is as many territories as players; false if it is not true
+     */
     public boolean validateCountries() {
         return (map.getGraphTerritories().values().size()>=players.size());
     }
