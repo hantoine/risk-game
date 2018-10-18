@@ -196,6 +196,16 @@ public class GameController {
      * @return True if the army placement worked, false otherwise
      */
     private boolean tryPlaceArmy(PlayerModel player, TerritoryModel territory) {
+        
+        if(territory.getNumArmies()!=0){
+            TerritoryModel validateEmptyCountries= modelRisk.getMap().getGraphTerritories().values().stream()
+                                                                .findAny()
+                                                                .orElse(null);
+            if(validateEmptyCountries!=null){
+                this.riskView.showMessage("Place it in a country without armies");
+                return false;
+            }
+        }
         if (player.getNumArmiesAvailable() <= 0) { //should never happen
             this.riskView.showMessage("You have no armies left to deploy !");
             return false;
