@@ -113,7 +113,7 @@ public class CustomListPanel extends JPanel {
     /**
      * Remove a component by name
      *
-     * @param name
+     * @param name name of the remove element
      */
     public void removeElement(String name) {
         this.remove(items.get(name));
