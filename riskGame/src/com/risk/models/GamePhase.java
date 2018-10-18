@@ -29,7 +29,7 @@ public enum GamePhase {
     /**
      * This method change the execution order of the phases
      *
-     * @return
+     * @return the order of the phrase
      */
     public GamePhase next() {
         return vals[(this.ordinal() + 1) % vals.length];

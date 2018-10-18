@@ -245,7 +245,7 @@ public abstract class PlayerModel extends Observable {
     /**
      * Increase the number of armies this player has available
      *
-     * @param i
+     * @param i the number of the armies
      */
     public void addNumArmiesAvailable(int i) {
         this.setNumArmiesAvailable(this.getNumArmiesAvailable() + i);
@@ -433,7 +433,7 @@ public abstract class PlayerModel extends Observable {
     /**
      * Getter of the currentFortificationMove attribute
      *
-     * @return
+     * @return the current movement 
      */
     public FortificationMove getCurrentFortificationMove() {
         return currentFortificationMove;
@@ -442,7 +442,7 @@ public abstract class PlayerModel extends Observable {
     /**
      * Setter of the currentFortificationMove attribute
      *
-     * @param currentFortificationMove
+     * @param currentFortificationMove the current move
      */
     public void setCurrentFortificationMove(FortificationMove currentFortificationMove) {
         this.currentFortificationMove = currentFortificationMove;

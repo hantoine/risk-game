@@ -45,7 +45,7 @@ public class ContinentModel {
     /**
      * It removes a member from the continent
      *
-     * @param member
+     * @param member the member which is removed
      */
     public void removeMember(TerritoryModel member) {
         this.members.remove(member);

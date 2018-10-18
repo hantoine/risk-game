@@ -315,7 +315,7 @@ public final class RiskModel {
     /**
      * Getter of the winningPlayer attribute
      *
-     * @return
+     * @return the player who wins
      */
     public PlayerModel getWinningPlayer() {
         return winningPlayer;
@@ -324,7 +324,7 @@ public final class RiskModel {
     /**
      * Setter of the winningPlayer attribute
      *
-     * @param winningPlayer
+     * @param winningPlayer the player who wins
      */
     public void setWinningPlayer(PlayerModel winningPlayer) {
         this.winningPlayer = winningPlayer;

@@ -59,8 +59,8 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
     /**
      * Observer patter implementation
      *
-     * @param o
-     * @param arg
+     * @param o the observable
+     * @param arg the object
      */
     @Override
     public void update(Observable o, Object arg) {
