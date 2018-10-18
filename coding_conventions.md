@@ -1,7 +1,8 @@
 # Coding conventions
 
+- code layout
 	- Indentation: the curly bracket at the beginning of a block (function, if, while, etc) should be on the same line as the previous instruction. (arbitrary choice)
-	  	
+  		
 		Example:
 		```java
 		void function() {
@@ -49,11 +50,10 @@
 				System.out.println("Check 3 failed");
 				return;
 			}
-			
+		
 			doThings(dataObject);
 		}
 		```
-
 - Naming conventions:
 
 	- class name:		should start with uppercase letter and be a noun e.g. String, Color, Button, System, Thread etc.
@@ -63,9 +63,9 @@
 	- package name:		should be in lowercase letter e.g. java, lang, sql, util etc.
 	- constants name:	should be in uppercase letter. e.g. RED, YELLOW, MAX_PRIORITY etc.
 
-- Let's try not to commit code without comments
+- Comments
 	- Each methods should be commented using JavaDoc format with a brief description of the function, a description of each of its parameters and a description of what it returns 
 	- more comments can be added inside the function if necessary when the function can be hard to understand 
-	－At the beginning of each file there should be a comment explaining the purpose of this file in the project. 
-	－Each class declaration should be preceded by a comment explaining what the class is for.
-	－Each method or function should have comments explaining what it does and how it works, as well as what is the purpose 	of its parameters. 
+	- At the beginning of each file there should be a comment explaining the purpose of this file in the project. 
+	- Each class declaration should be preceded by a comment explaining what the class is for.
+	- Each method or function should have comments explaining what it does and how it works, as well as what is the purpose of its parameters. 
