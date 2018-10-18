@@ -65,7 +65,7 @@ public class MapView extends JPanel implements MapModelObserver {
 
     /**
      * Constructor of a map view
-     * @param the controller of the editor
+     * @param editorController controller of the editor
      */
     public MapView(MapEditorController editorController) {
         this.setBorder(BorderFactory.createLineBorder(Color.black));
