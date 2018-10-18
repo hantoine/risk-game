@@ -69,7 +69,7 @@ public class CustomListPanel extends JPanel {
     /**
      * If developers want to change the name of the button
      *
-     * @param newNamethe name of the button
+     * @param newName the name of the button 
      */
     public void setAddButtonName(String newName) {
         this.addButton.setName(newName);
