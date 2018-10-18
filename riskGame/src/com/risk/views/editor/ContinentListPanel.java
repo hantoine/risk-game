@@ -48,8 +48,8 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     /**
      * Constructor.
      *
-     * @param width
-     * @param height
+     * @param width width of the panel
+     * @param height height of the panel
      * @param editorController Controller of the map editor.
      * @param continentList List of the continents to be added on this panel.
      */
@@ -137,7 +137,7 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     /**
      * Remove a continent from the list.
      *
-     * @param name
+     * @param name name of the remove element
      */
     @Override
     public void removeElement(String name) {
@@ -151,7 +151,7 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     /**
      * Add a new continent calling the inherited method from CustomListPanel.
      *
-     * @param continentName
+     * @param continentName name of the continent
      * @see CustomListPanel
      */
     public void addContinent(String continentName) {
@@ -161,7 +161,7 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
     /**
      * Remove a new continent calling the inherited method from CustomListPanel.
      *
-     * @param continentName
+     * @param continentName name of the continent
      * @see CustomListPanel
      */
     public void removeContinent(String continentName) {
