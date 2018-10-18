@@ -192,7 +192,7 @@ public class MapModel {
     /**
      * Setter of the mapHeight attribute
      *
-     * @param mapHeight
+     * @param mapHeight the height of the map
      */
     public void setMapHeight(int mapHeight) {
         if (this.getImage() == null) {
@@ -203,7 +203,7 @@ public class MapModel {
     /**
      * Setter of the mapWith attribute
      *
-     * @param mapWidth
+     * @param mapWidth the width of the map
      */
     public void setMapWidth(int mapWidth) {
         if (this.getImage() == null) {

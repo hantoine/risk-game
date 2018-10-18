@@ -65,6 +65,7 @@ public class MapView extends JPanel implements MapModelObserver {
 
     /**
      * Constructor of a map view
+     * @param editorController controller of the editor
      */
     public MapView(MapEditorController editorController) {
         this.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -97,7 +98,7 @@ public class MapView extends JPanel implements MapModelObserver {
     /**
      * Change the background image of the map
      *
-     * @param backgroundImage
+     * @param backgroundImage the img of background
      */
     public void setImage(BufferedImage backgroundImage) {
         this.backgroundImage = backgroundImage;
@@ -128,7 +129,7 @@ public class MapView extends JPanel implements MapModelObserver {
      * Remove a country by name as each country as a unique name. Removing
      * implies deleting the associated button.
      *
-     * @param countryName
+     * @param countryName the name of the country
      */
     public void removeTerritory(String countryName) {
         //remove from the list
@@ -156,8 +157,8 @@ public class MapView extends JPanel implements MapModelObserver {
     /**
      * Add a new territory on the map.
      *
-     * @param posX
-     * @param posY
+     * @param posX the x coordinate of the territory position
+     * @param posY the y coordinate of the territory position
      * @param newName Name of the new territory
      */
     protected void addTerritory(int posX, int posY, String newName) {
@@ -317,7 +318,7 @@ public class MapView extends JPanel implements MapModelObserver {
      * Trick to find an order between two Strings Compute the sum of the ascii
      * values of the characters of the string.
      *
-     * @param string
+     * @param string the string which we want to get ascii vaule
      * @return the value of the sum of the ascii values of the String in
      * parameter.
      */
@@ -417,7 +418,7 @@ public class MapView extends JPanel implements MapModelObserver {
      * Tool of the map panel that allows the user to remove a link between two
      * territories.
      *
-     * @param neighbourStringList
+     * @param neighbourStringList the string list of the neighbour
      * @return the name of the neighbour that the user wants to remove.
      */
     public String removeLink(LinkedList<String> neighbourStringList) {

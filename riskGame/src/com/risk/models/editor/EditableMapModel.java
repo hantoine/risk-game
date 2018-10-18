@@ -542,7 +542,7 @@ public final class EditableMapModel implements MapModelObservable {
     /**
      * Setter of the wrap configuration parameter of the map.
      *
-     * @param wrapConfig
+     * @param wrapConfig the boolean of the config
      */
     public void setWrapConfig(boolean wrapConfig) {
         this.getMapConfig().setWrap(wrapConfig);

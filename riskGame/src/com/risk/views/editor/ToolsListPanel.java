@@ -24,8 +24,8 @@ public class ToolsListPanel extends CustomListPanel {
     /**
      * Constructor.
      *
-     * @param width
-     * @param height
+     * @param width the width of the panel
+     * @param height the height of the panel
      * @param toolsList list of the tools that can be used into the editor.
      * @param buttonListener listener to attach to the buttons of the tools.
      */
@@ -59,7 +59,7 @@ public class ToolsListPanel extends CustomListPanel {
         /**
          * Constructor
          *
-         * @param panel
+         * @param panel the panel of the tool list
          */
         private selectButtonListener(ToolsListPanel panel) {
             this.panel = panel;
