@@ -366,7 +366,7 @@ public class MapEditorController {
         /**
          * handles clicks
          *
-         * @param e
+         * @param e the mouse click which is captured
          */
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -375,7 +375,7 @@ public class MapEditorController {
         /**
          * handles pressings of mouse
          *
-         * @param e
+         * @param e the mouse pressing which is captured
          */
         @Override
         public void mousePressed(MouseEvent e) {
@@ -384,7 +384,7 @@ public class MapEditorController {
         /**
          * handles the entering of the mouse into a component
          *
-         * @param e
+         * @param e the mouse enter which is captured
          */
         @Override
         public void mouseEntered(MouseEvent e) {
@@ -393,7 +393,7 @@ public class MapEditorController {
         /**
          * handles the exiting of the mouse out of a component
          *
-         * @param e
+         * @param e the mouse exit which is captured
          */
         @Override
         public void mouseExited(MouseEvent e) {
@@ -401,8 +401,8 @@ public class MapEditorController {
 
         /**
          * handles the releasing of the mouse
-         *
-         * @param e
+         * 
+         * @param e the releasing which is captured
          */
         @Override
         public void mouseReleased(MouseEvent e) {
@@ -637,7 +637,7 @@ public class MapEditorController {
          * Update the path of the selected image into the model when it has been
          * selected on the view
          *
-         * @param e
+         * @param e the update document event which is captured
          */
         @Override
         public void insertUpdate(DocumentEvent e) {
@@ -720,7 +720,7 @@ public class MapEditorController {
         /**
          * Constructor
          *
-         * @param newMap
+         * @param newMap the new map which is constructed
          */
         public WarnCheckBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
@@ -729,7 +729,7 @@ public class MapEditorController {
         /**
          * Called when the state of the box has changed
          *
-         * @param e
+         * @param e the event captured
          */
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -751,7 +751,7 @@ public class MapEditorController {
         /**
          * Constructor
          *
-         * @param newMap
+         * @param newMap the new map constructed
          */
         public WrapCheckBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
@@ -760,7 +760,7 @@ public class MapEditorController {
         /**
          * Called when the state of the box has changed
          *
-         * @param e
+         * @param e the event captured
          */
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -782,7 +782,7 @@ public class MapEditorController {
         /**
          * Constructor
          *
-         * @param newMap
+         * @param newMap the new map which is constructed
          */
         public ScrollBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
@@ -791,7 +791,7 @@ public class MapEditorController {
         /**
          * Called when a new item has been selected
          *
-         * @param e
+         * @param e the state changing which is updated
          */
         @Override
         public void itemStateChanged(ItemEvent e) {
