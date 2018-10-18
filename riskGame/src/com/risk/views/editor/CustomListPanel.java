@@ -47,8 +47,8 @@ public class CustomListPanel extends JPanel {
     /**
      * Contructor.
      *
-     * @param width
-     * @param height
+     * @param width the width of the panel
+     * @param height the height of the panel
      */
     public CustomListPanel(Integer width, Integer height) {
         //setup component
