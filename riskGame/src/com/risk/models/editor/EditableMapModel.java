@@ -53,7 +53,7 @@ public final class EditableMapModel implements MapModelObservable {
      * Add an edge between two vertices (territories).
      *
      * @param territoryName the name of the territory
-     * @param neighbour the name of the neighbour
+     * @param neighbour the name of the neighbor
      */
     public void addLink(String territoryName, String neighbour) {
         //get models
@@ -76,7 +76,7 @@ public final class EditableMapModel implements MapModelObservable {
      * Remove a link between two vertices.
      *
      * @param territoryName name of territory
-     * @param neighbour name of the neighbour
+     * @param neighbour name of the neighbor
      */
     public void removeLink(String territoryName, String neighbour) {
         //get models
@@ -108,7 +108,7 @@ public final class EditableMapModel implements MapModelObservable {
      *
      * @param list the country list
      * @param element the element you want to check
-     * @return wheather the string is in the list
+     * @return whether the string is in the list
      */
     public boolean isInList(String[] list, String element) {
         return Stream.of(list).anyMatch(x -> x.equals(element));
@@ -118,7 +118,7 @@ public final class EditableMapModel implements MapModelObservable {
      * Get a new name when creating a new element (territory or continent)
      *
      * @param continent boolean that the continent is in the list or not
-     * @return the new name of the contient
+     * @return the new name of the continent
      */
     protected String getNewName(boolean continent) {
         int i = 0;
