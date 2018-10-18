@@ -87,6 +87,10 @@ public class ContinentModel {
         return bonusScore;
     }
 
+    /**
+     * Setter of the bonusScore attribute
+     * @param newBonusScore new value of the bonusScore attribute
+     */
     public void setBonusScore(int newBonusScore) {
         this.bonusScore = newBonusScore;
     }
