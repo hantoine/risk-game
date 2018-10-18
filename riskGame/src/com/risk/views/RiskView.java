@@ -189,7 +189,7 @@ public final class RiskView extends javax.swing.JFrame {
     /**
      * Getter of the new game panel inside the menu panel
      *
-     * @return
+     * @return the new panel
      */
     public NewGamePanel getNewGamePanel() {
         return this.getMenuPanel().getStartMenu().getNewGamePanel();
@@ -198,7 +198,7 @@ public final class RiskView extends javax.swing.JFrame {
     /**
      * Getter of the player hands panel
      *
-     * @return
+     * @return the hands panel of the player
      */
     PlayerGameHandPanel getPlayerHandPanel() {
         return playerHandPanel;
