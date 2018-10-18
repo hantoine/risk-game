@@ -44,7 +44,7 @@ public class FortificationMove {
     /**
      * Getter of the territoryDest attribute
      *
-     * @return the dest of terriotry
+     * @return the territory of destination
      */
     public TerritoryModel getTerritoryDest() {
         return territoryDest;
@@ -52,7 +52,7 @@ public class FortificationMove {
 
     /**
      * It compares two countries for the fortification move If the move its
-     * comming from the same country
+     * coming from the same country
      *
      * @param obj the object to check whether it is the same country
      * @return true if it is the same country; false if it is not

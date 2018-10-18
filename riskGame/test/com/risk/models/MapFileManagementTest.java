@@ -8,7 +8,6 @@ package com.risk.models;
 import java.io.File;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -158,15 +157,15 @@ public class MapFileManagementTest {
     }
 
     /**
-     * Test of configurationInf method, of class MapFileManagement. Without
+     * Test of configurationInf method, of class MapFileManagement. With a null
      * image parameter and valid file path
      */
-    @Ignore
+    @Test
     public void testConfigurationInf3() {
 
-        //Test Case only without image parameter and valid file path
-        String info = "[Map]\n" + "author=Stewart Ainsworth\n" + "wrap=no\n" + "scroll=horizontal";
-        int expResult = -1;
+        //Test Case only with null image parameter and valid file path
+        String info = "[Map]\n" + "author=Stewart Ainsworth\n" + "wrap=no\n" + "scroll=horizontal\n"+"image=null";
+        int expResult = 0;
         int result = MapFileManagement.configurationInf(info, path, board);
         assertEquals(expResult, result);
     }
