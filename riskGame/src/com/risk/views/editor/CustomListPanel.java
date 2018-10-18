@@ -47,8 +47,8 @@ public class CustomListPanel extends JPanel {
     /**
      * Contructor.
      *
-     * @param width
-     * @param height
+     * @param width the width of the panel
+     * @param height the height of the panel
      */
     public CustomListPanel(Integer width, Integer height) {
         //setup component
@@ -69,7 +69,7 @@ public class CustomListPanel extends JPanel {
     /**
      * If developers want to change the name of the button
      *
-     * @param newNamethe name of the button
+     * @param newName the name of the button 
      */
     public void setAddButtonName(String newName) {
         this.addButton.setName(newName);
@@ -113,7 +113,7 @@ public class CustomListPanel extends JPanel {
     /**
      * Remove a component by name
      *
-     * @param name
+     * @param name name of the remove element
      */
     public void removeElement(String name) {
         this.remove(items.get(name));

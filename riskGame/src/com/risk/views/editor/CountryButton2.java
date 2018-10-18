@@ -43,7 +43,7 @@ public class CountryButton2 extends JButton {
      * @param x position in x
      * @param y position y
      * @param name name of the country
-     * @param dim
+     * @param dim the dimision of the country
      */
     public CountryButton2(int x, int y, String name, Dimension dim) {
         super(name);

@@ -53,6 +53,7 @@ public class HandModel {
 
     /**
      * Function to check if the player has repeated cards
+     * @return whether there is any duplication
      */
     public int[] getCardDuplicates() {
         int[] cardDuplicates = new int[3];

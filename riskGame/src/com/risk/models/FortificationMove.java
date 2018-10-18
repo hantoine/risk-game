@@ -24,8 +24,8 @@ public class FortificationMove {
     /**
      * Constructor
      *
-     * @param territorySource
-     * @param territoryDest
+     * @param territorySource the source of the territory
+     * @param territoryDest the dest of the territory
      */
     public FortificationMove(TerritoryModel territorySource, TerritoryModel territoryDest) {
         this.territorySource = territorySource;
@@ -44,7 +44,7 @@ public class FortificationMove {
     /**
      * Getter of the territoryDest attribute
      *
-     * @return
+     * @return the dest of terriotry
      */
     public TerritoryModel getTerritoryDest() {
         return territoryDest;
@@ -54,7 +54,7 @@ public class FortificationMove {
      * It compares two countries for the fortification move If the move its
      * comming from the same country
      *
-     * @param obj
+     * @param obj the object to check whether it is the same country
      * @return true if it is the same country; false if it is not
      */
     @Override

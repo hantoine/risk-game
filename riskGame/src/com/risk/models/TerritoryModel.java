@@ -76,7 +76,7 @@ public class TerritoryModel {
     /**
      * Add an adjacent country
      *
-     * @param neighbour
+     * @param neighbour the neighbour which is gonna be added
      */
     public void addNeighbour(TerritoryModel neighbour) {
         this.adj.add(neighbour);
@@ -85,7 +85,7 @@ public class TerritoryModel {
     /**
      * Eliminates an adjacent country
      *
-     * @param neighbour
+     * @param neighbour the neighbour which is gonna be deleted
      */
     public void removeNeighbour(TerritoryModel neighbour) {
         this.adj.remove(neighbour);

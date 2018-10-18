@@ -120,8 +120,8 @@ public class FileSelectorPanel extends JPanel {
     /**
      * Update the size of the button.
      *
-     * @param width
-     * @param height
+     * @param width width of the textfield
+     * @param height height of the textfield
      */
     public void setTextFieldSize(int width, int height) {
         Dimension d = new Dimension(width, height);
@@ -150,7 +150,7 @@ public class FileSelectorPanel extends JPanel {
      * Set the message displayed by the label and make it visible if it is not
      * already
      *
-     * @param message
+     * @param message message shown in the label
      */
     public void setLabel(String message) {
         this.label.setText(message);

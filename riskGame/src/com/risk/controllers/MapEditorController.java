@@ -150,7 +150,7 @@ public class MapEditorController {
         /**
          * listener
          *
-         * @param e
+         * @param e the action which is captured
          */
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -176,7 +176,7 @@ public class MapEditorController {
         /**
          * Constructor
          *
-         * @param mapModel
+         * @param mapModel the maple which is constructed
          */
         public ContinentMouseListener(EditableMapModel mapModel) {
             newMap = mapModel;
@@ -185,7 +185,7 @@ public class MapEditorController {
         /**
          * handles clicks
          *
-         * @param e
+         * @param e the mouse click which is captured
          */
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -194,7 +194,7 @@ public class MapEditorController {
         /**
          * handles pressings of mouse
          *
-         * @param e
+         * @param e the pressing of the mouse which is captured
          */
         @Override
         public void mousePressed(MouseEvent e) {
@@ -203,7 +203,7 @@ public class MapEditorController {
         /**
          * handles the releases of the mouse
          *
-         * @param e
+         * @param e the mouse releasing which is captured
          */
         @Override
         public void mouseReleased(MouseEvent e) {
@@ -257,7 +257,7 @@ public class MapEditorController {
         /**
          * handles the entering of the mouse into a component
          *
-         * @param e
+         * @param e the mouse entered which is captured
          */
         @Override
         public void mouseEntered(MouseEvent e) {
@@ -266,7 +266,7 @@ public class MapEditorController {
         /**
          * handles the exiting of the mouse out of a component
          *
-         * @param e
+         * @param e the mouse exit which is captured
          */
         @Override
         public void mouseExited(MouseEvent e) {
@@ -366,7 +366,7 @@ public class MapEditorController {
         /**
          * handles clicks
          *
-         * @param e
+         * @param e the mouse click which is captured
          */
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -375,7 +375,7 @@ public class MapEditorController {
         /**
          * handles pressings of mouse
          *
-         * @param e
+         * @param e the mouse pressing which is captured
          */
         @Override
         public void mousePressed(MouseEvent e) {
@@ -384,7 +384,7 @@ public class MapEditorController {
         /**
          * handles the entering of the mouse into a component
          *
-         * @param e
+         * @param e the mouse enter which is captured
          */
         @Override
         public void mouseEntered(MouseEvent e) {
@@ -393,7 +393,7 @@ public class MapEditorController {
         /**
          * handles the exiting of the mouse out of a component
          *
-         * @param e
+         * @param e the mouse exit which is captured
          */
         @Override
         public void mouseExited(MouseEvent e) {
@@ -401,8 +401,8 @@ public class MapEditorController {
 
         /**
          * handles the releasing of the mouse
-         *
-         * @param e
+         * 
+         * @param e the releasing which is captured
          */
         @Override
         public void mouseReleased(MouseEvent e) {
@@ -526,7 +526,7 @@ public class MapEditorController {
         /**
          * handles clicks
          *
-         * @param e
+         * @param e the mouse clicked wich is captured
          */
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -558,7 +558,7 @@ public class MapEditorController {
         /**
          * handles pressings of mouse
          *
-         * @param e
+         * @param e the mouse press which is captured
          */
         @Override
         public void mousePressed(MouseEvent e) {
@@ -567,7 +567,7 @@ public class MapEditorController {
         /**
          * handles the entering of the mouse into a component
          *
-         * @param e
+         * @param e the mouse press which is captured
          */
         @Override
         public void mouseEntered(MouseEvent e) {
@@ -576,7 +576,7 @@ public class MapEditorController {
         /**
          * handles the exiting of the mouse out of a component
          *
-         * @param e
+         * @param e the mouse exit which is captured
          */
         @Override
         public void mouseExited(MouseEvent e) {
@@ -585,7 +585,7 @@ public class MapEditorController {
         /**
          * handles the releasing of the mouse
          *
-         * @param e
+         * @param e the releasing mouse which is captured
          */
         public void mouseReleased(MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e)) {
@@ -637,7 +637,7 @@ public class MapEditorController {
          * Update the path of the selected image into the model when it has been
          * selected on the view
          *
-         * @param e
+         * @param e the update document event which is captured
          */
         @Override
         public void insertUpdate(DocumentEvent e) {
@@ -720,7 +720,7 @@ public class MapEditorController {
         /**
          * Constructor
          *
-         * @param newMap
+         * @param newMap the new map which is constructed
          */
         public WarnCheckBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
@@ -729,7 +729,7 @@ public class MapEditorController {
         /**
          * Called when the state of the box has changed
          *
-         * @param e
+         * @param e the event captured
          */
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -751,7 +751,7 @@ public class MapEditorController {
         /**
          * Constructor
          *
-         * @param newMap
+         * @param newMap the new map constructed
          */
         public WrapCheckBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
@@ -760,7 +760,7 @@ public class MapEditorController {
         /**
          * Called when the state of the box has changed
          *
-         * @param e
+         * @param e the event captured
          */
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -782,7 +782,7 @@ public class MapEditorController {
         /**
          * Constructor
          *
-         * @param newMap
+         * @param newMap the new map which is constructed
          */
         public ScrollBoxListener(EditableMapModel newMap) {
             this.newMap = newMap;
@@ -791,7 +791,7 @@ public class MapEditorController {
         /**
          * Called when a new item has been selected
          *
-         * @param e
+         * @param e the state changing which is updated
          */
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -813,7 +813,7 @@ public class MapEditorController {
         /**
          * Constructor
          *
-         * @param newMap
+         * @param newMap the new map which is constructed
          */
         public AuthorTextFieldListener(EditableMapModel newMap) {
             this.newMap = newMap;
@@ -822,7 +822,7 @@ public class MapEditorController {
         /**
          * Updates the model when a new character has been inserted
          *
-         * @param e
+         * @param e the update which is captured
          */
         @Override
         public void insertUpdate(DocumentEvent e) {
@@ -832,7 +832,7 @@ public class MapEditorController {
         /**
          * Updates the model when a character has been removed
          *
-         * @param e
+         * @param e the remove event which is captured
          */
         @Override
         public void removeUpdate(DocumentEvent e) {
@@ -842,7 +842,7 @@ public class MapEditorController {
         /**
          * Updates the model when there have been changes in the document
          *
-         * @param e
+         * @param e the update document event which is captured
          */
         @Override
         public void changedUpdate(DocumentEvent e) {
@@ -852,7 +852,7 @@ public class MapEditorController {
         /**
          * Updates the model when the text has been updated.
          *
-         * @param e
+         * @param e the event to update
          */
         private void update(DocumentEvent e) {
             String text = null;
