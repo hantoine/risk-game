@@ -75,8 +75,8 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
     /**
      * Constructor.
      *
-     * @param width
-     * @param height
+     * @param width the width of the map editor
+     * @param height the height of the map editor
      * @param editorController Controller of the editor using to retrieve
      * listeners.
      * @param initMapModel Model of the map which is being edited, used to
@@ -120,8 +120,8 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
     /**
      * Initialize the view by setting its size and location.
      *
-     * @param width
-     * @param height
+     * @param width the width of the maple editor
+     * @param height the height of the maple editor
      */
     public void init(int width, int height) {
         setSize(new Dimension(width, height));
