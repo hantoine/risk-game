@@ -31,7 +31,7 @@ public class ModifyContinentPanel extends JPanel {
     /**
      * Constructor.
      *
-     * @param continentName
+     * @param continentName the name of the continent 
      * @param bonusScore bonus score of the continent.
      */
     public ModifyContinentPanel(String continentName, int bonusScore) {
