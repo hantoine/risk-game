@@ -103,6 +103,32 @@ public class GameControllerTest {
         assertEquals(territoryB.getNumArmies(), 2);
     }
 
+    /**
+     * Test of dragNDropTerritory method, of class GameController, when not in
+     * Fortification stage
+     */
+    @Test
+    public void testDragNDropTerritoryNotFortification() {
+        System.out.println("dragNDropTerritory");
+        String sourceTerritoryName = "TerritoryA";
+        String destTerritoryName = "TerritoryB";
+        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+
+        rm.setStage(GamePhase.ATTACK);
+        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
+        PlayerModel playerA = rm.getPlayerList().getFirst();
+        playerA.addCountryOwned(territoryA);
+        playerA.addCountryOwned(territoryB);
+        territoryA.setNumArmies(2);
+        territoryB.setNumArmies(1);
+
+        instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
+
+        assertEquals(territoryA.getNumArmies(), 2);
+        assertEquals(territoryB.getNumArmies(), 1);
+    }
+
     private static class DummyRiskView implements RiskViewInterface {
 
         public DummyRiskView() {
