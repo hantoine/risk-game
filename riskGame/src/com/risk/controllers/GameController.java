@@ -181,7 +181,7 @@ public class GameController {
                     currentPlayer.setCurrentFortificationMove(attemptedMove);
                     riskView.updateView(modelRisk);
                 } catch (IllegalStateException e) {
-                    this.riskView.showMessage("There is no armies in the source country !");
+                    this.riskView.showMessage("There is only one army in the source country !");
                 }
                 break;
         }
