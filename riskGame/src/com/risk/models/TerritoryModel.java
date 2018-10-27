@@ -165,7 +165,7 @@ public class TerritoryModel {
      */
     public int decrementNumArmies() throws IllegalStateException {
         if (numArmies == 1) {
-            throw new IllegalStateException("Negative number of armies on a territory not allowed.");
+            throw new IllegalStateException("Less than one army on a territory not allowed.");
         }
         return --numArmies;
     }
