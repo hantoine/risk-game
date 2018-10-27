@@ -9,7 +9,7 @@ import com.risk.models.FortificationMove;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
-import com.risk.views.RiskView;
+import com.risk.views.RiskViewInterface;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class GameController {
     /**
      * riskView It is an attribute that represents a reference to the view
      */
-    RiskView riskView;
+    RiskViewInterface riskView;
 
     /**
      * Constructor
@@ -36,7 +36,7 @@ public class GameController {
      * @param riskModel model of the game
      * @param riskView view of the game
      */
-    public GameController(RiskModel riskModel, RiskView riskView) {
+    public GameController(RiskModel riskModel, RiskViewInterface riskView) {
         this.modelRisk = riskModel;
         this.riskView = riskView;
 
