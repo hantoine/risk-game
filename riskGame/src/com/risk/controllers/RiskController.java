@@ -83,7 +83,8 @@ public final class RiskController {
     public void newGameMenuItemPressed() {
         getViewRisk().initialMenu(getModelRisk(), getMenuListener());
     }
-
+    
+ 
     /**
      * It executes a thread with the different phases of the game. It is called
      * after setting the players and board information
