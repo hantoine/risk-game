@@ -108,7 +108,36 @@ public class GameControllerTest {
 
     /**
      * Test of dragNDropTerritory method, of class GameController, in
-     * fortification stage when the player has already started the same move
+     * fortification stage when the player is not the owner of the source
+     * territory
+     */
+    @Test
+    public void testDragNDropTerritorySourceTerritorNotOwned() {
+        System.out.println("dragNDropTerritory");
+        String sourceTerritoryName = "TerritoryA";
+        String destTerritoryName = "TerritoryB";
+        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+
+        rm.setStage(GamePhase.FORTIFICATION);
+        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
+        PlayerModel playerA = rm.getPlayerList().getFirst();
+        PlayerModel playerB = rm.getPlayerList().getLast();
+        playerB.addCountryOwned(territoryA);
+        playerA.addCountryOwned(territoryB);
+        territoryA.setNumArmies(2);
+        territoryB.setNumArmies(1);
+
+        instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
+
+        assertEquals(2, territoryA.getNumArmies());
+        assertEquals(1, territoryB.getNumArmies());
+        assertEquals("You don't own this country !", drv.getMessage());
+    }
+
+    /**
+     * Test of dragNDropTerritory method, of class GameController, in
+     * fortification stage when the player has already started another move
      */
     @Test
     public void testDragNDropTerritoryOtherMoveStarted() {
@@ -138,7 +167,7 @@ public class GameControllerTest {
 
     /**
      * Test of dragNDropTerritory method, of class GameController, in
-     * fortification stage when the player has already started another move
+     * fortification stage when the player has already started this move
      */
     @Test
     public void testDragNDropTerritorySameMoveStarted() {
