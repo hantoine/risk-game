@@ -126,16 +126,11 @@ public final class RiskModel {
     /**
      * Setter of the board attribute from a file
      *
-     * @param path path of the file
-     * @return 0 success, -1--6 error
+     * @param newMap new map to set
      */
-    public int loadMap(String path) {
-        this.map = new MapModel();
-        int result = new MapFileManagement().createBoard(path, this.map);
-        if (result == 0) {
-            this.initializeDeck();
-        }
-        return result;
+    public void setMap(MapModel newMap) {
+        this.map = newMap;
+        this.initializeDeck();
     }
 
     /**
@@ -331,10 +326,13 @@ public final class RiskModel {
     }
 
     /**
-     * It validates that the number of territories is bigger than the number of players
-     * @return true if there is as many territories as players; false if it is not true
+     * It validates that the number of territories is bigger than the number of
+     * players
+     *
+     * @return true if there is as many territories as players; false if it is
+     * not true
      */
     public boolean validateCountries() {
-        return (map.getGraphTerritories().values().size()>=players.size());
+        return (map.getGraphTerritories().values().size() >= players.size());
     }
 }
