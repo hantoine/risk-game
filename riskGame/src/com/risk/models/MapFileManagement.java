@@ -323,7 +323,7 @@ public class MapFileManagement {
                 }
 
                 if (board.getGraphContinents().containsKey(currentTerritoryLine[3])) {
-                    board.getGraphContinents().get(currentTerritoryLine[3]).setMember(auxCountry);
+                    board.getGraphContinents().get(currentTerritoryLine[3]).addMember(auxCountry);
                     auxCountry.setContinentName(currentTerritoryLine[3]);
                 } else {
                     return -1;
