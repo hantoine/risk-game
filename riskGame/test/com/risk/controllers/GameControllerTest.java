@@ -6,6 +6,7 @@
 package com.risk.controllers;
 
 import com.risk.models.ContinentModel;
+import com.risk.models.FortificationMove;
 import com.risk.models.GamePhase;
 import com.risk.models.MapModel;
 import com.risk.models.PlayerModel;
@@ -102,6 +103,66 @@ public class GameControllerTest {
 
         assertEquals(1, territoryA.getNumArmies());
         assertEquals(2, territoryB.getNumArmies());
+        assertEquals(null, drv.getMessage());
+    }
+
+    /**
+     * Test of dragNDropTerritory method, of class GameController, in
+     * fortification stage when the player has already started the same move
+     */
+    @Test
+    public void testDragNDropTerritoryOtherMoveStarted() {
+        System.out.println("dragNDropTerritory");
+        String sourceTerritoryName = "TerritoryA";
+        String destTerritoryName = "TerritoryB";
+        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+
+        rm.setStage(GamePhase.FORTIFICATION);
+        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
+        PlayerModel playerA = rm.getPlayerList().getFirst();
+        playerA.addCountryOwned(territoryA);
+        playerA.addCountryOwned(territoryB);
+        territoryA.setNumArmies(2);
+        territoryB.setNumArmies(1);
+
+        rm.getPlayerList().getFirst().setCurrentFortificationMove(new FortificationMove(territoryB, territoryA));
+
+        instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
+
+        assertEquals(2, territoryA.getNumArmies());
+        assertEquals(1, territoryB.getNumArmies());
+        assertEquals("You can only make one move !", drv.getMessage());
+
+    }
+
+    /**
+     * Test of dragNDropTerritory method, of class GameController, in
+     * fortification stage when the player has already started another move
+     */
+    @Test
+    public void testDragNDropTerritorySameMoveStarted() {
+        System.out.println("dragNDropTerritory");
+        String sourceTerritoryName = "TerritoryA";
+        String destTerritoryName = "TerritoryB";
+        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+
+        rm.setStage(GamePhase.FORTIFICATION);
+        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
+        PlayerModel playerA = rm.getPlayerList().getFirst();
+        playerA.addCountryOwned(territoryA);
+        playerA.addCountryOwned(territoryB);
+        territoryA.setNumArmies(2);
+        territoryB.setNumArmies(1);
+
+        rm.getPlayerList().getFirst().setCurrentFortificationMove(new FortificationMove(territoryA, territoryB));
+
+        instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
+
+        assertEquals(1, territoryA.getNumArmies());
+        assertEquals(2, territoryB.getNumArmies());
+        assertEquals(null, drv.getMessage());
     }
 
     /**
