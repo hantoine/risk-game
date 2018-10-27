@@ -130,4 +130,22 @@ public class RiskModelTest {
         });
     }
 
+    /**
+     * Test of assignCoutriesToPlayers method, of class RiskModel. Check that
+     * continent are assigned
+     */
+    @Test
+    public void testAssignCoutriesToPlayersContinents() {
+        ContinentModel continentC = new ContinentModel("ContinentC", 3);
+        TerritoryModel territoryA = mapModel.getGraphTerritories().get("TerritoryA");
+        mapModel.getGraphContinents().put(continentC.getName(), continentC);
+        mapModel.getGraphContinents().get("ContinentA").removeMember(territoryA);
+        continentC.addMember(territoryA);
+        territoryA.setContinentName("ContinentC");
+
+        riskModel.assignCoutriesToPlayers();
+
+        assertTrue(riskModel.getPlayerList().stream()
+                .anyMatch((p) -> (p.getContinentsOwned().contains(continentC))));
+    }
 }
