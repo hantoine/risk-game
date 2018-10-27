@@ -108,6 +108,39 @@ public class GameControllerTest {
 
     /**
      * Test of dragNDropTerritory method, of class GameController, in
+     * fortification stage when the territories are not adjacent
+     */
+    @Test
+    public void testDragNDropTerritoryNotAdjacentTerritories() {
+        System.out.println("dragNDropTerritory");
+        String sourceTerritoryName = "TerritoryA";
+        String destTerritoryName = "TerritoryC";
+        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get("TerritoryB");
+        TerritoryModel territoryC = new TerritoryModel(destTerritoryName, 150, 50);
+
+        rm.getMap().getGraphTerritories().put(territoryC.getName(), territoryC);
+        territoryC.setContinentName("ContinentA");
+        rm.getMap().getGraphContinents().get("ContinentA").setMember(territoryC);
+        territoryB.addNeighbour(territoryC);
+
+        rm.setStage(GamePhase.FORTIFICATION);
+        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
+        PlayerModel playerA = rm.getPlayerList().getFirst();
+        playerA.addCountryOwned(territoryA);
+        playerA.addCountryOwned(territoryC);
+        territoryA.setNumArmies(2);
+        territoryC.setNumArmies(1);
+
+        instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
+
+        assertEquals(2, territoryA.getNumArmies());
+        assertEquals(1, territoryC.getNumArmies());
+        assertEquals(null, drv.getMessage());
+    }
+
+    /**
+     * Test of dragNDropTerritory method, of class GameController, in
      * fortification stage when the player is not the owner of the source
      * territory
      */
