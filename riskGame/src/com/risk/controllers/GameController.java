@@ -184,6 +184,9 @@ public class GameController {
                     this.riskView.showMessage("There is no armies in the source country !");
                 }
                 break;
+            case ATTACK:
+                this.riskView.updateAuxiliarPhasePanel(destTerritoryName, destTerritoryName, 1);
+                break;
         }
 
     }
