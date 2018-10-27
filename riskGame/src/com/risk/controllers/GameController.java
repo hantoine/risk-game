@@ -5,7 +5,6 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.FortificationMove;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
@@ -159,31 +158,17 @@ public class GameController {
         PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
 
         switch (this.modelRisk.getPhase()) {
-            case FORTIFICATION:
-                if (!sourceTerritory.getAdj().contains(destTerritory)) {
-                    break;
-                }
-                if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
-                        || !currentPlayer.getContriesOwned().contains(destTerritory)) {
-                    this.riskView.showMessage("You don't own this country !");
-                    break;
-                }
-                FortificationMove attemptedMove = new FortificationMove(sourceTerritory, destTerritory);
-                FortificationMove lastMove = currentPlayer.getCurrentFortificationMove();
-                if (lastMove != null && !lastMove.equals(attemptedMove)) {
-                    this.riskView.showMessage("You can only make one move !");
-                    break;
-                }
-
+            case FORTIFICATION: {
                 try {
-                    sourceTerritory.decrementNumArmies();
-                    destTerritory.incrementNumArmies();
-                    currentPlayer.setCurrentFortificationMove(attemptedMove);
-                    riskView.updateView(modelRisk);
-                } catch (IllegalStateException e) {
-                    this.riskView.showMessage("There is only one army in the source country !");
+                    this.modelRisk.tryFortificationMove(sourceTerritory, destTerritory);
+                } catch (RiskModel.FortificationMoveNotPossible ex) {
+                    if (ex.getReason() != null) {
+                        this.riskView.showMessage(ex.getReason());
+                    }
                 }
-                break;
+                this.riskView.updateView(modelRisk);
+            }
+            break;
         }
 
     }
