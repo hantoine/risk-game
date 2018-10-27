@@ -162,6 +162,9 @@ public final class RiskModel {
 
         players.stream().forEach((player) -> {
             List<TerritoryModel> ownedCountries = countriesLeft.subList(0, countriesPerPlayer);
+            ownedCountries.stream().forEach((t) -> {
+                t.setNumArmies(1);
+            });
             player.setContriesOwned(ownedCountries);
             countriesLeft.removeAll(ownedCountries);
         });
@@ -169,7 +172,9 @@ public final class RiskModel {
         Random rnd = new Random();
         while (!countriesLeft.isEmpty()) {
             int playerIndex = rnd.nextInt(players.size());
-            players.get(playerIndex).addCountryOwned(countriesLeft.remove(0));
+            TerritoryModel territoryAdded = countriesLeft.remove(0);
+            territoryAdded.setNumArmies(1);
+            players.get(playerIndex).addCountryOwned(territoryAdded);
         }
 
         // update continents owned accordingly
@@ -331,10 +336,13 @@ public final class RiskModel {
     }
 
     /**
-     * It validates that the number of territories is bigger than the number of players
-     * @return true if there is as many territories as players; false if it is not true
+     * It validates that the number of territories is bigger than the number of
+     * players
+     *
+     * @return true if there is as many territories as players; false if it is
+     * not true
      */
     public boolean validateCountries() {
-        return (map.getGraphTerritories().values().size()>=players.size());
+        return (map.getGraphTerritories().values().size() >= players.size());
     }
 }
