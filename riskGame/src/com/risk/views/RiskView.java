@@ -8,7 +8,9 @@ package com.risk.views;
 import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
+import com.risk.views.attack.AttackView;
 import com.risk.views.game.MapPanel;
+import com.risk.views.game.PhaseAuxiliar;
 import com.risk.views.game.PhasePanel;
 import com.risk.views.game.PlayerGameHandPanel;
 import com.risk.views.game.PlayerGameInfoPanel;
@@ -28,6 +30,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
@@ -52,7 +55,8 @@ public final class RiskView extends javax.swing.JFrame {
     /**
      * playerHandPanel reference to the view that has the cards of the plater
      */
-    final private PlayerGameHandPanel playerHandPanel;
+    final private PhaseAuxiliar phaseAuxiliarPanel;
+    
     /**
      * stagePanel reference to the view that manages the information of the
      * current stage
@@ -68,14 +72,18 @@ public final class RiskView extends javax.swing.JFrame {
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(true);
 
-        this.playerHandPanel = new PlayerGameHandPanel();
+        this.phaseAuxiliarPanel = new PhaseAuxiliar();
+        PlayerGameHandPanel hand=new PlayerGameHandPanel();
+        phaseAuxiliarPanel.setPlayerHandPanel(hand);
+        
+        phaseAuxiliarPanel.updatePanel(hand);
         this.stagePanel = new PhasePanel();
         this.playerPanel = new PlayerGameInfoPanel();
         this.mapPanel = new MapPanel();
 
         Container cp = this.getContentPane();
         cp.setLayout(new BorderLayout());
-        cp.add(this.playerHandPanel, BorderLayout.SOUTH);
+        cp.add(this.phaseAuxiliarPanel, BorderLayout.SOUTH);
         cp.add(this.stagePanel, BorderLayout.NORTH);
         cp.add(this.playerPanel, BorderLayout.EAST);
         cp.add(this.mapPanel, BorderLayout.CENTER);
@@ -99,7 +107,26 @@ public final class RiskView extends javax.swing.JFrame {
         this.getPlayerHandPanel().updateView(rm);
 
     }
-
+    
+    public void updateAuxiliarPhasePanel(String countrySource, String countryDest, int panel){
+        switch(panel){
+            case 0:
+                this.phaseAuxiliarPanel.updatePanel(phaseAuxiliarPanel.getPlayerHandPanel());
+                break;
+            case 1:
+                this.phaseAuxiliarPanel.updatePanel((JPanel) phaseAuxiliarPanel.getAttackPanel());
+                this.phaseAuxiliarPanel.getAttackPanel().update(countrySource,countryDest);
+                break;
+            case 2:
+                this.phaseAuxiliarPanel.updatePanel(phaseAuxiliarPanel.getArmiesLeft());
+                this.phaseAuxiliarPanel.getArmiesLeft().update(countrySource,countryDest,this.mapPanel);
+                break;
+        }
+    }
+    
+    public PlayerGameHandPanel getPlayerHandPanel(){
+        return (PlayerGameHandPanel) this.phaseAuxiliarPanel.getPlayerHandPanel();
+    }
     /**
      * Update the information displayed in the view to match the ones in the
      * model Update also the map which can have changed (if not changed just
@@ -176,6 +203,13 @@ public final class RiskView extends javax.swing.JFrame {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         aux.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
     }
+    
+    public void attackMenu(RiskModel riskModel) {
+
+        AttackView start = new AttackView();
+        start.setVisible(true);
+        
+    }
 
     /**
      * Close menu action
@@ -200,8 +234,8 @@ public final class RiskView extends javax.swing.JFrame {
      *
      * @return the hands panel of the player
      */
-    PlayerGameHandPanel getPlayerHandPanel() {
-        return playerHandPanel;
+    PhaseAuxiliar getPhaseAuxiliarPanel() {
+        return phaseAuxiliarPanel;
     }
 
     /**
