@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.LinkedList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -104,6 +105,7 @@ public class GameControllerTest {
         assertEquals(1, territoryA.getNumArmies());
         assertEquals(2, territoryB.getNumArmies());
         assertEquals(null, drv.getMessage());
+        assertTrue(drv.isUpdated());
     }
 
     /**
@@ -254,6 +256,7 @@ public class GameControllerTest {
         assertEquals(1, territoryA.getNumArmies());
         assertEquals(2, territoryB.getNumArmies());
         assertEquals(null, drv.getMessage());
+        assertTrue(drv.isUpdated());
     }
 
     /**
@@ -313,12 +316,15 @@ public class GameControllerTest {
     private static class DummyRiskView implements RiskViewInterface {
 
         String message;
+        boolean updated;
 
         public DummyRiskView() {
+            updated = false;
         }
 
         @Override
         public void updateView(RiskModel rm) {
+            updated = true;
         }
 
         @Override
@@ -353,6 +359,10 @@ public class GameControllerTest {
 
         public String getMessage() {
             return this.message;
+        }
+
+        public boolean isUpdated() {
+            return updated;
         }
     }
 
