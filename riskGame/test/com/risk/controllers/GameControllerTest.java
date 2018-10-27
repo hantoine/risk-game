@@ -28,6 +28,7 @@ public class GameControllerTest {
 
     private GameController instance;
     private RiskModel rm;
+    private DummyRiskView drv;
 
     @Before
     public void setUp() {
@@ -38,7 +39,7 @@ public class GameControllerTest {
         rm.addPlayerToPlayerList("PlayerA", Color.yellow, true);
         rm.addPlayerToPlayerList("PlayerB", Color.red, true);
         rm.setMap(getTestMap());
-        DummyRiskView drv = new DummyRiskView();
+        drv = new DummyRiskView();
         instance = new GameController(rm, drv);
     }
 
@@ -99,8 +100,8 @@ public class GameControllerTest {
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
-        assertEquals(territoryA.getNumArmies(), 1);
-        assertEquals(territoryB.getNumArmies(), 2);
+        assertEquals(1, territoryA.getNumArmies());
+        assertEquals(2, territoryB.getNumArmies());
     }
 
     /**
@@ -125,11 +126,41 @@ public class GameControllerTest {
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
-        assertEquals(territoryA.getNumArmies(), 2);
-        assertEquals(territoryB.getNumArmies(), 1);
+        assertEquals(2, territoryA.getNumArmies());
+        assertEquals(1, territoryB.getNumArmies());
+    }
+
+    /**
+     * Test of dragNDropTerritory method, of class GameController, when in
+     * Fortification stage, but only one army left on source territory
+     */
+    @Test
+    public void testDragNDropTerritoryNotFortificationOnlyOneArmy() {
+        System.out.println("dragNDropTerritory");
+        String sourceTerritoryName = "TerritoryA";
+        String destTerritoryName = "TerritoryB";
+        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+
+        rm.setStage(GamePhase.FORTIFICATION);
+        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
+        PlayerModel playerA = rm.getPlayerList().getFirst();
+        playerA.addCountryOwned(territoryA);
+        playerA.addCountryOwned(territoryB);
+        territoryA.setNumArmies(1);
+        territoryB.setNumArmies(1);
+
+        instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
+
+        assertEquals(1, territoryA.getNumArmies());
+        assertEquals(1, territoryB.getNumArmies());
+        System.out.println("done");
+        assertEquals("There is only one army in the source country !", drv.getMessage());
     }
 
     private static class DummyRiskView implements RiskViewInterface {
+
+        String message;
 
         public DummyRiskView() {
         }
@@ -145,7 +176,7 @@ public class GameControllerTest {
 
         @Override
         public void showMessage(String message) {
-            System.out.println(message);
+            this.message = message;
         }
 
         @Override
@@ -166,6 +197,10 @@ public class GameControllerTest {
         @Override
         public NewGamePanel getNewGamePanel() {
             throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public String getMessage() {
+            return this.message;
         }
     }
 
