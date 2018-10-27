@@ -117,4 +117,17 @@ public class RiskModelTest {
         });
     }
 
+    /**
+     * Test of assignCoutriesToPlayers method, of class RiskModel. No territory
+     * without armies
+     */
+    @Test
+    public void testAssignCoutriesToPlayersArmies() {
+        riskModel.assignCoutriesToPlayers();
+        Collection<TerritoryModel> territories = mapModel.getGraphTerritories().values();
+        territories.stream().forEach((c) -> {
+            assertEquals(c.getNumArmies(), 1);
+        });
+    }
+
 }
