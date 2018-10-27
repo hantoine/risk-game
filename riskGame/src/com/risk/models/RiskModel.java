@@ -148,6 +148,15 @@ public final class RiskModel {
     }
 
     /**
+     * Setter of board attribute
+     *
+     * @param mapModel a map model instance
+     */
+    public void setMap(MapModel mapModel) {
+        this.map = mapModel;
+    }
+
+    /**
      * Assigns random countries to players
      */
     public void assignCoutriesToPlayers() {

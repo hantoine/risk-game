@@ -242,7 +242,7 @@ public final class EditableMapModel implements MapModelObservable {
         //add it to a continent
         String continentName = this.getGraphContinents().entrySet().iterator().next().getKey();
         newTerritory.setContinentName(continentName);
-        this.getGraphContinents().get(continentName).setMember(newTerritory);
+        this.getGraphContinents().get(continentName).addMember(newTerritory);
 
         //add territory to list
         this.getGraphTerritories().put(newName, newTerritory);
@@ -268,7 +268,7 @@ public final class EditableMapModel implements MapModelObservable {
 
         //add it to its continent
         newTerritory.setContinentName(continentName);
-        this.getGraphContinents().get(continentName).setMember(newTerritory);
+        this.getGraphContinents().get(continentName).addMember(newTerritory);
 
         //add territory to list
         this.getGraphTerritories().put(newName, newTerritory);
@@ -323,7 +323,7 @@ public final class EditableMapModel implements MapModelObservable {
         //modify territory
         modifiedTerritory.setName(newName);
         modifiedTerritory.setContinentName(newContinent);
-        this.getGraphContinents().get(newContinent).setMember(modifiedTerritory);
+        this.getGraphContinents().get(newContinent).addMember(modifiedTerritory);
 
         //replace the old entry by the updated one
         this.getGraphTerritories().put(newName, modifiedTerritory);
