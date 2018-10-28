@@ -92,33 +92,15 @@ public class HandModel {
     /**
      * Removes the cards from a players hand depending on their type
      *
-     * @param typeOfArmie type of card
+     * @param selectedCards cards to be eliminated
      * @param deck deck of card in which to put the card removed
      */
-    public void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
-        String[] typeOfArmieDum = {"infantry", "artillery", "cavalry"};
-
-        if (typeOfArmie.equals("different")) {
-
-            Arrays.stream(typeOfArmieDum).forEach(typeA -> {
-                CardModel card = this.getCards().stream()
-                        .filter(c -> c.getTypeOfArmie().equals(typeA))
-                        .findFirst()
-                        .get();
-
-                deck.addFirst(card);
-                this.getCards().remove(card);
-            });
-
-        } else {
-            for (Iterator<CardModel> iterator = this.getCards().iterator(); iterator.hasNext();) {
-                CardModel card = iterator.next();
-                if (card.getTypeOfArmie().equals(typeOfArmie)) {
-                    deck.addFirst(card);
-                    iterator.remove();
-                }
-            }
-        }
+    public void removeCards(LinkedList<String> selectedCards, LinkedList<CardModel> deck) {
+        this.getCards().stream()
+                .filter(c -> selectedCards.contains(c.getCountryName()))
+                .forEach(cs -> deck.addFirst(cs));
+        
+        this.getCards().removeIf(c -> selectedCards.contains(c.getCountryName()));
     }
 
 }
