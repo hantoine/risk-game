@@ -93,7 +93,7 @@ public final class RiskController {
      * after setting the players and board information
      */
     void playGame() {
-        this.setPlayGame(new GameController(this.modelRisk, this.viewRisk));
+        this.setPlayGame(new GameController(this.modelRisk, this.viewRisk,this));
         this.modelRisk.initializePlayersArmies();
         this.modelRisk.assignCoutriesToPlayers();
         this.viewRisk.updateViewWithNewMap(modelRisk);

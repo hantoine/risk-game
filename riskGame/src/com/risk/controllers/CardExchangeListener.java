@@ -6,7 +6,9 @@
 package com.risk.controllers;
 
 
+import com.risk.models.HumanPlayerModel;
 import com.risk.views.game.PlayerGameHandPanel;
+import com.risk.views.reinforcement.CardExchangeView;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -35,33 +37,48 @@ public class CardExchangeListener extends MouseAdapter{
         JComponent c = (JComponent) e.getSource();
         System.out.println(c.getClass());
         if (c instanceof JButton) {
-            JButton buttonPressed=(JButton) c;
-           if(buttonPressed.getText().equals("Exit")){
-               if(riskController.getModelRisk().getCurrentPlayer().getCardsOwned().getCards().size()>=5 && handed==false)
-                   this.showMessage("You have to hand some cards");
-               else{
-                   riskController.getViewRisk().closeExchangeMenu();
-                   handed=true;
-               }
-           }else if(buttonPressed.getText().equals("Hand")){
-               riskController.getPlayGame().clickHand();
-           }else{
-               if(selectedCards.size()<3){
-                   buttonPressed.setOpaque(true);
-                   buttonPressed.setBackground(Color.black);
-                   selectedCards.add(buttonPressed.getName());
-               }else{
-                   this.showMessage("You selected 3 cards. Please press hand.");
-               }
-           }
-               
+           
+           JButton buttonPressed=(JButton) c;
+           if(buttonPressed.isEnabled()){
+                if(buttonPressed.getText().equals("Exit")){             
+                    riskController.getViewRisk().closeExchangeMenu();
+                    selectedCards.clear();
+                }else if(buttonPressed.getText().equals("Hand")){
+                    if(selectedCards.size()<3)
+                        this.showMessage("You have to select 3 cards first.");
+                    else{
+                        if(riskController.getPlayGame().clickHand(selectedCards)){
+                            this.showMessage("You can only hand 3 equal or 3 different cards");
+                        }else{
+                            selectedCards.clear();
+                            ((HumanPlayerModel)riskController.getModelRisk().getCurrentPlayer()).setHanded(true);
+                        }
+                        
+                    }
+                    
+                }else{
+                    if(buttonPressed.getBackground()==Color.black){
+                        buttonPressed.setBackground(riskController.getModelRisk().getCurrentPlayer().getColor());
+                        selectedCards.remove(buttonPressed.getName());
+                    }else{
+                        if(selectedCards.size()<3){
+                            buttonPressed.setOpaque(true);
+                            buttonPressed.setBackground(Color.black);
+                            selectedCards.add(buttonPressed.getName());
+                        }else{
+                            this.showMessage("You selected 3 cards. Please press hand.");
+                        }
+                    }
+                    
+                }
+           }    
         }
     }
     
-    public void setPanel(PlayerGameHandPanel playerGameHandPanel){
-        this.playerGameHandPanel=playerGameHandPanel;
-        riskController.getModelRisk().getCurrentPlayer().addObserver(playerGameHandPanel);
-        
+    public void setPanel(CardExchangeView cardExchangeView){
+        this.playerGameHandPanel=cardExchangeView.getPlayerGameHandPanel();
+        riskController.getModelRisk().getCurrentPlayer().addObserver(cardExchangeView.getPlayerGameHandPanel());
+        riskController.getModelRisk().getCurrentPlayer().addObserver(cardExchangeView);
     }
     
     public void showMessage(String message) {

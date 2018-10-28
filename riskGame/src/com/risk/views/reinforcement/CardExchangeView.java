@@ -10,6 +10,8 @@ import com.risk.models.RiskModel;
 import com.risk.views.game.PlayerGameHandPanel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -19,8 +21,8 @@ import javax.swing.JPanel;
  *
  * @author rebecca
  */
-public class CardExchangeView extends JDialog {
-    private PlayerGameHandPanel playerGameHandPanel;
+public class CardExchangeView extends JDialog implements Observer{
+    PlayerGameHandPanel playerGameHandPanel;
     JButton handCards;
     JButton exit;
     JPanel buttonPanel;
@@ -34,17 +36,22 @@ public class CardExchangeView extends JDialog {
         buttonPanel.setLayout(new FlowLayout());
         handCards=new JButton("Hand");
         exit=new JButton("Exit");
+        exit.setEnabled(false);
         
         buttonPanel.add(handCards);
         buttonPanel.add(exit);
         
         playerGameHandPanel=new PlayerGameHandPanel();
         playerGameHandPanel.updateView(rm);
+        this.setSize(((playerGameHandPanel.getHandCards().size()+1)*50)+150, 400);
+        
+        setEnableHand(rm);
+      
         
         this.add(exchangeMessage, BorderLayout.NORTH);
         this.add(playerGameHandPanel, BorderLayout.CENTER);
         this.add(buttonPanel,BorderLayout.SOUTH);
-        this.setSize(400, 400);
+        
     }
     
     public void setListener(CardExchangeListener cardExchangeListener){
@@ -60,6 +67,30 @@ public class CardExchangeView extends JDialog {
     public PlayerGameHandPanel getPlayerGameHandPanel() {
         return playerGameHandPanel;
     }
+
+    public void setEnableHand(RiskModel rm){
+        if(rm.getCurrentPlayer().getCardsOwned().threeDifferentCardsOrThreeEqualCards())
+            handCards.setEnabled(true);
+        else{
+            handCards.setEnabled(false);
+            exit.setEnabled(true);
+        }
+        if(rm.getCurrentPlayer().isHanded() || rm.getCurrentPlayer().getCardsOwned().getCards().size()<3)
+               exit.setEnabled(true);
+    }
+    
+    @Override
+    public void update(Observable o, Object arg) {
+        
+        if (arg instanceof RiskModel) {
+           
+            setEnableHand((RiskModel) arg);
+            
+        }
+
+    }
+     
+    
     
     
 }
