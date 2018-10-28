@@ -148,7 +148,10 @@ public class MenuListener extends MouseAdapter {
                             player.getColorButton().getBackground(),
                             this.getRiskModel()
                     );
+                    playerGame.addObserver(riskView.getPlayerHandPanel());
+                    
                     listPlayers.add(playerGame);
+                    
                 }
                 this.getRiskModel().setPlayerList(listPlayers);
                 
@@ -156,7 +159,7 @@ public class MenuListener extends MouseAdapter {
                     JOptionPane.showMessageDialog(null, "No enough countries in this map for the number of players. Select another map.");
                     break;
                 }    
-                this.getRiskView().closeMenu();
+                this.getRiskView().closeMenu();                
                 this.getRiskController().playGame();
                 
                 
