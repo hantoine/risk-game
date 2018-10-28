@@ -8,6 +8,7 @@ package com.risk.views.game;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.io.File;
 import java.util.HashMap;
@@ -36,7 +37,8 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
      *
      */
     public PlayerGameHandPanel() {
-        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        this.setLayout(new FlowLayout());
+        //BoxLayout(this, BoxLayout.X_AXIS));
     }
 
     /**
@@ -47,6 +49,7 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
      * current player
      */
     public void updateView(RiskModel rm) {
+        this.setSize(rm.getMap().getMapWidth()+200, rm.getCurrentPlayer().getCardsOwned().getCards().size()/10*100);
         this.removeAll();
         PlayerModel currentPlayer = rm.getCurrentPlayer();
         

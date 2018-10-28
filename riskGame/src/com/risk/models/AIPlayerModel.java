@@ -7,6 +7,7 @@ package com.risk.models;
 
 import com.risk.controllers.GameController;
 import java.awt.Color;
+import java.util.LinkedList;
 
 /**
  * It represents an AI player (child of PlayerModel)
@@ -48,6 +49,23 @@ public class AIPlayerModel extends PlayerModel {
     @Override
     public void attack(GameController playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean exchangeCardsToArmies(LinkedList<String> selectedCards) {
+        int[] cardDuplicates = this.getCardsOwned().getCardDuplicates();
+
+        if (cardDuplicates[0] >= 3) {
+            this.getCardsOwned().removeCards("infantry", super.game.getDeck());
+        } else if (cardDuplicates[1] >= 3) {
+            this.getCardsOwned().removeCards("cavalry", super.game.getDeck());
+        } else if (cardDuplicates[2] >= 3) {
+            this.getCardsOwned().removeCards("artillery", super.game.getDeck());
+        } else {
+            this.getCardsOwned().removeCards("different", super.game.getDeck());
+        }
+        armiesCardAssignation();
+        return true;
     }
 
 }

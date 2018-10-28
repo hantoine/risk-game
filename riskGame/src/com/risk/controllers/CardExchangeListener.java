@@ -64,6 +64,7 @@ public class CardExchangeListener extends MouseAdapter{
                 if(buttonPressed.getText().equals("Exit")){             
                     riskController.getViewRisk().closeExchangeMenu();
                     selectedCards.clear();
+                    (riskController.getModelRisk().getCurrentPlayer()).setHanded(false);
                 }else if(buttonPressed.getText().equals("Hand")){
                     if(selectedCards.size()<3)
                         this.showMessage("You have to select 3 cards first.");
@@ -72,7 +73,6 @@ public class CardExchangeListener extends MouseAdapter{
                             this.showMessage("You can only hand 3 equal or 3 different cards");
                         }else{
                             selectedCards.clear();
-                            ((HumanPlayerModel)riskController.getModelRisk().getCurrentPlayer()).setHanded(true);
                         }
                         
                     }

@@ -74,10 +74,10 @@ public final class RiskView extends javax.swing.JFrame {
         this.setResizable(true);
 
         this.phaseAuxiliarPanel = new PhaseAuxiliar();
-        PlayerGameHandPanel hand=new PlayerGameHandPanel();
-        phaseAuxiliarPanel.setPlayerHandPanel(hand);
+        //PlayerGameHandPanel hand=new PlayerGameHandPanel();
+        //phaseAuxiliarPanel.setPlayerHandPanel(hand);
         
-        phaseAuxiliarPanel.updatePanel(hand);
+        //phaseAuxiliarPanel.updatePanel(hand);
         this.stagePanel = new PhasePanel();
         this.playerPanel = new PlayerGameInfoPanel();
         this.mapPanel = new MapPanel();
@@ -105,29 +105,30 @@ public final class RiskView extends javax.swing.JFrame {
         this.getStagePanel().updateView(rm);
         this.getMapPanel().updateView(rm, false);
         this.getPlayerPanel().updateView(rm);
-        this.getPlayerHandPanel().updateView(rm);
+        //this.getPlayerHandPanel().updateView(rm);
 
     }
     
     public void updateAuxiliarPhasePanel(String countrySource, String countryDest, int panel){
         switch(panel){
+            //case 0:
+            //    this.phaseAuxiliarPanel.updatePanel(phaseAuxiliarPanel.getPlayerHandPanel());
+            //    break;
             case 0:
-                this.phaseAuxiliarPanel.updatePanel(phaseAuxiliarPanel.getPlayerHandPanel());
-                break;
-            case 1:
                 this.phaseAuxiliarPanel.updatePanel((JPanel) phaseAuxiliarPanel.getAttackPanel());
                 this.phaseAuxiliarPanel.getAttackPanel().update(countrySource,countryDest);
                 break;
-            case 2:
+            case 1:
                 this.phaseAuxiliarPanel.updatePanel(phaseAuxiliarPanel.getArmiesLeft());
                 this.phaseAuxiliarPanel.getArmiesLeft().update(countrySource,countryDest,this.mapPanel);
                 break;
         }
     }
     
-    public PlayerGameHandPanel getPlayerHandPanel(){
-        return (PlayerGameHandPanel) this.phaseAuxiliarPanel.getPlayerHandPanel();
-    }
+    //public PlayerGameHandPanel getPlayerHandPanel(){
+    //    return (PlayerGameHandPanel) this.phaseAuxiliarPanel.getPlayerHandPanel();
+    //}
+    
     /**
      * Update the information displayed in the view to match the ones in the
      * model Update also the map which can have changed (if not changed just
@@ -139,7 +140,7 @@ public final class RiskView extends javax.swing.JFrame {
         this.getStagePanel().updateView(rm);
         this.getMapPanel().updateView(rm, true);
         this.getPlayerPanel().updateView(rm);
-        this.getPlayerHandPanel().updateView(rm);
+        //this.getPlayerHandPanel().updateView(rm);
 
         this.setSize(
                 rm.getMap().getMapWidth() + 200,
@@ -209,7 +210,7 @@ public final class RiskView extends javax.swing.JFrame {
         this.getExchangeView().setListener(rc.getCardExchangeListener());
         rc.getCardExchangeListener().setPanel(this.getExchangeView());
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        getExchangeView().setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
+        getExchangeView().setLocation(dimension.width / 2 - (this.exchangeView.getWidth()) / 2, dimension.height / 2 - 500 / 2);
         getExchangeView().setVisible(true);
         
     }
