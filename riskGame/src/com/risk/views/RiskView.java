@@ -74,10 +74,7 @@ public final class RiskView extends javax.swing.JFrame {
         this.setResizable(true);
 
         this.phaseAuxiliarPanel = new PhaseAuxiliar();
-        //PlayerGameHandPanel hand=new PlayerGameHandPanel();
-        //phaseAuxiliarPanel.setPlayerHandPanel(hand);
-        
-        //phaseAuxiliarPanel.updatePanel(hand);
+
         this.stagePanel = new PhasePanel();
         this.playerPanel = new PlayerGameInfoPanel();
         this.mapPanel = new MapPanel();
@@ -105,15 +102,11 @@ public final class RiskView extends javax.swing.JFrame {
         this.getStagePanel().updateView(rm);
         this.getMapPanel().updateView(rm, false);
         this.getPlayerPanel().updateView(rm);
-        //this.getPlayerHandPanel().updateView(rm);
 
     }
     
     public void updateAuxiliarPhasePanel(String countrySource, String countryDest, int panel){
         switch(panel){
-            //case 0:
-            //    this.phaseAuxiliarPanel.updatePanel(phaseAuxiliarPanel.getPlayerHandPanel());
-            //    break;
             case 0:
                 this.phaseAuxiliarPanel.updatePanel((JPanel) phaseAuxiliarPanel.getAttackPanel());
                 this.phaseAuxiliarPanel.getAttackPanel().update(countrySource,countryDest);
@@ -125,10 +118,7 @@ public final class RiskView extends javax.swing.JFrame {
         }
     }
     
-    //public PlayerGameHandPanel getPlayerHandPanel(){
-    //    return (PlayerGameHandPanel) this.phaseAuxiliarPanel.getPlayerHandPanel();
-    //}
-    
+   
     /**
      * Update the information displayed in the view to match the ones in the
      * model Update also the map which can have changed (if not changed just

@@ -30,17 +30,17 @@ public class HandModel {
         this.cards.add(new CardModel("France", "infantry"));
         this.cards.add(new CardModel("China", "infantry"));
         this.cards.add(new CardModel("India", "artillery"));
-        this.cards.add(new CardModel("Africa", "artillery"));
-        this.cards.add(new CardModel("Va", "infantry"));
-        this.cards.add(new CardModel("Fe", "infantry"));
-        this.cards.add(new CardModel("Ca", "infantry"));
-        this.cards.add(new CardModel("Ia", "artillery"));
-        this.cards.add(new CardModel("Aa", "artillery"));
-        this.cards.add(new CardModel("Vela", "infantry"));
-        this.cards.add(new CardModel("Fnce", "infantry"));
-        this.cards.add(new CardModel("Cina", "infantry"));
-        this.cards.add(new CardModel("Idia", "artillery"));
-        this.cards.add(new CardModel("Arica", "artillery"));
+        //this.cards.add(new CardModel("Africa", "artillery"));
+        //this.cards.add(new CardModel("Va", "infantry"));
+        //this.cards.add(new CardModel("Fe", "infantry"));
+        //this.cards.add(new CardModel("Ca", "infantry"));
+        //this.cards.add(new CardModel("Ia", "artillery"));
+        //this.cards.add(new CardModel("Aa", "artillery"));
+        //this.cards.add(new CardModel("Vela", "infantry"));
+        //this.cards.add(new CardModel("Fnce", "infantry"));
+        //this.cards.add(new CardModel("Cina", "infantry"));
+        //this.cards.add(new CardModel("Idia", "artillery"));
+        //this.cards.add(new CardModel("Arica", "artillery"));
     }
 
     /**
