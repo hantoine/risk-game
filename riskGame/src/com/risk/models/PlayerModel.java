@@ -34,7 +34,7 @@ public abstract class PlayerModel extends Observable {
     private HandModel cardsOwned;
     private int numArmiesAvailable;
     private int returnedCards;
-    private RiskModel game;
+    protected RiskModel game;
     private FortificationMove currentFortificationMove;
     private boolean handed;
     /**
@@ -396,26 +396,7 @@ public abstract class PlayerModel extends Observable {
      * @param selectedCards the cards to be eliminated
      * @return true if the cards are equal or different; false in other case
      */
-    public boolean exchangeCardsToArmies(LinkedList<String> selectedCards) {
-        LinkedList<String> typeOfArmie=new LinkedList<>();
-        this.getCardsOwned().getCards().stream()
-                .filter(c -> selectedCards.contains(c.getCountryName()))
-                .forEach(cs -> typeOfArmie.add(cs.getTypeOfArmie()));
-                    
-        boolean areEqual= typeOfArmie.stream()
-                            .allMatch(a -> a.equals(typeOfArmie.getFirst()));
-        boolean different=!(typeOfArmie.get(0).equals(typeOfArmie.get(1))) && !(typeOfArmie.get(0).equals(typeOfArmie.get(2))) && !(typeOfArmie.get(2).equals(typeOfArmie.get(1)));
-        
-        if (areEqual || different) {
-            this.getCardsOwned().removeCards(selectedCards, this.game.getDeck());
-            armiesCardAssignation();
-            this.setChanged();
-            this.notifyObservers(this.game);
-            return true;
-        }else
-            return false;
-       
-    }
+    public abstract boolean exchangeCardsToArmies(LinkedList<String> selectedCards);
 
     /**
      * Adds a card to the player's hand from the deck

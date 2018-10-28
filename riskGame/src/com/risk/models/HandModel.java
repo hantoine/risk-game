@@ -31,6 +31,16 @@ public class HandModel {
         this.cards.add(new CardModel("China", "infantry"));
         this.cards.add(new CardModel("India", "artillery"));
         this.cards.add(new CardModel("Africa", "artillery"));
+        this.cards.add(new CardModel("Va", "infantry"));
+        this.cards.add(new CardModel("Fe", "infantry"));
+        this.cards.add(new CardModel("Ca", "infantry"));
+        this.cards.add(new CardModel("Ia", "artillery"));
+        this.cards.add(new CardModel("Aa", "artillery"));
+        this.cards.add(new CardModel("Vela", "infantry"));
+        this.cards.add(new CardModel("Fnce", "infantry"));
+        this.cards.add(new CardModel("Cina", "infantry"));
+        this.cards.add(new CardModel("Idia", "artillery"));
+        this.cards.add(new CardModel("Arica", "artillery"));
     }
 
     /**
@@ -101,6 +111,32 @@ public class HandModel {
                 .forEach(cs -> deck.addFirst(cs));
         
         this.getCards().removeIf(c -> selectedCards.contains(c.getCountryName()));
+    }
+    
+    public void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
+        String[] typeOfArmieDum = {"infantry", "artillery", "cavalry"};
+
+        if (typeOfArmie.equals("different")) {
+
+            Arrays.stream(typeOfArmieDum).forEach(typeA -> {
+                CardModel card = this.getCards().stream()
+                        .filter(c -> c.getTypeOfArmie().equals(typeA))
+                        .findFirst()
+                        .get();
+
+                deck.addFirst(card);
+                this.getCards().remove(card);
+            });
+
+        } else {
+            for (Iterator<CardModel> iterator = this.getCards().iterator(); iterator.hasNext();) {
+                CardModel card = iterator.next();
+                if (card.getTypeOfArmie().equals(typeOfArmie)) {
+                    deck.addFirst(card);
+                    iterator.remove();
+                }
+            }
+        }
     }
 
 }
