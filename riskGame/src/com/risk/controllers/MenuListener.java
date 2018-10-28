@@ -149,7 +149,6 @@ public class MenuListener extends MouseAdapter {
                             this.getRiskModel()
                     );
                     playerGame.addObserver(riskView.getPlayerHandPanel());
-                    
                     listPlayers.add(playerGame);
                     
                 }

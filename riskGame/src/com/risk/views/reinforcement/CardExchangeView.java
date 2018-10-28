@@ -18,16 +18,35 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
+ * Implementation of the exchange view for reinforcement phase
  * @author rebecca
  */
 public class CardExchangeView extends JDialog implements Observer{
+    /**
+     * Panel of cards
+     */
     PlayerGameHandPanel playerGameHandPanel;
+    /**
+     * Button to hand cards
+     */
     JButton handCards;
+    /**
+     * Button to exit
+     */
     JButton exit;
+    /**
+     * Panel of buttons
+     */
     JPanel buttonPanel;
+    /**
+     * Message of the view
+     */
     JLabel exchangeMessage;
     
+    /**
+     * Constructor of the view
+     * @param rm model of the game
+     */
     public  CardExchangeView(RiskModel rm){
         this.setLayout(new BorderLayout());
         
@@ -45,7 +64,7 @@ public class CardExchangeView extends JDialog implements Observer{
         playerGameHandPanel.updateView(rm);
         this.setSize(((playerGameHandPanel.getHandCards().size()+1)*50)+150, 400);
         
-        setEnableHand(rm);
+        this.setEnableHand(rm);
       
         
         this.add(exchangeMessage, BorderLayout.NORTH);
@@ -54,6 +73,10 @@ public class CardExchangeView extends JDialog implements Observer{
         
     }
     
+    /**
+     * Setter of the listener for the different buttons in the view
+     * @param cardExchangeListener the mouse listener
+     */
     public void setListener(CardExchangeListener cardExchangeListener){
         exit.addMouseListener(cardExchangeListener);
         handCards.addMouseListener(cardExchangeListener);
@@ -62,12 +85,17 @@ public class CardExchangeView extends JDialog implements Observer{
     }
 
     /**
+     * Getter of the playerHandPanel attribute
      * @return the playerGameHandPanel
      */
     public PlayerGameHandPanel getPlayerGameHandPanel() {
         return playerGameHandPanel;
     }
-
+    
+    /**
+     * It enables the hand button of the view
+     * @param rm the model of the game
+     */
     public void setEnableHand(RiskModel rm){
         if(rm.getCurrentPlayer().getCardsOwned().threeDifferentCardsOrThreeEqualCards())
             handCards.setEnabled(true);
@@ -75,10 +103,15 @@ public class CardExchangeView extends JDialog implements Observer{
             handCards.setEnabled(false);
             exit.setEnabled(true);
         }
-        if(rm.getCurrentPlayer().isHanded() || rm.getCurrentPlayer().getCardsOwned().getCards().size()<3)
+        if(rm.getCurrentPlayer().isHanded() || rm.getCurrentPlayer().getCardsOwned().getCards().size()<5)
                exit.setEnabled(true);
     }
     
+    /**
+     * Observer patter implementation
+     * @param o the player or observable
+     * @param arg the model receive as parameter
+     */
     @Override
     public void update(Observable o, Object arg) {
         

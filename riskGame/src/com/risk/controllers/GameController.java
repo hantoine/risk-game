@@ -238,8 +238,4 @@ public class GameController {
                
     }
     
-    public void setObserverExchange(){
-        modelRisk.getPlayerList().stream()
-                .forEach(p -> p.addObserver(riskView.getExchangeView().getPlayerGameHandPanel()));
-    }
 }

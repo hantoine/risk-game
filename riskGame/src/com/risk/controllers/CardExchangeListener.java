@@ -19,19 +19,40 @@ import javax.swing.JOptionPane;
 
 
 /**
- *
+ * The listener of the exchange card view
  * @author rebecca
  */
 public class CardExchangeListener extends MouseAdapter{
+    /**
+     * The controller of the views in the game
+     */
     RiskController riskController;
+    /**
+     * Panel of cards
+     */
     PlayerGameHandPanel playerGameHandPanel;
+    /**
+     * Cards to be handed
+     */
     LinkedList<String> selectedCards=new LinkedList<>();
+    /**
+     * Boolean to validate that the player hand cards at least 1 time
+     */
     boolean handed;
+    
+    /**
+     * Constructor  
+     * @param rc controller of the game
+     */
     public CardExchangeListener(RiskController rc){
         riskController=rc;
         handed=false;
     }
     
+    /**
+     * The event manager of the exchange card view
+     * @param e the event
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         JComponent c = (JComponent) e.getSource();
@@ -75,12 +96,20 @@ public class CardExchangeListener extends MouseAdapter{
         }
     }
     
+    /**
+     * Assignation of observers
+     * @param cardExchangeView the observer
+     */
     public void setPanel(CardExchangeView cardExchangeView){
         this.playerGameHandPanel=cardExchangeView.getPlayerGameHandPanel();
         riskController.getModelRisk().getCurrentPlayer().addObserver(cardExchangeView.getPlayerGameHandPanel());
         riskController.getModelRisk().getCurrentPlayer().addObserver(cardExchangeView);
     }
     
+    /**
+     * Error message
+     * @param message the error 
+     */
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
