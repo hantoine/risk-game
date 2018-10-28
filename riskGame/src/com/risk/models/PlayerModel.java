@@ -393,7 +393,8 @@ public abstract class PlayerModel extends Observable {
     /**
      * Function that removes the cards and calls a function that assigns armies
      * depending on the number of cards the player has handed
-     * @return 
+     * @param selectedCards the cards to be eliminated
+     * @return true if the cards are equal or different; false in other case
      */
     public boolean exchangeCardsToArmies(LinkedList<String> selectedCards) {
         LinkedList<String> typeOfArmie=new LinkedList<>();
@@ -405,7 +406,6 @@ public abstract class PlayerModel extends Observable {
                             .allMatch(a -> a.equals(typeOfArmie.getFirst()));
         boolean different=!(typeOfArmie.get(0).equals(typeOfArmie.get(1))) && !(typeOfArmie.get(0).equals(typeOfArmie.get(2))) && !(typeOfArmie.get(2).equals(typeOfArmie.get(1)));
         
-        System.out.println("igual: "+areEqual+" diferente: "+different);
         if (areEqual || different) {
             this.getCardsOwned().removeCards(selectedCards, this.game.getDeck());
             armiesCardAssignation();
