@@ -29,7 +29,7 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
     /**
      * The view of the cards of the current player
      */
-    HashMap<String, JButton> handCards = new HashMap<>();
+    private HashMap<String, JButton> handCards = new HashMap<>();
 
     /**
      * Constructor
@@ -47,13 +47,16 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
      * current player
      */
     public void updateView(RiskModel rm) {
-        PlayerModel currentPlayer = rm.getCurrentPlayer();
         this.removeAll();
+        PlayerModel currentPlayer = rm.getCurrentPlayer();
+        
+         
         currentPlayer.getCardsOwned().getCards().stream()
                 .forEach((card) -> {
                     addCard(card.getTypeOfArmie(), card.getCountryName(), currentPlayer.getColor());
                 });
         this.repaint();
+        this.revalidate();
     }
 
     /**
@@ -88,9 +91,19 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
         cardIcon = new ImageIcon(newImage);
         JButton aux = new JButton();
         aux.setIcon(cardIcon);
+        aux.setName(territoryName);
         aux.setText("");
         aux.setBackground(backgroundColor);
-        handCards.put(territoryName, aux);
+        getHandCards().put(territoryName, aux);
         this.add(aux);
     }
+
+    /**
+     * @return the handCards
+     */
+    public HashMap<String, JButton> getHandCards() {
+        return handCards;
+    }
+    
+    
 }

@@ -236,8 +236,12 @@ public class GameController {
      * reinforcement phase
      */
     public void clickHand() {
-
         modelRisk.getCurrentPlayer().exchangeCardsToArmies();
-        riskView.updateView(modelRisk);
+        
+    }
+    
+    public void setObserverExchange(){
+        modelRisk.getPlayerList().stream()
+                .forEach(p -> p.addObserver(riskView.getExchangeView().getPlayerGameHandPanel()));
     }
 }

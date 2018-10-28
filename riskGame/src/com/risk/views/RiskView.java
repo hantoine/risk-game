@@ -5,6 +5,7 @@
  */
 package com.risk.views;
 
+import com.risk.controllers.CardExchangeListener;
 import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
@@ -17,6 +18,7 @@ import com.risk.views.game.PlayerGameInfoPanel;
 import com.risk.views.menu.MenuView;
 import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.StartMenuView;
+import com.risk.views.reinforcement.CardExchangeView;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -40,6 +42,7 @@ import javax.swing.KeyStroke;
  */
 public final class RiskView extends javax.swing.JFrame {
 
+    private CardExchangeView exchangeView;
     /**
      * menuPanel reference to the menu panel
      */
@@ -164,13 +167,13 @@ public final class RiskView extends javax.swing.JFrame {
      */
     public void setController(RiskController rc) {
         this.getMapPanel().setListener(rc.getCountryListener());
-
+        
         this.getStagePanel().getEndPhase().addActionListener(e -> {
             rc.getPlayGame().finishPhase();
         });
 
         this.getStagePanel().getHandCards().addActionListener(e -> {
-            rc.getPlayGame().clickHand();
+            cardExchangeMenu(rc.getModelRisk(), rc);
         });
 
         Component c = this.getJMenuBar().getMenu(0).getMenuComponent(0);
@@ -204,11 +207,21 @@ public final class RiskView extends javax.swing.JFrame {
         aux.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
     }
     
-    public void attackMenu(RiskModel riskModel) {
-
-        AttackView start = new AttackView();
-        start.setVisible(true);
+    public void cardExchangeMenu(RiskModel riskModel, RiskController rc) {
         
+        this.exchangeView = new CardExchangeView(riskModel);
+        this.getExchangeView().setListener(rc.getCardExchangeListener());
+        rc.getCardExchangeListener().setPanel(this.getExchangeView().getPlayerGameHandPanel());
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        getExchangeView().setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
+        getExchangeView().setVisible(true);
+        
+    }
+    
+    public void closeExchangeMenu(){
+        this.exchangeView.setVisible(false);
+        this.remove(this.getExchangeView());
+        this.exchangeView=null;
     }
 
     /**
@@ -319,5 +332,12 @@ public final class RiskView extends javax.swing.JFrame {
      */
     PhasePanel getStagePanel() {
         return stagePanel;
+    }
+
+    /**
+     * @return the exchangeView
+     */
+    public CardExchangeView getExchangeView() {
+        return exchangeView;
     }
 }
