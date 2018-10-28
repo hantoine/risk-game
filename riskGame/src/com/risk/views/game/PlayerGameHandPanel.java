@@ -5,6 +5,7 @@
  */
 package com.risk.views.game;
 
+import com.risk.models.CardModel;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import java.awt.Color;
@@ -12,6 +13,7 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
@@ -71,7 +73,7 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof RiskModel) {
-            this.updateView((RiskModel) arg);
+            removeCard((RiskModel) arg);
         } else {
             LinkedList<String> receivedObj = (LinkedList<String>) arg;
             addCard(receivedObj.get(2), receivedObj.get(1), ((PlayerModel) o).getColor());
@@ -101,6 +103,35 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
         this.add(aux);
     }
 
+    public void removeCard(RiskModel rm){
+        LinkedList<String> removeList=new LinkedList<>();
+        Iterator it=this.handCards.keySet().iterator();
+        while(it.hasNext()){
+            String select=(String) it.next();
+            CardModel card;
+            card=rm.getCurrentPlayer().getCardsOwned().getCards().stream()
+                            .filter(c -> c.getCountryName().equals(select))
+                            .findFirst()
+                            .orElse(null);
+            
+            if(card==null)
+                removeList.add(select);
+            
+        }
+        
+        if(removeList.size()>0){
+            removeList.stream()
+                .forEach(c -> {
+                    System.out.println("carta a remover: "+c);
+                    this.remove(this.handCards.get(c));
+                    this.handCards.remove(c);
+                        });
+        }
+        
+        
+        this.repaint();
+        this.revalidate();
+    }
     /**
      * @return the handCards
      */
