@@ -29,17 +29,17 @@ public class GameController {
      * riskView It is an attribute that represents a reference to the view
      */
     RiskView riskView;
-
+    RiskController riskController;
     /**
      * Constructor
      *
      * @param riskModel model of the game
      * @param riskView view of the game
      */
-    public GameController(RiskModel riskModel, RiskView riskView) {
+    public GameController(RiskModel riskModel, RiskView riskView, RiskController riskController) {
         this.modelRisk = riskModel;
         this.riskView = riskView;
-
+        this.riskController=riskController;
     }
 
     /**
@@ -88,6 +88,7 @@ public class GameController {
                 break;
             case REINFORCEMENT:
                 modelRisk.getCurrentPlayer().reinforcement(this);
+                riskView.cardExchangeMenu(modelRisk,riskController);
                 break;
             case ATTACK:
                 try {
@@ -128,9 +129,6 @@ public class GameController {
                 riskView.updateView(modelRisk);
                 break;
             case REINFORCEMENT:
-                if (currentPlayer.getCardsOwned().getCards().size() == 5) {
-                    riskView.showMessage("You have 5 cards. Please hand some cards");
-                } else {
                     if (tryPlaceArmy(currentPlayer, territoryClicked) != true) {
                         break;
                     }
@@ -138,7 +136,7 @@ public class GameController {
                         this.finishPhase();
                     }
                     riskView.updateView(modelRisk);
-                }
+                
 
                 break;
         }
@@ -235,9 +233,9 @@ public class GameController {
      * Called when the player click on the Hand cards button during the
      * reinforcement phase
      */
-    public void clickHand() {
-        modelRisk.getCurrentPlayer().exchangeCardsToArmies();
-        
+    public boolean clickHand(LinkedList<String> selectedCards) {
+        return (!modelRisk.getCurrentPlayer().exchangeCardsToArmies(selectedCards));
+               
     }
     
     public void setObserverExchange(){

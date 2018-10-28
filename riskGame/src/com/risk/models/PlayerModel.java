@@ -36,7 +36,7 @@ public abstract class PlayerModel extends Observable {
     private int returnedCards;
     private RiskModel game;
     private FortificationMove currentFortificationMove;
-
+    private boolean handed;
     /**
      * Constructor
      *
@@ -393,23 +393,28 @@ public abstract class PlayerModel extends Observable {
     /**
      * Function that removes the cards and calls a function that assigns armies
      * depending on the number of cards the player has handed
+     * @return 
      */
-    public void exchangeCardsToArmies() {
-        int[] cardDuplicates = this.getCardsOwned().getCardDuplicates();
-
-        if (cardDuplicates[0] >= 3) {
-            this.getCardsOwned().removeCards("infantry", this.game.getDeck());
-        } else if (cardDuplicates[1] >= 3) {
-            this.getCardsOwned().removeCards("cavalry", this.game.getDeck());
-        } else if (cardDuplicates[2] >= 3) {
-            this.getCardsOwned().removeCards("artillery", this.game.getDeck());
-        } else {
-            this.getCardsOwned().removeCards("different", this.game.getDeck());
-        }
-        armiesCardAssignation();
-
-        this.setChanged();
-        this.notifyObservers(this.game);
+    public boolean exchangeCardsToArmies(LinkedList<String> selectedCards) {
+        LinkedList<String> typeOfArmie=new LinkedList<>();
+        this.getCardsOwned().getCards().stream()
+                .filter(c -> selectedCards.contains(c.getCountryName()))
+                .forEach(cs -> typeOfArmie.add(cs.getTypeOfArmie()));
+                    
+        boolean areEqual= typeOfArmie.stream()
+                            .allMatch(a -> a.equals(typeOfArmie.getFirst()));
+        boolean different=!(typeOfArmie.get(0).equals(typeOfArmie.get(1))) && !(typeOfArmie.get(0).equals(typeOfArmie.get(2))) && !(typeOfArmie.get(2).equals(typeOfArmie.get(1)));
+        
+        System.out.println("igual: "+areEqual+" diferente: "+different);
+        if (areEqual || different) {
+            this.getCardsOwned().removeCards(selectedCards, this.game.getDeck());
+            armiesCardAssignation();
+            this.setChanged();
+            this.notifyObservers(this.game);
+            return true;
+        }else
+            return false;
+       
     }
 
     /**
@@ -447,4 +452,19 @@ public abstract class PlayerModel extends Observable {
     public void setCurrentFortificationMove(FortificationMove currentFortificationMove) {
         this.currentFortificationMove = currentFortificationMove;
     }
+    
+     /**
+     * @return the handed
+     */
+    public boolean isHanded() {
+        return handed;
+    }
+
+    /**
+     * @param handed the handed to set
+     */
+    public void setHanded(boolean handed) {
+        this.handed = handed;
+    }
+    
 }

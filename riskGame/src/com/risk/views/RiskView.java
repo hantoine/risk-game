@@ -5,11 +5,9 @@
  */
 package com.risk.views;
 
-import com.risk.controllers.CardExchangeListener;
 import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
-import com.risk.views.attack.AttackView;
 import com.risk.views.game.MapPanel;
 import com.risk.views.game.PhaseAuxiliar;
 import com.risk.views.game.PhasePanel;
@@ -172,9 +170,7 @@ public final class RiskView extends javax.swing.JFrame {
             rc.getPlayGame().finishPhase();
         });
 
-        this.getStagePanel().getHandCards().addActionListener(e -> {
-            cardExchangeMenu(rc.getModelRisk(), rc);
-        });
+        
 
         Component c = this.getJMenuBar().getMenu(0).getMenuComponent(0);
         if (c instanceof JMenuItem) {
@@ -211,7 +207,7 @@ public final class RiskView extends javax.swing.JFrame {
         
         this.exchangeView = new CardExchangeView(riskModel);
         this.getExchangeView().setListener(rc.getCardExchangeListener());
-        rc.getCardExchangeListener().setPanel(this.getExchangeView().getPlayerGameHandPanel());
+        rc.getCardExchangeListener().setPanel(this.getExchangeView());
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         getExchangeView().setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
         getExchangeView().setVisible(true);

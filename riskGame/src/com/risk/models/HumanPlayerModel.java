@@ -22,6 +22,9 @@ public class HumanPlayerModel extends PlayerModel {
      * @param color color of the player
      * @param game Game in which this players belongs
      */
+    
+    
+    
     public HumanPlayerModel(String name, Color color, RiskModel game) {
         super(name, color, true, game);
     }
@@ -31,6 +34,7 @@ public class HumanPlayerModel extends PlayerModel {
      */
     @Override
     public void reinforcement(GameController playGame) {
+        this.setHanded(false);
         this.assignNewArmies();
     }
 
@@ -50,4 +54,6 @@ public class HumanPlayerModel extends PlayerModel {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+   
+    
 }
