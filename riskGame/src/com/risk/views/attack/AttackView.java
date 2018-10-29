@@ -5,25 +5,43 @@
  */
 package com.risk.views.attack;
 
-import java.awt.FlowLayout;
+import com.risk.controllers.GameController;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
+ * It contains the number of dices in an attack
  * @author Nellybett
  */
 public class AttackView extends JPanel{
+    /**
+     * Panel with the different buttons
+     */
     JPanel attackOptions;
+    /**
+     * An array of buttons with the number of dices
+     */
     JButton[] options;
+    /**
+     * Message with the name of the countries involve in an attack
+     */
     JLabel countriesInvolve;
+    /**
+     * The game controller
+     */
+    GameController gc;
     
-    public AttackView(String source, String dest){
+    /**
+     * Constructor
+     * @param source name of the country that have the armies that are attacking
+     * @param dest name of the country that receives the attack
+     * @param gc  game controller
+     */
+    public AttackView(String source, String dest, GameController gc){
         
         attackOptions=new JPanel();
-        
+        this.gc=gc;
         options=new JButton[4];
         options[0]=new JButton("1");
         options[1]=new JButton("2");
@@ -37,6 +55,8 @@ public class AttackView extends JPanel{
         options[2].setSize(50, 70);
         options[3].setSize(50, 70);
         
+        setListeners(source, dest,options);
+        
         attackOptions.add(countriesInvolve);
         attackOptions.add(options[0]);
         attackOptions.add(options[1]);
@@ -45,9 +65,68 @@ public class AttackView extends JPanel{
         
         this.add(attackOptions);
     }
-    public void update(String countrySource, String countryDest){
+    
+    /**
+     * Updates the view for an attack
+     * @param countrySource name of the country that have the armies that are attacking
+     * @param countryDest name of the country that receives the attack
+     * @param armies number of dice involve in the attack
+     */
+    public void update(String countrySource, String countryDest, int armies){
         this.setVisible(true);
         countriesInvolve.setText(countrySource+" vs "+countryDest);
+        
+        switch(armies){
+            case(2):
+                options[0].setEnabled(true);
+                options[1].setEnabled(false);
+                options[2].setEnabled(false);
+                options[3].setEnabled(false);
+                break;
+            case(3):
+                options[0].setEnabled(true);
+                options[1].setEnabled(true);
+                options[2].setEnabled(false);
+                options[3].setEnabled(false);
+                break;
+            case(4):
+                options[0].setEnabled(true);
+                options[1].setEnabled(true);
+                options[2].setEnabled(true);
+                options[3].setEnabled(false);
+                break;
+            default:
+                options[0].setEnabled(true);
+                options[1].setEnabled(true);
+                options[2].setEnabled(true);
+                options[3].setEnabled(true);
+                break;
+            
+        }
+    }
+    
+    /**
+     * Adds the listener for each button
+     * @param source name of the country that have the armies that are attacking
+     * @param dest name of the country that receives the attack
+     * @param options the array with the buttons 
+     */
+    private void setListeners(String source, String dest,JButton[] options){
+        options[0].addActionListener(e -> {
+            gc.clickAttack(source, dest,1);
+        });
+        
+        options[1].addActionListener(e -> {
+            gc.clickAttack(source, dest,2);
+        });
+        
+        options[2].addActionListener(e -> {
+            gc.clickAttack(source, dest,3);
+        });
+        
+        options[3].addActionListener(e -> {
+            gc.clickAttack(source, dest,4);
+        });
     }
     
 }

@@ -5,6 +5,7 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.AttackMove;
 import com.risk.models.FortificationMove;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
@@ -29,7 +30,14 @@ public class GameController {
      * riskView It is an attribute that represents a reference to the view
      */
     RiskView riskView;
+    /**
+     * The controller of the game
+     */
     RiskController riskController;
+    /**
+     * Indicates if a country have been conquered by the player
+     */
+    boolean getCountry;
     /**
      * Constructor
      *
@@ -40,6 +48,7 @@ public class GameController {
         this.modelRisk = riskModel;
         this.riskView = riskView;
         this.riskController=riskController;
+        this.getCountry=false;
     }
 
     /**
@@ -70,8 +79,12 @@ public class GameController {
             case REINFORCEMENT:
                 break;
             case ATTACK:
+                if(getCountry==true)
+                    modelRisk.getCurrentPlayer().addCardToPlayerHand();
+                
+                getCountry=false;
                 riskView.hideAttack();
-                checkForDeadPlayers();
+                
                 break;
             case FORTIFICATION:
                 modelRisk.getCurrentPlayer().setCurrentFortificationMove(null);
@@ -94,7 +107,6 @@ public class GameController {
             case ATTACK:
                
                 modelRisk.getCurrentPlayer().attack(this);
-                modelRisk.getCurrentPlayer().addCardToPlayerHand();
                 break;
             case FORTIFICATION:
                 modelRisk.getCurrentPlayer().fortification(this);
@@ -182,12 +194,23 @@ public class GameController {
                 if (!sourceTerritory.getAdj().contains(destTerritory)) {
                     break;
                 }
+                if(modelRisk.getCurrentPlayer().getCurrentAttack()!=null){
+                    this.riskView.showMessage("You are already attacking.");
+                    break;
+                }
                 if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
                         || currentPlayer.getContriesOwned().contains(destTerritory)) {
                     this.riskView.showMessage("Invalid movement");
                     break;
                 }
-                this.riskView.updateAuxiliarPhasePanel(sourceTerritoryName, destTerritoryName, 0);
+                if(sourceTerritory.getNumArmies()<2){
+                    this.riskView.showMessage("You can't attack with only one armie");
+                    break;
+                }
+                
+                AttackMove attack= new AttackMove(sourceTerritory,destTerritory);
+                modelRisk.getCurrentPlayer().setCurrentAttack(attack);
+                this.riskView.updateAuxiliarPhasePanel(sourceTerritoryName, destTerritoryName,this,sourceTerritory.getNumArmies(), 0);
                 break;
         }
 
@@ -228,7 +251,11 @@ public class GameController {
                     this.riskView.showMessage(String.format(
                             "The player %s has no more territories, it is eliminated from the game !",
                             p.getName())
+                    
                     );
+                    
+                    p.getCardsOwned().getCards().stream()
+                            .forEach(c -> this.modelRisk.getCurrentPlayer().getCardsOwned().getCards().add(c));
                     this.modelRisk.removePlayer(p);
                 });
     }
@@ -236,10 +263,44 @@ public class GameController {
     /**
      * Called when the player click on the Hand cards button during the
      * reinforcement phase
+     * @param selectedCards
+     * @return 
      */
     public boolean clickHand(LinkedList<String> selectedCards) {
         return (!modelRisk.getCurrentPlayer().exchangeCardsToArmies(selectedCards));
                
     }
+    /**
+     * Press one of the dices
+     * @param source source of attack
+     * @param dest destiny of attack
+     * @param dice the number of dices
+     */
+    public void clickAttack(String source, String dest,int dice){
+        modelRisk.getCurrentPlayer().battle(dice);
+        riskView.updateView(modelRisk);
+        if(modelRisk.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies()==0)
+            riskView.updateAuxiliarPhasePanel(source, dest, this, modelRisk.getCurrentPlayer().getCurrentAttack().getSource().getNumArmies(), 1);
+        else
+         finishAttackMove();
+    }
     
+    /**
+     * If the dest country have 0 armies it was conquered
+     * @param armies the number of armies to move
+     */
+    public void moveArmiesAttack(int armies){
+        this.modelRisk.getCurrentPlayer().getCountry(armies);
+        finishAttackMove();
+        checkForDeadPlayers();
+    }
+    /**
+     * Finish an attack move
+     */
+    public void finishAttackMove(){
+        riskView.updateView(modelRisk);
+        riskView.updateAuxiliarPhasePanel("", "", this, 0, 3);
+        modelRisk.getCurrentPlayer().setCurrentAttack(null);
+        this.getCountry=true;
+    }
 }
