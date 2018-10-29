@@ -21,12 +21,16 @@ public class PhaseAuxiliar extends JPanel {
     private ArmiesLeft armiesLeft;
 
     public PhaseAuxiliar() {
+        attackPanel=null;
+        armiesLeft=null;
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     }
     
     public void updatePanel(JPanel phaseAuxiliarPanel){
         this.removeAll();
         this.add(phaseAuxiliarPanel);
+        this.repaint();
+        this.revalidate();
     }
 
     /**
