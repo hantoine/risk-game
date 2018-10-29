@@ -126,16 +126,11 @@ public final class RiskModel {
     /**
      * Setter of the board attribute from a file
      *
-     * @param path path of the file
-     * @return 0 success, -1--6 error
+     * @param newMap new map to set
      */
-    public int loadMap(String path) {
-        this.map = new MapModel();
-        int result = new MapFileManagement().createBoard(path, this.map);
-        if (result == 0) {
-            this.initializeDeck();
-        }
-        return result;
+    public void setMap(MapModel newMap) {
+        this.map = newMap;
+        this.initializeDeck();
     }
 
     /**
@@ -145,6 +140,15 @@ public final class RiskModel {
      */
     public MapModel getMap() {
         return map;
+    }
+
+    /**
+     * Setter of board attribute
+     *
+     * @param mapModel a map model instance
+     */
+    public void setMap(MapModel mapModel) {
+        this.map = mapModel;
     }
 
     /**
@@ -162,6 +166,9 @@ public final class RiskModel {
 
         players.stream().forEach((player) -> {
             List<TerritoryModel> ownedCountries = countriesLeft.subList(0, countriesPerPlayer);
+            ownedCountries.stream().forEach((t) -> {
+                t.setNumArmies(1);
+            });
             player.setContriesOwned(ownedCountries);
             countriesLeft.removeAll(ownedCountries);
         });
@@ -169,7 +176,9 @@ public final class RiskModel {
         Random rnd = new Random();
         while (!countriesLeft.isEmpty()) {
             int playerIndex = rnd.nextInt(players.size());
-            players.get(playerIndex).addCountryOwned(countriesLeft.remove(0));
+            TerritoryModel territoryAdded = countriesLeft.remove(0);
+            territoryAdded.setNumArmies(1);
+            players.get(playerIndex).addCountryOwned(territoryAdded);
         }
 
         // update continents owned accordingly
@@ -182,6 +191,36 @@ public final class RiskModel {
             }
         });
 
+    }
+
+    public void tryFortificationMove(TerritoryModel sourceTerritory, TerritoryModel destTerritory) throws FortificationMoveNotPossible {
+
+        checkFortificationMovePossible(sourceTerritory, destTerritory);
+
+        sourceTerritory.decrementNumArmies();
+        destTerritory.incrementNumArmies();
+        currentPlayer.setCurrentFortificationMove(new FortificationMove(sourceTerritory, destTerritory));
+    }
+
+    private void checkFortificationMovePossible(TerritoryModel sourceTerritory, TerritoryModel destTerritory) throws FortificationMoveNotPossible {
+        if (!sourceTerritory.getAdj().contains(destTerritory)) {
+            throw new FortificationMoveNotPossible(null);
+        }
+
+        if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
+                || !currentPlayer.getContriesOwned().contains(destTerritory)) {
+            throw new FortificationMoveNotPossible("You don't own this country !");
+        }
+
+        FortificationMove attemptedMove = new FortificationMove(sourceTerritory, destTerritory);
+        FortificationMove lastMove = currentPlayer.getCurrentFortificationMove();
+        if (lastMove != null && !lastMove.equals(attemptedMove)) {
+            throw new FortificationMoveNotPossible("You can only make one move !");
+        }
+
+        if (sourceTerritory.getNumArmies() == 1) {
+            throw new FortificationMoveNotPossible("There is only one army in the source country !");
+        }
     }
 
     /**
@@ -331,10 +370,26 @@ public final class RiskModel {
     }
 
     /**
-     * It validates that the number of territories is bigger than the number of players
-     * @return true if there is as many territories as players; false if it is not true
+     * It validates that the number of territories is bigger than the number of
+     * players
+     *
+     * @return true if there is as many territories as players; false if it is
+     * not true
      */
     public boolean validateCountries() {
-        return (map.getGraphTerritories().values().size()>=players.size());
+        return (map.getGraphTerritories().values().size() >= players.size());
+    }
+
+    public static class FortificationMoveNotPossible extends Exception {
+
+        String reason;
+
+        public String getReason() {
+            return reason;
+        }
+
+        public FortificationMoveNotPossible(String reason) {
+            this.reason = reason;
+        }
     }
 }
