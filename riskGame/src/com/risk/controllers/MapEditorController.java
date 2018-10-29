@@ -310,13 +310,13 @@ public class MapEditorController {
         map.getGraphTerritories().values().stream().forEach((t) -> {
             this.newMap.loadTerritory(t.getPositionX(), t.getPositionY(), t.getName(), t.getContinentName());
         });
-
+        
         map.getGraphTerritories().values().stream().forEach((t) -> {
             t.getAdj().stream().forEach((ta) -> {
                 this.newMap.addLink(t.getName(), ta.getName());
             });
         });
-
+        
         updateConfigurationInfo(map);
     }
 
@@ -338,7 +338,7 @@ public class MapEditorController {
      * file
      *
      * @param path path to the new file
-     * @return the erroCode returned by the mqp sqving method
+     * @return the erroCode returned by the map saving method
      */
     public int saveMapToFile(String path) {
         return MapFileManagement.generateBoardFile(path, this.newMap.getInternalMap());
@@ -401,7 +401,7 @@ public class MapEditorController {
 
         /**
          * handles the releasing of the mouse
-         * 
+         *
          * @param e the releasing which is captured
          */
         @Override
@@ -433,7 +433,7 @@ public class MapEditorController {
     /**
      * Function to tell the model to update a territory
      *
-     * @param territoryName terirtory to be updated
+     * @param territoryName territory to be updated
      * @param targetButton button of the territory on the map view
      */
     public void updateTerritory(String territoryName, CountryButton2 targetButton) {
