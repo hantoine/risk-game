@@ -1,8 +1,8 @@
 package com.risk.views.game;
 
-import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
+import com.risk.models.MapModel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
