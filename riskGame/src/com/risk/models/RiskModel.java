@@ -126,16 +126,11 @@ public final class RiskModel {
     /**
      * Setter of the board attribute from a file
      *
-     * @param path path of the file
-     * @return 0 success, -1--6 error
+     * @param newMap new map to set
      */
-    public int loadMap(String path) {
-        this.map = new MapModel();
-        int result = new MapFileManagement().createBoard(path, this.map);
-        if (result == 0) {
-            this.initializeDeck();
-        }
-        return result;
+    public void setMap(MapModel newMap) {
+        this.map = newMap;
+        this.initializeDeck();
     }
 
     /**
@@ -196,6 +191,36 @@ public final class RiskModel {
             }
         });
 
+    }
+
+    public void tryFortificationMove(TerritoryModel sourceTerritory, TerritoryModel destTerritory) throws FortificationMoveNotPossible {
+
+        checkFortificationMovePossible(sourceTerritory, destTerritory);
+
+        sourceTerritory.decrementNumArmies();
+        destTerritory.incrementNumArmies();
+        currentPlayer.setCurrentFortificationMove(new FortificationMove(sourceTerritory, destTerritory));
+    }
+
+    private void checkFortificationMovePossible(TerritoryModel sourceTerritory, TerritoryModel destTerritory) throws FortificationMoveNotPossible {
+        if (!sourceTerritory.getAdj().contains(destTerritory)) {
+            throw new FortificationMoveNotPossible(null);
+        }
+
+        if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
+                || !currentPlayer.getContriesOwned().contains(destTerritory)) {
+            throw new FortificationMoveNotPossible("You don't own this country !");
+        }
+
+        FortificationMove attemptedMove = new FortificationMove(sourceTerritory, destTerritory);
+        FortificationMove lastMove = currentPlayer.getCurrentFortificationMove();
+        if (lastMove != null && !lastMove.equals(attemptedMove)) {
+            throw new FortificationMoveNotPossible("You can only make one move !");
+        }
+
+        if (sourceTerritory.getNumArmies() == 1) {
+            throw new FortificationMoveNotPossible("There is only one army in the source country !");
+        }
     }
 
     /**
@@ -353,5 +378,18 @@ public final class RiskModel {
      */
     public boolean validateCountries() {
         return (map.getGraphTerritories().values().size() >= players.size());
+    }
+
+    public static class FortificationMoveNotPossible extends Exception {
+
+        String reason;
+
+        public String getReason() {
+            return reason;
+        }
+
+        public FortificationMoveNotPossible(String reason) {
+            this.reason = reason;
+        }
     }
 }
