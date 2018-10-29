@@ -8,6 +8,7 @@ package com.risk.views;
 import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
+import com.risk.views.attack.AttackView;
 import com.risk.views.game.MapPanel;
 import com.risk.views.game.PhaseAuxiliar;
 import com.risk.views.game.PhasePanel;
@@ -74,7 +75,7 @@ public final class RiskView extends javax.swing.JFrame {
         this.setResizable(true);
 
         this.phaseAuxiliarPanel = new PhaseAuxiliar();
-
+        
         this.stagePanel = new PhasePanel();
         this.playerPanel = new PlayerGameInfoPanel();
         this.mapPanel = new MapPanel();
@@ -105,9 +106,14 @@ public final class RiskView extends javax.swing.JFrame {
 
     }
     
+    
     public void updateAuxiliarPhasePanel(String countrySource, String countryDest, int panel){
         switch(panel){
             case 0:
+                if(this.phaseAuxiliarPanel.getAttackPanel()==null){
+                    AttackView attackPanel=new AttackView(countrySource,countryDest);
+                    this.phaseAuxiliarPanel.setAttackPanel(attackPanel);
+                }
                 this.phaseAuxiliarPanel.updatePanel((JPanel) phaseAuxiliarPanel.getAttackPanel());
                 this.phaseAuxiliarPanel.getAttackPanel().update(countrySource,countryDest);
                 break;
@@ -192,6 +198,13 @@ public final class RiskView extends javax.swing.JFrame {
         aux.setSize(300, 500);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         aux.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
+    }
+    public void hideAttack(){
+        if(this.phaseAuxiliarPanel.getAttackPanel()!=null)
+            this.phaseAuxiliarPanel.getAttackPanel().setVisible(false);
+        
+        if(this.phaseAuxiliarPanel.getArmiesLeft()!=null)
+            this.phaseAuxiliarPanel.getArmiesLeft().setVisible(false);
     }
     
     public void cardExchangeMenu(RiskModel riskModel, RiskController rc) {
