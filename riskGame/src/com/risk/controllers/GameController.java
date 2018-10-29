@@ -5,11 +5,10 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.FortificationMove;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
-import com.risk.views.RiskView;
+import com.risk.views.RiskViewInterface;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class GameController {
     /**
      * riskView It is an attribute that represents a reference to the view
      */
-    RiskView riskView;
+    RiskViewInterface riskView;
 
     /**
      * Constructor
@@ -36,7 +35,7 @@ public class GameController {
      * @param riskModel model of the game
      * @param riskView view of the game
      */
-    public GameController(RiskModel riskModel, RiskView riskView) {
+    public GameController(RiskModel riskModel, RiskViewInterface riskView) {
         this.modelRisk = riskModel;
         this.riskView = riskView;
 
@@ -159,31 +158,17 @@ public class GameController {
         PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
 
         switch (this.modelRisk.getPhase()) {
-            case FORTIFICATION:
-                if (!sourceTerritory.getAdj().contains(destTerritory)) {
-                    break;
-                }
-                if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
-                        || !currentPlayer.getContriesOwned().contains(destTerritory)) {
-                    this.riskView.showMessage("You don't own this country !");
-                    break;
-                }
-                FortificationMove attemptedMove = new FortificationMove(sourceTerritory, destTerritory);
-                FortificationMove lastMove = currentPlayer.getCurrentFortificationMove();
-                if (lastMove != null && !lastMove.equals(attemptedMove)) {
-                    this.riskView.showMessage("You can only make one move !");
-                    break;
-                }
-
+            case FORTIFICATION: {
                 try {
-                    sourceTerritory.decrementNumArmies();
-                    destTerritory.incrementNumArmies();
-                    currentPlayer.setCurrentFortificationMove(attemptedMove);
-                    riskView.updateView(modelRisk);
-                } catch (IllegalStateException e) {
-                    this.riskView.showMessage("There is no armies in the source country !");
+                    this.modelRisk.tryFortificationMove(sourceTerritory, destTerritory);
+                } catch (RiskModel.FortificationMoveNotPossible ex) {
+                    if (ex.getReason() != null) {
+                        this.riskView.showMessage(ex.getReason());
+                    }
                 }
-                break;
+                this.riskView.updateView(modelRisk);
+            }
+            break;
         }
 
     }
