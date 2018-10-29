@@ -7,6 +7,7 @@ package com.risk.controllers;
 
 import com.risk.models.HumanPlayerModel;
 import com.risk.models.MapFileManagement;
+import com.risk.models.MapModel;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
@@ -127,12 +128,13 @@ public class MenuListener extends MouseAdapter {
                     JOptionPane.showMessageDialog(null, "You have not selected a map");
                     break;
                 }
-
-                int resultReadingValidation = getRiskModel().loadMap(selectedPath);
+                MapModel map = new MapModel();
+                int resultReadingValidation = MapFileManagement.createBoard(selectedPath, map);
                 if (resultReadingValidation != 0) {
                     JOptionPane.showMessageDialog(null, MapFileManagement.readingError(resultReadingValidation));
                     break;
                 }
+                getRiskModel().setMap(map);
 
                 if (!getRiskModel().getMap().isValid()) {
                     JOptionPane.showMessageDialog(null, MapFileManagement.readingError(-7));
@@ -151,15 +153,14 @@ public class MenuListener extends MouseAdapter {
                     listPlayers.add(playerGame);
                 }
                 this.getRiskModel().setPlayerList(listPlayers);
-                
-                if(!this.getRiskModel().validateCountries()){
+
+                if (!this.getRiskModel().validateCountries()) {
                     JOptionPane.showMessageDialog(null, "No enough countries in this map for the number of players. Select another map.");
                     break;
-                }    
+                }
                 this.getRiskView().closeMenu();
                 this.getRiskController().playGame();
-                
-                
+
                 break;
             default:
                 break;
