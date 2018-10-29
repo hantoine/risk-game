@@ -70,6 +70,7 @@ public class GameController {
             case REINFORCEMENT:
                 break;
             case ATTACK:
+                riskView.hideAttack();
                 checkForDeadPlayers();
                 break;
             case FORTIFICATION:
@@ -91,13 +92,8 @@ public class GameController {
                 riskView.cardExchangeMenu(modelRisk,riskController);
                 break;
             case ATTACK:
-                try {
-                    modelRisk.getCurrentPlayer().attack(this);
-                } catch (UnsupportedOperationException e) {
-                    //since attack is not implemented yet, we skip it
-                    this.finishPhase();
-                }
-
+               
+                modelRisk.getCurrentPlayer().attack(this);
                 modelRisk.getCurrentPlayer().addCardToPlayerHand();
                 break;
             case FORTIFICATION:
@@ -183,7 +179,15 @@ public class GameController {
                 }
                 break;
             case ATTACK:
-                this.riskView.updateAuxiliarPhasePanel(destTerritoryName, destTerritoryName, 1);
+                if (!sourceTerritory.getAdj().contains(destTerritory)) {
+                    break;
+                }
+                if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
+                        || currentPlayer.getContriesOwned().contains(destTerritory)) {
+                    this.riskView.showMessage("Invalid movement");
+                    break;
+                }
+                this.riskView.updateAuxiliarPhasePanel(sourceTerritoryName, destTerritoryName, 0);
                 break;
         }
 
