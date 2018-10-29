@@ -96,7 +96,6 @@ public class MenuListener extends MouseAdapter {
                         PlayerPanel panelToTest = it.next();
 
                         if (panelToTest.getDelButton().getID() == IDtoDelete) {
-                            System.out.println(panelToTest.getDelButton().getID());
                             Color colorToRemove = panelToTest.getColorButton().getBackground();
                             this.getPlayerList().getColorUsed().remove(colorToRemove);
                             this.getPlayerList().remove(panelToTest);

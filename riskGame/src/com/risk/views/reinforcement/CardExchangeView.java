@@ -103,7 +103,7 @@ public class CardExchangeView extends JDialog implements Observer{
             handCards.setEnabled(false);
             exit.setEnabled(true);
         }
-        System.out.println("Entrego: "+rm.getCurrentPlayer().isHanded());
+       
         if(rm.getCurrentPlayer().isHanded() || rm.getCurrentPlayer().getCardsOwned().getCards().size()<5)
                exit.setEnabled(true);
     }

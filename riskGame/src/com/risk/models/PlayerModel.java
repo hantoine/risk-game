@@ -7,7 +7,9 @@ package com.risk.models;
 
 import com.risk.controllers.GameController;
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Observable;
 
@@ -36,6 +38,7 @@ public abstract class PlayerModel extends Observable {
     private int returnedCards;
     protected RiskModel game;
     private FortificationMove currentFortificationMove;
+    private AttackMove currentAttack;
     private boolean handed;
     /**
      * Constructor
@@ -54,6 +57,7 @@ public abstract class PlayerModel extends Observable {
         this.numArmiesAvailable = 0;
         this.returnedCards = 0;
         this.game = game;
+        this.currentAttack=null;
     }
 
     /**
@@ -347,7 +351,6 @@ public abstract class PlayerModel extends Observable {
             extraContinent += continent.getBonusScore();
         }
 
-        System.out.println(extraContinent + extraCountries);
         if (extraContinent + extraCountries < 3) {
             return 3;
         } else {
@@ -447,5 +450,94 @@ public abstract class PlayerModel extends Observable {
     public void setHanded(boolean handed) {
         this.handed = handed;
     }
+
+    /**
+     * @return the currentAttack
+     */
+    public AttackMove getCurrentAttack() {
+        return currentAttack;
+    }
+
+    /**
+     * @param currentAttack the currentAttack to set
+     */
+    public void setCurrentAttack(AttackMove currentAttack) {
+        this.currentAttack = currentAttack;
+    }
     
+    /**
+     * Battle between countries in an attack move
+     * @param dice number of dices
+     */
+    public void battle(int dice){
+        int[] attacker=createDice(dice);
+        int defenseArmies=(this.getCurrentAttack().getDest().getNumArmies()<dice)?this.getCurrentAttack().getDest().getNumArmies():dice;
+        int[] defense;
+        
+        
+        if(defenseArmies>2)
+            defense=createDice(2);
+        else
+            defense=createDice(defenseArmies);
+        
+        Arrays.sort(attacker);
+        Arrays.sort(defense);
+        
+        if(defenseArmies==1)
+            compareDice(attacker, defense, attacker.length-1,0);
+        else{
+            compareDice(attacker, defense, attacker.length-1,1);
+            compareDice(attacker, defense, attacker.length-2,0);
+        }
+    }
+    /**
+     * Compare results of rolling the dices
+     * @param attacker attacker dices results
+     * @param defense defense dices results
+     * @param j position for attacker
+     * @param i position for defense
+     */
+    public void compareDice(int[] attacker, int[] defense, int j, int i){
+        if(attacker[j]<=defense[i])
+            this.getCurrentAttack().getSource().setNumArmies(this.getCurrentAttack().getSource().getNumArmies()-1);
+        else
+            this.getCurrentAttack().getDest().setNumArmies(this.getCurrentAttack().getDest().getNumArmies()-1);
+    }
+    /**
+     * Create an array with different number of dices
+     * @param dice number of dices
+     * @return the array
+     */
+    public int[] createDice(int dice){
+        int[] dices= new int[dice];
+        int i=0;
+        
+        while(i<dices.length){
+            dices[i]=roolDice();
+            i++;
+        }
+        return dices;
+    }
+    /**
+     * Random value after rolling the dice
+     * @return random value
+     */
+    int roolDice()
+    {
+        int range = (6 - 0) + 1;     
+        return (int)(Math.random() * range) + 0;
+    }
+    
+    /**
+     * Conquer a country after an attack
+     * @param armies number of armies to move
+     */
+    public void getCountry(int armies){
+        int newArmies=this.getCurrentAttack().getSource().getNumArmies()-armies;
+        this.getCurrentAttack().getSource().setNumArmies(newArmies);
+        this.getCurrentAttack().getDest().setNumArmies(armies);
+        this.getContriesOwned().add(this.getCurrentAttack().getDest());
+        this.getCurrentAttack().getDest().getOwner().getContriesOwned().remove(this.getCurrentAttack().getDest());
+        this.getCurrentAttack().getDest().setOwner(this);
+    }
 }
