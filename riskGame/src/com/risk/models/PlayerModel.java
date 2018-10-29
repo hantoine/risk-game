@@ -433,7 +433,7 @@ public abstract class PlayerModel extends Observable {
     /**
      * Getter of the currentFortificationMove attribute
      *
-     * @return the current movement 
+     * @return the current movement
      */
     public FortificationMove getCurrentFortificationMove() {
         return currentFortificationMove;

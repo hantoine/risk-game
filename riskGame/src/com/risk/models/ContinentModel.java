@@ -74,7 +74,7 @@ public class ContinentModel {
      *
      * @param member the member to add to members list
      */
-    public void setMember(TerritoryModel member) {
+    public void addMember(TerritoryModel member) {
         this.members.add(member);
     }
 
