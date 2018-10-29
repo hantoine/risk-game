@@ -330,8 +330,7 @@ public final class EditableMapModel implements MapModelObservable {
         //modify territory
         modifiedTerritory.setName(newName);
         modifiedTerritory.setContinentName(newContinent);
-        this.getGraphContinents().get(newContinent).setMember(modifiedTerritory);
-
+        
         //replace the old entry by the updated one
         this.getGraphTerritories().put(newName, modifiedTerritory);
 
