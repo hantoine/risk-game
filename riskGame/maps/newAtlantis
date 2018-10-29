@@ -1,0 +1,58 @@
+[Map]
+author=Sean O'Connor
+image=Atlantis.bmp
+wrap=yes
+scroll=horizontal
+warn=yes
+
+[Continents]
+Enevim=3
+Kala=6
+Nova=5
+Barak Los=2
+Neimaach=7
+Barba Moya=6
+
+[Territories]
+Ssag,228,59,Kala,Lurd,Fali,Jer,Jer,Fali,Lurd,Jer,Jer,Fali,Fali,Lurd,Lurd
+Obar,511,128,Nova,Arvi,Inve,Eritus,Inve,Arvi,Eritus,Inve,Inve,Arvi,Arvi,Eritus,Eritus
+San Funander,584,304,Barak Los,Pierco,Marakas,Pierco,Marakas,Pierco,Pierco,Marakas,Marakas
+Spora,127,139,Kala,Forgoth,Rove,Jer,Unbecom,Kinsha,Kinsha,Forgoth,Rove,Jer,Unbecom,Kinsha,Kinsha,Forgoth,Forgoth,Rove,Rove,Jer,Jer,Unbecom,Unbecom
+Larkan,483,236,Neimaach,Clokan,Aqualia,Aqualia,Clokan,Aqualia,Aqualia,Clokan,Clokan
+Pierco,620,292,Barak Los,San Funander,San Funander,San Funander,Aqualia,San Funander,Marakas,Tocko,Aqualia,Tocko,Marakas,Aqualia,Aqualia,Tocko,Tocko,Marakas,Marakas
+Valinor,389,26,Enevim,Evor,Evim,Evim,Evor,Evim,Evim,Evor,Evor
+Kasten,305,370,Neimaach,Friedartika,Nurta,Engel,Kalthausen,Unterkan,Friedartika,Nurta,Engel,Kalthausen,Unterkan,Friedartika,Friedartika,Nurta,Nurta,Engel,Engel,Kalthausen,Kalthausen,Unterkan,Unterkan
+Kinsha,115,254,Barba Moya,Spora,Spora,Spora,Spora,Unbecom,Lo,Blanki Vista,Mittenmoth,Farla,Blanki Vista,Lo,Farla,Mittenmoth,Unbecom,Blanki Vista,Blanki Vista,Lo,Lo,Farla,Farla,Mittenmoth,Mittenmoth,Unbecom,Unbecom
+Aqualia,570,203,Nova,Larkan,Larkan,Pierco,Pierco,Larkan,Pierco,Inve,Larkan,Pierco,Inve,Inve,Inve
+Friedartika,271,422,Neimaach,Kasten,Kasten,Kasten,Har,Kasten,Har,Har,Har
+Forgoth,74,137,Kala,Spora,Spora,Spora,Rove,Spora,Rove,Rove,Rove
+Lankia,346,155,Neimaach,Eritus,Asturmina,Unbecom,Eritus,Asturmina,Unbecom,Eritus,Eritus,Asturmina,Asturmina,Unbecom,Unbecom
+Teor,289,252,Neimaach,Asturmina,Farla,Nurta,Engel,Nurta,Engel,Farla,Asturmina,Nurta,Nurta,Engel,Engel,Farla,Farla,Asturmina,Asturmina
+Evim,434,44,Enevim,Valinor,Valinor,Valinor,Valinor,Eritus,Evor,Evor,Eritus,Evor,Evor,Eritus,Eritus
+Evor,370,58,Enevim,Valinor,Valinor,Evim,Evim,Valinor,Evim,Valinor,Evim,Lurd,Lurd,Lurd,Lurd
+Inve,561,142,Nova,Obar,Obar,Aqualia,Aqualia,Obar,Aqualia,Arvi,Obar,Aqualia,Arvi,Arvi,Arvi
+Bilon,134,421,Barba Moya,Batan,Blanki Vista,Mittenmoth,Har,Blanki Vista,Mittenmoth,Batan,Har,Blanki Vista,Blanki Vista,Mittenmoth,Mittenmoth,Batan,Batan,Har,Har
+Nurta,276,300,Neimaach,Kasten,Kasten,Teor,Teor,Kasten,Teor,Farla,Teor,Engel,Kasten,Engel,Farla,Engel,Engel,Farla,Farla
+Engel,346,316,Neimaach,Kasten,Kasten,Teor,Teor,Nurta,Nurta,Kasten,Teor,Nurta,Teor,Nurta,Kasten,Kalthausen,Kalthausen,Kalthausen,Kalthausen
+Blanki Vista,68,343,Barba Moya,Kinsha,Kinsha,Bilon,Bilon,Kinsha,Bilon,Lo,Kinsha,Mittenmoth,Bilon,Batan,Tocko,Tocko,Lo,Mittenmoth,Batan,Tocko,Tocko,Lo,Lo,Mittenmoth,Mittenmoth,Batan,Batan
+Arvi,547,89,Nova,Obar,Obar,Inve,Inve,Obar,Inve,Polaris,Inve,Obar,Polaris,Polaris,Polaris
+Tocko,651,342,Barak Los,Pierco,Pierco,Blanki Vista,Blanki Vista,Pierco,Blanki Vista,Pierco,Marakas,Blanki Vista,Marakas,Marakas,Marakas
+Eritus,467,98,Nova,Obar,Obar,Lankia,Lankia,Evim,Evim,Obar,Lankia,Evim,Evim,Lankia,Obar
+Marakas,613,369,Barak Los,San Funander,San Funander,Pierco,Pierco,Tocko,Tocko,San Funander,Pierco,Tocko,Pierco,San Funander,Tocko
+Lo,59,252,Barba Moya,Kinsha,Kinsha,Blanki Vista,Blanki Vista,Kinsha,Blanki Vista,Kinsha,Blanki Vista
+Horkan,465,343,Neimaach,Kalthausen,Unterkan,Kalthausen,Unterkan,Kalthausen,Kalthausen,Unterkan,Unterkan
+Farla,167,266,Barba Moya,Kinsha,Kinsha,Teor,Teor,Nurta,Nurta,Kinsha,Teor,Nurta,Kinsha,Unbecom,Asturmina,Teor,Nurta,Esgarpok,Mittenmoth,Mittenmoth,Esgarpok,Asturmina,Unbecom,Mittenmoth,Mittenmoth,Esgarpok,Esgarpok,Asturmina,Asturmina,Unbecom,Unbecom
+Mittenmoth,136,349,Barba Moya,Kinsha,Kinsha,Bilon,Bilon,Blanki Vista,Blanki Vista,Farla,Farla,Kinsha,Bilon,Blanki Vista,Farla,Kinsha,Farla,Esgarpok,Har,Bilon,Blanki Vista,Esgarpok,Har,Esgarpok,Esgarpok,Har,Har
+Clokan,414,229,Neimaach,Larkan,Larkan,Larkan,Asturmina,Kalthausen,Larkan,Asturmina,Kalthausen,Asturmina,Asturmina,Kalthausen,Kalthausen
+Rove,112,75,Kala,Spora,Spora,Forgoth,Forgoth,Spora,Forgoth,Jer,Spora,Forgoth,Polaris,Polaris,Jer,Polaris,Polaris,Jer,Jer
+Batan,82,422,Barba Moya,Bilon,Bilon,Blanki Vista,Blanki Vista,Bilon,Blanki Vista,Blanki Vista,Bilon
+Esgarpok,186,344,Barba Moya,Farla,Farla,Mittenmoth,Mittenmoth,Farla,Mittenmoth,Farla,Mittenmoth,Har,Har,Har,Har
+Asturmina,318,199,Neimaach,Lankia,Lankia,Teor,Teor,Farla,Farla,Clokan,Clokan,Lankia,Teor,Farla,Clokan,Lankia,Clokan,Teor,Farla
+Polaris,618,62,Nova,Arvi,Arvi,Rove,Rove,Arvi,Rove,Arvi,Rove
+Jer,165,92,Kala,Ssag,Ssag,Spora,Spora,Rove,Rove,Ssag,Spora,Rove,Ssag,Fali,Unbecom,Spora,Rove,Fali,Unbecom,Fali,Fali,Unbecom,Unbecom
+Kalthausen,404,331,Neimaach,Kasten,Kasten,Engel,Engel,Horkan,Horkan,Clokan,Clokan,Kasten,Engel,Horkan,Clokan,Engel,Clokan,Kasten,Unterkan,Horkan,Unterkan,Unterkan,Unterkan
+Unterkan,406,385,Neimaach,Kasten,Kasten,Horkan,Horkan,Kalthausen,Kalthausen,Kasten,Horkan,Kalthausen,Kasten,Kalthausen,Horkan
+Har,190,410,Barba Moya,Friedartika,Friedartika,Bilon,Bilon,Mittenmoth,Mittenmoth,Esgarpok,Esgarpok,Friedartika,Bilon,Mittenmoth,Esgarpok,Bilon,Mittenmoth,Esgarpok,Friedartika
+Fali,217,113,Kala,Ssag,Ssag,Jer,Jer,Ssag,Jer,Ssag,Jer,Unbecom,Unbecom,Unbecom,Unbecom
+Unbecom,196,150,Kala,Spora,Spora,Kinsha,Kinsha,Lankia,Lankia,Farla,Farla,Jer,Jer,Fali,Fali,Spora,Kinsha,Lankia,Farla,Jer,Fali,Lankia,Fali,Farla,Kinsha,Spora,Jer
+Lurd,315,47,Enevim,Ssag,Ssag,Evor,Evor,Ssag,Evor,Evor,Ssag

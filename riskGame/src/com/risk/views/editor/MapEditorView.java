@@ -8,7 +8,7 @@ package com.risk.views.editor;
 import com.risk.controllers.MapEditorController;
 import com.risk.models.MapConfig;
 import com.risk.models.MapFileManagement;
-import com.risk.models.editor.EditableMapModel;
+import com.risk.models.MapModel;
 import com.risk.observable.MapModelObserver;
 import com.risk.observable.UpdateTypes;
 import java.awt.BorderLayout;
@@ -86,7 +86,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
      * @see MapEditorController
      * @see EditableMapModel
      */
-    public MapEditorView(int width, int height, MapEditorController editorController, EditableMapModel initMapModel) {
+    public MapEditorView(int width, int height, MapEditorController editorController, MapModel initMapModel) {
         init(width, height);
 
         //all content is being stored in this panel
