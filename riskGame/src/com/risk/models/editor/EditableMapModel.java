@@ -157,6 +157,13 @@ public final class EditableMapModel implements MapModelObservable {
         notifyObservers(UpdateTypes.ADD_CONTINENT, newName);
         return true;
     }
+    
+    public boolean addContinent(String continentName, int continentBonus) {
+        ContinentModel newContinent = new ContinentModel(continentName, continentBonus);
+        getGraphContinents().put(continentName, newContinent);
+        notifyObservers(UpdateTypes.ADD_CONTINENT, continentName);
+        return true;
+    }
 
     public String getAvailableContinent(TerritoryModel territory) {
         LinkedList<TerritoryModel> neighbours = territory.getAdj();
