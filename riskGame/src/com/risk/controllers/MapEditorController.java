@@ -289,22 +289,36 @@ public class MapEditorController {
         }
 
         this.newMap.clearMap();
-
+        
+        String[] remainingContinents = this.newMap.getContinentList();
+        if(remainingContinents.length!=1){
+            System.out.println("wrong number of continents after the clear");
+        }
+        String continentToDelete = remainingContinents[0];
+        
         //set new image
         if (map.getImage() != null) {
             this.newMap.setImage(map.getImage(), new Dimension(200, 50));
         }
-
+        
         //add continents
-        map.getGraphContinents().values().stream().forEach((c) -> {
-            this.newMap.addContinent();
-            Map<String, String> updateContinentData = new HashMap<>();
-
-            updateContinentData.put("name", "Continent0");
-            updateContinentData.put("newName", c.getName());
-            updateContinentData.put("bonusScore", Integer.toString(c.getBonusScore()));
-            this.newMap.updateContinent(updateContinentData);
-        });
+        for(ContinentModel c : map.getGraphContinents().values()) {
+            if(c.getName().equals(continentToDelete)){
+                Map<String, String> data = new HashMap<>();
+                data.put("name", c.getName());
+                data.put("newName", c.getName());
+                data.put("bonusScore", Integer.toString(c.getBonusScore()));
+                this.newMap.updateContinent(data);
+                continentToDelete = "";
+            }
+            else{
+                this.newMap.addContinent(c.getName(), c.getBonusScore());
+            }
+        }
+        
+        if(!continentToDelete.equals("")){
+            this.newMap.removeContinent(continentToDelete);
+        }
 
         //add territories
         map.getGraphTerritories().values().stream().forEach((t) -> {

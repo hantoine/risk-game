@@ -237,6 +237,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
 
                 //map saving
                 int errorCode = editorController.saveMapToFile(filepath);
+                System.out.println("error code: " + Integer.toString(errorCode));
                 if (errorCode != 0) {
 
                     this.mapPanel.showError(MapFileManagement.readingError(errorCode));
