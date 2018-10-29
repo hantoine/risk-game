@@ -6,7 +6,6 @@
 package com.risk.controllers;
 
 
-import com.risk.models.HumanPlayerModel;
 import com.risk.views.game.PlayerGameHandPanel;
 import com.risk.views.reinforcement.CardExchangeView;
 import java.awt.Color;
@@ -56,7 +55,7 @@ public class CardExchangeListener extends MouseAdapter{
     @Override
     public void mouseClicked(MouseEvent e) {
         JComponent c = (JComponent) e.getSource();
-        System.out.println(c.getClass());
+       
         if (c instanceof JButton) {
            
            JButton buttonPressed=(JButton) c;
@@ -65,6 +64,7 @@ public class CardExchangeListener extends MouseAdapter{
                     riskController.getViewRisk().closeExchangeMenu();
                     selectedCards.clear();
                     (riskController.getModelRisk().getCurrentPlayer()).setHanded(false);
+                    
                 }else if(buttonPressed.getText().equals("Hand")){
                     if(selectedCards.size()<3)
                         this.showMessage("You have to select 3 cards first.");

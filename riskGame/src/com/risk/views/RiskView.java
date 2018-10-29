@@ -5,14 +5,15 @@
  */
 package com.risk.views;
 
+import com.risk.controllers.GameController;
 import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
+import com.risk.views.attack.ArmiesLeft;
 import com.risk.views.attack.AttackView;
 import com.risk.views.game.MapPanel;
 import com.risk.views.game.PhaseAuxiliar;
 import com.risk.views.game.PhasePanel;
-import com.risk.views.game.PlayerGameHandPanel;
 import com.risk.views.game.PlayerGameInfoPanel;
 import com.risk.views.menu.MenuView;
 import com.risk.views.menu.NewGamePanel;
@@ -41,6 +42,9 @@ import javax.swing.KeyStroke;
  */
 public final class RiskView extends javax.swing.JFrame {
 
+    /**
+     * Card exchange panel
+     */
     private CardExchangeView exchangeView;
     /**
      * menuPanel reference to the menu panel
@@ -106,21 +110,34 @@ public final class RiskView extends javax.swing.JFrame {
 
     }
     
-    
-    public void updateAuxiliarPhasePanel(String countrySource, String countryDest, int panel){
+    /**
+     * Updates the view in the button
+     * @param countrySource country with the attack
+     * @param countryDest country attacked
+     * @param gc game controller
+     * @param armies max of dices or armies to be moved
+     * @param panel the panel to show
+     */
+    public void updateAuxiliarPhasePanel(String countrySource, String countryDest,GameController gc, int armies,int panel){
         switch(panel){
             case 0:
                 if(this.phaseAuxiliarPanel.getAttackPanel()==null){
-                    AttackView attackPanel=new AttackView(countrySource,countryDest);
+                    AttackView attackPanel=new AttackView(countrySource,countryDest,gc);
                     this.phaseAuxiliarPanel.setAttackPanel(attackPanel);
                 }
                 this.phaseAuxiliarPanel.updatePanel((JPanel) phaseAuxiliarPanel.getAttackPanel());
-                this.phaseAuxiliarPanel.getAttackPanel().update(countrySource,countryDest);
+                this.phaseAuxiliarPanel.getAttackPanel().update(countrySource,countryDest, armies);
                 break;
             case 1:
+                if(this.phaseAuxiliarPanel.getArmiesLeft()==null){
+                    ArmiesLeft moveArmiesPanel=new ArmiesLeft();
+                    this.phaseAuxiliarPanel.setArmiesLeft(moveArmiesPanel);
+                }
                 this.phaseAuxiliarPanel.updatePanel(phaseAuxiliarPanel.getArmiesLeft());
-                this.phaseAuxiliarPanel.getArmiesLeft().update(countrySource,countryDest,this.mapPanel);
+                this.phaseAuxiliarPanel.getArmiesLeft().update(countrySource,countryDest,gc,armies);
                 break;
+            default:
+                this.phaseAuxiliarPanel.removeAll();
         }
     }
     
@@ -199,6 +216,9 @@ public final class RiskView extends javax.swing.JFrame {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         aux.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
     }
+    /**
+     * Hide the panels
+     */
     public void hideAttack(){
         if(this.phaseAuxiliarPanel.getAttackPanel()!=null)
             this.phaseAuxiliarPanel.getAttackPanel().setVisible(false);
@@ -207,6 +227,11 @@ public final class RiskView extends javax.swing.JFrame {
             this.phaseAuxiliarPanel.getArmiesLeft().setVisible(false);
     }
     
+    /**
+     * Creates the card exchange view
+     * @param riskModel the model of the game
+     * @param rc the controller of the game
+     */
     public void cardExchangeMenu(RiskModel riskModel, RiskController rc) {
         
         this.exchangeView = new CardExchangeView(riskModel);
@@ -217,7 +242,9 @@ public final class RiskView extends javax.swing.JFrame {
         getExchangeView().setVisible(true);
         
     }
-    
+    /**
+     * Closes the exchange card view
+     */
     public void closeExchangeMenu(){
         this.exchangeView.setVisible(false);
         this.remove(this.getExchangeView());

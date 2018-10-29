@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -122,7 +121,6 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
         if(removeList.size()>0){
             removeList.stream()
                 .forEach(c -> {
-                    System.out.println("carta a remover: "+c);
                     this.remove(this.handCards.get(c));
                     this.handCards.remove(c);
                         });
