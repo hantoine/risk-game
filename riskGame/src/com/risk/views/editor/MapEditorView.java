@@ -20,6 +20,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Iterator;
+import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -204,6 +206,9 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                 //map loading
                 editorController.loadMapFromFile(filepath, this.getMapView());
 
+                int nbLinks = this.mapPanel.links.size();
+                System.out.println("nb links loaded:"+ Integer.toString(nbLinks));
+                
                 //update map configuration
                 this.mapConfigPanel.setView(editorController.getNewMap().getMapConfig());
             }
@@ -249,7 +254,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
      */
     private void addClearItemListener(JMenuItem menuItemNew, MapEditorController editorController) {
         //listener to clear the map being edited and get a new one
-        menuItemNew.addActionListener(e -> {
+        menuItemNew.addActionListener((ActionEvent e) -> {
             //open dialog
             int v = JOptionPane.showConfirmDialog(
                     this,
@@ -261,6 +266,21 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
             if (v == JFileChooser.APPROVE_OPTION) {
                 //clear map
                 editorController.clearMapModel();
+                
+                int nbLinks = this.mapPanel.links.size();
+                System.out.println("nb links after clear:"+ Integer.toString(nbLinks));
+                if(nbLinks>0){
+                    Set<String> keys = this.mapPanel.links.keySet();
+                    Iterator keyIterator = keys.iterator();
+                    String key;
+                    System.out.println("links not deleted:");
+                    for(int i=0;i<keys.size();i++){
+                        key = (String)keyIterator.next();
+                        System.out.println(key);
+                    }
+                }
+                
+                
                 MapConfig newConfig = editorController.getNewMap().getMapConfig();
                 this.mapConfigPanel.setView(newConfig);
             }
