@@ -121,6 +121,8 @@ public class ContinentModel {
      */
     public boolean check() {
         if (members.isEmpty()) {
+            System.out.println("name of fail continent:"+ this.name);
+            System.out.println(this.members);
             return false;
         }
 
