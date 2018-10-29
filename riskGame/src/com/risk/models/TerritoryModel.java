@@ -39,7 +39,7 @@ public class TerritoryModel {
      */
     private PlayerModel owner;
     /**
-     * name the name of the country
+     * name the name of the this territory
      */
     private String name;
 

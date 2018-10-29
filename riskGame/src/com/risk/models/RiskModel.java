@@ -143,6 +143,15 @@ public final class RiskModel {
     }
 
     /**
+     * Setter of board attribute
+     *
+     * @param mapModel a map model instance
+     */
+    public void setMap(MapModel mapModel) {
+        this.map = mapModel;
+    }
+
+    /**
      * Assigns random countries to players
      */
     public void assignCoutriesToPlayers() {
@@ -157,6 +166,9 @@ public final class RiskModel {
 
         players.stream().forEach((player) -> {
             List<TerritoryModel> ownedCountries = countriesLeft.subList(0, countriesPerPlayer);
+            ownedCountries.stream().forEach((t) -> {
+                t.setNumArmies(1);
+            });
             player.setContriesOwned(ownedCountries);
             countriesLeft.removeAll(ownedCountries);
         });
@@ -164,7 +176,9 @@ public final class RiskModel {
         Random rnd = new Random();
         while (!countriesLeft.isEmpty()) {
             int playerIndex = rnd.nextInt(players.size());
-            players.get(playerIndex).addCountryOwned(countriesLeft.remove(0));
+            TerritoryModel territoryAdded = countriesLeft.remove(0);
+            territoryAdded.setNumArmies(1);
+            players.get(playerIndex).addCountryOwned(territoryAdded);
         }
 
         // update continents owned accordingly
@@ -377,6 +391,5 @@ public final class RiskModel {
         public FortificationMoveNotPossible(String reason) {
             this.reason = reason;
         }
-
     }
 }
