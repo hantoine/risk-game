@@ -35,7 +35,7 @@ import javax.swing.KeyStroke;
  *
  * @author n_irahol
  */
-public final class RiskView extends javax.swing.JFrame {
+public final class RiskView extends javax.swing.JFrame implements RiskViewInterface {
 
     /**
      * menuPanel reference to the menu panel
