@@ -470,24 +470,29 @@ public abstract class PlayerModel extends Observable {
      * @param dice number of dices
      */
     public void battle(int dice){
-        int[] attacker=createDice(dice);
-        int defenseArmies=(this.getCurrentAttack().getDest().getNumArmies()<dice)?this.getCurrentAttack().getDest().getNumArmies():dice;
-        int[] defense;
         
-        
-        if(defenseArmies>2)
-            defense=createDice(2);
-        else
-            defense=createDice(defenseArmies);
-        
-        Arrays.sort(attacker);
-        Arrays.sort(defense);
-        
-        if(defenseArmies==1)
-            compareDice(attacker, defense, attacker.length-1,0);
+        if(dice==4)
+            battleAll();
         else{
-            compareDice(attacker, defense, attacker.length-1,1);
-            compareDice(attacker, defense, attacker.length-2,0);
+            int[] attacker=createDice(dice);
+            int defenseArmies=(this.getCurrentAttack().getDest().getNumArmies()<dice)?this.getCurrentAttack().getDest().getNumArmies():dice;
+            int[] defense;
+        
+        
+            if(defenseArmies>2)
+                defense=createDice(2);
+            else
+                defense=createDice(defenseArmies);
+        
+            Arrays.sort(attacker);
+            Arrays.sort(defense);
+        
+            if(defenseArmies==1)
+                compareDice(attacker, defense, attacker.length-1,0);
+            else{
+                compareDice(attacker, defense, attacker.length-1,1);
+                compareDice(attacker, defense, attacker.length-2,0);
+            }
         }
     }
     /**
@@ -502,6 +507,18 @@ public abstract class PlayerModel extends Observable {
             this.getCurrentAttack().getSource().setNumArmies(this.getCurrentAttack().getSource().getNumArmies()-1);
         else
             this.getCurrentAttack().getDest().setNumArmies(this.getCurrentAttack().getDest().getNumArmies()-1);
+    }
+    
+    /**
+     * Uses all the armies in an attack
+     */
+    public void battleAll(){
+        while(this.getCurrentAttack().getSource().getNumArmies()>3 && this.getCurrentAttack().getDest().getNumArmies()!=0)
+            battle(3);
+        while(this.getCurrentAttack().getSource().getNumArmies()==3 && this.getCurrentAttack().getDest().getNumArmies()!=0)
+            battle(2);
+        while(this.getCurrentAttack().getSource().getNumArmies()==2 && this.getCurrentAttack().getDest().getNumArmies()!=0)
+            battle(1);
     }
     /**
      * Create an array with different number of dices
