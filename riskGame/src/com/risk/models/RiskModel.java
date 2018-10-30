@@ -7,7 +7,6 @@ package com.risk.models;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -173,44 +172,49 @@ public final class RiskModel {
         }
 
         // update continents owned accordingly
-        Collection<ContinentModel> continents = map.getGraphContinents().values();
-        continents.stream().forEach((c) -> {
-            PlayerModel ownerFirstTerritories = c.getMembers().getFirst().getOwner();
+        map.getContinents().forEach((c) -> {
+            PlayerModel owner = c.getMembers().getFirst().getOwner();
             if (c.getMembers().stream()
-                    .allMatch((t) -> (t.getOwner() == ownerFirstTerritories))) {
-                ownerFirstTerritories.addContinentOwned(c);
+                    .allMatch((t) -> (t.getOwner() == owner))) {
+                owner.addContinentOwned(c);
             }
         });
 
     }
 
-    public void tryFortificationMove(TerritoryModel sourceTerritory, TerritoryModel destTerritory) throws FortificationMoveNotPossible {
+    public void tryFortificationMove(TerritoryModel src, TerritoryModel dest)
+            throws FortificationMoveImpossible {
 
-        checkFortificationMovePossible(sourceTerritory, destTerritory);
+        checkFortificationMove(src, dest);
 
-        sourceTerritory.decrementNumArmies();
-        destTerritory.incrementNumArmies();
-        currentPlayer.setCurrentFortificationMove(new FortificationMove(sourceTerritory, destTerritory));
+        src.decrementNumArmies();
+        dest.incrementNumArmies();
+        currentPlayer.setCurrentFortificationMove(src, dest);
     }
 
-    private void checkFortificationMovePossible(TerritoryModel sourceTerritory, TerritoryModel destTerritory) throws FortificationMoveNotPossible {
-        if (!sourceTerritory.getAdj().contains(destTerritory)) {
-            throw new FortificationMoveNotPossible(null);
+    private void checkFortificationMove(TerritoryModel src, TerritoryModel dest)
+            throws FortificationMoveImpossible {
+
+        if (!src.getAdj().contains(dest)) {
+            throw new FortificationMoveImpossible(null);
         }
 
-        if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
-                || !currentPlayer.getContriesOwned().contains(destTerritory)) {
-            throw new FortificationMoveNotPossible("You don't own this country !");
+        if (!(currentPlayer.checkOwnTerritory(src)
+                && currentPlayer.checkOwnTerritory(dest))) {
+            throw new FortificationMoveImpossible(
+                    "You don't own this country !");
         }
 
-        FortificationMove attemptedMove = new FortificationMove(sourceTerritory, destTerritory);
-        FortificationMove lastMove = currentPlayer.getCurrentFortificationMove();
-        if (lastMove != null && !lastMove.equals(attemptedMove)) {
-            throw new FortificationMoveNotPossible("You can only make one move !");
+        FortificationMove attempted = new FortificationMove(src, dest);
+        FortificationMove current = currentPlayer.getCurrentFortificationMove();
+        if (attempted.compatible(current)) {
+            throw new FortificationMoveImpossible(
+                    "You can only make one move !");
         }
 
-        if (sourceTerritory.getNumArmies() == 1) {
-            throw new FortificationMoveNotPossible("There is only one army in the source country !");
+        if (src.getNumArmies() == 1) {
+            throw new FortificationMoveImpossible(
+                    "There is only one army in the source country !");
         }
     }
 
@@ -288,7 +292,7 @@ public final class RiskModel {
      *
      * @param stage the stage to set
      */
-    public void setStage(GamePhase stage) {
+    private void setStage(GamePhase stage) {
         this.phase = stage;
     }
 
@@ -371,16 +375,131 @@ public final class RiskModel {
         return (map.getGraphTerritories().values().size() >= players.size());
     }
 
-    public static class FortificationMoveNotPossible extends Exception {
+    /**
+     * Finish the current stage of the game and initialize for the next stage of
+     * the game
+     *
+     * @return True if the game is not over
+     */
+    public boolean finishPhase() {
+        if (this.getWinningPlayer() != null) {
+            return false;
+            // this should be triggered by the view itself when RiskView is updated and a winning player is set
+            //            riskView.showMessage("The player " + this.modelRisk.getWinningPlayer().getName() + " has won the game");
 
-        String reason;
+        }
+
+        executeEndOfPhaseSteps();
+        this.nextPhase();
+        executeBeginningOfPhaseSteps();
+
+        return true;
+    }
+
+    /**
+     * Final steps after finishing a phase
+     */
+    private void executeEndOfPhaseSteps() {
+        switch (this.getPhase()) {
+            case STARTUP:
+                break;
+            case REINFORCEMENT:
+                break;
+            case ATTACK:
+                checkForDeadPlayers();
+                break;
+            case FORTIFICATION:
+                this.getCurrentPlayer().resetCurrentFortificationMove();
+                this.nextTurn();
+                break;
+        }
+    }
+
+    /**
+     * Steps at the beginning of a phase
+     */
+    private void executeBeginningOfPhaseSteps() {
+        switch (this.getPhase()) {
+            case STARTUP:
+                break;
+            case REINFORCEMENT:
+                this.getCurrentPlayer().reinforcement(this);
+                break;
+            case ATTACK:
+                try {
+                    this.getCurrentPlayer().attack(this);
+                } catch (UnsupportedOperationException e) {
+                    //since attack is not implemented yet, we skip it
+                    this.finishPhase();
+                }
+
+                this.getCurrentPlayer().addCardToPlayerHand();
+                break;
+            case FORTIFICATION:
+                this.getCurrentPlayer().fortification(this);
+                break;
+        }
+    }
+
+    /**
+     * Check if any player has no more territories owned and remove these player
+     * from the game
+     */
+    private void checkForDeadPlayers() {
+        players.stream()
+                .filter(p -> p.getNbCountriesOwned() == 0)
+                .forEach((p) -> {
+                    /*
+                    this.riskView.showMessage(String.format(
+                            "The player %s has no more territories, it is eliminated from the game !",
+                            p.getName())
+                    );//*///setchanged and notifyObserver with the dead player as a parameter
+                    this.removePlayer(p);
+                });
+    }
+
+    /**
+     * Place an army from the given player on the given territory.
+     *
+     * @param player Player whose army is going to be taken
+     * @param territory Territory on which the army will be added
+     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible
+     */
+    public void placeArmy(PlayerModel player, TerritoryModel territory) throws ArmyPlacementImpossible {
+        if (player.getNumArmiesAvailable() <= 0) {
+            throw new ArmyPlacementImpossible("You have no armies left to deploy !");
+        }
+        if (player.checkOwnTerritory(territory) == false) {
+            throw new ArmyPlacementImpossible("You don't own this country !");
+        }
+
+        territory.incrementNumArmies();
+        player.decrementNumArmiesAvailable();
+    }
+
+    public static class FortificationMoveImpossible extends Exception {
+
+        private final String reason;
+
+        public FortificationMoveImpossible(String reason) {
+            this.reason = reason;
+        }
 
         public String getReason() {
             return reason;
         }
+    }
 
-        public FortificationMoveNotPossible(String reason) {
+    public static class ArmyPlacementImpossible extends Exception {
+
+        private final String reason;
+
+        public ArmyPlacementImpossible(String reason) {
             this.reason = reason;
+        }
+
+        public String getReason() {
+            return reason;
         }
     }
 }

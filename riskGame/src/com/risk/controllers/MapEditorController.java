@@ -7,8 +7,8 @@ package com.risk.controllers;
 
 import com.risk.models.ContinentModel;
 import com.risk.models.MapFileManagement;
-import com.risk.models.TerritoryModel;
 import com.risk.models.MapModel;
+import com.risk.models.TerritoryModel;
 import com.risk.views.editor.ContinentListPanel;
 import com.risk.views.editor.CountryButton2;
 import com.risk.views.editor.MapEditorView;
@@ -153,12 +153,15 @@ public class MapEditorController {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-            boolean success = newMap.addContinent();
-            if (success == false) {
-                JButton buttonClicked = (JButton) e.getSource();
-                ContinentListPanel clickedPanel = (ContinentListPanel) buttonClicked.getParent();
-                clickedPanel.showError("The maximum number of continents to be created has been reached.");
+            if (newMap.addContinent() == true) {
+                return;
             }
+            JButton buttonClicked = (JButton) e.getSource();
+            ContinentListPanel clickedPanel
+                    = (ContinentListPanel) buttonClicked.getParent();
+            clickedPanel.showError("The maximum number of continents to be "
+                    + "created has been reached.");
+
         }
     }
 
@@ -227,7 +230,8 @@ public class MapEditorController {
          */
         private void releaseHandling(MouseEvent e, Object sourceObj) {
             JLabel clickedLabel = (JLabel) sourceObj;
-            ContinentListPanel clickedPanel = (ContinentListPanel) clickedLabel.getParent();
+            ContinentListPanel clickedPanel
+                    = (ContinentListPanel) clickedLabel.getParent();
 
             if (SwingUtilities.isRightMouseButton(e)) {
                 String continentName = ((JLabel) sourceObj).getText();
@@ -239,7 +243,7 @@ public class MapEditorController {
                 //save original name of continent
                 String formerName = clickedLabel.getText();
 
-                ContinentModel continentToModify = newMap.getGraphContinents().get(formerName);
+                ContinentModel continentToModify = newMap.getContinentByName(formerName);
                 int bonusScore = continentToModify.getBonusScore();
 
                 //get information from the user
@@ -288,48 +292,47 @@ public class MapEditorController {
         }
 
         this.newMap.clearMap();
-        
+
         String[] remainingContinents = this.newMap.getContinentList();
-        if(remainingContinents.length!=1){
+        if (remainingContinents.length != 1) {
             System.out.println("wrong number of continents after the clear");
         }
         String continentToDelete = remainingContinents[0];
-        
+
         //set new image
         if (map.getImage() != null) {
             this.newMap.setImage(map.getImage(), new Dimension(200, 50));
         }
-        
+
         //add continents
-        for(ContinentModel c : map.getGraphContinents().values()) {
-            if(c.getName().equals(continentToDelete)){
+        for (ContinentModel c : map.getContinents()) {
+            if (c.getName().equals(continentToDelete)) {
                 Map<String, String> data = new HashMap<>();
                 data.put("name", c.getName());
                 data.put("newName", c.getName());
                 data.put("bonusScore", Integer.toString(c.getBonusScore()));
                 this.newMap.updateContinent(data);
                 continentToDelete = "";
-            }
-            else{
+            } else {
                 this.newMap.addContinent(c.getName(), c.getBonusScore());
             }
         }
-        
-        if(!continentToDelete.equals("")){
+
+        if (!continentToDelete.equals("")) {
             this.newMap.removeContinent(continentToDelete);
         }
 
         //add territories
-        map.getGraphTerritories().values().stream().forEach((t) -> {
+        map.getTerritories().forEach((t) -> {
             this.newMap.loadTerritory(t.getPositionX(), t.getPositionY(), t.getName(), t.getContinentName());
         });
-        
-        map.getGraphTerritories().values().stream().forEach((t) -> {
+
+        map.getTerritories().forEach((t) -> {
             t.getAdj().stream().forEach((ta) -> {
                 this.newMap.addLink(t.getName(), ta.getName());
             });
         });
-        
+
         updateConfigurationInfo(map);
     }
 
