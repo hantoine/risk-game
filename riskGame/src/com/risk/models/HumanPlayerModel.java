@@ -5,7 +5,6 @@
  */
 package com.risk.models;
 
-import com.risk.controllers.GameController;
 import java.awt.Color;
 
 /**
@@ -30,7 +29,7 @@ public class HumanPlayerModel extends PlayerModel {
      * Reinforcement phase for Human Player
      */
     @Override
-    public void reinforcement(GameController playGame) {
+    public void reinforcement(RiskModel playGame) {
         this.assignNewArmies();
     }
 
@@ -38,7 +37,7 @@ public class HumanPlayerModel extends PlayerModel {
      * Fortification phase for Human Player
      */
     @Override
-    public void fortification(GameController playGame) {
+    public void fortification(RiskModel playGame) {
         // nothing to do
     }
 
@@ -46,7 +45,7 @@ public class HumanPlayerModel extends PlayerModel {
      * Attack phase for Human Player
      */
     @Override
-    public void attack(GameController playGame) {
+    public void attack(RiskModel playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

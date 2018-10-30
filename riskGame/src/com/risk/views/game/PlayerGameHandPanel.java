@@ -49,10 +49,12 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
     public void updateView(RiskModel rm) {
         PlayerModel currentPlayer = rm.getCurrentPlayer();
         this.removeAll();
-        currentPlayer.getCardsOwned().getCards().stream()
-                .forEach((card) -> {
-                    addCard(card.getTypeOfArmie(), card.getCountryName(), currentPlayer.getColor());
-                });
+        currentPlayer.getCardsOwned().getCards().forEach((card) -> {
+            addCard(card.getTypeOfArmie(),
+                    card.getCountryName(),
+                    currentPlayer.getColor()
+            );
+        });
         this.repaint();
     }
 
@@ -68,28 +70,30 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
             this.updateView((RiskModel) arg);
         } else {
             LinkedList<String> receivedObj = (LinkedList<String>) arg;
-            addCard(receivedObj.get(2), receivedObj.get(1), ((PlayerModel) o).getColor());
+            addCard(receivedObj.get(2),
+                    receivedObj.get(1),
+                    ((PlayerModel) o).getColor()
+            );
         }
     }
 
     /**
      * Add a card to be displayed in this panel
      *
-     * @param typeofArmies The name of the type of armies associated with the
-     * card
+     * @param armyType The name of the type of armies associated with the card
      * @param territoryName The name of the territory associated with the card
-     * @param backgroundColor The background color of the card
+     * @param bgColor The background color of the card
      */
-    public void addCard(String typeofArmies, String territoryName, Color backgroundColor) {
+    public void addCard(String armyType, String territoryName, Color bgColor) {
         ImageIcon cardIcon = new ImageIcon("." + File.separator + "images"
-                + File.separator + typeofArmies + ".png");
+                + File.separator + armyType + ".png");
         Image image = cardIcon.getImage();
-        Image newImage = image.getScaledInstance(50, 70, java.awt.Image.SCALE_SMOOTH);
+        Image newImage = image.getScaledInstance(50, 70, Image.SCALE_SMOOTH);
         cardIcon = new ImageIcon(newImage);
         JButton aux = new JButton();
         aux.setIcon(cardIcon);
         aux.setText("");
-        aux.setBackground(backgroundColor);
+        aux.setBackground(bgColor);
         handCards.put(territoryName, aux);
         this.add(aux);
     }

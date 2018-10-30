@@ -5,8 +5,8 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.RiskModel;
 import com.risk.models.MapModel;
+import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import com.risk.views.editor.MapEditorView;
 

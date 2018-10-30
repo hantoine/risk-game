@@ -139,7 +139,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.getMapPanel().setListener(rc.getCountryListener());
 
         this.getStagePanel().getEndPhase().addActionListener(e -> {
-            rc.getPlayGame().finishPhase();
+            rc.getPlayGame().endPhaseButtonPressed();
         });
 
         this.getStagePanel().getHandCards().addActionListener(e -> {

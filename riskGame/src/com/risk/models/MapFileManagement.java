@@ -124,7 +124,6 @@ public class MapFileManagement {
     public static int configurationInf(String info, String path, MapModel map) {
 
         String[] linesInfo;
-        MapConfig mapConfig = new MapConfig();
         String[] aux;
         File fileRead = new File(path);
 
@@ -139,14 +138,14 @@ public class MapFileManagement {
 
                 switch (aux[0]) {
                     case "author":
-                        mapConfig.setAuthor(aux[1]);
+                        map.setAuthorConfig(aux[1]);
                         break;
                     case "image":
                         if (aux[1].isEmpty() || aux[1].equals("null")) {
                             break;
                         }
 
-                        mapConfig.setImagePath(aux[1]);
+                        map.setImagePath(aux[1]);
                         Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
                         try {
                             BufferedImage image = ImageIO.read(new File(imagePath.toString()));
@@ -159,21 +158,21 @@ public class MapFileManagement {
                         break;
                     case "wrap":
                         if ((aux[1].equals("no") || aux[1].equals("yes"))) {
-                            mapConfig.setWrap(aux[1].equals("yes"));
+                            map.setWrapConfig(aux[1].equals("yes"));
                         } else {
                             return -1;
                         }
                         break;
                     case "scroll":
                         if ((aux[1].equals("horizontal") || aux[1].equals("vertical") || aux[1].equals("none"))) {
-                            mapConfig.setScroll(aux[1]);
+                            map.setScrollConfig(aux[1]);
                         } else {
                             return -1;
                         }
                         break;
                     case "warn":
                         if ((aux[1].equals("no") || aux[1].equals("yes"))) {
-                            mapConfig.setWarn(aux[1].equals("yes"));
+                            map.setWarnConfig(aux[1].equals("yes"));
                         } else {
                             return -1;
                         }
@@ -181,11 +180,7 @@ public class MapFileManagement {
                     default:
                         return -1;
                 }
-
             }
-
-            map.setConfigurationInfo(mapConfig);
-
         }
 
         return 0;
@@ -337,7 +332,7 @@ public class MapFileManagement {
             i++;
         }
 
-        //If the line of one of the adjacent territory has not been met, there is an error in the file 
+        //If the line of one of the adjacent territory has not been met, there is an error in the file
         if (graphTerritories.values().stream().anyMatch((t) -> (t.getContinentName() == null))) {
             return -4;
         }

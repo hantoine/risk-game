@@ -140,7 +140,7 @@ public final class MapModel implements MapModelObservable {
      *
      * @return the graphContinents
      */
-    public HashMap<String, ContinentModel> getGraphContinents() {
+    HashMap<String, ContinentModel> getGraphContinents() {
         return graphContinents;
     }
 
@@ -150,8 +150,18 @@ public final class MapModel implements MapModelObservable {
      * @param graphContinents HashMap containing all continents of the map with
      * their name as a key
      */
-    public void setGraphContinents(HashMap<String, ContinentModel> graphContinents) {
+    void setGraphContinents(HashMap<String, ContinentModel> graphContinents) {
         this.graphContinents = graphContinents;
+    }
+
+    /**
+     * Get one continent model instance by its name
+     *
+     * @param continentName name of continent
+     * @return the target name get from the method
+     */
+    public ContinentModel getContinentByName(String continentName) {
+        return graphContinents.get(continentName);
     }
 
     /**
@@ -160,8 +170,36 @@ public final class MapModel implements MapModelObservable {
      * @return the graphTerritories, a HashMap containing all continents of the
      * map with their name as a key
      */
-    public HashMap<String, TerritoryModel> getGraphTerritories() {
+    HashMap<String, TerritoryModel> getGraphTerritories() {
         return graphTerritories;
+    }
+
+    /**
+     * Get one territory model instance by its name
+     *
+     * @param territoryName name of territory
+     * @return the target name get from the method
+     */
+    public TerritoryModel getTerritoryByName(String territoryName) {
+        return graphTerritories.get(territoryName);
+    }
+
+    /**
+     * Return the list of territories in this map
+     *
+     * @return the list of territories in this map
+     */
+    public Iterable<TerritoryModel> getTerritories() {
+        return graphTerritories.values();
+    }
+
+    /**
+     * Return the list of continents in this map
+     *
+     * @return the list of territories in this map
+     */
+    public Iterable<ContinentModel> getContinents() {
+        return graphContinents.values();
     }
 
     /**
@@ -170,7 +208,7 @@ public final class MapModel implements MapModelObservable {
      * @param graphTerritories HashMap containing all territories of the map
      * with their name as a key
      */
-    public void setGraphTerritories(HashMap<String, TerritoryModel> graphTerritories) {
+    void setGraphTerritories(HashMap<String, TerritoryModel> graphTerritories) {
         this.graphTerritories = graphTerritories;
     }
 
@@ -181,15 +219,6 @@ public final class MapModel implements MapModelObservable {
      */
     public MapConfig getConfigurationInfo() {
         return mapConfig;
-    }
-
-    /**
-     * Setter of the mapConfig attribute
-     *
-     * @param mapConfig the configuration information contained in the map file
-     */
-    public void setConfigurationInfo(MapConfig mapConfig) {
-        this.mapConfig = mapConfig;
     }
 
     /**
@@ -300,17 +329,6 @@ public final class MapModel implements MapModelObservable {
         //remove from the view
         String[] link = {territoryName, neighbour};
         notifyObservers(UpdateTypes.REMOVE_LINK, link);
-    }
-
-    /**
-     * Get one territory model instance by its name
-     *
-     * @param territoryName name of territory
-     * @return the target name get from the method
-     */
-    public TerritoryModel getTerritoryByName(String territoryName) {
-        TerritoryModel target = this.getGraphTerritories().get(territoryName);
-        return target;
     }
 
     /**
