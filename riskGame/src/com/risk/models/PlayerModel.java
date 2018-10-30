@@ -389,7 +389,7 @@ public abstract class PlayerModel extends Observable {
      *
      * @return number of extra armies according to handed cards
      */
-    private int armiesAssignationCards() {
+    int armiesAssignationCards() {
         this.setReturnedCards(this.getReturnedCards() + 3);
 
         switch (this.getReturnedCards()) {
@@ -472,4 +472,9 @@ public abstract class PlayerModel extends Observable {
     void resetCurrentFortificationMove() {
         this.currentFortificationMove = null;
     }
+
+    boolean checkOwnContinent(ContinentModel continent) {
+        return this.continentsOwned.contains(continent);
+    }
+
 }

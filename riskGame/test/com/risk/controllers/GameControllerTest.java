@@ -6,7 +6,6 @@
 package com.risk.controllers;
 
 import com.risk.models.ContinentModel;
-import com.risk.models.FortificationMove;
 import com.risk.models.GamePhase;
 import com.risk.models.MapModel;
 import com.risk.models.PlayerModel;
@@ -151,8 +150,8 @@ public class GameControllerTest {
         System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
-        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
-        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+        TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getTerritoryByName(destTerritoryName);
 
         rm.setStage(GamePhase.FORTIFICATION);
         rm.setCurrentPlayer(rm.getPlayerList().getFirst());
