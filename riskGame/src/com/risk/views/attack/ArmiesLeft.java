@@ -81,9 +81,11 @@ public class ArmiesLeft extends JPanel {
      */
     private void setListener(GameController gc){
         more.addActionListener(e -> {
-            if(Integer.parseInt(armiesMoved.getText())<max-1)
-                armiesMoved.setText(Integer.toString(Integer.parseInt(armiesMoved.getText())+1));
-            else   
+            int i = 0;
+            if(Integer.parseInt(armiesMoved.getText())<max-1){
+                i=Integer.parseInt(armiesMoved.getText())+1;
+                armiesMoved.setText(Integer.toString(i));
+            }else   
                 more.setEnabled(false);
         });
         
