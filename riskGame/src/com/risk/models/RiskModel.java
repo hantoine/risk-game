@@ -124,7 +124,7 @@ public final class RiskModel {
     }
 
     /**
-     * Setter of the board attribute from a file
+     * Setter of the map attribute
      *
      * @param newMap new map to set
      */
@@ -140,15 +140,6 @@ public final class RiskModel {
      */
     public MapModel getMap() {
         return map;
-    }
-
-    /**
-     * Setter of board attribute
-     *
-     * @param mapModel a map model instance
-     */
-    public void setMap(MapModel mapModel) {
-        this.map = mapModel;
     }
 
     /**
