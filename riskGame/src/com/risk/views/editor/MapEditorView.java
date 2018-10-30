@@ -8,7 +8,7 @@ package com.risk.views.editor;
 import com.risk.controllers.MapEditorController;
 import com.risk.models.MapConfig;
 import com.risk.models.MapFileManagement;
-import com.risk.models.editor.EditableMapModel;
+import com.risk.models.MapModel;
 import com.risk.observable.MapModelObserver;
 import com.risk.observable.UpdateTypes;
 import java.awt.BorderLayout;
@@ -20,6 +20,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Iterator;
+import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -84,7 +86,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
      * @see MapEditorController
      * @see EditableMapModel
      */
-    public MapEditorView(int width, int height, MapEditorController editorController, EditableMapModel initMapModel) {
+    public MapEditorView(int width, int height, MapEditorController editorController, MapModel initMapModel) {
         init(width, height);
 
         //all content is being stored in this panel
@@ -204,6 +206,9 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                 //map loading
                 editorController.loadMapFromFile(filepath, this.getMapView());
 
+                int nbLinks = this.mapPanel.links.size();
+                System.out.println("nb links loaded:"+ Integer.toString(nbLinks));
+                
                 //update map configuration
                 this.mapConfigPanel.setView(editorController.getNewMap().getMapConfig());
             }
@@ -232,6 +237,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
 
                 //map saving
                 int errorCode = editorController.saveMapToFile(filepath);
+                System.out.println("error code: " + Integer.toString(errorCode));
                 if (errorCode != 0) {
 
                     this.mapPanel.showError(MapFileManagement.readingError(errorCode));
@@ -249,7 +255,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
      */
     private void addClearItemListener(JMenuItem menuItemNew, MapEditorController editorController) {
         //listener to clear the map being edited and get a new one
-        menuItemNew.addActionListener(e -> {
+        menuItemNew.addActionListener((ActionEvent e) -> {
             //open dialog
             int v = JOptionPane.showConfirmDialog(
                     this,
@@ -261,6 +267,21 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
             if (v == JFileChooser.APPROVE_OPTION) {
                 //clear map
                 editorController.clearMapModel();
+                
+                int nbLinks = this.mapPanel.links.size();
+                System.out.println("nb links after clear:"+ Integer.toString(nbLinks));
+                if(nbLinks>0){
+                    Set<String> keys = this.mapPanel.links.keySet();
+                    Iterator keyIterator = keys.iterator();
+                    String key;
+                    System.out.println("links not deleted:");
+                    for(int i=0;i<keys.size();i++){
+                        key = (String)keyIterator.next();
+                        System.out.println(key);
+                    }
+                }
+                
+                
                 MapConfig newConfig = editorController.getNewMap().getMapConfig();
                 this.mapConfigPanel.setView(newConfig);
             }
