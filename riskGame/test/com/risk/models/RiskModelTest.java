@@ -146,6 +146,6 @@ public class RiskModelTest {
         riskModel.assignCoutriesToPlayers();
 
         assertTrue(riskModel.getPlayerList().stream()
-                .anyMatch((p) -> (p.getContinentsOwned().contains(continentC))));
+                .anyMatch((p) -> (p.checkOwnContinent(continentC))));
     }
 }
