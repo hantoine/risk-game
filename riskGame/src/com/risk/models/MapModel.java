@@ -5,9 +5,6 @@ package com.risk.models;
  * To change this template file, choose Tools | Templates and open the template
  * in the editor.
  */
-import com.risk.models.ContinentModel;
-import com.risk.models.MapConfig;
-import com.risk.models.TerritoryModel;
 import com.risk.observable.MapModelObservable;
 import com.risk.observable.MapModelObserver;
 import com.risk.observable.UpdateTypes;
@@ -30,7 +27,6 @@ import java.util.stream.Stream;
  */
 public final class MapModel implements MapModelObservable {
 
-    
     /**
      * mapConfig configurations of the map like author, wrap, image, and others
      */
@@ -55,7 +51,7 @@ public final class MapModel implements MapModelObservable {
      * graphTerritories the territories of the map
      */
     private HashMap<String, TerritoryModel> graphTerritories;
-    
+
     /**
      * List of the observers of the model.
      */
@@ -72,7 +68,7 @@ public final class MapModel implements MapModelObservable {
         observers = new LinkedList<>();
         addContinent();
     }
-    
+
     /**
      * It prints the countries and relationships between them
      */
@@ -88,7 +84,7 @@ public final class MapModel implements MapModelObservable {
             }
         }
     }
-    
+
     /**
      * It calls dfsConnected to validate if the countries in the board with the
      * given continents represent a connected graph.
@@ -114,10 +110,9 @@ public final class MapModel implements MapModelObservable {
     public boolean isValid() {
         boolean a = this.isConnectedGraph();
         boolean b = this.getGraphContinents().values().stream().allMatch((c) -> (c.check()));
-        if(!b){
+        if (!b) {
             System.out.println("graph continents failure");
-        }
-        else if (!a){
+        } else if (!a) {
             System.out.println("isConnected failure");
         }
         return (a && b);
@@ -262,9 +257,8 @@ public final class MapModel implements MapModelObservable {
             return this.getImage().getWidth(null);
         }
     }
-    
-    //############################################## methods of editable map model :
 
+    //############################################## methods of editable map model :
     /**
      * Add an edge between two vertices (territories).
      *
@@ -373,7 +367,7 @@ public final class MapModel implements MapModelObservable {
         notifyObservers(UpdateTypes.ADD_CONTINENT, newName);
         return true;
     }
-    
+
     public boolean addContinent(String continentName, int continentBonus) {
         ContinentModel newContinent = new ContinentModel(continentName, continentBonus);
         getGraphContinents().put(continentName, newContinent);
@@ -456,7 +450,7 @@ public final class MapModel implements MapModelObservable {
         //add it to a continent
         String continentName = this.getGraphContinents().entrySet().iterator().next().getKey();
         newTerritory.setContinentName(continentName);
-        this.getGraphContinents().get(continentName).setMember(newTerritory);
+        this.getGraphContinents().get(continentName).addMember(newTerritory);
 
         //add territory to list
         this.getGraphTerritories().put(newName, newTerritory);
@@ -482,7 +476,7 @@ public final class MapModel implements MapModelObservable {
 
         //add it to its continent
         newTerritory.setContinentName(continentName);
-        this.getGraphContinents().get(continentName).setMember(newTerritory);
+        this.getGraphContinents().get(continentName).addMember(newTerritory);
 
         //add territory to list
         this.getGraphTerritories().put(newName, newTerritory);
@@ -538,12 +532,12 @@ public final class MapModel implements MapModelObservable {
         //modify territory
         modifiedTerritory.setName(newName);
         modifiedTerritory.setContinentName(newContinent);
-        
-        if(!formerContinent.equals(newContinent)){
+
+        if (!formerContinent.equals(newContinent)) {
             this.graphContinents.get(formerContinent).removeMember(this.getTerritoryByName(newName));
-            this.graphContinents.get(newContinent).setMember(modifiedTerritory);
+            this.graphContinents.get(newContinent).addMember(modifiedTerritory);
         }
-        
+
         //replace the old entry by the updated one
         //this.getGraphTerritories().put(newName, modifiedTerritory);
         notifyObservers(UpdateTypes.UPDATE_TERRITORY_NAME, data);
@@ -601,7 +595,6 @@ public final class MapModel implements MapModelObservable {
             observer.update(updateType, object);
         }
     }
-
 
     /**
      * Check if an Dimension element is in the list.
