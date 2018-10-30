@@ -70,11 +70,11 @@ public class PlayerModelTest {
     public void testArmiesAssignationWithMoreCountries() {
         System.out.println("armiesAssignation");
 
-        player.getContriesOwned().add(new TerritoryModel("France"));
-        player.getContriesOwned().add(new TerritoryModel("Germany"));
-        player.getContriesOwned().add(new TerritoryModel("Italy"));
-        player.getContriesOwned().add(new TerritoryModel("UK"));
-        player.getContriesOwned().add(new TerritoryModel("Spain"));
+        player.addCountryOwned(new TerritoryModel("France"));
+        player.addCountryOwned(new TerritoryModel("Germany"));
+        player.addCountryOwned(new TerritoryModel("Italy"));
+        player.addCountryOwned(new TerritoryModel("UK"));
+        player.addCountryOwned(new TerritoryModel("Spain"));
 
         int expResult = 4;
         int result = player.armiesAssignation();
