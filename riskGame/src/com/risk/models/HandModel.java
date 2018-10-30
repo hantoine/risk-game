@@ -20,11 +20,12 @@ public class HandModel {
      * cards it is the group of cards of the hand
      */
     private LinkedList<CardModel> cards;
+    private PlayerModel owner;
 
     /**
      * Constructor
      */
-    public HandModel() {
+    HandModel() {
         this.cards = new LinkedList();
         this.cards.add(new CardModel("Venezuela", "infantry"));
         this.cards.add(new CardModel("France", "infantry"));
@@ -38,8 +39,26 @@ public class HandModel {
      *
      * @return the cards
      */
-    public LinkedList<CardModel> getCards() {
+    LinkedList<CardModel> getCardsList() {
         return cards;
+    }
+
+    /**
+     * Read-only Getter for the cards attribute
+     *
+     * @return
+     */
+    public Iterable<CardModel> getCards() {
+        return cards;
+    }
+
+    /**
+     * Returns the number of cards in this hand
+     *
+     * @return the number of cards in this hand
+     */
+    public int getNbCards() {
+        return cards.size();
     }
 
     /**
@@ -47,29 +66,36 @@ public class HandModel {
      *
      * @param cards the hand to set
      */
-    public void setCards(LinkedList<CardModel> cards) {
+    void setCards(LinkedList<CardModel> cards) {
         this.cards = cards;
+    }
+
+    public PlayerModel getOwner() {
+        return owner;
+    }
+
+    void setOwner(PlayerModel owner) {
+        this.owner = owner;
     }
 
     /**
      * Function to check if the player has repeated cards
+     *
      * @return whether there is any duplication
      */
     public int[] getCardDuplicates() {
         int[] cardDuplicates = new int[3];
         cardDuplicates[0] = cardDuplicates[1] = cardDuplicates[2] = 0;
 
-        this.getCards().stream()
-                .forEach((c) -> {
-
-                    if (c.getTypeOfArmie().equals("infantry")) {
-                        cardDuplicates[0] = cardDuplicates[0] + 1;
-                    } else if (c.getTypeOfArmie().equals("cavalry")) {
-                        cardDuplicates[1] = cardDuplicates[1] + 1;
-                    } else if (c.getTypeOfArmie().equals("artillery")) {
-                        cardDuplicates[2] = cardDuplicates[2] + 1;
-                    }
-                });
+        this.getCards().forEach((c) -> {
+            if (c.getTypeOfArmie().equals("infantry")) {
+                cardDuplicates[0] = cardDuplicates[0] + 1;
+            } else if (c.getTypeOfArmie().equals("cavalry")) {
+                cardDuplicates[1] = cardDuplicates[1] + 1;
+            } else if (c.getTypeOfArmie().equals("artillery")) {
+                cardDuplicates[2] = cardDuplicates[2] + 1;
+            }
+        });
 
         return cardDuplicates;
     }
@@ -95,19 +121,19 @@ public class HandModel {
      * @param typeOfArmie type of card
      * @param deck deck of card in which to put the card removed
      */
-    public void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
+    void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
         String[] typeOfArmieDum = {"infantry", "artillery", "cavalry"};
 
         if (typeOfArmie.equals("different")) {
 
             Arrays.stream(typeOfArmieDum).forEach(typeA -> {
-                CardModel card = this.getCards().stream()
+                CardModel card = this.getCardsList().stream()
                         .filter(c -> c.getTypeOfArmie().equals(typeA))
                         .findFirst()
                         .get();
 
                 deck.addFirst(card);
-                this.getCards().remove(card);
+                this.getCardsList().remove(card);
             });
 
         } else {

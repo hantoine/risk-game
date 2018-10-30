@@ -1,14 +1,13 @@
 package com.risk.views.game;
 
+import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
-import com.risk.models.MapModel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
-import java.util.Collection;
 import java.util.HashMap;
 import javax.swing.JPanel;
 
@@ -45,7 +44,7 @@ public class MapPanel extends JPanel {
     /**
      * Creates the map of the game from the model
      *
-     * @param mapModel the mapmodel to be created
+     * @param mapModel the map model to be created
      */
     private void createMap(MapModel mapModel) {
         clearMap();
@@ -53,16 +52,24 @@ public class MapPanel extends JPanel {
         this.setSize(mapModel.getMapWidth(), mapModel.getMapHeight());
         this.countriesButtons = new HashMap<>();
 
-        Collection<TerritoryModel> territories = mapModel.getGraphTerritories().values();
-        territories.stream().forEach((currentCountry) -> {
-            CountryLabel aux = new CountryLabel(currentCountry.getPositionX(), currentCountry.getPositionY(), currentCountry.getName());
+        mapModel.getTerritories().forEach((currentCountry) -> {
+            CountryLabel aux = new CountryLabel(
+                    currentCountry.getPositionX(),
+                    currentCountry.getPositionY(),
+                    currentCountry.getName()
+            );
             countriesButtons.put(currentCountry.getName(), aux);
             this.add(aux);
 
             if (mapModel.getImage() == null) {
                 for (TerritoryModel d : currentCountry.getAdj()) {
                     Line2D adje = new Line2D.Double();
-                    adje.setLine(Double.valueOf(currentCountry.getPositionX()), Double.valueOf(currentCountry.getPositionY()), Double.valueOf(d.getPositionX()), Double.valueOf(d.getPositionY()));
+                    adje.setLine(
+                            Double.valueOf(currentCountry.getPositionX()),
+                            Double.valueOf(currentCountry.getPositionY()),
+                            Double.valueOf(d.getPositionX()),
+                            Double.valueOf(d.getPositionY())
+                    );
                     adj.put(currentCountry.getName() + "-" + d.getName(), adje);
                 }
             }
@@ -89,13 +96,13 @@ public class MapPanel extends JPanel {
             this.createMap(rm.getMap());
         }
 
-        HashMap<String, TerritoryModel> graphTerritories = rm.getMap().getGraphTerritories();
-        this.countriesButtons.values().stream()
-                .forEach((countryButton) -> {
-                    TerritoryModel territory = graphTerritories.get(countryButton.getName());
-                    countryButton.setText(Integer.toString(territory.getNumArmies()));
-                    if (territory.getOwner() != null) {
-                        countryButton.setForeground(territory.getOwner().getColor());
+        MapModel map = rm.getMap();
+        this.countriesButtons.values()
+                .forEach((cb) -> {
+                    TerritoryModel terri = map.getTerritoryByName(cb.getName());
+                    cb.setText(Integer.toString(terri.getNumArmies()));
+                    if (terri.getOwner() != null) {
+                        cb.setForeground(terri.getOwner().getColor());
                     }
                 });
     }
@@ -123,15 +130,6 @@ public class MapPanel extends JPanel {
      */
     public HashMap<String, CountryLabel> getCountriesButtons() {
         return countriesButtons;
-    }
-
-    /**
-     * Setter of the countriesButton attribute
-     *
-     * @param countriesButtons the countriesButtons to set
-     */
-    public void setCountriesButtons(HashMap<String, CountryLabel> countriesButtons) {
-        this.countriesButtons = countriesButtons;
     }
 
     /**

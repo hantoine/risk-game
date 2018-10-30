@@ -5,8 +5,8 @@
  */
 package com.risk.views.game;
 
-import com.risk.models.RiskModel;
 import com.risk.models.PlayerModel;
+import com.risk.models.RiskModel;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -76,15 +76,17 @@ public final class PlayerGameInfoPanel extends JPanel {
         playerName.setBackground(currentPlayer.getColor());
 
         //update the number of armies
-        this.numArmiesOwned.setText("Army Owned: " + currentPlayer.getNumArmiesOwned());
+        this.numArmiesOwned.setText("Army Owned: "
+                + currentPlayer.getNumArmiesOwned());
 
         // update countries and continents
-        this.numCountries.setText("Countries Owned: " + Integer.toString(currentPlayer
-                .getContriesOwned().size()));
-        this.numContinents.setText("Continents Owned: " + Integer.toString(currentPlayer
-                .getContinentsOwned().size()));
+        this.numCountries.setText("Countries Owned: "
+                + Integer.toString(currentPlayer.getNbCountriesOwned()));
+        this.numContinents.setText("Continents Owned: "
+                + Integer.toString(currentPlayer.getNbContinentsOwned()));
 
         // update cards
-        this.numCards.setText("Card Owned: " + currentPlayer.getCardsOwned().getCards().size());
+        this.numCards.setText("Card Owned: "
+                + currentPlayer.getCardsOwned().getNbCards());
     }
 }

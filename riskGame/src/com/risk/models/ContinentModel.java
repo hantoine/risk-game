@@ -36,7 +36,7 @@ public class ContinentModel {
      * @param bonusScore bonus armies receive when a player conquer the
      * continent
      */
-    public ContinentModel(String name, int bonusScore) {
+    ContinentModel(String name, int bonusScore) {
         this.name = name;
         this.bonusScore = bonusScore;
         this.members = new LinkedList<>();
@@ -47,7 +47,7 @@ public class ContinentModel {
      *
      * @param member the member which is removed
      */
-    public void removeMember(TerritoryModel member) {
+    void removeMember(TerritoryModel member) {
         this.members.remove(member);
     }
 
@@ -56,7 +56,7 @@ public class ContinentModel {
      *
      * @return the members
      */
-    public LinkedList<TerritoryModel> getMembers() {
+    LinkedList<TerritoryModel> getMembers() {
         return members;
     }
 
@@ -65,7 +65,7 @@ public class ContinentModel {
      *
      * @param members the members to set
      */
-    public void setMembers(LinkedList<TerritoryModel> members) {
+    void setMembers(LinkedList<TerritoryModel> members) {
         this.members = members;
     }
 
@@ -74,7 +74,7 @@ public class ContinentModel {
      *
      * @param member the member to add to members list
      */
-    public void addMember(TerritoryModel member) {
+    void addMember(TerritoryModel member) {
         this.members.add(member);
     }
 
@@ -89,9 +89,10 @@ public class ContinentModel {
 
     /**
      * Setter of the bonusScore attribute
+     *
      * @param newBonusScore new value of the bonusScore attribute
      */
-    public void setBonusScore(int newBonusScore) {
+    void setBonusScore(int newBonusScore) {
         this.bonusScore = newBonusScore;
     }
 
@@ -109,7 +110,7 @@ public class ContinentModel {
      *
      * @param name the name to set
      */
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -121,7 +122,7 @@ public class ContinentModel {
      */
     public boolean check() {
         if (members.isEmpty()) {
-            System.out.println("name of fail continent:"+ this.name);
+            System.out.println("name of fail continent:" + this.name);
             System.out.println(this.members);
             return false;
         }
