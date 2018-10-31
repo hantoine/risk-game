@@ -14,7 +14,6 @@ import com.risk.views.menu.NewGamePanel;
 import java.awt.Color;
 import java.lang.reflect.Method;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.AssumptionViolatedException;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,7 +80,6 @@ public class GameControllerTest {
         assertEquals(1, territoryA.getNumArmies());
         assertEquals(2, territoryB.getNumArmies());
         assertEquals(null, drv.getMessage());
-        assertTrue(drv.isUpdated());
     }
 
     /**
@@ -131,7 +129,7 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        PlayerModel playerB = rm.getPlayerList().getLast();
+        PlayerModel playerB = rm.getPlayerList().get(1);
         addCountryOwned(playerB, territoryA);
         addCountryOwned(playerA, territoryB);
         setNumArmies(territoryA, 2);
@@ -161,7 +159,7 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        PlayerModel playerB = rm.getPlayerList().getLast();
+        PlayerModel playerB = rm.getPlayerList().get(1);
         addCountryOwned(playerA, territoryA);
         addCountryOwned(playerB, territoryB);
         setNumArmies(territoryA, 2);
@@ -235,7 +233,6 @@ public class GameControllerTest {
         assertEquals(1, territoryA.getNumArmies());
         assertEquals(2, territoryB.getNumArmies());
         assertEquals(null, drv.getMessage());
-        assertTrue(drv.isUpdated());
     }
 
     /**
@@ -252,7 +249,7 @@ public class GameControllerTest {
 
         rm.nextPhase();
         rm.nextPhase();
-        PlayerModel playerA = rm.getPlayerList().getFirst();
+        PlayerModel playerA = rm.getPlayerList().get(1);
         addCountryOwned(playerA, territoryA);
         addCountryOwned(playerA, territoryB);
         setNumArmies(territoryA, 2);
@@ -325,19 +322,12 @@ public class GameControllerTest {
     private static class DummyRiskView implements RiskViewInterface {
 
         String message;
-        boolean updated;
 
         public DummyRiskView() {
-            updated = false;
         }
 
         @Override
-        public void updateView(RiskModel rm) {
-            updated = true;
-        }
-
-        @Override
-        public void updateViewWithNewMap(RiskModel rm) {
+        public void observeModel(RiskModel rm) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -369,10 +359,5 @@ public class GameControllerTest {
         public String getMessage() {
             return this.message;
         }
-
-        public boolean isUpdated() {
-            return updated;
-        }
     }
-
 }

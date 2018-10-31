@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -27,7 +28,7 @@ import java.util.stream.Stream;
  *
  * @author timot
  */
-public final class MapModel implements MapModelObservable {
+public final class MapModel extends Observable implements MapModelObservable {
 
     /**
      * mapConfig configurations of the map like author, wrap, image, and others
@@ -154,6 +155,9 @@ public final class MapModel implements MapModelObservable {
      */
     void setGraphContinents(HashMap<String, ContinentModel> graphContinents) {
         this.graphContinents = graphContinents;
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -212,6 +216,9 @@ public final class MapModel implements MapModelObservable {
      */
     void setGraphTerritories(HashMap<String, TerritoryModel> graphTerritories) {
         this.graphTerritories = graphTerritories;
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -239,6 +246,9 @@ public final class MapModel implements MapModelObservable {
      */
     public void setImage(BufferedImage image) {
         this.image = image;
+
+        setChanged();
+        notifyObservers(true);
     }
 
     /**
@@ -250,6 +260,9 @@ public final class MapModel implements MapModelObservable {
         if (this.getImage() == null) {
             this.mapHeight = mapHeight;
         }
+
+        setChanged();
+        notifyObservers(true);
     }
 
     /**
@@ -261,6 +274,9 @@ public final class MapModel implements MapModelObservable {
         if (this.getImage() == null) {
             this.mapWidth = mapWidth;
         }
+
+        setChanged();
+        notifyObservers(true);
     }
 
     /**
@@ -310,7 +326,10 @@ public final class MapModel implements MapModelObservable {
         this.getGraphTerritories().get(neighbour).addNeighbour(territoryModel);
 
         String[] newLink = {territoryName, neighbour};
-        notifyObservers(UpdateTypes.ADD_LINK, newLink);
+        notifyObserversCustom(UpdateTypes.ADD_LINK, newLink);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -330,7 +349,10 @@ public final class MapModel implements MapModelObservable {
 
         //remove from the view
         String[] link = {territoryName, neighbour};
-        notifyObservers(UpdateTypes.REMOVE_LINK, link);
+        notifyObserversCustom(UpdateTypes.REMOVE_LINK, link);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -384,14 +406,20 @@ public final class MapModel implements MapModelObservable {
 
         ContinentModel newContinent = new ContinentModel(newName, 1);
         getGraphContinents().put(newName, newContinent);
-        notifyObservers(UpdateTypes.ADD_CONTINENT, newName);
+        notifyObserversCustom(UpdateTypes.ADD_CONTINENT, newName);
+
+        setChanged();
+        notifyObservers();
         return true;
     }
 
     public boolean addContinent(String continentName, int continentBonus) {
         ContinentModel newContinent = new ContinentModel(continentName, continentBonus);
         getGraphContinents().put(continentName, newContinent);
-        notifyObservers(UpdateTypes.ADD_CONTINENT, continentName);
+        notifyObserversCustom(UpdateTypes.ADD_CONTINENT, continentName);
+
+        setChanged();
+        notifyObservers();
         return true;
     }
 
@@ -450,7 +478,10 @@ public final class MapModel implements MapModelObservable {
         getGraphContinents().remove(continentName);
         int nbContinents = this.getContinentList().size();
         System.out.println("nb continents : " + Integer.toString(nbContinents));
-        notifyObservers(UpdateTypes.REMOVE_CONTINENT, continentName);
+        notifyObserversCustom(UpdateTypes.REMOVE_CONTINENT, continentName);
+
+        setChanged();
+        notifyObservers();
         return true;
     }
 
@@ -476,7 +507,10 @@ public final class MapModel implements MapModelObservable {
         this.getGraphTerritories().put(newName, newTerritory);
 
         //update views
-        notifyObservers(UpdateTypes.ADD_TERRITORY, newTerritory);
+        notifyObserversCustom(UpdateTypes.ADD_TERRITORY, newTerritory);
+
+        setChanged();
+        notifyObservers();
         return true;
     }
 
@@ -502,7 +536,10 @@ public final class MapModel implements MapModelObservable {
         this.getGraphTerritories().put(newName, newTerritory);
 
         //update views
-        notifyObservers(UpdateTypes.ADD_TERRITORY, newTerritory);
+        notifyObserversCustom(UpdateTypes.ADD_TERRITORY, newTerritory);
+
+        setChanged();
+        notifyObservers();
         return true;
     }
 
@@ -526,12 +563,15 @@ public final class MapModel implements MapModelObservable {
 
             //remove from the view
             String[] link = {territoryToDel.getName(), neighbour.getName()};
-            notifyObservers(UpdateTypes.REMOVE_LINK, link);
+            notifyObserversCustom(UpdateTypes.REMOVE_LINK, link);
         }
 
         //delete the territory
         this.getGraphTerritories().remove(territoryName);
-        notifyObservers(UpdateTypes.REMOVE_TERRITORY, territoryName);
+        notifyObserversCustom(UpdateTypes.REMOVE_TERRITORY, territoryName);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -560,7 +600,10 @@ public final class MapModel implements MapModelObservable {
 
         //replace the old entry by the updated one
         //this.getGraphTerritories().put(newName, modifiedTerritory);
-        notifyObservers(UpdateTypes.UPDATE_TERRITORY_NAME, data);
+        notifyObserversCustom(UpdateTypes.UPDATE_TERRITORY_NAME, data);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -588,7 +631,10 @@ public final class MapModel implements MapModelObservable {
             }
         }
 
-        notifyObservers(UpdateTypes.UPDATE_CONTINENT, data);
+        notifyObserversCustom(UpdateTypes.UPDATE_CONTINENT, data);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -598,7 +644,7 @@ public final class MapModel implements MapModelObservable {
      * @param newObserver the new map model observer
      */
     @Override
-    public void addObserver(MapModelObserver newObserver) {
+    public void addObserverCustom(MapModelObserver newObserver) {
         observers.add(newObserver);
     }
 
@@ -610,7 +656,7 @@ public final class MapModel implements MapModelObservable {
      * @param object data to update the observers.
      */
     @Override
-    public void notifyObservers(UpdateTypes updateType, Object object) {
+    public void notifyObserversCustom(UpdateTypes updateType, Object object) {
         for (MapModelObserver observer : observers) {
             observer.update(updateType, object);
         }
@@ -665,8 +711,11 @@ public final class MapModel implements MapModelObservable {
 
             entryValue.setPositionX(x);
             entryValue.setPositionY(y);
-            notifyObservers(UpdateTypes.UPDATE_TERRITORY_POS, entryValue);
+            notifyObserversCustom(UpdateTypes.UPDATE_TERRITORY_POS, entryValue);
             verifiedValues.add(newDim);
+
+            setChanged();
+            notifyObservers();
         }
     }
 
@@ -678,10 +727,13 @@ public final class MapModel implements MapModelObservable {
      */
     public void setImage(BufferedImage image, Dimension buttonDims) {
         this.setImage(image);
-        notifyObservers(UpdateTypes.UPDATE_BACKGROUND_IMAGE, image);
+        notifyObserversCustom(UpdateTypes.UPDATE_BACKGROUND_IMAGE, image);
         if (image != null) {
             checkTerritoriesPositions(image.getWidth(), image.getHeight(), buttonDims);
         }
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -738,6 +790,9 @@ public final class MapModel implements MapModelObservable {
      */
     public void setScrollConfig(String scrollConfig) {
         this.getMapConfig().setScroll(scrollConfig);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -747,6 +802,9 @@ public final class MapModel implements MapModelObservable {
      */
     public void setWrapConfig(boolean wrapConfig) {
         this.getMapConfig().setWrap(wrapConfig);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -756,6 +814,9 @@ public final class MapModel implements MapModelObservable {
      */
     public void setWarnConfig(boolean warnConfig) {
         this.getMapConfig().setWarn(warnConfig);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -765,6 +826,9 @@ public final class MapModel implements MapModelObservable {
      */
     public void setAuthorConfig(String authorName) {
         this.getMapConfig().setAuthor(authorName);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -774,6 +838,9 @@ public final class MapModel implements MapModelObservable {
      */
     public void setImagePath(String path) {
         this.getMapConfig().setImagePath(path);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**

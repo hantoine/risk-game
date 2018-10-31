@@ -5,13 +5,11 @@
  */
 package com.risk.views.game;
 
-import com.risk.models.PlayerModel;
-import com.risk.models.RiskModel;
+import com.risk.models.HandModel;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BoxLayout;
@@ -43,16 +41,14 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
      * Update the information displayed by the PlayerGameHandPanl according to
      * the information of the current player
      *
-     * @param rm The model of the game containing all information about the
-     * current player
+     * @param currentHand The model of the current game hand
      */
-    public void updateView(RiskModel rm) {
-        PlayerModel currentPlayer = rm.getCurrentPlayer();
+    public void updateView(HandModel currentHand) {
         this.removeAll();
-        currentPlayer.getCardsOwned().getCards().forEach((card) -> {
+        currentHand.getCards().forEach((card) -> {
             addCard(card.getTypeOfArmie(),
                     card.getCountryName(),
-                    currentPlayer.getColor()
+                    currentHand.getOwner().getColor()
             );
         });
         this.repaint();
@@ -66,14 +62,11 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof RiskModel) {
-            this.updateView((RiskModel) arg);
-        } else {
-            LinkedList<String> receivedObj = (LinkedList<String>) arg;
-            addCard(receivedObj.get(2),
-                    receivedObj.get(1),
-                    ((PlayerModel) o).getColor()
-            );
+        if (o instanceof HandModel) {
+            HandModel updatedHand = (HandModel) o;
+            if (updatedHand.isCurrent()) {
+                updateView(updatedHand);
+            }
         }
     }
 

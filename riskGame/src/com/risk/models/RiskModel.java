@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Random;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Random;
  *
  * @author Nellybett
  */
-public final class RiskModel {
+public final class RiskModel extends Observable {
 
     /**
      * map a reference to the map of the game
@@ -80,6 +81,8 @@ public final class RiskModel {
             players.add(new AIPlayerModel(name, color, this));
         }
 
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -89,6 +92,9 @@ public final class RiskModel {
      */
     public void removePlayer(int index) {
         players.remove(index);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -101,6 +107,9 @@ public final class RiskModel {
         if (players.size() == 1) {
             this.winningPlayer = this.players.getFirst();
         }
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -111,6 +120,9 @@ public final class RiskModel {
     public void setPlayerList(LinkedList<PlayerModel> playerList) {
         this.players = playerList;
         this.currentPlayer = playerList.getFirst();
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -130,6 +142,9 @@ public final class RiskModel {
     public void setMap(MapModel newMap) {
         this.map = newMap;
         this.initializeDeck();
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -149,7 +164,7 @@ public final class RiskModel {
             throw new IllegalArgumentException();
         }
 
-        List<TerritoryModel> countriesLeft = new ArrayList<>(map.getGraphTerritories().values());
+        List<TerritoryModel> countriesLeft = new LinkedList<>(map.getTerritories());
         Collections.shuffle(countriesLeft);
 
         int countriesPerPlayer = (countriesLeft.size() / players.size());
@@ -160,7 +175,8 @@ public final class RiskModel {
                 t.setNumArmies(1);
             });
             player.setContriesOwned(ownedCountries);
-            countriesLeft.removeAll(ownedCountries);
+
+            countriesLeft.removeAll(new ArrayList<>(ownedCountries));
         });
 
         Random rnd = new Random();
@@ -180,6 +196,8 @@ public final class RiskModel {
             }
         });
 
+        setChanged();
+        notifyObservers();
     }
 
     public void tryFortificationMove(TerritoryModel src, TerritoryModel dest)
@@ -190,6 +208,9 @@ public final class RiskModel {
         src.decrementNumArmies();
         dest.incrementNumArmies();
         currentPlayer.setCurrentFortificationMove(src, dest);
+
+        setChanged();
+        notifyObservers();
     }
 
     private void checkFortificationMove(TerritoryModel src, TerritoryModel dest)
@@ -232,8 +253,8 @@ public final class RiskModel {
      *
      * @return players list
      */
-    public LinkedList<PlayerModel> getPlayerList() {
-        return this.players;
+    public List<PlayerModel> getPlayerList() {
+        return Collections.unmodifiableList(this.players);
     }
 
     /**
@@ -267,6 +288,9 @@ public final class RiskModel {
      */
     public void setTurn(int turn) {
         this.turn = turn;
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -275,7 +299,12 @@ public final class RiskModel {
      * @param currentPlayer the currentPlayer to set
      */
     private void setCurrentPlayer(PlayerModel currentPlayer) {
+        this.currentPlayer.setCurrentPlayer(false);
         this.currentPlayer = currentPlayer;
+        this.currentPlayer.setCurrentPlayer(true);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -294,6 +323,9 @@ public final class RiskModel {
      */
     private void setStage(GamePhase stage) {
         this.phase = stage;
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -303,6 +335,9 @@ public final class RiskModel {
         this.players.stream().forEach((player) -> {
             player.initializeArmies(this.players.size());
         });
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -320,7 +355,7 @@ public final class RiskModel {
     public void initializeDeck() {
         this.deck = new LinkedList();
         int i = 0;
-        for (String country : this.getMap().getGraphTerritories().keySet()) {
+        for (String country : this.getMap().getTerritoryList()) {
 
             switch (i) {
                 case 0:
@@ -337,6 +372,9 @@ public final class RiskModel {
 
         }
         shuffleDeck();
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -344,6 +382,9 @@ public final class RiskModel {
      */
     public void shuffleDeck() {
         Collections.shuffle(this.getDeck());
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -362,6 +403,9 @@ public final class RiskModel {
      */
     public void setWinningPlayer(PlayerModel winningPlayer) {
         this.winningPlayer = winningPlayer;
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -372,7 +416,7 @@ public final class RiskModel {
      * not true
      */
     public boolean validateCountries() {
-        return (map.getGraphTerritories().values().size() >= players.size());
+        return (map.getTerritories().size() >= players.size());
     }
 
     /**
@@ -392,6 +436,9 @@ public final class RiskModel {
         executeEndOfPhaseSteps();
         this.nextPhase();
         executeBeginningOfPhaseSteps();
+
+        setChanged();
+        notifyObservers();
 
         return true;
     }
@@ -413,6 +460,9 @@ public final class RiskModel {
                 this.nextTurn();
                 break;
         }
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -439,6 +489,9 @@ public final class RiskModel {
                 this.getCurrentPlayer().fortification(this);
                 break;
         }
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -456,6 +509,9 @@ public final class RiskModel {
                     );//*///setchanged and notifyObserver with the dead player as a parameter
                     this.removePlayer(p);
                 });
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -475,6 +531,9 @@ public final class RiskModel {
 
         territory.incrementNumArmies();
         player.decrementNumArmiesAvailable();
+
+        setChanged();
+        notifyObservers();
     }
 
     public static class FortificationMoveImpossible extends Exception {
@@ -501,5 +560,12 @@ public final class RiskModel {
         public String getReason() {
             return reason;
         }
+    }
+
+    public void exchangeCardsWithArmiesForCurrentPlayer() {
+        this.getCurrentPlayer().exchangeCardsToArmies();
+
+        setChanged();
+        notifyObservers();
     }
 }

@@ -42,8 +42,7 @@ public class MapFileManagementTest {
         board = new MapModel();
         path = "." + File.separator + "maps" + File.separator + "Old Yorkshire.map";
 
-        ContinentModel auxContinent = new ContinentModel("York", 2);
-        board.getGraphContinents().put("York", auxContinent);
+        board.addContinent("York", 2);
     }
 
     /**
@@ -164,7 +163,7 @@ public class MapFileManagementTest {
     public void testConfigurationInf3() {
 
         //Test Case only with null image parameter and valid file path
-        String info = "[Map]\n" + "author=Stewart Ainsworth\n" + "wrap=no\n" + "scroll=horizontal\n"+"image=null";
+        String info = "[Map]\n" + "author=Stewart Ainsworth\n" + "wrap=no\n" + "scroll=horizontal\n" + "image=null";
         int expResult = 0;
         int result = MapFileManagement.configurationInf(info, path, board);
         assertEquals(expResult, result);

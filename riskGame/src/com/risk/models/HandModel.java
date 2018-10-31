@@ -10,19 +10,21 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * It represents the group of cards that is owned by a player
  *
  * @author l_yixu
  */
-public class HandModel {
+public class HandModel extends Observable {
 
     /**
      * cards it is the group of cards of the hand
      */
     private LinkedList<CardModel> cards;
     private PlayerModel owner;
+    private boolean current;
 
     /**
      * Constructor
@@ -70,6 +72,9 @@ public class HandModel {
      */
     void setCards(LinkedList<CardModel> cards) {
         this.cards = cards;
+
+        setChanged();
+        notifyObservers();
     }
 
     public PlayerModel getOwner() {
@@ -78,6 +83,9 @@ public class HandModel {
 
     void setOwner(PlayerModel owner) {
         this.owner = owner;
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -135,7 +143,7 @@ public class HandModel {
                         .get();
 
                 deck.addFirst(card);
-                this.getCardsList().remove(card);
+                this.cards.remove(card);
             });
 
         } else {
@@ -147,6 +155,20 @@ public class HandModel {
                 }
             }
         }
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public boolean isCurrent() {
+        return current;
+    }
+
+    void setCurrent(boolean current) {
+        this.current = current;
+
+        setChanged();
+        notifyObservers();
     }
 
 }
