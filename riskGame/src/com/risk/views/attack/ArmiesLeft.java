@@ -8,6 +8,8 @@ package com.risk.views.attack;
 
 import com.risk.controllers.GameController;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -44,7 +46,7 @@ public class ArmiesLeft extends JPanel {
      */
     public ArmiesLeft() {
         more=new JButton("+");
-        armiesMoved=new JTextField("0");
+        armiesMoved=new JTextField("1");
         move=new JButton("Move");
         message=new JLabel("");
         
@@ -69,8 +71,7 @@ public class ArmiesLeft extends JPanel {
     public void update(String sourceCountry, String countryDest,GameController gc, int max){
         this.max=max;
         more.setEnabled(true);
-        armiesMoved.setText("0");
-        setListener(gc);
+        armiesMoved.setText("1");
         message.setText(sourceCountry+" -> "+countryDest);
         this.setVisible(true);
     }
@@ -79,18 +80,26 @@ public class ArmiesLeft extends JPanel {
      * Sets the listener for the buttons
      * @param gc game controller
      */
-    private void setListener(GameController gc){
-        more.addActionListener(e -> {
-            int i = 0;
+    public void setListener(GameController gc){
+        more.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            int i;
             if(Integer.parseInt(armiesMoved.getText())<max-1){
                 i=Integer.parseInt(armiesMoved.getText())+1;
                 armiesMoved.setText(Integer.toString(i));
             }else   
                 more.setEnabled(false);
+        
+            }
         });
         
-        move.addActionListener(e -> {
-            gc.moveArmiesAttack(Integer.parseInt(armiesMoved.getText()));
+        move.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int armiesToTransfer=Integer.parseInt(armiesMoved.getText());
+                gc.moveArmiesAttack(armiesToTransfer);
+            }
         });
         
      }

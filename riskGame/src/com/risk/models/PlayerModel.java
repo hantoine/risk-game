@@ -513,12 +513,18 @@ public abstract class PlayerModel extends Observable {
      * Uses all the armies in an attack
      */
     public void battleAll(){
-        while(this.getCurrentAttack().getSource().getNumArmies()>3 && this.getCurrentAttack().getDest().getNumArmies()!=0)
-            battle(3);
-        while(this.getCurrentAttack().getSource().getNumArmies()==3 && this.getCurrentAttack().getDest().getNumArmies()!=0)
-            battle(2);
-        while(this.getCurrentAttack().getSource().getNumArmies()==2 && this.getCurrentAttack().getDest().getNumArmies()!=0)
-            battle(1);
+        if(this.getCurrentAttack().getDest().getNumArmies()!=0){
+            if(this.getCurrentAttack().getSource().getNumArmies()>3){
+                battle(3);
+                battleAll();
+            }else if(this.getCurrentAttack().getSource().getNumArmies()==3){
+                battle(2);
+                battleAll();
+            }else if(this.getCurrentAttack().getSource().getNumArmies()==2){
+                battle(1);
+                battleAll();
+            }
+        }
     }
     /**
      * Create an array with different number of dices
@@ -550,8 +556,8 @@ public abstract class PlayerModel extends Observable {
      * @param armies number of armies to move
      */
     public void getCountry(int armies){
-        int newArmies=this.getCurrentAttack().getSource().getNumArmies()-armies;
-        this.getCurrentAttack().getSource().setNumArmies(newArmies);
+        int newArmies=this.getCurrentAttack().getSource().getNumArmies();
+        this.getCurrentAttack().getSource().setNumArmies(newArmies-armies);
         this.getCurrentAttack().getDest().setNumArmies(armies);
         this.getContriesOwned().add(this.getCurrentAttack().getDest());
         this.getCurrentAttack().getDest().getOwner().getContriesOwned().remove(this.getCurrentAttack().getDest());
