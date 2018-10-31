@@ -12,6 +12,8 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -189,8 +191,8 @@ public final class MapModel implements MapModelObservable {
      *
      * @return the list of territories in this map
      */
-    public Iterable<TerritoryModel> getTerritories() {
-        return graphTerritories.values();
+    public Collection<TerritoryModel> getTerritories() {
+        return Collections.unmodifiableCollection(graphTerritories.values());
     }
 
     /**
@@ -198,8 +200,8 @@ public final class MapModel implements MapModelObservable {
      *
      * @return the list of territories in this map
      */
-    public Iterable<ContinentModel> getContinents() {
-        return graphContinents.values();
+    public Collection<ContinentModel> getContinents() {
+        return Collections.unmodifiableCollection(graphContinents.values());
     }
 
     /**
@@ -338,8 +340,8 @@ public final class MapModel implements MapModelObservable {
      * @param element the element you want to check
      * @return whether the string is in the list
      */
-    public boolean isInList(String[] list, String element) {
-        return Stream.of(list).anyMatch(x -> x.equals(element));
+    public boolean isInList(List<String> list, String element) {
+        return list.stream().anyMatch(x -> x.equals(element));
     }
 
     /**
@@ -352,7 +354,7 @@ public final class MapModel implements MapModelObservable {
         int i = 0;
         String prefix = new String();
         String newName = new String();
-        String[] nameList;
+        List<String> nameList;
 
         if (continent) {
             prefix = "Continent";
@@ -406,8 +408,8 @@ public final class MapModel implements MapModelObservable {
      * Clear the map being edited
      */
     public void clearMap() {
-        String[] territoryList = this.getTerritoryList();
-        String[] continentList = this.getContinentList();
+        List<String> territoryList = this.getTerritoryList();
+        List<String> continentList = this.getContinentList();
 
         //delete components
         for (String territoryName : territoryList) {
@@ -446,7 +448,7 @@ public final class MapModel implements MapModelObservable {
         }
 
         getGraphContinents().remove(continentName);
-        int nbContinents = this.getContinentList().length;
+        int nbContinents = this.getContinentList().size();
         System.out.println("nb continents : " + Integer.toString(nbContinents));
         notifyObservers(UpdateTypes.REMOVE_CONTINENT, continentName);
         return true;
@@ -687,12 +689,10 @@ public final class MapModel implements MapModelObservable {
      *
      * @return the list of the continent
      */
-    public String[] getContinentList() {
-        Set<String> continentsList = this.getGraphContinents().keySet();
-        String[] continentList = Arrays.copyOf(continentsList.toArray(),
-                continentsList.size(),
-                String[].class);
-        return continentList;
+    public List<String> getContinentList() {
+        return Collections.unmodifiableList(
+                new ArrayList<>(this.getGraphContinents().keySet())
+        );
     }
 
     /**
@@ -700,12 +700,10 @@ public final class MapModel implements MapModelObservable {
      *
      * @return the array of the territory
      */
-    public String[] getTerritoryList() {
-        Set<String> territorySet = this.getGraphTerritories().keySet();
-        String[] territoryArray = Arrays.copyOf(territorySet.toArray(),
-                territorySet.size(),
-                String[].class);
-        return territoryArray;
+    public List<String> getTerritoryList() {
+        return Collections.unmodifiableList(
+                new ArrayList<>(this.getGraphTerritories().keySet())
+        );
     }
 
     /**

@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -293,11 +294,11 @@ public class MapEditorController {
 
         this.newMap.clearMap();
 
-        String[] remainingContinents = this.newMap.getContinentList();
-        if (remainingContinents.length != 1) {
+        List<String> remainingContinents = this.newMap.getContinentList();
+        if (remainingContinents.size() != 1) {
             System.out.println("wrong number of continents after the clear");
         }
-        String continentToDelete = remainingContinents[0];
+        String continentToDelete = remainingContinents.get(0);
 
         //set new image
         if (map.getImage() != null) {
@@ -453,7 +454,7 @@ public class MapEditorController {
      * @param targetButton button of the territory on the map view
      */
     public void updateTerritory(String territoryName, CountryButton2 targetButton) {
-        String[] continentList = newMap.getContinentList();
+        List<String> continentList = newMap.getContinentList();
         TerritoryModel territoryModel = newMap.getTerritoryByName(territoryName);
         String formerContinent = territoryModel.getContinentName();
         String continentName = territoryModel.getContinentName();

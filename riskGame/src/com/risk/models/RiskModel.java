@@ -274,7 +274,7 @@ public final class RiskModel {
      *
      * @param currentPlayer the currentPlayer to set
      */
-    public void setCurrentPlayer(PlayerModel currentPlayer) {
+    private void setCurrentPlayer(PlayerModel currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 

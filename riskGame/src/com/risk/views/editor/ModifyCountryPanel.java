@@ -6,6 +6,7 @@
 package com.risk.views.editor;
 
 import java.awt.FlowLayout;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -35,9 +36,9 @@ public class ModifyCountryPanel extends JPanel {
      * @param continentList List of the continents that can be the continent of
      * the territory
      * @param territoryName name of the territory being edited
-     * @param territoryContinent continent of the territory beign edited.
+     * @param territoryContinent continent of the territory being edited.
      */
-    public ModifyCountryPanel(String[] continentList, String territoryName, String territoryContinent) {
+    public ModifyCountryPanel(List<String> continentList, String territoryName, String territoryContinent) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(500, 500);
 
@@ -55,7 +56,7 @@ public class ModifyCountryPanel extends JPanel {
         System.out.println("territoryName:" + territoryName);
         System.out.println("territoryContinent:" + territoryContinent);
 
-        continentListBox = new JComboBox(continentList);
+        continentListBox = new JComboBox(continentList.toArray());
         if (!territoryContinent.equals("")) {
             continentListBox.setSelectedItem(territoryContinent);
         }
