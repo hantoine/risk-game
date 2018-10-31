@@ -87,31 +87,26 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     }
 
     /**
-     * Update the information displayed in the view to match the ones in the
-     * model
-     *
-     * @param rm Model of the game
-     */
-    public void updateView(RiskModel rm) {
-        this.getStagePanel().updateView(rm);
-        this.getMapPanel().updateView(rm, false);
-        this.getPlayerPanel().updateView(rm);
-        this.getPlayerHandPanel().updateView(rm);
-
-    }
-
-    /**
-     * Update the information displayed in the view to match the ones in the
-     * model Update also the map which can have changed (if not changed just
-     * overhead)
+     * Add view elements as observer on corresponding model elements
      *
      * @param rm model of the game
      */
-    public void updateViewWithNewMap(RiskModel rm) {
+    @Override
+    public void observeModel(RiskModel rm) {
+        updateView(rm, true);
+        rm.getPlayerList().forEach((pl) -> {
+            pl.addObserver(playerPanel);
+            pl.getHand().addObserver(playerHandPanel);
+        });
+        rm.addObserver(this.stagePanel);
+        rm.addObserver(this.mapPanel);
+    }
+
+    private void updateView(RiskModel rm, boolean newMap) {
         this.getStagePanel().updateView(rm);
-        this.getMapPanel().updateView(rm, true);
-        this.getPlayerPanel().updateView(rm);
-        this.getPlayerHandPanel().updateView(rm);
+        this.getMapPanel().updateView(rm.getMap(), newMap);
+        this.getPlayerPanel().updateView(rm.getCurrentPlayer());
+        this.getPlayerHandPanel().updateView(rm.getCurrentPlayer().getHand());
 
         this.setSize(
                 rm.getMap().getMapWidth() + 200,
@@ -139,7 +134,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.getMapPanel().setListener(rc.getCountryListener());
 
         this.getStagePanel().getEndPhase().addActionListener(e -> {
-            rc.getPlayGame().finishPhase();
+            rc.getPlayGame().endPhaseButtonPressed();
         });
 
         this.getStagePanel().getHandCards().addActionListener(e -> {

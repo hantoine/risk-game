@@ -5,8 +5,8 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.RiskModel;
 import com.risk.models.MapModel;
+import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import com.risk.views.editor.MapEditorView;
 
@@ -71,9 +71,9 @@ public final class RiskController {
         MapEditorController editorController = new MapEditorController(newMap);
         this.mapEditor = new MapEditorView(1000, 600, editorController, newMap);
         this.mapEditor.setVisible(true);
-        newMap.addObserver(mapEditor);
-        newMap.addObserver(mapEditor.getMapView());
-        newMap.addObserver(mapEditor.getContinentListPanel());
+        newMap.addObserverCustom(mapEditor);
+        newMap.addObserverCustom(mapEditor.getMapView());
+        newMap.addObserverCustom(mapEditor.getContinentListPanel());
     }
 
     /**
@@ -92,7 +92,7 @@ public final class RiskController {
         this.setPlayGame(new GameController(this.modelRisk, this.viewRisk));
         this.modelRisk.initializePlayersArmies();
         this.modelRisk.assignCoutriesToPlayers();
-        this.viewRisk.updateViewWithNewMap(modelRisk);
+        this.viewRisk.observeModel(modelRisk);
     }
 
     /**

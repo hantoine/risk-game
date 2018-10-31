@@ -5,13 +5,11 @@
  */
 package com.risk.views.game;
 
-import com.risk.models.PlayerModel;
-import com.risk.models.RiskModel;
+import com.risk.models.HandModel;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BoxLayout;
@@ -43,16 +41,16 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
      * Update the information displayed by the PlayerGameHandPanl according to
      * the information of the current player
      *
-     * @param rm The model of the game containing all information about the
-     * current player
+     * @param currentHand The model of the current game hand
      */
-    public void updateView(RiskModel rm) {
-        PlayerModel currentPlayer = rm.getCurrentPlayer();
+    public void updateView(HandModel currentHand) {
         this.removeAll();
-        currentPlayer.getCardsOwned().getCards().stream()
-                .forEach((card) -> {
-                    addCard(card.getTypeOfArmie(), card.getCountryName(), currentPlayer.getColor());
-                });
+        currentHand.getCards().forEach((card) -> {
+            addCard(card.getTypeOfArmie(),
+                    card.getCountryName(),
+                    currentHand.getOwner().getColor()
+            );
+        });
         this.repaint();
     }
 
@@ -64,32 +62,31 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof RiskModel) {
-            this.updateView((RiskModel) arg);
-        } else {
-            LinkedList<String> receivedObj = (LinkedList<String>) arg;
-            addCard(receivedObj.get(2), receivedObj.get(1), ((PlayerModel) o).getColor());
+        if (o instanceof HandModel) {
+            HandModel updatedHand = (HandModel) o;
+            if (updatedHand.isCurrent()) {
+                updateView(updatedHand);
+            }
         }
     }
 
     /**
      * Add a card to be displayed in this panel
      *
-     * @param typeofArmies The name of the type of armies associated with the
-     * card
+     * @param armyType The name of the type of armies associated with the card
      * @param territoryName The name of the territory associated with the card
-     * @param backgroundColor The background color of the card
+     * @param bgColor The background color of the card
      */
-    public void addCard(String typeofArmies, String territoryName, Color backgroundColor) {
+    public void addCard(String armyType, String territoryName, Color bgColor) {
         ImageIcon cardIcon = new ImageIcon("." + File.separator + "images"
-                + File.separator + typeofArmies + ".png");
+                + File.separator + armyType + ".png");
         Image image = cardIcon.getImage();
-        Image newImage = image.getScaledInstance(50, 70, java.awt.Image.SCALE_SMOOTH);
+        Image newImage = image.getScaledInstance(50, 70, Image.SCALE_SMOOTH);
         cardIcon = new ImageIcon(newImage);
         JButton aux = new JButton();
         aux.setIcon(cardIcon);
         aux.setText("");
-        aux.setBackground(backgroundColor);
+        aux.setBackground(bgColor);
         handCards.put(territoryName, aux);
         this.add(aux);
     }
