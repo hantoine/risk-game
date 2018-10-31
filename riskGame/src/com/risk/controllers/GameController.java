@@ -117,12 +117,12 @@ public class GameController {
      * reinforcement phase
      */
     public void clickHand() {
-
         modelRisk.getCurrentPlayer().exchangeCardsToArmies();
         riskView.updateView(modelRisk);
     }
 
     public void endPhaseButtonPressed() {
         this.modelRisk.finishPhase();
+        riskView.updateView(modelRisk);
     }
 }
