@@ -210,6 +210,7 @@ public class GameController {
                 
                 AttackMove attack= new AttackMove(sourceTerritory,destTerritory);
                 modelRisk.getCurrentPlayer().setCurrentAttack(attack);
+                System.out.println("Creacion de ataque: "+sourceTerritory.getName()+"-->"+destTerritory.getName());
                 this.riskView.updateAuxiliarPhasePanel(sourceTerritoryName, destTerritoryName,this,sourceTerritory.getNumArmies(), 0);
                 break;
         }
@@ -282,7 +283,7 @@ public class GameController {
         if(modelRisk.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies()==0)
             riskView.updateAuxiliarPhasePanel(source, dest, this, modelRisk.getCurrentPlayer().getCurrentAttack().getSource().getNumArmies(), 1);
         else
-         finishAttackMove();
+            finishAttackMove();
     }
     
     /**

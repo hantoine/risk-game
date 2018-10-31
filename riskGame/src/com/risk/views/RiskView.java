@@ -131,6 +131,7 @@ public final class RiskView extends javax.swing.JFrame {
             case 1:
                 if(this.phaseAuxiliarPanel.getArmiesLeft()==null){
                     ArmiesLeft moveArmiesPanel=new ArmiesLeft();
+                    moveArmiesPanel.setListener(gc);
                     this.phaseAuxiliarPanel.setArmiesLeft(moveArmiesPanel);
                 }
                 this.phaseAuxiliarPanel.updatePanel(phaseAuxiliarPanel.getArmiesLeft());
