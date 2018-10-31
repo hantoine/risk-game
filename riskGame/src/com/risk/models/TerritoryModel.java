@@ -5,7 +5,9 @@
  */
 package com.risk.models;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * It represents a territory/country in the map
@@ -78,7 +80,7 @@ public class TerritoryModel {
      *
      * @param neighbour the neighbour which is gonna be added
      */
-    public void addNeighbour(TerritoryModel neighbour) {
+    void addNeighbour(TerritoryModel neighbour) {
         this.adj.add(neighbour);
     }
 
@@ -87,7 +89,7 @@ public class TerritoryModel {
      *
      * @param neighbour the neighbour which is gonna be deleted
      */
-    public void removeNeighbour(TerritoryModel neighbour) {
+    void removeNeighbour(TerritoryModel neighbour) {
         this.adj.remove(neighbour);
     }
 
@@ -97,7 +99,7 @@ public class TerritoryModel {
      * @param positionX the position X of this country
      * @param positionY the position Y of this country
      */
-    public void countrySetter(int positionX, int positionY) {
+    void countrySetter(int positionX, int positionY) {
 
         this.setPositionX(positionX);
         this.setPositionY(positionY);
@@ -127,8 +129,17 @@ public class TerritoryModel {
      *
      * @return the adj
      */
-    public LinkedList<TerritoryModel> getAdj() {
-        return adj;
+    public List<TerritoryModel> getAdj() {
+        return Collections.unmodifiableList(adj);
+    }
+
+    /**
+     * Add adjacent territory
+     *
+     * @param adjacentTerritory territory to add as an adjacent territory
+     */
+    void addAdjacentTerritory(TerritoryModel adjacentTerritory) {
+        this.adj.add(adjacentTerritory);
     }
 
     /**
@@ -136,7 +147,7 @@ public class TerritoryModel {
      *
      * @param adj the adj to set
      */
-    public void setAdj(LinkedList<TerritoryModel> adj) {
+    void setAdj(LinkedList<TerritoryModel> adj) {
         this.adj = adj;
     }
 
@@ -154,7 +165,7 @@ public class TerritoryModel {
      *
      * @return The new number of armies on this territory
      */
-    public int incrementNumArmies() {
+    int incrementNumArmies() {
         return ++numArmies;
     }
 
@@ -163,7 +174,7 @@ public class TerritoryModel {
      *
      * @return The new number of armies on this territory
      */
-    public int decrementNumArmies() throws IllegalStateException {
+    int decrementNumArmies() throws IllegalStateException {
         if (numArmies == 1) {
             throw new IllegalStateException("Less than one army on a territory not allowed.");
         }
@@ -175,7 +186,7 @@ public class TerritoryModel {
      *
      * @param numArmies the numArmies to set
      */
-    public void setNumArmies(int numArmies) {
+    void setNumArmies(int numArmies) {
         this.numArmies = numArmies;
     }
 
@@ -193,7 +204,7 @@ public class TerritoryModel {
      *
      * @param owner the owner to set
      */
-    public void setOwner(PlayerModel owner) {
+    void setOwner(PlayerModel owner) {
         this.owner = owner;
     }
 
@@ -211,7 +222,7 @@ public class TerritoryModel {
      *
      * @param name the name to set
      */
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -229,7 +240,7 @@ public class TerritoryModel {
      *
      * @param continentName the continentName to set
      */
-    public void setContinentName(String continentName) {
+    void setContinentName(String continentName) {
         this.continentName = continentName;
     }
 
@@ -238,7 +249,7 @@ public class TerritoryModel {
      *
      * @param positionX the positionX to set
      */
-    public void setPositionX(int positionX) {
+    void setPositionX(int positionX) {
         this.positionX = positionX;
     }
 
@@ -247,7 +258,7 @@ public class TerritoryModel {
      *
      * @param positionY the positionY to set
      */
-    public void setPositionY(int positionY) {
+    void setPositionY(int positionY) {
         this.positionY = positionY;
     }
 

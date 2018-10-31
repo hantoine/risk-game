@@ -396,7 +396,7 @@ public final class MapModel implements MapModelObservable {
     }
 
     public String getAvailableContinent(TerritoryModel territory) {
-        LinkedList<TerritoryModel> neighbours = territory.getAdj();
+        List<TerritoryModel> neighbours = territory.getAdj();
         if (neighbours != null && !neighbours.isEmpty()) {
             return neighbours.get(0).getContinentName();
         } else {
@@ -715,12 +715,12 @@ public final class MapModel implements MapModelObservable {
      */
     public String[] getPotentialNeighbours(String territoryName) {
         Set<String> territorySet = this.getGraphTerritories().keySet();
-        List<String> territoryList = new ArrayList<String>();
+        List<String> territoryList = new ArrayList<>();
         territoryList.addAll(territorySet);
         territoryList.remove(territoryName);
 
         TerritoryModel territoryModel = this.getGraphTerritories().get(territoryName);
-        LinkedList<TerritoryModel> neighbours = territoryModel.getAdj();
+        List<TerritoryModel> neighbours = territoryModel.getAdj();
         for (TerritoryModel neighbour : neighbours) {
             territoryList.remove(neighbour.getName());
         }

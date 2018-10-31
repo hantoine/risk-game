@@ -505,7 +505,7 @@ public class MapEditorController {
         String neighbourName;
 
         //get list of neighbours' names
-        LinkedList<TerritoryModel> neighbourList = newMap.getTerritoryByName(territoryName).getAdj();
+        List<TerritoryModel> neighbourList = newMap.getTerritoryByName(territoryName).getAdj();
 
         if (neighbourList.isEmpty()) {
             clickedPanel.showError("No neighbour found for this territory");
