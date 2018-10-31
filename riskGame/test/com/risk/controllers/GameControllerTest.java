@@ -70,18 +70,11 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        Method method;
-        try {
-            method = PlayerModel.class.getDeclaredMethod("addCountryOwned", TerritoryModel.class);
-            method.setAccessible(true);
-            method.invoke(playerA, territoryA);
-            method.invoke(playerA, territoryB);
-        } catch (SecurityException | ReflectiveOperationException | IllegalArgumentException ex) {
-            throw new AssumptionViolatedException("Cannot arrange");
-        }
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerA, territoryB);
 
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
@@ -109,10 +102,10 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        terrA.setOwner(playerA);
-        terrC.setOwner(playerA);
-        terrA.setNumArmies(2);
-        terrC.setNumArmies(1);
+        addCountryOwned(playerA, terrA);
+        addCountryOwned(playerA, terrC);
+        setNumArmies(terrA, 2);
+        setNumArmies(terrC, 1);
 
         instance.dragNDropTerritory("TerritoryA", "TerritoryC");
 
@@ -139,10 +132,10 @@ public class GameControllerTest {
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
         PlayerModel playerB = rm.getPlayerList().getLast();
-        territoryA.setOwner(playerB);
-        territoryB.setOwner(playerA);
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
+        addCountryOwned(playerB, territoryA);
+        addCountryOwned(playerA, territoryB);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
@@ -169,10 +162,10 @@ public class GameControllerTest {
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
         PlayerModel playerB = rm.getPlayerList().getLast();
-        territoryA.setOwner(playerA);
-        territoryB.setOwner(playerB);
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerB, territoryB);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
@@ -197,23 +190,13 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        Method method;
-        try {
-            method = PlayerModel.class
-                    .getDeclaredMethod("addCountryOwned", TerritoryModel.class);
-            method.setAccessible(true);
-            method.invoke(playerA, territoryA);
-            method.invoke(playerA, territoryB);
-        } catch (SecurityException
-                | ReflectiveOperationException
-                | IllegalArgumentException ex) {
-            throw new AssumptionViolatedException("Cannot arrange");
-        }
-        territoryA.setNumArmies(1);
-        territoryB.setNumArmies(2);
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerA, territoryB);
+        setNumArmies(territoryA, 1);
+        setNumArmies(territoryB, 2);
         instance.dragNDropTerritory(destTerritoryName, sourceTerritoryName);
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
@@ -239,23 +222,13 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        Method method;
-        try {
-            method = PlayerModel.class
-                    .getDeclaredMethod("addCountryOwned", TerritoryModel.class);
-            method.setAccessible(true);
-            method.invoke(playerA, territoryA);
-            method.invoke(playerA, territoryB);
-        } catch (SecurityException
-                | ReflectiveOperationException
-                | IllegalArgumentException ex) {
-            throw new AssumptionViolatedException("Cannot arrange");
-        }
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerA, territoryB);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
@@ -280,10 +253,10 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getPlayerList().getFirst();
-        territoryA.setOwner(playerA);
-        territoryB.setOwner(playerA);
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerA, territoryB);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
@@ -307,20 +280,10 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        Method method;
-        try {
-            method = PlayerModel.class
-                    .getDeclaredMethod("addCountryOwned", TerritoryModel.class);
-            method.setAccessible(true);
-            method.invoke(playerA, territoryA);
-            method.invoke(playerA, territoryB);
-        } catch (SecurityException
-                | ReflectiveOperationException
-                | IllegalArgumentException ex) {
-            throw new AssumptionViolatedException("Cannot arrange");
-        }
-        territoryA.setNumArmies(1);
-        territoryB.setNumArmies(1);
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerA, territoryB);
+        setNumArmies(territoryA, 1);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
@@ -329,6 +292,34 @@ public class GameControllerTest {
         System.out.println("done");
         assertEquals("There is only one army in the source country !",
                 drv.getMessage());
+    }
+
+    private void setNumArmies(TerritoryModel ter, int numArmies) {
+        Method method;
+        try {
+            method = TerritoryModel.class
+                    .getDeclaredMethod("setNumArmies", int.class);
+            method.setAccessible(true);
+            method.invoke(ter, numArmies);
+        } catch (SecurityException
+                | ReflectiveOperationException
+                | IllegalArgumentException ex) {
+            throw new AssumptionViolatedException("Cannot arrange");
+        }
+    }
+
+    private void addCountryOwned(PlayerModel player, TerritoryModel territory) {
+        Method method;
+        try {
+            method = PlayerModel.class
+                    .getDeclaredMethod("addCountryOwned", TerritoryModel.class);
+            method.setAccessible(true);
+            method.invoke(player, territory);
+        } catch (SecurityException
+                | ReflectiveOperationException
+                | IllegalArgumentException ex) {
+            throw new AssumptionViolatedException("Cannot arrange");
+        }
     }
 
     private static class DummyRiskView implements RiskViewInterface {
