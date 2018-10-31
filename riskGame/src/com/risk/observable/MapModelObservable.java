@@ -17,7 +17,7 @@ public interface MapModelObservable {
      *
      * @param newObserver the new observer which is needed
      */
-    public void addObserver(MapModelObserver newObserver);
+    public void addObserverCustom(MapModelObserver newObserver);
 
     /**
      * Allows to notify the observers that a change occured in the model.
@@ -25,5 +25,5 @@ public interface MapModelObservable {
      * @param updateType the update type of the object
      * @param object object of observer
      */
-    public void notifyObservers(UpdateTypes updateType, Object object);
+    public void notifyObserversCustom(UpdateTypes updateType, Object object);
 }

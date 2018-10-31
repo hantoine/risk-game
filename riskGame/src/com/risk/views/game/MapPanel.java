@@ -9,6 +9,8 @@ import java.awt.Image;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JPanel;
 
 /**
@@ -16,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author Nellybett
  */
-public class MapPanel extends JPanel {
+public class MapPanel extends JPanel implements Observer {
 
     /**
      * image Reference to the image of the map
@@ -79,7 +81,7 @@ public class MapPanel extends JPanel {
     /**
      * Attach the listener to the map
      *
-     * @param countryListener the mouselister of the country
+     * @param countryListener the mousselistener of the country
      */
     public void setListener(MouseListener countryListener) {
         this.addMouseListener(countryListener);
@@ -88,15 +90,14 @@ public class MapPanel extends JPanel {
     /**
      * Updates the view with the changes in the model
      *
-     * @param rm model reference
+     * @param map reference to the model of the map
      * @param mapChanged the map which is changed
      */
-    public void updateView(RiskModel rm, boolean mapChanged) {
+    public void updateView(MapModel map, boolean mapChanged) {
         if (mapChanged) {
-            this.createMap(rm.getMap());
+            this.createMap(map);
         }
 
-        MapModel map = rm.getMap();
         this.countriesButtons.values()
                 .forEach((cb) -> {
                     TerritoryModel terri = map.getTerritoryByName(cb.getName());
@@ -153,6 +154,19 @@ public class MapPanel extends JPanel {
      */
     public Image getImage() {
         return image;
+    }
+
+    @Override
+    public void update(Observable o, Object o1) {
+        boolean mapChanged = false;
+        if (o1 instanceof Boolean) {
+            mapChanged = (Boolean) o1;
+        }
+        if (o instanceof MapModel) {
+            this.updateView((MapModel) o, mapChanged);
+        } else if (o instanceof RiskModel) {
+            this.updateView(((RiskModel) o).getMap(), mapChanged);
+        }
     }
 
 }

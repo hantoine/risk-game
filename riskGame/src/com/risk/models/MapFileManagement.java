@@ -240,7 +240,7 @@ public class MapFileManagement {
     public static int countryCreator(String info, MapModel board) {
         HashMap<String, TerritoryModel> graphTerritories = new HashMap();
 
-        if (board.getGraphContinents() == null) {
+        if (board.getTerritories() == null) {
             return -1;
         }
 
@@ -317,8 +317,8 @@ public class MapFileManagement {
                     graphTerritories.put(auxCountryAdj.getName(), auxCountryAdj);
                 }
 
-                if (board.getGraphContinents().containsKey(currentTerritoryLine[3])) {
-                    board.getGraphContinents().get(currentTerritoryLine[3]).addMember(auxCountry);
+                if (board.getContinentList().contains(currentTerritoryLine[3])) {
+                    board.getContinentByName(currentTerritoryLine[3]).addMember(auxCountry);
                     auxCountry.setContinentName(currentTerritoryLine[3]);
                 } else {
                     return -1;
@@ -371,12 +371,12 @@ public class MapFileManagement {
         configuration += "scroll=" + mapConfig.getScroll() + "\r\n";
         configuration += "warn=" + (mapConfig.isWarn() ? "yes" : "no") + "\r\n";
 
-        for (String continent : board.getGraphContinents().keySet()) {
-            continents += continent + "=" + board.getGraphContinents().get(continent).getBonusScore() + "\n";
+        for (String continent : board.getContinentList()) {
+            continents += continent + "=" + board.getContinentByName(continent).getBonusScore() + "\n";
         }
 
-        for (String country : board.getGraphTerritories().keySet()) {
-            TerritoryModel aux = board.getGraphTerritories().get(country);
+        for (String country : board.getTerritoryList()) {
+            TerritoryModel aux = board.getTerritoryByName(country);
             String adj = getAdj(aux);
 
             if (result == 0) {

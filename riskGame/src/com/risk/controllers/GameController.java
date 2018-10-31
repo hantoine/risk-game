@@ -61,10 +61,9 @@ public class GameController {
                 if (currentPlayer.getNumArmiesAvailable() == 0 && modelRisk.getTurn() == 0) {
                     this.modelRisk.finishPhase();
                 }
-                riskView.updateView(modelRisk);
                 break;
             case REINFORCEMENT:
-                if (currentPlayer.getCardsOwned().getNbCards() == 5) {
+                if (currentPlayer.getHand().getNbCards() == 5) {
                     riskView.showMessage("You have 5 cards. Please hand some cards");
                     break;
                 }
@@ -76,7 +75,6 @@ public class GameController {
                 if (currentPlayer.getNumArmiesAvailable() == 0) {
                     this.modelRisk.finishPhase();
                 }
-                riskView.updateView(modelRisk);
 
                 break;
         }
@@ -105,7 +103,6 @@ public class GameController {
                         this.riskView.showMessage(ex.getReason());
                     }
                 }
-                this.riskView.updateView(modelRisk);
             }
             break;
         }
@@ -117,12 +114,13 @@ public class GameController {
      * reinforcement phase
      */
     public void clickHand() {
-        modelRisk.getCurrentPlayer().exchangeCardsToArmies();
-        riskView.updateView(modelRisk);
+        modelRisk.exchangeCardsWithArmiesForCurrentPlayer();
     }
 
+    /**
+     * Called when the end of phase button is pressed in the UI
+     */
     public void endPhaseButtonPressed() {
         this.modelRisk.finishPhase();
-        riskView.updateView(modelRisk);
     }
 }
