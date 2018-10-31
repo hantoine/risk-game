@@ -313,7 +313,7 @@ public class MapFileManagement {
                         auxCountryAdj = new TerritoryModel(currentAdjacentTerritoryName);
                     }
                     //Adds the adj
-                    auxCountry.getAdj().add(auxCountryAdj);
+                    auxCountry.addAdjacentTerritory(auxCountryAdj);
                     graphTerritories.put(auxCountryAdj.getName(), auxCountryAdj);
                 }
 

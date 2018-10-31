@@ -130,11 +130,7 @@ public class MapModelTest {
      */
     @Test
     public void testIsValidonNotConnectedMap() {
-        // Remove connection between TerritoryD and TerritoryC
-        mapModel.getGraphTerritories().get("TerritoryC").getAdj()
-                .remove(mapModel.getGraphTerritories().get("TerritoryD"));
-        mapModel.getGraphTerritories().get("TerritoryD").getAdj()
-                .remove(mapModel.getGraphTerritories().get("TerritoryC"));
+        mapModel.removeLink("TerritoryD", "TerritoryC");
 
         boolean expResult = false;
         boolean result = mapModel.isValid();
