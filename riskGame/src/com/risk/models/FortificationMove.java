@@ -10,24 +10,25 @@ package com.risk.models;
  *
  * @author hantoine
  */
-public class FortificationMove {
+class FortificationMove {
 
     /**
      * territorySource the country with the armies
      */
-    private TerritoryModel territorySource;
+    private final TerritoryModel territorySource;
     /**
      * territoryDest the countries where the player wants to move the armies
      */
-    private TerritoryModel territoryDest;
+    private final TerritoryModel territoryDest;
 
     /**
      * Constructor
      *
      * @param territorySource the source of the territory
-     * @param territoryDest the dest of the territory
+     * @param territoryDest the destination of the territory
      */
-    public FortificationMove(TerritoryModel territorySource, TerritoryModel territoryDest) {
+    FortificationMove(
+            TerritoryModel territorySource, TerritoryModel territoryDest) {
         this.territorySource = territorySource;
         this.territoryDest = territoryDest;
     }
@@ -76,5 +77,9 @@ public class FortificationMove {
             return false;
         }
         return true;
+    }
+
+    boolean compatible(FortificationMove last) {
+        return last != null && !last.equals(this);
     }
 }

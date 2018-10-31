@@ -17,21 +17,11 @@ import com.risk.views.menu.NewGamePanel;
 public interface RiskViewInterface {
 
     /**
-     * Update the information displayed in the view to match the ones in the
-     * model
-     *
-     * @param rm Model of the game
-     */
-    public void updateView(RiskModel rm);
-
-    /**
-     * Update the information displayed in the view to match the ones in the
-     * model Update also the map which can have changed (if not changed just
-     * overhead)
+     * Add view elements as observer on corresponding model elements
      *
      * @param rm model of the game
      */
-    public void updateViewWithNewMap(RiskModel rm);
+    public void observeModel(RiskModel rm);
 
     /**
      * Open a Message Dialog to show message to user

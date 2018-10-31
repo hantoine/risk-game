@@ -31,7 +31,7 @@ public enum GamePhase {
      *
      * @return the order of the phrase
      */
-    public GamePhase next() {
+    GamePhase next() {
         return vals[(this.ordinal() + 1) % vals.length];
     }
 }

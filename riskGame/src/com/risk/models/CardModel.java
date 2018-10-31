@@ -17,7 +17,7 @@ public class CardModel {
      */
     private String countryName;
     /**
-     * typeOfArmie Type of armie in the card
+     * typeOfArmie Type of army in the card
      */
     private String typeOfArmie;
 
@@ -27,7 +27,7 @@ public class CardModel {
      * @param countryName name of a country in the card
      * @param typeOfArmies name of a type of armies
      */
-    public CardModel(String countryName, String typeOfArmies) {
+    CardModel(String countryName, String typeOfArmies) {
         this.countryName = countryName;
         this.typeOfArmie = typeOfArmies;
     }
@@ -46,7 +46,7 @@ public class CardModel {
      *
      * @param countryName the countryName to set
      */
-    public void setCountryName(String countryName) {
+    void setCountryName(String countryName) {
         this.countryName = countryName;
     }
 
@@ -64,7 +64,7 @@ public class CardModel {
      *
      * @param typeOfArmie the typeOfArmie to set
      */
-    public void setTypeOfArmie(String typeOfArmie) {
+    void setTypeOfArmie(String typeOfArmie) {
         this.typeOfArmie = typeOfArmie;
     }
 

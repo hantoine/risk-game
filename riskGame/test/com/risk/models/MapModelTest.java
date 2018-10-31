@@ -130,11 +130,7 @@ public class MapModelTest {
      */
     @Test
     public void testIsValidonNotConnectedMap() {
-        // Remove connection between TerritoryD and TerritoryC
-        mapModel.getGraphTerritories().get("TerritoryC").getAdj()
-                .remove(mapModel.getGraphTerritories().get("TerritoryD"));
-        mapModel.getGraphTerritories().get("TerritoryD").getAdj()
-                .remove(mapModel.getGraphTerritories().get("TerritoryC"));
+        mapModel.removeLink("TerritoryD", "TerritoryC");
 
         boolean expResult = false;
         boolean result = mapModel.isValid();
@@ -149,8 +145,7 @@ public class MapModelTest {
     @Test
     public void testIsValidonContinentNotConnectedMap() {
         // Create a new continent ContinentC which is not connected
-        mapModel.getGraphContinents()
-                .put("ContinentC", new ContinentModel("ContinentC", 2));
+        mapModel.addContinent("ContinentC", 3);
         mapModel.getGraphTerritories()
                 .get("TerritoryA").setContinentName("ContinentC");
         mapModel.getGraphTerritories()
@@ -168,8 +163,7 @@ public class MapModelTest {
     @Test
     public void testIsValidonEmptyContinentMap() {
         // Create a new continent without adding any territories in it
-        mapModel.getGraphContinents()
-                .put("ContinentC", new ContinentModel("ContinentC", 2));
+        mapModel.addContinent("ContinentC", 3);
 
         boolean expResult = false;
         boolean result = mapModel.isValid();
