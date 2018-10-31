@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -66,6 +67,7 @@ public class MapView extends JPanel implements MapModelObserver {
 
     /**
      * Constructor of a map view
+     *
      * @param editorController controller of the editor
      */
     public MapView(MapEditorController editorController) {
@@ -219,24 +221,24 @@ public class MapView extends JPanel implements MapModelObserver {
         String name1;
         String name2;
         String[] neighbours = (String[]) object;
-        String linkName="";
-        
+        String linkName = "";
+
         Iterator linkIt = this.links.keySet().iterator();
-        for(int i =0;i<this.links.keySet().size(); i++){
-            String existingLinkName = (String)linkIt.next();
+        for (int i = 0; i < this.links.keySet().size(); i++) {
+            String existingLinkName = (String) linkIt.next();
             String[] existingNeighbours = existingLinkName.split(";");
-            if(existingNeighbours.length==2){
-                name1=existingNeighbours[0];
-                name2=existingNeighbours[1];
-                if(neighbours[0].equals(name1) && neighbours[1].equals(name2) || neighbours[0].equals(name2) && neighbours[1].equals(name1)){
-                    linkName=existingLinkName;
+            if (existingNeighbours.length == 2) {
+                name1 = existingNeighbours[0];
+                name2 = existingNeighbours[1];
+                if (neighbours[0].equals(name1) && neighbours[1].equals(name2) || neighbours[0].equals(name2) && neighbours[1].equals(name1)) {
+                    linkName = existingLinkName;
                     break;
                 }
             }
         }
 
         //remove from list of links
-        if(!linkName.equals("")){
+        if (!linkName.equals("")) {
             links.remove(linkName);
             //undraw
             repaint();
@@ -323,7 +325,7 @@ public class MapView extends JPanel implements MapModelObserver {
      * modified.
      * @return the new territory informations gathered from the user.
      */
-    public Map<String, String> modifyTerritory(String[] continentsList, String territoryName, String continentName) {
+    public Map<String, String> modifyTerritory(List<String> continentsList, String territoryName, String continentName) {
         Map<String, String> data = new HashMap<>();
 
         ModifyCountryPanel modifyPanel = new ModifyCountryPanel(continentsList, territoryName, continentName);

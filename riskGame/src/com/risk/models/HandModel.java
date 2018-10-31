@@ -6,8 +6,10 @@
 package com.risk.models;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * It represents the group of cards that is owned by a player
@@ -48,8 +50,8 @@ public class HandModel {
      *
      * @return
      */
-    public Iterable<CardModel> getCards() {
-        return cards;
+    public List<CardModel> getCards() {
+        return Collections.unmodifiableList(cards);
     }
 
     /**
