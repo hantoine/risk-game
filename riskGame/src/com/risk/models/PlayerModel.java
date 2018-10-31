@@ -7,6 +7,7 @@ package com.risk.models;
 
 import java.awt.Color;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Observable;
 
@@ -137,8 +138,8 @@ public abstract class PlayerModel extends Observable {
      *
      * @return the contriesOwned
      */
-    public Iterable<TerritoryModel> getContriesOwned() {
-        return contriesOwned;
+    public Collection<TerritoryModel> getContriesOwned() {
+        return Collections.unmodifiableCollection(this.contriesOwned);
     }
 
     public boolean checkOwnTerritory(TerritoryModel territory) {
@@ -210,8 +211,8 @@ public abstract class PlayerModel extends Observable {
      *
      * @return the continentsOwned
      */
-    public Iterable<ContinentModel> getContinentsOwned() {
-        return continentsOwned;
+    public Collection<ContinentModel> getContinentsOwned() {
+        return Collections.unmodifiableCollection(this.continentsOwned);
     }
 
     /**
