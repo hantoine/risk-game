@@ -139,7 +139,7 @@ public class HandModel {
             });
 
         } else {
-            for (Iterator<CardModel> iterator = this.getCards().iterator(); iterator.hasNext();) {
+            for (Iterator<CardModel> iterator = this.cards.iterator(); iterator.hasNext();) {
                 CardModel card = iterator.next();
                 if (card.getTypeOfArmie().equals(typeOfArmie)) {
                     deck.addFirst(card);
