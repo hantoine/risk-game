@@ -5,9 +5,6 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.ContinentModel;
-import com.risk.models.FortificationMove;
-import com.risk.models.GamePhase;
 import com.risk.models.MapModel;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
@@ -15,10 +12,9 @@ import com.risk.models.TerritoryModel;
 import com.risk.views.RiskViewInterface;
 import com.risk.views.menu.NewGamePanel;
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.lang.reflect.Method;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.AssumptionViolatedException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,34 +44,11 @@ public class GameControllerTest {
     private static MapModel getTestMap() {
         MapModel map = new MapModel();
 
-        HashMap<String, ContinentModel> graphContinents = new HashMap<>();
-        String name;
-        name = "ContinentA";
-        graphContinents.put(name, new ContinentModel(name, 3));
-
-        HashMap<String, TerritoryModel> graphTerritories = new HashMap<>();
-        name = "TerritoryA";
-        graphTerritories.put(name, new TerritoryModel(name, 50, 50));
-        name = "TerritoryB";
-        graphTerritories.put(name, new TerritoryModel(name, 100, 50));
-
-        LinkedList<TerritoryModel> memberTerritories = new LinkedList();
-        graphTerritories.get("TerritoryA").setContinentName("ContinentA");
-        memberTerritories.add(graphTerritories.get("TerritoryA"));
-        graphTerritories.get("TerritoryB").setContinentName("ContinentA");
-        memberTerritories.add(graphTerritories.get("TerritoryB"));
-        graphContinents.get("ContinentA").setMembers(memberTerritories);
-
-        LinkedList<TerritoryModel> adjacentTerritories = new LinkedList<>();
-        adjacentTerritories.add(graphTerritories.get("TerritoryB"));
-        graphTerritories.get("TerritoryA").setAdj(adjacentTerritories);
-
-        adjacentTerritories = new LinkedList<>();
-        adjacentTerritories.add(graphTerritories.get("TerritoryA"));
-        graphTerritories.get("TerritoryB").setAdj(adjacentTerritories);
-
-        map.setGraphTerritories(graphTerritories);
-        map.setGraphContinents(graphContinents);
+        map.removeContinent(map.getContinentList().get(0));
+        map.addContinent("ContinentA", 3);
+        map.loadTerritory(50, 100, "TerritoryA", "ContinentA");
+        map.loadTerritory(100, 50, "TerritoryB", "ContinentA");
+        map.addLink("TerritoryA", "TerritoryB");
 
         return map;
     }
@@ -89,23 +62,24 @@ public class GameControllerTest {
         System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
-        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
-        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+        TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getTerritoryByName(destTerritoryName);
 
-        rm.setStage(GamePhase.FORTIFICATION);
-        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
-        PlayerModel playerA = rm.getPlayerList().getFirst();
-        playerA.addCountryOwned(territoryA);
-        playerA.addCountryOwned(territoryB);
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
+        rm.nextPhase();
+        rm.nextPhase();
+        rm.nextPhase();
+        PlayerModel playerA = rm.getCurrentPlayer();
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerA, territoryB);
+
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
         assertEquals(1, territoryA.getNumArmies());
         assertEquals(2, territoryB.getNumArmies());
         assertEquals(null, drv.getMessage());
-        assertTrue(drv.isUpdated());
     }
 
     /**
@@ -115,29 +89,26 @@ public class GameControllerTest {
     @Test
     public void testDragNDropTerritoryNotAdjacentTerritories() {
         System.out.println("dragNDropTerritory");
-        String sourceTerritoryName = "TerritoryA";
-        String destTerritoryName = "TerritoryC";
-        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
-        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get("TerritoryB");
-        TerritoryModel territoryC = new TerritoryModel(destTerritoryName, 150, 50);
 
-        rm.getMap().getGraphTerritories().put(territoryC.getName(), territoryC);
-        territoryC.setContinentName("ContinentA");
-        rm.getMap().getGraphContinents().get("ContinentA").setMember(territoryC);
-        territoryB.addNeighbour(territoryC);
+        rm.getMap().loadTerritory(150, 50, "TerritoryC", "ContinentA");
+        rm.getMap().addLink("TerritoryB", "TerritoryC");
 
-        rm.setStage(GamePhase.FORTIFICATION);
-        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
-        PlayerModel playerA = rm.getPlayerList().getFirst();
-        playerA.addCountryOwned(territoryA);
-        playerA.addCountryOwned(territoryC);
-        territoryA.setNumArmies(2);
-        territoryC.setNumArmies(1);
+        TerritoryModel terrA = rm.getMap().getTerritoryByName("TerritoryA");
+        TerritoryModel terrC = rm.getMap().getTerritoryByName("TerritoryC");
 
-        instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
+        rm.nextPhase();
+        rm.nextPhase();
+        rm.nextPhase();
+        PlayerModel playerA = rm.getCurrentPlayer();
+        addCountryOwned(playerA, terrA);
+        addCountryOwned(playerA, terrC);
+        setNumArmies(terrA, 2);
+        setNumArmies(terrC, 1);
 
-        assertEquals(2, territoryA.getNumArmies());
-        assertEquals(1, territoryC.getNumArmies());
+        instance.dragNDropTerritory("TerritoryA", "TerritoryC");
+
+        assertEquals(2, terrA.getNumArmies());
+        assertEquals(1, terrC.getNumArmies());
         assertEquals(null, drv.getMessage());
     }
 
@@ -151,17 +122,18 @@ public class GameControllerTest {
         System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
-        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
-        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+        TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getTerritoryByName(destTerritoryName);
 
-        rm.setStage(GamePhase.FORTIFICATION);
-        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
-        PlayerModel playerA = rm.getPlayerList().getFirst();
-        PlayerModel playerB = rm.getPlayerList().getLast();
-        playerB.addCountryOwned(territoryA);
-        playerA.addCountryOwned(territoryB);
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
+        rm.nextPhase();
+        rm.nextPhase();
+        rm.nextPhase();
+        PlayerModel playerA = rm.getCurrentPlayer();
+        PlayerModel playerB = rm.getPlayerList().get(1);
+        addCountryOwned(playerB, territoryA);
+        addCountryOwned(playerA, territoryB);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
@@ -180,17 +152,18 @@ public class GameControllerTest {
         System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
-        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
-        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+        TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getTerritoryByName(destTerritoryName);
 
-        rm.setStage(GamePhase.FORTIFICATION);
-        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
-        PlayerModel playerA = rm.getPlayerList().getFirst();
-        PlayerModel playerB = rm.getPlayerList().getLast();
-        playerA.addCountryOwned(territoryA);
-        playerB.addCountryOwned(territoryB);
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
+        rm.nextPhase();
+        rm.nextPhase();
+        rm.nextPhase();
+        PlayerModel playerA = rm.getCurrentPlayer();
+        PlayerModel playerB = rm.getPlayerList().get(1);
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerB, territoryB);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
@@ -208,18 +181,20 @@ public class GameControllerTest {
         System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
-        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
-        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+        TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getTerritoryByName(destTerritoryName);
 
-        rm.setStage(GamePhase.FORTIFICATION);
-        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
-        PlayerModel playerA = rm.getPlayerList().getFirst();
-        playerA.addCountryOwned(territoryA);
-        playerA.addCountryOwned(territoryB);
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
-
-        rm.getPlayerList().getFirst().setCurrentFortificationMove(new FortificationMove(territoryB, territoryA));
+        rm.nextPhase();
+        rm.nextPhase();
+        rm.nextPhase();
+        PlayerModel playerA = rm.getCurrentPlayer();
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerA, territoryB);
+        setNumArmies(territoryA, 1);
+        setNumArmies(territoryB, 2);
+        instance.dragNDropTerritory(destTerritoryName, sourceTerritoryName);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
@@ -238,25 +213,26 @@ public class GameControllerTest {
         System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
-        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
-        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+        TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getTerritoryByName(destTerritoryName);
 
-        rm.setStage(GamePhase.FORTIFICATION);
-        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
-        PlayerModel playerA = rm.getPlayerList().getFirst();
-        playerA.addCountryOwned(territoryA);
-        playerA.addCountryOwned(territoryB);
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
-
-        rm.getPlayerList().getFirst().setCurrentFortificationMove(new FortificationMove(territoryA, territoryB));
+        rm.nextPhase();
+        rm.nextPhase();
+        rm.nextPhase();
+        PlayerModel playerA = rm.getCurrentPlayer();
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerA, territoryB);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
+        instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
         assertEquals(1, territoryA.getNumArmies());
         assertEquals(2, territoryB.getNumArmies());
         assertEquals(null, drv.getMessage());
-        assertTrue(drv.isUpdated());
     }
 
     /**
@@ -268,16 +244,16 @@ public class GameControllerTest {
         System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
-        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
-        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+        TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getTerritoryByName(destTerritoryName);
 
-        rm.setStage(GamePhase.ATTACK);
-        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
-        PlayerModel playerA = rm.getPlayerList().getFirst();
-        playerA.addCountryOwned(territoryA);
-        playerA.addCountryOwned(territoryB);
-        territoryA.setNumArmies(2);
-        territoryB.setNumArmies(1);
+        rm.nextPhase();
+        rm.nextPhase();
+        PlayerModel playerA = rm.getPlayerList().get(1);
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerA, territoryB);
+        setNumArmies(territoryA, 2);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
@@ -294,41 +270,64 @@ public class GameControllerTest {
         System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
-        TerritoryModel territoryA = rm.getMap().getGraphTerritories().get(sourceTerritoryName);
-        TerritoryModel territoryB = rm.getMap().getGraphTerritories().get(destTerritoryName);
+        TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
+        TerritoryModel territoryB = rm.getMap().getTerritoryByName(destTerritoryName);
 
-        rm.setStage(GamePhase.FORTIFICATION);
-        rm.setCurrentPlayer(rm.getPlayerList().getFirst());
-        PlayerModel playerA = rm.getPlayerList().getFirst();
-        playerA.addCountryOwned(territoryA);
-        playerA.addCountryOwned(territoryB);
-        territoryA.setNumArmies(1);
-        territoryB.setNumArmies(1);
+        rm.nextPhase();
+        rm.nextPhase();
+        rm.nextPhase();
+        PlayerModel playerA = rm.getCurrentPlayer();
+        addCountryOwned(playerA, territoryA);
+        addCountryOwned(playerA, territoryB);
+        setNumArmies(territoryA, 1);
+        setNumArmies(territoryB, 1);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
         assertEquals(1, territoryA.getNumArmies());
         assertEquals(1, territoryB.getNumArmies());
         System.out.println("done");
-        assertEquals("There is only one army in the source country !", drv.getMessage());
+        assertEquals("There is only one army in the source country !",
+                drv.getMessage());
+    }
+
+    private void setNumArmies(TerritoryModel ter, int numArmies) {
+        Method method;
+        try {
+            method = TerritoryModel.class
+                    .getDeclaredMethod("setNumArmies", int.class);
+            method.setAccessible(true);
+            method.invoke(ter, numArmies);
+        } catch (SecurityException
+                | ReflectiveOperationException
+                | IllegalArgumentException ex) {
+            throw new AssumptionViolatedException("Cannot arrange");
+        }
+    }
+
+    private void addCountryOwned(PlayerModel player, TerritoryModel territory) {
+        Method method;
+        try {
+            method = PlayerModel.class
+                    .getDeclaredMethod("addCountryOwned", TerritoryModel.class);
+            method.setAccessible(true);
+            method.invoke(player, territory);
+        } catch (SecurityException
+                | ReflectiveOperationException
+                | IllegalArgumentException ex) {
+            throw new AssumptionViolatedException("Cannot arrange");
+        }
     }
 
     private static class DummyRiskView implements RiskViewInterface {
 
         String message;
-        boolean updated;
 
         public DummyRiskView() {
-            updated = false;
         }
 
         @Override
-        public void updateView(RiskModel rm) {
-            updated = true;
-        }
-
-        @Override
-        public void updateViewWithNewMap(RiskModel rm) {
+        public void observeModel(RiskModel rm) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -360,10 +359,5 @@ public class GameControllerTest {
         public String getMessage() {
             return this.message;
         }
-
-        public boolean isUpdated() {
-            return updated;
-        }
     }
-
 }

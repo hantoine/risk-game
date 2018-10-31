@@ -5,7 +5,6 @@
  */
 package com.risk.models;
 
-import com.risk.controllers.GameController;
 import java.awt.Color;
 
 /**
@@ -22,7 +21,7 @@ public class AIPlayerModel extends PlayerModel {
      * @param color color of the player
      * @param game Game in which this players belongs
      */
-    public AIPlayerModel(String name, Color color, RiskModel game) {
+    AIPlayerModel(String name, Color color, RiskModel game) {
         super(name, color, false, game);
     }
 
@@ -30,7 +29,7 @@ public class AIPlayerModel extends PlayerModel {
      * Reinforcement phase for AI Player
      */
     @Override
-    public void reinforcement(GameController playGame) {
+    public void reinforcement(RiskModel playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -38,7 +37,7 @@ public class AIPlayerModel extends PlayerModel {
      * Fortification phase for AI Player
      */
     @Override
-    public void fortification(GameController playGame) {
+    public void fortification(RiskModel playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -46,7 +45,7 @@ public class AIPlayerModel extends PlayerModel {
      * Attack phase for AI Player
      */
     @Override
-    public void attack(GameController playGame) {
+    public void attack(RiskModel playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

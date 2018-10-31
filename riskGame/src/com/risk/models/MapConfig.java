@@ -97,7 +97,7 @@ public class MapConfig {
      *
      * @param wrap new wrap value
      */
-    public void setWrap(boolean wrap) {
+    void setWrap(boolean wrap) {
         this.wrap = wrap;
     }
 
@@ -106,7 +106,7 @@ public class MapConfig {
      *
      * @param warn new warn value
      */
-    public void setWarn(boolean warn) {
+    void setWarn(boolean warn) {
         this.warn = warn;
     }
 
@@ -115,7 +115,7 @@ public class MapConfig {
      *
      * @param scroll scroll of the map
      */
-    public void setScroll(String scroll) {
+    void setScroll(String scroll) {
         this.scroll = scroll;
     }
 
@@ -125,7 +125,7 @@ public class MapConfig {
      *
      * @param author new author
      */
-    public void setAuthor(String author) {
+    void setAuthor(String author) {
         this.author = author;
     }
 
@@ -134,7 +134,7 @@ public class MapConfig {
      *
      * @param imagePath new path of the image
      */
-    public void setImagePath(String imagePath) {
+    void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 }

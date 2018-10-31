@@ -14,6 +14,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -53,7 +54,7 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
      * @param editorController Controller of the map editor.
      * @param continentList List of the continents to be added on this panel.
      */
-    public ContinentListPanel(Integer width, Integer height, MapEditorController editorController, String[] continentList) {
+    public ContinentListPanel(Integer width, Integer height, MapEditorController editorController, List<String> continentList) {
         //setup component
         super(width, height);
         this.controller = editorController;

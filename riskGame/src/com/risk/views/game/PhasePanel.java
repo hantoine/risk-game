@@ -7,6 +7,8 @@ package com.risk.views.game;
 
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author Nellybett
  */
-public class PhasePanel extends JPanel {
+public class PhasePanel extends JPanel implements Observer {
 
     /**
      * endPhase button to finish a phase
@@ -64,7 +66,7 @@ public class PhasePanel extends JPanel {
                 this.text.setVisible(true);
                 break;
             case REINFORCEMENT:
-                this.handCards.setVisible(rm.getCurrentPlayer().getCardsOwned().threeDifferentCardsOrThreeEqualCards());
+                this.handCards.setVisible(rm.getCurrentPlayer().getHand().threeDifferentCardsOrThreeEqualCards());
                 this.endPhase.setVisible(false);
                 this.text.setText(String.format("<html>Reinforcement phase: Click on one of your territory to place an army on it. <br />Remaining armies to be placed: %d</html>",
                         currentPlayer.getNumArmiesAvailable()));
@@ -105,5 +107,12 @@ public class PhasePanel extends JPanel {
      */
     public JButton getHandCards() {
         return handCards;
+    }
+
+    @Override
+    public void update(Observable o, Object o1) {
+        if (o instanceof RiskModel) {
+            this.updateView((RiskModel) o);
+        }
     }
 }
