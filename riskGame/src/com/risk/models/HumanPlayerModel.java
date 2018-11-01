@@ -5,9 +5,9 @@
  */
 package com.risk.models;
 
-import com.risk.controllers.GameController;
 import java.awt.Color;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * It represents an human player (child of PlayerModel)
@@ -23,9 +23,6 @@ public class HumanPlayerModel extends PlayerModel {
      * @param color color of the player
      * @param game Game in which this players belongs
      */
-    
-    
-    
     public HumanPlayerModel(String name, Color color, RiskModel game) {
         super(name, color, true, game);
     }
@@ -34,7 +31,7 @@ public class HumanPlayerModel extends PlayerModel {
      * Reinforcement phase for Human Player
      */
     @Override
-    public void reinforcement(GameController playGame) {
+    public void reinforcement(RiskModel playGame) {
         this.setHanded(false);
         this.assignNewArmies();
     }
@@ -43,7 +40,7 @@ public class HumanPlayerModel extends PlayerModel {
      * Fortification phase for Human Player
      */
     @Override
-    public void fortification(GameController playGame) {
+    public void fortification(RiskModel playGame) {
         // nothing to do
     }
 
@@ -51,33 +48,32 @@ public class HumanPlayerModel extends PlayerModel {
      * Attack phase for Human Player
      */
     @Override
-    public void attack(GameController playGame) {
-        
+    public void attack(RiskModel playGame) {
+        // nothing to do
     }
 
     @Override
-    public boolean exchangeCardsToArmies(LinkedList<String> selectedCards) {
-        LinkedList<String> typeOfArmie=new LinkedList<>();
-        this.getCardsOwned().getCards().stream()
+    public boolean exchangeCardsToArmies(List<String> selectedCards) {
+        LinkedList<String> typeOfArmie = new LinkedList<>();
+        this.getHand().getCards().stream()
                 .filter(c -> selectedCards.contains(c.getCountryName()))
                 .forEach(cs -> typeOfArmie.add(cs.getTypeOfArmie()));
-                    
-        boolean areEqual= typeOfArmie.stream()
-                            .allMatch(a -> a.equals(typeOfArmie.getFirst()));
-        boolean different=!(typeOfArmie.get(0).equals(typeOfArmie.get(1))) && !(typeOfArmie.get(0).equals(typeOfArmie.get(2))) && !(typeOfArmie.get(2).equals(typeOfArmie.get(1)));
-        
+
+        boolean areEqual = typeOfArmie.stream()
+                .allMatch(a -> a.equals(typeOfArmie.getFirst()));
+        boolean different = !(typeOfArmie.get(0).equals(typeOfArmie.get(1))) && !(typeOfArmie.get(0).equals(typeOfArmie.get(2))) && !(typeOfArmie.get(2).equals(typeOfArmie.get(1)));
+
         if (areEqual || different) {
             super.setHanded(true);
-            this.getCardsOwned().removeCards(selectedCards, super.game.getDeck());
+            this.getHand().removeCards(selectedCards, super.game.getDeck());
             armiesCardAssignation();
             this.setChanged();
             this.notifyObservers(super.game);
             return true;
-        }else
+        } else {
             return false;
-       
+        }
+
     }
 
-   
-    
 }

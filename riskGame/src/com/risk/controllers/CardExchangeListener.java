@@ -69,7 +69,7 @@ public class CardExchangeListener extends MouseAdapter{
                     if(selectedCards.size()<3)
                         this.showMessage("You have to select 3 cards first.");
                     else{
-                        if(riskController.getPlayGame().clickHand(selectedCards)){
+                        if(riskController.getGameController().clickHand(selectedCards)){
                             this.showMessage("You can only hand 3 equal or 3 different cards");
                         }else{
                             selectedCards.clear();

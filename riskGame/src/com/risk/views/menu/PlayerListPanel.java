@@ -11,6 +11,7 @@ import com.risk.models.RiskModel;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.util.LinkedList;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -99,7 +100,7 @@ public class PlayerListPanel extends JPanel {
         addPlayerButton.addMouseListener(menuAction);
 
         //initialize players list
-        LinkedList<PlayerModel> playerList = riskModel.getPlayerList();
+        List<PlayerModel> playerList = riskModel.getPlayerList();
 
         //add content to panel
         this.add(addPlayerPanel);
@@ -112,7 +113,7 @@ public class PlayerListPanel extends JPanel {
      *
      * @param playerList list of players
      */
-    protected void initializePlayers(LinkedList<PlayerModel> playerList) {
+    protected void initializePlayers(List<PlayerModel> playerList) {
 
         for (PlayerModel player : playerList) {
             Color aux = getNewColor();
