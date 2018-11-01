@@ -135,8 +135,8 @@ public class GameController {
      * @param dest destiny of attack
      * @param dice the number of dices
      */
-    public void clickAttack(String source, String dest, int dice) {
-        modelRisk.battle(this.modelRisk.getCurrentPlayer(), source, dest, dice);
+    public void clickAttack(int dice) {
+        modelRisk.performAttack(this.modelRisk.getCurrentPlayer(), dice);
     }
 
     /**

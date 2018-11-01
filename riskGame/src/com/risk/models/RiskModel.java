@@ -545,10 +545,20 @@ public final class RiskModel extends Observable {
 
         private final String reason;
 
+        /**
+         * Constructor
+         *
+         * @param reason The reason why the fortification move is not possible
+         */
         public FortificationMoveImpossible(String reason) {
             this.reason = reason;
         }
 
+        /**
+         * Getter for reason attribute
+         *
+         * @return the reason attribute
+         */
         public String getReason() {
             return reason;
         }
@@ -558,15 +568,30 @@ public final class RiskModel extends Observable {
 
         private final String reason;
 
+        /**
+         * Constructor
+         *
+         * @param reason The reason why the army placement is not possible
+         */
         public ArmyPlacementImpossible(String reason) {
             this.reason = reason;
         }
 
+        /**
+         * Getter for reason attribute
+         *
+         * @return the reason attribute
+         */
         public String getReason() {
             return reason;
         }
     }
 
+    /**
+     *
+     * @param cards
+     * @return
+     */
     public boolean exchangeCardsWithArmiesForCurrentPlayer(List<String> cards) {
 
         boolean res = this.getCurrentPlayer().exchangeCardsToArmies(cards);
@@ -578,24 +603,36 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     * If the dest country have 0 armies it was conquered
+     * If the destination country have 0 armies it is conquered
      *
      * @param armies the number of armies to move
      */
     public void moveArmiesToConqueredTerritory(int armies) {
         this.getCurrentPlayer().conquerCountry(armies);
-        this.finishPhase();
+
+        setChanged();
+        notifyObservers();
     }
 
-    public void battle(PlayerModel attacker, String source, String dest, int dice) {
-        attacker.battle(dice);
-        if (attacker.getCurrentAttack().getDest().getNumArmies() == 0) {
-            //riskView.updateAuxiliarPhasePanel(source, dest, this, modelRisk.getCurrentPlayer().getCurrentAttack().getSource().getNumArmies(), 1);
-        } else {
-            this.finishPhase();
-        }
+    /**
+     * Battle between countries in an attack move
+     *
+     * @param attacker attacking player
+     * @param dice number of dice
+     */
+    public void performAttack(PlayerModel attacker, int dice) {
+        attacker.performCurrentAttack(dice);
+
+        setChanged();
+        notifyObservers();
     }
 
+    /**
+     * Inform observers that an event occurred in the RiskGame
+     *
+     * @param eventMessage message to describe the event (Used in the view to
+     * display it)
+     */
     public void addNewEvent(String eventMessage) {
         setChanged();
         notifyObservers(eventMessage);
