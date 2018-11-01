@@ -64,7 +64,6 @@ public final class RiskController {
         this.gameController = new GameController(this.modelRisk);
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.setVisible(true);
-
     }
 
     /**

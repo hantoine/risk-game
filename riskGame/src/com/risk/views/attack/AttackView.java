@@ -29,8 +29,6 @@ public class AttackView extends JPanel {
      * Message with the name of the countries involve in an attack
      */
     JLabel countriesInvolve;
-    String source;
-    String dest;
 
     /**
      * Constructor
@@ -73,36 +71,10 @@ public class AttackView extends JPanel {
      */
     public void update(String countrySource, String countryDest, int armies) {
         this.setVisible(true);
-        this.source = countrySource;
-        this.dest = countryDest;
         countriesInvolve.setText(countrySource + " vs " + countryDest);
 
-        switch (armies) {
-            case (2):
-                options[0].setEnabled(true);
-                options[1].setEnabled(false);
-                options[2].setEnabled(false);
-                options[3].setEnabled(false);
-                break;
-            case (3):
-                options[0].setEnabled(true);
-                options[1].setEnabled(true);
-                options[2].setEnabled(false);
-                options[3].setEnabled(false);
-                break;
-            case (4):
-                options[0].setEnabled(true);
-                options[1].setEnabled(true);
-                options[2].setEnabled(true);
-                options[3].setEnabled(false);
-                break;
-            default:
-                options[0].setEnabled(true);
-                options[1].setEnabled(true);
-                options[2].setEnabled(true);
-                options[3].setEnabled(true);
-                break;
-
+        for (int i = 0; i < 4; i++) {
+            options[i].setEnabled(i < armies - 1);
         }
     }
 
@@ -112,19 +84,19 @@ public class AttackView extends JPanel {
      */
     public void setListeners(GameController gc) {
         options[0].addActionListener(e -> {
-            gc.clickAttack(source, dest, 1);
+            gc.clickAttack(1);
         });
 
         options[1].addActionListener(e -> {
-            gc.clickAttack(source, dest, 2);
+            gc.clickAttack(2);
         });
 
         options[2].addActionListener(e -> {
-            gc.clickAttack(source, dest, 3);
+            gc.clickAttack(3);
         });
 
         options[3].addActionListener(e -> {
-            gc.clickAttack(source, dest, 4);
+            gc.clickAttack(-1);
         });
     }
 }

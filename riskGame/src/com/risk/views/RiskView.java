@@ -102,6 +102,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         });
         rm.addObserver(this.stagePanel);
         rm.addObserver(this.mapPanel);
+        rm.getMap().addObserver(this.mapPanel);
         rm.addObserver(this);
         rm.addObserver(this.phaseAuxiliarPanel);
     }
