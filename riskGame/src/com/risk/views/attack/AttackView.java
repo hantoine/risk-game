@@ -12,9 +12,11 @@ import javax.swing.JPanel;
 
 /**
  * It contains the number of dices in an attack
+ *
  * @author Nellybett
  */
-public class AttackView extends JPanel{
+public class AttackView extends JPanel {
+
     /**
      * Panel with the different buttons
      */
@@ -27,69 +29,68 @@ public class AttackView extends JPanel{
      * Message with the name of the countries involve in an attack
      */
     JLabel countriesInvolve;
-    /**
-     * The game controller
-     */
-    GameController gc;
-    
+    String source;
+    String dest;
+
     /**
      * Constructor
-     * @param source name of the country that have the armies that are attacking
-     * @param dest name of the country that receives the attack
-     * @param gc  game controller
+     *
      */
-    public AttackView(String source, String dest, GameController gc){
-        
-        attackOptions=new JPanel();
-        this.gc=gc;
-        options=new JButton[4];
-        options[0]=new JButton("1");
-        options[1]=new JButton("2");
-        options[2]=new JButton("3");
-        options[3]=new JButton("All");
-        
-        countriesInvolve=new JLabel(source+" vs "+dest);
-        
+    public AttackView() {
+
+        attackOptions = new JPanel();
+        options = new JButton[4];
+        options[0] = new JButton("1");
+        options[1] = new JButton("2");
+        options[2] = new JButton("3");
+        options[3] = new JButton("All");
+
+        countriesInvolve = new JLabel("source vs destination");
+
         options[0].setSize(50, 70);
         options[1].setSize(50, 70);
         options[2].setSize(50, 70);
         options[3].setSize(50, 70);
-        
-        setListeners(source, dest,options);
-        
+
         attackOptions.add(countriesInvolve);
         attackOptions.add(options[0]);
         attackOptions.add(options[1]);
         attackOptions.add(options[2]);
         attackOptions.add(options[3]);
-        
+
         this.add(attackOptions);
+
+        this.setVisible(false);
     }
-    
+
     /**
      * Updates the view for an attack
-     * @param countrySource name of the country that have the armies that are attacking
+     *
+     * @param countrySource name of the country that have the armies that are
+     * attacking
      * @param countryDest name of the country that receives the attack
      * @param armies number of dice involve in the attack
      */
-    public void update(String countrySource, String countryDest, int armies){
+    public void update(String countrySource, String countryDest, int armies) {
         this.setVisible(true);
-        countriesInvolve.setText(countrySource+" vs "+countryDest);
-        
-        switch(armies){
-            case(2):
+        this.source = countrySource;
+        this.dest = countryDest;
+        countriesInvolve.setText(countrySource + " vs " + countryDest);
+
+        switch (armies) {
+            case (2):
                 options[0].setEnabled(true);
                 options[1].setEnabled(false);
                 options[2].setEnabled(false);
                 options[3].setEnabled(false);
                 break;
-            case(3):
+            case (3):
                 options[0].setEnabled(true);
                 options[1].setEnabled(true);
                 options[2].setEnabled(false);
                 options[3].setEnabled(false);
                 break;
-            case(4):
+            case (4):
                 options[0].setEnabled(true);
                 options[1].setEnabled(true);
                 options[2].setEnabled(true);
@@ -101,32 +102,29 @@ public class AttackView extends JPanel{
                 options[2].setEnabled(true);
                 options[3].setEnabled(true);
                 break;
-            
+
         }
     }
-    
+
     /**
      * Adds the listener for each button
-     * @param source name of the country that have the armies that are attacking
-     * @param dest name of the country that receives the attack
-     * @param options the array with the buttons 
+     *
      */
-    private void setListeners(String source, String dest,JButton[] options){
+    public void setListeners(GameController gc) {
         options[0].addActionListener(e -> {
-            gc.clickAttack(source, dest,1);
+            gc.clickAttack(source, dest, 1);
         });
-        
+
         options[1].addActionListener(e -> {
-            gc.clickAttack(source, dest,2);
+            gc.clickAttack(source, dest, 2);
         });
-        
+
         options[2].addActionListener(e -> {
-            gc.clickAttack(source, dest,3);
+            gc.clickAttack(source, dest, 3);
         });
-        
+
         options[3].addActionListener(e -> {
-            gc.clickAttack(source, dest,4);
+            gc.clickAttack(source, dest, 4);
         });
     }
-    
 }

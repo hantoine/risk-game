@@ -9,7 +9,6 @@ import com.risk.models.ContinentModel;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
-import com.risk.models.editor.EditableMapModel;
 import com.risk.views.editor.ContinentListPanel;
 import com.risk.views.editor.CountryButton2;
 import com.risk.views.editor.MapEditorView;
@@ -27,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,7 +50,7 @@ public class MapEditorController {
     /**
      * Model of the map that is edited.
      */
-    public EditableMapModel newMap;
+    public MapModel newMap;
 
     /**
      * Constructor
@@ -58,7 +58,7 @@ public class MapEditorController {
      * @param mapModel model of the map being edited that will be called by the
      * controller for updates.
      */
-    public MapEditorController(EditableMapModel mapModel) {
+    public MapEditorController(MapModel mapModel) {
         newMap = mapModel;
     }
 
@@ -67,7 +67,7 @@ public class MapEditorController {
      *
      * @return the map being edited
      */
-    public EditableMapModel getNewMap() {
+    public MapModel getNewMap() {
         return newMap;
     }
 
@@ -136,14 +136,14 @@ public class MapEditorController {
         /**
          * map that is being edited
          */
-        protected EditableMapModel newMap;
+        protected MapModel newMap;
 
         /**
          * constructor
          *
          * @param mapModel map that is being edited
          */
-        public AddContinentButtonListener(EditableMapModel mapModel) {
+        public AddContinentButtonListener(MapModel mapModel) {
             newMap = mapModel;
         }
 
@@ -154,12 +154,15 @@ public class MapEditorController {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-            boolean success = newMap.addContinent();
-            if (success == false) {
-                JButton buttonClicked = (JButton) e.getSource();
-                ContinentListPanel clickedPanel = (ContinentListPanel) buttonClicked.getParent();
-                clickedPanel.showError("The maximum number of continents to be created has been reached.");
+            if (newMap.addContinent() == true) {
+                return;
             }
+            JButton buttonClicked = (JButton) e.getSource();
+            ContinentListPanel clickedPanel
+                    = (ContinentListPanel) buttonClicked.getParent();
+            clickedPanel.showError("The maximum number of continents to be "
+                    + "created has been reached.");
+
         }
     }
 
@@ -171,14 +174,14 @@ public class MapEditorController {
         /**
          * map that is being edited
          */
-        public EditableMapModel newMap;
+        public MapModel newMap;
 
         /**
          * Constructor
          *
          * @param mapModel the maple which is constructed
          */
-        public ContinentMouseListener(EditableMapModel mapModel) {
+        public ContinentMouseListener(MapModel mapModel) {
             newMap = mapModel;
         }
 
@@ -228,7 +231,8 @@ public class MapEditorController {
          */
         private void releaseHandling(MouseEvent e, Object sourceObj) {
             JLabel clickedLabel = (JLabel) sourceObj;
-            ContinentListPanel clickedPanel = (ContinentListPanel) clickedLabel.getParent();
+            ContinentListPanel clickedPanel
+                    = (ContinentListPanel) clickedLabel.getParent();
 
             if (SwingUtilities.isRightMouseButton(e)) {
                 String continentName = ((JLabel) sourceObj).getText();
@@ -240,7 +244,7 @@ public class MapEditorController {
                 //save original name of continent
                 String formerName = clickedLabel.getText();
 
-                ContinentModel continentToModify = newMap.getGraphContinents().get(formerName);
+                ContinentModel continentToModify = newMap.getContinentByName(formerName);
                 int bonusScore = continentToModify.getBonusScore();
 
                 //get information from the user
@@ -290,28 +294,41 @@ public class MapEditorController {
 
         this.newMap.clearMap();
 
+        List<String> remainingContinents = this.newMap.getContinentList();
+        if (remainingContinents.size() != 1) {
+            System.out.println("wrong number of continents after the clear");
+        }
+        String continentToDelete = remainingContinents.get(0);
+
         //set new image
         if (map.getImage() != null) {
             this.newMap.setImage(map.getImage(), new Dimension(200, 50));
         }
 
         //add continents
-        map.getGraphContinents().values().stream().forEach((c) -> {
-            this.newMap.addContinent();
-            Map<String, String> updateContinentData = new HashMap<>();
+        for (ContinentModel c : map.getContinents()) {
+            if (c.getName().equals(continentToDelete)) {
+                Map<String, String> data = new HashMap<>();
+                data.put("name", c.getName());
+                data.put("newName", c.getName());
+                data.put("bonusScore", Integer.toString(c.getBonusScore()));
+                this.newMap.updateContinent(data);
+                continentToDelete = "";
+            } else {
+                this.newMap.addContinent(c.getName(), c.getBonusScore());
+            }
+        }
 
-            updateContinentData.put("name", "Continent0");
-            updateContinentData.put("newName", c.getName());
-            updateContinentData.put("bonusScore", Integer.toString(c.getBonusScore()));
-            this.newMap.updateContinent(updateContinentData);
-        });
+        if (!continentToDelete.equals("")) {
+            this.newMap.removeContinent(continentToDelete);
+        }
 
         //add territories
-        map.getGraphTerritories().values().stream().forEach((t) -> {
+        map.getTerritories().forEach((t) -> {
             this.newMap.loadTerritory(t.getPositionX(), t.getPositionY(), t.getName(), t.getContinentName());
         });
 
-        map.getGraphTerritories().values().stream().forEach((t) -> {
+        map.getTerritories().forEach((t) -> {
             t.getAdj().stream().forEach((ta) -> {
                 this.newMap.addLink(t.getName(), ta.getName());
             });
@@ -338,10 +355,10 @@ public class MapEditorController {
      * file
      *
      * @param path path to the new file
-     * @return the erroCode returned by the mqp sqving method
+     * @return the erroCode returned by the map saving method
      */
     public int saveMapToFile(String path) {
-        return MapFileManagement.generateBoardFile(path, this.newMap.getInternalMap());
+        return MapFileManagement.generateBoardFile(path, this.newMap);
     }
 
     /**
@@ -352,14 +369,14 @@ public class MapEditorController {
         /**
          * Map being edited
          */
-        public EditableMapModel newMap;
+        public MapModel newMap;
 
         /**
          * Constructor
          *
          * @param mapModel map being edited
          */
-        public MapMouseController(EditableMapModel mapModel) {
+        public MapMouseController(MapModel mapModel) {
             newMap = mapModel;
         }
 
@@ -401,7 +418,7 @@ public class MapEditorController {
 
         /**
          * handles the releasing of the mouse
-         * 
+         *
          * @param e the releasing which is captured
          */
         @Override
@@ -433,12 +450,13 @@ public class MapEditorController {
     /**
      * Function to tell the model to update a territory
      *
-     * @param territoryName terirtory to be updated
+     * @param territoryName territory to be updated
      * @param targetButton button of the territory on the map view
      */
     public void updateTerritory(String territoryName, CountryButton2 targetButton) {
-        String[] continentList = newMap.getContinentList();
+        List<String> continentList = newMap.getContinentList();
         TerritoryModel territoryModel = newMap.getTerritoryByName(territoryName);
+        String formerContinent = territoryModel.getContinentName();
         String continentName = territoryModel.getContinentName();
 
         //get information from the user
@@ -448,6 +466,7 @@ public class MapEditorController {
         //if succeeded update the model's data
         if (!data.isEmpty()) {
             data.put("name", territoryName);
+            data.put("formerContinent", formerContinent);
             this.newMap.updateTerritory(data);
         }
     }
@@ -486,7 +505,7 @@ public class MapEditorController {
         String neighbourName;
 
         //get list of neighbours' names
-        LinkedList<TerritoryModel> neighbourList = newMap.getTerritoryByName(territoryName).getAdj();
+        List<TerritoryModel> neighbourList = newMap.getTerritoryByName(territoryName).getAdj();
 
         if (neighbourList.isEmpty()) {
             clickedPanel.showError("No neighbour found for this territory");
@@ -512,21 +531,21 @@ public class MapEditorController {
         /**
          * map model being edited
          */
-        public EditableMapModel newMap;
+        public MapModel newMap;
 
         /**
          * Constructor
          *
-         * @param mapModel ma pmodel being edited
+         * @param mapModel map model being edited
          */
-        public ButtonMouseController(EditableMapModel mapModel) {
+        public ButtonMouseController(MapModel mapModel) {
             newMap = mapModel;
         }
 
         /**
          * handles clicks
          *
-         * @param e the mouse clicked wich is captured
+         * @param e the mouse clicked wHich is captured
          */
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -617,7 +636,7 @@ public class MapEditorController {
         /**
          * map being edited
          */
-        public EditableMapModel mapModel;
+        public MapModel mapModel;
 
         /**
          * Constructor.
@@ -627,7 +646,7 @@ public class MapEditorController {
          * mapPanel
          * @param mapModel map being edited
          */
-        public selectBackImgListener(MapView mapPanel, MapEditorView editorPanel, EditableMapModel mapModel) {
+        public selectBackImgListener(MapView mapPanel, MapEditorView editorPanel, MapModel mapModel) {
             this.mapPanel = mapPanel;
             this.editorPanel = editorPanel;
             this.mapModel = mapModel;
@@ -715,14 +734,14 @@ public class MapEditorController {
         /**
          * Model to be edited
          */
-        public EditableMapModel newMap;
+        public MapModel newMap;
 
         /**
          * Constructor
          *
          * @param newMap the new map which is constructed
          */
-        public WarnCheckBoxListener(EditableMapModel newMap) {
+        public WarnCheckBoxListener(MapModel newMap) {
             this.newMap = newMap;
         }
 
@@ -746,14 +765,14 @@ public class MapEditorController {
         /**
          * Map being edited
          */
-        public EditableMapModel newMap;
+        public MapModel newMap;
 
         /**
          * Constructor
          *
          * @param newMap the new map constructed
          */
-        public WrapCheckBoxListener(EditableMapModel newMap) {
+        public WrapCheckBoxListener(MapModel newMap) {
             this.newMap = newMap;
         }
 
@@ -777,14 +796,14 @@ public class MapEditorController {
         /**
          * Map being edited
          */
-        public EditableMapModel newMap;
+        public MapModel newMap;
 
         /**
          * Constructor
          *
          * @param newMap the new map which is constructed
          */
-        public ScrollBoxListener(EditableMapModel newMap) {
+        public ScrollBoxListener(MapModel newMap) {
             this.newMap = newMap;
         }
 
@@ -808,14 +827,14 @@ public class MapEditorController {
         /**
          * Map being edited
          */
-        public EditableMapModel newMap;
+        public MapModel newMap;
 
         /**
          * Constructor
          *
          * @param newMap the new map which is constructed
          */
-        public AuthorTextFieldListener(EditableMapModel newMap) {
+        public AuthorTextFieldListener(MapModel newMap) {
             this.newMap = newMap;
         }
 

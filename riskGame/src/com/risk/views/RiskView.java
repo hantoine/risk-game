@@ -5,12 +5,9 @@
  */
 package com.risk.views;
 
-import com.risk.controllers.GameController;
 import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
-import com.risk.views.attack.ArmiesLeft;
-import com.risk.views.attack.AttackView;
 import com.risk.views.game.MapPanel;
 import com.risk.views.game.PhaseAuxiliar;
 import com.risk.views.game.PhasePanel;
@@ -27,12 +24,12 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Observable;
 import javax.swing.BoxLayout;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
@@ -40,7 +37,7 @@ import javax.swing.KeyStroke;
  *
  * @author n_irahol
  */
-public final class RiskView extends javax.swing.JFrame {
+public final class RiskView extends javax.swing.JFrame implements RiskViewInterface {
 
     /**
      * Card exchange panel
@@ -62,7 +59,7 @@ public final class RiskView extends javax.swing.JFrame {
      * playerHandPanel reference to the view that has the cards of the plater
      */
     final private PhaseAuxiliar phaseAuxiliarPanel;
-    
+
     /**
      * stagePanel reference to the view that manages the information of the
      * current stage
@@ -79,7 +76,7 @@ public final class RiskView extends javax.swing.JFrame {
         this.setResizable(true);
 
         this.phaseAuxiliarPanel = new PhaseAuxiliar();
-        
+
         this.stagePanel = new PhasePanel();
         this.playerPanel = new PlayerGameInfoPanel();
         this.mapPanel = new MapPanel();
@@ -97,64 +94,22 @@ public final class RiskView extends javax.swing.JFrame {
         this.centerWindow();
     }
 
-    /**
-     * Update the information displayed in the view to match the ones in the
-     * model
-     *
-     * @param rm Model of the game
-     */
-    public void updateView(RiskModel rm) {
-        this.getStagePanel().updateView(rm);
-        this.getMapPanel().updateView(rm, false);
-        this.getPlayerPanel().updateView(rm);
+    @Override
+    public void observeModel(RiskModel rm) {
+        updateView(rm, true);
+        rm.getPlayerList().forEach((pl) -> {
+            pl.addObserver(playerPanel);
+        });
+        rm.addObserver(this.stagePanel);
+        rm.addObserver(this.mapPanel);
+        rm.addObserver(this);
+        rm.addObserver(this.phaseAuxiliarPanel);
+    }
 
-    }
-    
-    /**
-     * Updates the view in the button
-     * @param countrySource country with the attack
-     * @param countryDest country attacked
-     * @param gc game controller
-     * @param armies max of dices or armies to be moved
-     * @param panel the panel to show
-     */
-    public void updateAuxiliarPhasePanel(String countrySource, String countryDest,GameController gc, int armies,int panel){
-        switch(panel){
-            case 0:
-                if(this.phaseAuxiliarPanel.getAttackPanel()==null){
-                    AttackView attackPanel=new AttackView(countrySource,countryDest,gc);
-                    this.phaseAuxiliarPanel.setAttackPanel(attackPanel);
-                }
-                this.phaseAuxiliarPanel.updatePanel((JPanel) phaseAuxiliarPanel.getAttackPanel());
-                this.phaseAuxiliarPanel.getAttackPanel().update(countrySource,countryDest, armies);
-                break;
-            case 1:
-                if(this.phaseAuxiliarPanel.getArmiesLeft()==null){
-                    ArmiesLeft moveArmiesPanel=new ArmiesLeft();
-                    moveArmiesPanel.setListener(gc);
-                    this.phaseAuxiliarPanel.setArmiesLeft(moveArmiesPanel);
-                }
-                this.phaseAuxiliarPanel.updatePanel(phaseAuxiliarPanel.getArmiesLeft());
-                this.phaseAuxiliarPanel.getArmiesLeft().update(countrySource,countryDest,gc,armies);
-                break;
-            default:
-                this.phaseAuxiliarPanel.removeAll();
-        }
-    }
-    
-   
-    /**
-     * Update the information displayed in the view to match the ones in the
-     * model Update also the map which can have changed (if not changed just
-     * overhead)
-     *
-     * @param rm model of the game
-     */
-    public void updateViewWithNewMap(RiskModel rm) {
+    private void updateView(RiskModel rm, boolean newMap) {
         this.getStagePanel().updateView(rm);
-        this.getMapPanel().updateView(rm, true);
-        this.getPlayerPanel().updateView(rm);
-        //this.getPlayerHandPanel().updateView(rm);
+        this.getMapPanel().updateView(rm.getMap(), newMap);
+        this.getPlayerPanel().updateView(rm.getCurrentPlayer());
 
         this.setSize(
                 rm.getMap().getMapWidth() + 200,
@@ -169,7 +124,7 @@ public final class RiskView extends javax.swing.JFrame {
      *
      * @param message Text to be displayed in the message dialog
      */
-    public void showMessage(String message) {
+    void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
 
@@ -180,12 +135,10 @@ public final class RiskView extends javax.swing.JFrame {
      */
     public void setController(RiskController rc) {
         this.getMapPanel().setListener(rc.getCountryListener());
-        
-        this.getStagePanel().getEndPhase().addActionListener(e -> {
-            rc.getPlayGame().finishPhase();
-        });
 
-        
+        this.getStagePanel().getEndPhase().addActionListener(e -> {
+            rc.getGameController().endPhaseButtonPressed();
+        });
 
         Component c = this.getJMenuBar().getMenu(0).getMenuComponent(0);
         if (c instanceof JMenuItem) {
@@ -198,6 +151,8 @@ public final class RiskView extends javax.swing.JFrame {
         this.getMenuPanel().getStartMenu().getNewGamePanel().getOpenMapEditor().addActionListener(e -> {
             rc.openMapEditor();
         });
+
+        phaseAuxiliarPanel.setListeners(rc.getGameController());
     }
 
     /**
@@ -217,39 +172,30 @@ public final class RiskView extends javax.swing.JFrame {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         aux.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
     }
-    /**
-     * Hide the panels
-     */
-    public void hideAttack(){
-        if(this.phaseAuxiliarPanel.getAttackPanel()!=null)
-            this.phaseAuxiliarPanel.getAttackPanel().setVisible(false);
-        
-        if(this.phaseAuxiliarPanel.getArmiesLeft()!=null)
-            this.phaseAuxiliarPanel.getArmiesLeft().setVisible(false);
-    }
-    
+
     /**
      * Creates the card exchange view
+     *
      * @param riskModel the model of the game
      * @param rc the controller of the game
      */
     public void cardExchangeMenu(RiskModel riskModel, RiskController rc) {
-        
         this.exchangeView = new CardExchangeView(riskModel);
         this.getExchangeView().setListener(rc.getCardExchangeListener());
         rc.getCardExchangeListener().setPanel(this.getExchangeView());
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         getExchangeView().setLocation(dimension.width / 2 - (this.exchangeView.getWidth()) / 2, dimension.height / 2 - 500 / 2);
         getExchangeView().setVisible(true);
-        
+
     }
+
     /**
      * Closes the exchange card view
      */
-    public void closeExchangeMenu(){
+    public void closeExchangeMenu() {
         this.exchangeView.setVisible(false);
         this.remove(this.getExchangeView());
-        this.exchangeView=null;
+        this.exchangeView = null;
     }
 
     /**
@@ -367,5 +313,13 @@ public final class RiskView extends javax.swing.JFrame {
      */
     public CardExchangeView getExchangeView() {
         return exchangeView;
+    }
+
+    @Override
+    public void update(Observable o, Object o1) {
+        if (o instanceof RiskModel && o1 instanceof String) {
+            String eventMessage = (String) o1;
+            this.showMessage(eventMessage);
+        }
     }
 }

@@ -5,8 +5,13 @@
  */
 package com.risk.views.game;
 
+import com.risk.controllers.GameController;
+import com.risk.models.AttackMove;
+import com.risk.models.RiskModel;
 import com.risk.views.attack.ArmiesLeft;
 import com.risk.views.attack.AttackView;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -14,7 +19,8 @@ import javax.swing.JPanel;
  *
  * @author Nellybett
  */
-public class PhaseAuxiliar extends JPanel {
+public class PhaseAuxiliar extends JPanel implements Observer {
+
     /**
      * Panel with the cards
      */
@@ -32,68 +38,101 @@ public class PhaseAuxiliar extends JPanel {
      * Constructor
      */
     public PhaseAuxiliar() {
-        attackPanel=null;
-        armiesLeft=null;
+        attackPanel = new AttackView();
+        armiesLeft = new ArmiesLeft();
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     }
-    
+
     /**
      * Changes the panel to show
-     * @param phaseAuxiliarPanel the panel to be shown 
+     *
+     * @param phaseAuxiliarPanel the panel to be shown
      */
-    public void updatePanel(JPanel phaseAuxiliarPanel){
+    void selectPanel(JPanel phaseAuxiliarPanel) {
         this.removeAll();
-        this.add(phaseAuxiliarPanel);
+        if (phaseAuxiliarPanel != null) {
+            this.add(phaseAuxiliarPanel);
+        }
         this.repaint();
         this.revalidate();
     }
 
     /**
      * Getter of the playerHandPanel attribute
+     *
      * @return the playerHandPanel
      */
-    public PlayerGameHandPanel getPlayerHandPanel() {
+    PlayerGameHandPanel getPlayerHandPanel() {
         return playerHandPanel;
     }
 
     /**
      * Setter of the playerHandPanel attribute
+     *
      * @param playerHandPanel the playerHandPanel to set
      */
-    public void setPlayerHandPanel(PlayerGameHandPanel playerHandPanel) {
+    private void setPlayerHandPanel(PlayerGameHandPanel playerHandPanel) {
         this.playerHandPanel = playerHandPanel;
     }
 
     /**
      * Getter of the attack panel
+     *
      * @return the attackPanel
      */
-    public AttackView getAttackPanel() {
+    AttackView getAttackPanel() {
         return attackPanel;
     }
 
     /**
-     * Setter of the attackPanel
-     * @param attackPanel the attackPanel to set
-     */
-    public void setAttackPanel(AttackView attackPanel) {
-        this.attackPanel = attackPanel;
-    }
-
-    /**
      * Getter of the armiesLeft panel
+     *
      * @return the armiesLeft
      */
-    public ArmiesLeft getArmiesLeft() {
+    ArmiesLeft getArmiesLeft() {
         return armiesLeft;
     }
 
-    /**
-     * Setter of the armiesLeft panel
-     * @param armiesLeft the armiesLeft to set
-     */
-    public void setArmiesLeft(ArmiesLeft armiesLeft) {
-        this.armiesLeft = armiesLeft;
+    public void setListeners(GameController gc) {
+        this.getAttackPanel().setListeners(gc);
+        this.getArmiesLeft().setListener(gc);
     }
-   
+
+    /**
+     * Hide the panels
+     */
+    public void hideAttack() {
+        if (this.getAttackPanel() != null) {
+            this.getAttackPanel().setVisible(false);
+        }
+
+        if (this.getArmiesLeft() != null) {
+            this.getArmiesLeft().setVisible(false);
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object o1) {
+        if (o instanceof RiskModel) {
+            RiskModel rm = (RiskModel) o;
+
+            AttackMove currentAttack = rm.getCurrentPlayer().getCurrentAttack();
+            if (currentAttack == null) {
+                this.selectPanel(null);
+                return;
+            }
+
+            String srcTerritory = currentAttack.getSource().getName();
+            String destTerritory = currentAttack.getDest().getName();
+            int nbArmies = currentAttack.getSource().getNumArmies();
+
+            if (currentAttack.getDest().getNumArmies() == 0) {
+                this.selectPanel(this.getArmiesLeft());
+                this.armiesLeft.update(srcTerritory, destTerritory, nbArmies);
+            } else {
+                this.selectPanel(this.getAttackPanel());
+                this.attackPanel.update(srcTerritory, destTerritory, nbArmies);
+            }
+        }
+    }
 }
