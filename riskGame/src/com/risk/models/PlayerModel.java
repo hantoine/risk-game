@@ -6,7 +6,6 @@
 package com.risk.models;
 
 import java.awt.Color;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -557,101 +556,31 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     * Battle between countries in an attack move
+     * Perform the current attack of this player with the given number of dice
+     * The value -1 correspond to the special mode in which battles are made
+     * until one of the territory has no more armies
      *
-     * @param dice number of dices
+     * @param dice the number of dice to use to perform the attack
      */
-    public void battle(int dice) {
+    public void performCurrentAttack(int dice) {
+        if (this.getCurrentAttack() == null) {
+            return;
+        }
 
-        if (dice == 4) {
-            battleAll();
-        } else {
-            int[] attacker = createDice(dice);
-            int defenseArmies = (this.getCurrentAttack().getDest().getNumArmies() < dice) ? this.getCurrentAttack().getDest().getNumArmies() : dice;
-            int[] defense;
+        this.getCurrentAttack().perform(dice);
 
-            if (defenseArmies > 2) {
-                defense = createDice(2);
-            } else {
-                defense = createDice(defenseArmies);
-            }
-
-            Arrays.sort(attacker);
-            Arrays.sort(defense);
-
-            if (defenseArmies == 1) {
-                compareDice(attacker, defense, attacker.length - 1, 0);
-            } else {
-                compareDice(attacker, defense, attacker.length - 1, 1);
-                compareDice(attacker, defense, attacker.length - 2, 0);
-            }
+        /*
+        when the battle is finished if there is still armies on the attacked
+        territory, then this attack is terminated. If not the the attacked
+        territory needs to be conquered before the attack terminates
+         */
+        if (this.currentAttack.getDest()
+                .getNumArmies() != 0) {
+            this.setCurrentAttack(null);
         }
 
         setChanged();
         notifyObservers();
-    }
-
-    /**
-     * Compare results of rolling the dices
-     *
-     * @param attacker attacker dices results
-     * @param defense defense dices results
-     * @param j position for attacker
-     * @param i position for defense
-     */
-    public void compareDice(int[] attacker, int[] defense, int j, int i) {
-        if (attacker[j] <= defense[i]) {
-            this.getCurrentAttack().getSource().setNumArmies(this.getCurrentAttack().getSource().getNumArmies() - 1);
-        } else {
-            this.getCurrentAttack().getDest().setNumArmies(this.getCurrentAttack().getDest().getNumArmies() - 1);
-        }
-    }
-
-    /**
-     * Uses all the armies in an attack
-     */
-    private void battleAll() {
-        if (this.getCurrentAttack().getDest().getNumArmies() == 0) {
-            return;
-        }
-
-        int nbArmiesInSrc = this.getCurrentAttack().getSource().getNumArmies();
-        if (nbArmiesInSrc <= 1) {
-            return;
-        }
-        if (nbArmiesInSrc > 3) {
-            battle(3);
-        } else {
-            battle(nbArmiesInSrc - 1);
-        }
-        battleAll();
-    }
-
-    /**
-     * Create an array with different number of dices
-     *
-     * @param dice number of dices
-     * @return the array
-     */
-    public int[] createDice(int dice) {
-        int[] dices = new int[dice];
-        int i = 0;
-
-        while (i < dices.length) {
-            dices[i] = roolDice();
-            i++;
-        }
-        return dices;
-    }
-
-    /**
-     * Random value after rolling the dice
-     *
-     * @return random value
-     */
-    int roolDice() {
-        int range = (6 - 0) + 1;
-        return (int) (Math.random() * range) + 0;
     }
 
     /**
@@ -663,9 +592,9 @@ public abstract class PlayerModel extends Observable {
         int newArmies = this.getCurrentAttack().getSource().getNumArmies();
         this.getCurrentAttack().getSource().setNumArmies(newArmies - armies);
         this.getCurrentAttack().getDest().setNumArmies(armies);
-        this.getContriesOwned().add(this.getCurrentAttack().getDest());
-        this.getCurrentAttack().getDest().getOwner().getContriesOwned().remove(this.getCurrentAttack().getDest());
-        this.getCurrentAttack().getDest().setOwner(this);
+
+        addCountryOwned(this.getCurrentAttack().getDest());
+        this.setCurrentAttack(null);
     }
 
     void resetCurrentFortificationMove() {
