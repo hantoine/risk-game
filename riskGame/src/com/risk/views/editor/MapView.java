@@ -17,7 +17,9 @@ import java.awt.Image;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -65,6 +67,7 @@ public class MapView extends JPanel implements MapModelObserver {
 
     /**
      * Constructor of a map view
+     *
      * @param editorController controller of the editor
      */
     public MapView(MapEditorController editorController) {
@@ -217,23 +220,29 @@ public class MapView extends JPanel implements MapModelObserver {
     public void removeLink(Object object) {
         String name1;
         String name2;
-        String[] linkNames = (String[]) object;
+        String[] neighbours = (String[]) object;
+        String linkName = "";
 
-        //get key of the link
-        if (getAsciiValue(linkNames[0]) > getAsciiValue(linkNames[1])) {
-            name1 = linkNames[0];
-            name2 = linkNames[1];
-        } else {
-            name1 = linkNames[1];
-            name2 = linkNames[0];
+        Iterator linkIt = this.links.keySet().iterator();
+        for (int i = 0; i < this.links.keySet().size(); i++) {
+            String existingLinkName = (String) linkIt.next();
+            String[] existingNeighbours = existingLinkName.split(";");
+            if (existingNeighbours.length == 2) {
+                name1 = existingNeighbours[0];
+                name2 = existingNeighbours[1];
+                if (neighbours[0].equals(name1) && neighbours[1].equals(name2) || neighbours[0].equals(name2) && neighbours[1].equals(name1)) {
+                    linkName = existingLinkName;
+                    break;
+                }
+            }
         }
-        String linkName = name1 + ";" + name2;
 
         //remove from list of links
-        links.remove(linkName);
-
-        //undraw
-        repaint();
+        if (!linkName.equals("")) {
+            links.remove(linkName);
+            //undraw
+            repaint();
+        }
     }
 
     /**
@@ -257,17 +266,8 @@ public class MapView extends JPanel implements MapModelObserver {
                 secondItem.getBounds().x + ((double) this.buttonsDims.width / 2.),
                 secondItem.getBounds().y + ((double) this.buttonsDims.height / 2.));
 
-        //define a name
-        if (getAsciiValue(linkNames[0]) > getAsciiValue(linkNames[1])) {
-            name1 = linkNames[0];
-            name2 = linkNames[1];
-        } else {
-            name1 = linkNames[1];
-            name2 = linkNames[0];
-        }
-
         //add to list
-        links.put(name1 + ";" + name2, newLink);
+        links.put(linkNames[0] + ";" + linkNames[1], newLink);
 
         //draw line
         repaint();
@@ -315,22 +315,6 @@ public class MapView extends JPanel implements MapModelObserver {
     }
 
     /**
-     * Trick to find an order between two Strings Compute the sum of the ascii
-     * values of the characters of the string.
-     *
-     * @param string the string which we want to get ascii vaule
-     * @return the value of the sum of the ascii values of the String in
-     * parameter.
-     */
-    public int getAsciiValue(String string) {
-        int sum = 0;
-        for (Character c : string.toCharArray()) {
-            sum += (int) c;
-        }
-        return sum;
-    }
-
-    /**
      * Ask the user to modify a Territory's informations. It shows up when the
      * user clicked left on a Territory button.
      *
@@ -341,7 +325,7 @@ public class MapView extends JPanel implements MapModelObserver {
      * modified.
      * @return the new territory informations gathered from the user.
      */
-    public Map<String, String> modifyTerritory(String[] continentsList, String territoryName, String continentName) {
+    public Map<String, String> modifyTerritory(List<String> continentsList, String territoryName, String continentName) {
         Map<String, String> data = new HashMap<>();
 
         ModifyCountryPanel modifyPanel = new ModifyCountryPanel(continentsList, territoryName, continentName);
@@ -377,7 +361,7 @@ public class MapView extends JPanel implements MapModelObserver {
     public String createLink(String[] territoryArray, String territoryName) {
 
         String boxName = "Add link to " + territoryName;
-        String neighbour = (String) JOptionPane.showInputDialog(
+        String neighbourName = (String) JOptionPane.showInputDialog(
                 null,
                 "Select a new neighbour for " + territoryName,
                 boxName,
@@ -386,32 +370,23 @@ public class MapView extends JPanel implements MapModelObserver {
                 territoryArray,
                 territoryArray[0]);
 
-        if (neighbour == null || neighbour.equals("")) {
-            return neighbour;
+        if (neighbourName == null || neighbourName.equals("")) {
+            return neighbourName;
         }
 
         /* if neighbour name not empty
         get name of the future link to check if it already exists */
-        String name1;
-        String name2;
-        if (getAsciiValue(neighbour) > getAsciiValue(territoryName)) {
-            name1 = neighbour;
-            name2 = territoryName;
-        } else {
-            name1 = territoryName;
-            name2 = neighbour;
-        }
-        String futureName = name1 + ";" + name2;
+        String newLinkName = territoryName + ";" + neighbourName;
 
         //check if already exists
         for (String linkName : this.links.keySet()) {
-            if (linkName.equals(futureName)) {
+            if (linkName.equals(newLinkName)) {
                 this.showError("This link already exists");
                 return "";
             }
         }
 
-        return neighbour;
+        return neighbourName;
     }
 
     /**

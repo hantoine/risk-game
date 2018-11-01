@@ -7,10 +7,10 @@ package com.risk.models;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Random;
 
 /**
@@ -18,7 +18,7 @@ import java.util.Random;
  *
  * @author Nellybett
  */
-public final class RiskModel {
+public final class RiskModel extends Observable {
 
     /**
      * map a reference to the map of the game
@@ -81,6 +81,8 @@ public final class RiskModel {
             players.add(new AIPlayerModel(name, color, this));
         }
 
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -90,6 +92,9 @@ public final class RiskModel {
      */
     public void removePlayer(int index) {
         players.remove(index);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -102,6 +107,9 @@ public final class RiskModel {
         if (players.size() == 1) {
             this.winningPlayer = this.players.getFirst();
         }
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -112,6 +120,9 @@ public final class RiskModel {
     public void setPlayerList(LinkedList<PlayerModel> playerList) {
         this.players = playerList;
         this.currentPlayer = playerList.getFirst();
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -124,18 +135,16 @@ public final class RiskModel {
     }
 
     /**
-     * Setter of the board attribute from a file
+     * Setter of the map attribute
      *
-     * @param path path of the file
-     * @return 0 success, -1--6 error
+     * @param newMap new map to set
      */
-    public int loadMap(String path) {
-        this.map = new MapModel();
-        int result = new MapFileManagement().createBoard(path, this.map);
-        if (result == 0) {
-            this.initializeDeck();
-        }
-        return result;
+    public void setMap(MapModel newMap) {
+        this.map = newMap;
+        this.initializeDeck();
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -155,33 +164,87 @@ public final class RiskModel {
             throw new IllegalArgumentException();
         }
 
-        List<TerritoryModel> countriesLeft = new ArrayList<>(map.getGraphTerritories().values());
+        List<TerritoryModel> countriesLeft = new LinkedList<>(map.getTerritories());
         Collections.shuffle(countriesLeft);
 
         int countriesPerPlayer = (countriesLeft.size() / players.size());
 
         players.stream().forEach((player) -> {
             List<TerritoryModel> ownedCountries = countriesLeft.subList(0, countriesPerPlayer);
+            ownedCountries.stream().forEach((t) -> {
+                t.setNumArmies(1);
+            });
             player.setContriesOwned(ownedCountries);
-            countriesLeft.removeAll(ownedCountries);
+
+            countriesLeft.removeAll(new ArrayList<>(ownedCountries));
         });
 
         Random rnd = new Random();
         while (!countriesLeft.isEmpty()) {
             int playerIndex = rnd.nextInt(players.size());
-            players.get(playerIndex).addCountryOwned(countriesLeft.remove(0));
+            TerritoryModel territoryAdded = countriesLeft.remove(0);
+            territoryAdded.setNumArmies(1);
+            players.get(playerIndex).addCountryOwned(territoryAdded);
         }
 
         // update continents owned accordingly
-        Collection<ContinentModel> continents = map.getGraphContinents().values();
-        continents.stream().forEach((c) -> {
-            PlayerModel ownerFirstTerritories = c.getMembers().getFirst().getOwner();
+        map.getContinents().forEach((c) -> {
+            PlayerModel owner = c.getMembers().getFirst().getOwner();
             if (c.getMembers().stream()
-                    .allMatch((t) -> (t.getOwner() == ownerFirstTerritories))) {
-                ownerFirstTerritories.addContinentOwned(c);
+                    .allMatch((t) -> (t.getOwner() == owner))) {
+                owner.addContinentOwned(c);
             }
         });
 
+        setChanged();
+        notifyObservers();
+    }
+
+    public void attackMove(TerritoryModel src, TerritoryModel dest) {
+        AttackMove attack = new AttackMove(src, dest);
+        this.getCurrentPlayer().setCurrentAttack(attack);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public void tryFortificationMove(TerritoryModel src, TerritoryModel dest)
+            throws FortificationMoveImpossible {
+
+        checkFortificationMove(src, dest);
+
+        src.decrementNumArmies();
+        dest.incrementNumArmies();
+        currentPlayer.setCurrentFortificationMove(src, dest);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    private void checkFortificationMove(TerritoryModel src, TerritoryModel dest)
+            throws FortificationMoveImpossible {
+
+        if (!src.getAdj().contains(dest)) {
+            throw new FortificationMoveImpossible(null);
+        }
+
+        if (!(currentPlayer.checkOwnTerritory(src)
+                && currentPlayer.checkOwnTerritory(dest))) {
+            throw new FortificationMoveImpossible(
+                    "You don't own this country !");
+        }
+
+        FortificationMove attempted = new FortificationMove(src, dest);
+        FortificationMove current = currentPlayer.getCurrentFortificationMove();
+        if (attempted.compatible(current)) {
+            throw new FortificationMoveImpossible(
+                    "You can only make one move !");
+        }
+
+        if (src.getNumArmies() == 1) {
+            throw new FortificationMoveImpossible(
+                    "There is only one army in the source country !");
+        }
     }
 
     /**
@@ -198,8 +261,8 @@ public final class RiskModel {
      *
      * @return players list
      */
-    public LinkedList<PlayerModel> getPlayerList() {
-        return this.players;
+    public List<PlayerModel> getPlayerList() {
+        return Collections.unmodifiableList(this.players);
     }
 
     /**
@@ -233,6 +296,9 @@ public final class RiskModel {
      */
     public void setTurn(int turn) {
         this.turn = turn;
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -240,8 +306,13 @@ public final class RiskModel {
      *
      * @param currentPlayer the currentPlayer to set
      */
-    public void setCurrentPlayer(PlayerModel currentPlayer) {
+    private void setCurrentPlayer(PlayerModel currentPlayer) {
+        this.currentPlayer.setCurrentPlayer(false);
         this.currentPlayer = currentPlayer;
+        this.currentPlayer.setCurrentPlayer(true);
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -258,8 +329,11 @@ public final class RiskModel {
      *
      * @param stage the stage to set
      */
-    public void setStage(GamePhase stage) {
+    private void setStage(GamePhase stage) {
         this.phase = stage;
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -269,6 +343,9 @@ public final class RiskModel {
         this.players.stream().forEach((player) -> {
             player.initializeArmies(this.players.size());
         });
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -286,7 +363,7 @@ public final class RiskModel {
     public void initializeDeck() {
         this.deck = new LinkedList();
         int i = 0;
-        for (String country : this.getMap().getGraphTerritories().keySet()) {
+        for (String country : this.getMap().getTerritoryList()) {
 
             switch (i) {
                 case 0:
@@ -303,6 +380,9 @@ public final class RiskModel {
 
         }
         shuffleDeck();
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -310,6 +390,9 @@ public final class RiskModel {
      */
     public void shuffleDeck() {
         Collections.shuffle(this.getDeck());
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -328,9 +411,193 @@ public final class RiskModel {
      */
     public void setWinningPlayer(PlayerModel winningPlayer) {
         this.winningPlayer = winningPlayer;
+
+        setChanged();
+        notifyObservers();
     }
 
+    /**
+     * It validates that the number of territories is bigger than the number of
+     * players
+     *
+     * @return true if there is as many territories as players; false if it is
+     * not true
+     */
     public boolean validateCountries() {
-        return (map.getGraphTerritories().values().size()>=players.size());
+        return (map.getTerritories().size() >= players.size());
+    }
+
+    /**
+     * Finish the current stage of the game and initialize for the next stage of
+     * the game
+     *
+     * @return True if the game is not over
+     */
+    public boolean finishPhase() {
+        if (this.getWinningPlayer() != null) {
+            return false;
+            // this should be triggered by the view itself when RiskView is updated and a winning player is set
+            //            riskView.showMessage("The player " + this.modelRisk.getWinningPlayer().getName() + " has won the game");
+
+        }
+
+        executeEndOfPhaseSteps();
+        this.nextPhase();
+        executeBeginningOfPhaseSteps();
+
+        setChanged();
+        notifyObservers();
+
+        return true;
+    }
+
+    /**
+     * Final steps after finishing a phase
+     */
+    private void executeEndOfPhaseSteps() {
+        switch (this.getPhase()) {
+            case STARTUP:
+                break;
+            case REINFORCEMENT:
+                break;
+            case ATTACK:
+                this.getCurrentPlayer().addCardToPlayerHand();
+                //riskView.updateAuxiliarPhasePanel("", "", this, 0, 3);
+                this.getCurrentPlayer().setCurrentAttack(null);
+                checkForDeadPlayers();
+                break;
+            case FORTIFICATION:
+                this.getCurrentPlayer().resetCurrentFortificationMove();
+                this.nextTurn();
+                break;
+        }
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Steps at the beginning of a phase
+     */
+    private void executeBeginningOfPhaseSteps() {
+        switch (this.getPhase()) {
+            case STARTUP:
+                break;
+            case REINFORCEMENT:
+                this.getCurrentPlayer().reinforcement(this);
+                //riskView.cardExchangeMenu(modelRisk, riskController);
+                break;
+            case ATTACK:
+                this.getCurrentPlayer().attack(this);
+                break;
+            case FORTIFICATION:
+                this.getCurrentPlayer().fortification(this);
+                break;
+        }
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Check if any player has no more territories owned and remove these player
+     * from the game
+     */
+    private void checkForDeadPlayers() {
+        players.stream()
+                .filter(p -> p.getNbCountriesOwned() == 0)
+                .forEach((p) -> {
+                    /*
+                    this.riskView.showMessage(String.format(
+                            "The player %s has no more territories, it is eliminated from the game !",
+                            p.getName())
+                    );//*///setchanged and notifyObserver with the dead player as a parameter
+                    this.removePlayer(p);
+                });
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Place an army from the given player on the given territory.
+     *
+     * @param player Player whose army is going to be taken
+     * @param territory Territory on which the army will be added
+     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible
+     */
+    public void placeArmy(PlayerModel player, TerritoryModel territory) throws ArmyPlacementImpossible {
+        if (player.getNumArmiesAvailable() <= 0) {
+            throw new ArmyPlacementImpossible("You have no armies left to deploy !");
+        }
+        if (player.checkOwnTerritory(territory) == false) {
+            throw new ArmyPlacementImpossible("You don't own this country !");
+        }
+
+        territory.incrementNumArmies();
+        player.decrementNumArmiesAvailable();
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public static class FortificationMoveImpossible extends Exception {
+
+        private final String reason;
+
+        public FortificationMoveImpossible(String reason) {
+            this.reason = reason;
+        }
+
+        public String getReason() {
+            return reason;
+        }
+    }
+
+    public static class ArmyPlacementImpossible extends Exception {
+
+        private final String reason;
+
+        public ArmyPlacementImpossible(String reason) {
+            this.reason = reason;
+        }
+
+        public String getReason() {
+            return reason;
+        }
+    }
+
+    public boolean exchangeCardsWithArmiesForCurrentPlayer(List<String> cards) {
+
+        boolean res = this.getCurrentPlayer().exchangeCardsToArmies(cards);
+
+        setChanged();
+        notifyObservers();
+
+        return !res;
+    }
+
+    /**
+     * If the dest country have 0 armies it was conquered
+     *
+     * @param armies the number of armies to move
+     */
+    public void moveArmiesToConqueredTerritory(int armies) {
+        this.getCurrentPlayer().conquerCountry(armies);
+        this.finishPhase();
+    }
+
+    public void battle(PlayerModel attacker, String source, String dest, int dice) {
+        attacker.battle(dice);
+        if (attacker.getCurrentAttack().getDest().getNumArmies() == 0) {
+            //riskView.updateAuxiliarPhasePanel(source, dest, this, modelRisk.getCurrentPlayer().getCurrentAttack().getSource().getNumArmies(), 1);
+        } else {
+            this.finishPhase();
+        }
+    }
+
+    public void addNewEvent(String eventMessage) {
+        setChanged();
+        notifyObservers(eventMessage);
     }
 }

@@ -5,33 +5,31 @@
  */
 package com.risk.models;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
-import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Class to test methods in the map model
  *
- * @author hantoine
+ * @author liyixuan
  */
-public class MapModelTest {
+public class RiskModelTest {
 
+    /**
+     * riskModel instance of the risk model
+     */
+    RiskModel riskModel = new RiskModel();
     /**
      * mapModel instance of the map model
      */
     MapModel mapModel;
 
     /**
-     * Constructor
-     */
-    public MapModelTest() {
-    }
-
-    /**
-     * Create a valid MapModel that will be the base for all test cases
+     * Initialize mapModel to a valid MapModel that will be the base for all
+     * test cases
      */
     @Before
     public void setUp() {
@@ -103,70 +101,51 @@ public class MapModelTest {
 
         mapModel.setGraphTerritories(graphTerritories);
         mapModel.setGraphContinents(graphContinents);
+
+        riskModel.setMap(mapModel);
     }
 
     /**
-     * After the execution assigns null to the instance
-     */
-    @After
-    public void tearDown() {
-        mapModel = null;
-    }
-
-    /**
-     * Test of isValid method, of class MapModel. Test that the method returns
-     * true with a simple valid map
+     * Test of assignCoutriesToPlayers method, of class RiskModel.
      */
     @Test
-    public void testIsValidonValidMap() {
-        boolean expResult = true;
-        boolean result = mapModel.isValid();
-        assertEquals(expResult, result);
+    public void testAssignCoutriesToPlayers() {
+        riskModel.assignCoutriesToPlayers();
+        Collection<TerritoryModel> territories = mapModel.getGraphTerritories().values();
+        territories.stream().forEach((c) -> {
+            assertNotNull(c.getOwner());
+        });
     }
 
     /**
-     * Test of isValid method, of class MapModel. Test that the method returns
-     * false with a map whose graph of territories is not connected
+     * Test of assignCoutriesToPlayers method, of class RiskModel. No territory
+     * without armies
      */
     @Test
-    public void testIsValidonNotConnectedMap() {
-        mapModel.removeLink("TerritoryD", "TerritoryC");
-
-        boolean expResult = false;
-        boolean result = mapModel.isValid();
-        assertEquals(expResult, result);
+    public void testAssignCoutriesToPlayersArmies() {
+        riskModel.assignCoutriesToPlayers();
+        Collection<TerritoryModel> territories = mapModel.getGraphTerritories().values();
+        territories.stream().forEach((c) -> {
+            assertEquals(c.getNumArmies(), 1);
+        });
     }
 
     /**
-     * Test of isValid method, of class MapModel. Test that the method returns
-     * false with a map containing a continent whose subgraph of territories is
-     * not connected
+     * Test of assignCoutriesToPlayers method, of class RiskModel. Check that
+     * continent are assigned
      */
     @Test
-    public void testIsValidonContinentNotConnectedMap() {
-        // Create a new continent ContinentC which is not connected
-        mapModel.addContinent("ContinentC", 3);
-        mapModel.getGraphTerritories()
-                .get("TerritoryA").setContinentName("ContinentC");
-        mapModel.getGraphTerritories()
-                .get("TerritoryE").setContinentName("ContinentC");
+    public void testAssignCoutriesToPlayersContinents() {
+        ContinentModel continentC = new ContinentModel("ContinentC", 3);
+        TerritoryModel territoryA = mapModel.getGraphTerritories().get("TerritoryA");
+        mapModel.getGraphContinents().put(continentC.getName(), continentC);
+        mapModel.getGraphContinents().get("ContinentA").removeMember(territoryA);
+        continentC.addMember(territoryA);
+        territoryA.setContinentName("ContinentC");
 
-        boolean expResult = false;
-        boolean result = mapModel.isValid();
-        assertEquals(expResult, result);
-    }
+        riskModel.assignCoutriesToPlayers();
 
-    /**
-     * Test of isValid method, of class MapModel. Test that the method returns
-     * false with a map containing an empty continent
-     */
-    @Test
-    public void testIsValidonEmptyContinentMap() {
-        // Create a new continent without adding any territories in it
-        mapModel.addContinent("ContinentC", 3);
-
-        boolean expResult = false;
-        boolean result = mapModel.isValid();
-        assertEquals(expResult, result);
+        assertTrue(riskModel.getPlayerList().stream()
+                .anyMatch((p) -> (p.checkOwnContinent(continentC))));
     }
 }

@@ -5,9 +5,8 @@
  */
 package com.risk.models;
 
-import com.risk.controllers.GameController;
 import java.awt.Color;
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * It represents an AI player (child of PlayerModel)
@@ -23,7 +22,7 @@ public class AIPlayerModel extends PlayerModel {
      * @param color color of the player
      * @param game Game in which this players belongs
      */
-    public AIPlayerModel(String name, Color color, RiskModel game) {
+    AIPlayerModel(String name, Color color, RiskModel game) {
         super(name, color, false, game);
     }
 
@@ -31,7 +30,7 @@ public class AIPlayerModel extends PlayerModel {
      * Reinforcement phase for AI Player
      */
     @Override
-    public void reinforcement(GameController playGame) {
+    public void reinforcement(RiskModel playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -39,7 +38,7 @@ public class AIPlayerModel extends PlayerModel {
      * Fortification phase for AI Player
      */
     @Override
-    public void fortification(GameController playGame) {
+    public void fortification(RiskModel playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -47,22 +46,22 @@ public class AIPlayerModel extends PlayerModel {
      * Attack phase for AI Player
      */
     @Override
-    public void attack(GameController playGame) {
+    public void attack(RiskModel playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean exchangeCardsToArmies(LinkedList<String> selectedCards) {
-        int[] cardDuplicates = this.getCardsOwned().getCardDuplicates();
+    public boolean exchangeCardsToArmies(List<String> selectedCards) {
+        int[] cardDuplicates = this.getHand().getCardDuplicates();
 
         if (cardDuplicates[0] >= 3) {
-            this.getCardsOwned().removeCards("infantry", super.game.getDeck());
+            this.getHand().removeCards("infantry", super.game.getDeck());
         } else if (cardDuplicates[1] >= 3) {
-            this.getCardsOwned().removeCards("cavalry", super.game.getDeck());
+            this.getHand().removeCards("cavalry", super.game.getDeck());
         } else if (cardDuplicates[2] >= 3) {
-            this.getCardsOwned().removeCards("artillery", super.game.getDeck());
+            this.getHand().removeCards("artillery", super.game.getDeck());
         } else {
-            this.getCardsOwned().removeCards("different", super.game.getDeck());
+            this.getHand().removeCards("different", super.game.getDeck());
         }
         armiesCardAssignation();
         return true;

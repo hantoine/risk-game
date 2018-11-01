@@ -5,8 +5,8 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
-import com.risk.models.editor.EditableMapModel;
 import com.risk.views.RiskView;
 import com.risk.views.editor.MapEditorView;
 
@@ -36,12 +36,12 @@ public final class RiskController {
     /**
      * playGame it is a reference to the controller of the game flow
      */
-    private GameController playGame;
+    private GameController gameController;
     /**
      * Listener for the menu events
      */
     private MenuListener menuListener;
-    
+
     private CardExchangeListener cardExchangeListener;
     /**
      * mapEditor reference to the map editor view
@@ -59,8 +59,9 @@ public final class RiskController {
         this.viewRisk = riskView;
 
         this.countryListener = new MapListener(this);
-        this.cardExchangeListener=new CardExchangeListener(this);
+        this.cardExchangeListener = new CardExchangeListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
+        this.gameController = new GameController(this.modelRisk);
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.setVisible(true);
 
@@ -70,13 +71,13 @@ public final class RiskController {
      * Opens a new map editor view.
      */
     public void openMapEditor() {
-        EditableMapModel newMap = new EditableMapModel();
+        MapModel newMap = new MapModel();
         MapEditorController editorController = new MapEditorController(newMap);
         this.mapEditor = new MapEditorView(1000, 600, editorController, newMap);
         this.mapEditor.setVisible(true);
-        newMap.addObserver(mapEditor);
-        newMap.addObserver(mapEditor.getMapView());
-        newMap.addObserver(mapEditor.getContinentListPanel());
+        newMap.addObserverCustom(mapEditor);
+        newMap.addObserverCustom(mapEditor.getMapView());
+        newMap.addObserverCustom(mapEditor.getContinentListPanel());
     }
 
     /**
@@ -86,17 +87,15 @@ public final class RiskController {
     public void newGameMenuItemPressed() {
         getViewRisk().initialMenu(getModelRisk(), getMenuListener());
     }
-    
- 
+
     /**
      * It executes a thread with the different phases of the game. It is called
      * after setting the players and board information
      */
     void playGame() {
-        this.setPlayGame(new GameController(this.modelRisk, this.viewRisk,this));
         this.modelRisk.initializePlayersArmies();
         this.modelRisk.assignCoutriesToPlayers();
-        this.viewRisk.updateViewWithNewMap(modelRisk);
+        this.viewRisk.observeModel(modelRisk);
     }
 
     /**
@@ -109,30 +108,12 @@ public final class RiskController {
     }
 
     /**
-     * Setter of the viewRisk attribute
-     *
-     * @param viewRisk the viewRisk to set
-     */
-    public void setViewRisk(RiskView viewRisk) {
-        this.viewRisk = viewRisk;
-    }
-
-    /**
      * Getter of the modelRisk attribute
      *
      * @return the modelRisk
      */
     public RiskModel getModelRisk() {
         return modelRisk;
-    }
-
-    /**
-     * Setter of the modelRisk attribute
-     *
-     * @param modelRisk the modelRisk to set
-     */
-    public void setModelRisk(RiskModel modelRisk) {
-        this.modelRisk = modelRisk;
     }
 
     /**
@@ -145,15 +126,6 @@ public final class RiskController {
     }
 
     /**
-     * Setter of the menuListener attribute
-     *
-     * @param menuListener the menuListener to set
-     */
-    public void setMenuListener(MenuListener menuListener) {
-        this.menuListener = menuListener;
-    }
-
-    /**
      * Getter of the countryListener attribute
      *
      * @return the countryListener
@@ -163,26 +135,10 @@ public final class RiskController {
     }
 
     /**
-     * Setter of the countryListener attribute
-     *
-     * @param countryListener the countryListener to set
-     */
-    public void setCountryListener(MapListener countryListener) {
-        this.countryListener = countryListener;
-    }
-
-    /**
      * @return the playGame
      */
-    public GameController getPlayGame() {
-        return playGame;
-    }
-
-    /**
-     * @param playGame the playGame to set
-     */
-    public void setPlayGame(GameController playGame) {
-        this.playGame = playGame;
+    public GameController getGameController() {
+        return gameController;
     }
 
     /**
@@ -191,6 +147,5 @@ public final class RiskController {
     public CardExchangeListener getCardExchangeListener() {
         return cardExchangeListener;
     }
-    
-    
+
 }
