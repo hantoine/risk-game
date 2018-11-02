@@ -29,6 +29,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
@@ -59,7 +60,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      * stagePanel reference to the view that manages the information of the
      * current stage
      */
-    final private PhasePanel stagePanel;
+    final private PhasePanel phaseView;
 
     /**
      * Constructor of main view
@@ -72,16 +73,20 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
 
         this.phaseAuxiliarPanel = new PhaseAuxiliar();
 
-        this.stagePanel = new PhasePanel();
+        this.phaseView = new PhasePanel();
         this.playerPanel = new PlayerGameInfoPanel();
         this.mapPanel = new MapPanel();
 
-        Container cp = this.getContentPane();
-        cp.setLayout(new BorderLayout());
-        cp.add(this.phaseAuxiliarPanel, BorderLayout.SOUTH);
-        cp.add(this.stagePanel, BorderLayout.NORTH);
-        cp.add(this.playerPanel, BorderLayout.EAST);
-        cp.add(this.mapPanel, BorderLayout.CENTER);
+        Container mainContainer = this.getContentPane();
+        JPanel southContainer = new JPanel();
+        southContainer.setLayout(new BorderLayout());
+        southContainer.add(this.phaseAuxiliarPanel, BorderLayout.NORTH);
+        southContainer.add(this.phaseView, BorderLayout.SOUTH);
+        mainContainer.setLayout(new BorderLayout());
+        mainContainer.add(southContainer, BorderLayout.SOUTH);
+        //mainContainer.add(, BorderLayout.NORTH);
+        mainContainer.add(this.playerPanel, BorderLayout.EAST);
+        mainContainer.add(this.mapPanel, BorderLayout.CENTER);
 
         this.addMenuBar();
 
@@ -95,7 +100,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         rm.getPlayerList().forEach((pl) -> {
             pl.addObserver(playerPanel);
         });
-        rm.addObserver(this.stagePanel);
+        rm.addObserver(this.phaseView);
         rm.addObserver(this.mapPanel);
         rm.getMap().addObserver(this.mapPanel);
         rm.addObserver(this);
@@ -276,7 +281,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      * @return the reinforcementArmies
      */
     PhasePanel getStagePanel() {
-        return stagePanel;
+        return phaseView;
     }
 
     @Override
