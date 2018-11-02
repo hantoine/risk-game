@@ -53,7 +53,8 @@ public class HumanPlayerModel extends PlayerModel {
     }
 
     @Override
-    public boolean exchangeCardsToArmies(List<String> selectedCards) {
+    public boolean exchangeCardsToArmies() {
+        List<String> selectedCards = this.getHand().getSelectedCards();
         LinkedList<String> typeOfArmie = new LinkedList<>();
         this.getHand().getCards().stream()
                 .filter(c -> selectedCards.contains(c.getCountryName()))

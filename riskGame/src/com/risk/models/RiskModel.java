@@ -589,12 +589,11 @@ public final class RiskModel extends Observable {
 
     /**
      *
-     * @param cards
      * @return
      */
-    public boolean exchangeCardsWithArmiesForCurrentPlayer(List<String> cards) {
+    public boolean exchangeCardsWithArmiesForCurrentPlayer() {
 
-        boolean res = this.getCurrentPlayer().exchangeCardsToArmies(cards);
+        boolean res = this.getCurrentPlayer().exchangeCardsToArmies();
 
         setChanged();
         notifyObservers();
