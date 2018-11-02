@@ -6,6 +6,8 @@
 package com.risk.models;
 
 import java.awt.Color;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * It represents an human player (child of PlayerModel)
@@ -30,6 +32,7 @@ public class HumanPlayerModel extends PlayerModel {
      */
     @Override
     public void reinforcement(RiskModel playGame) {
+        this.setHanded(false);
         this.assignNewArmies();
     }
 
@@ -46,7 +49,32 @@ public class HumanPlayerModel extends PlayerModel {
      */
     @Override
     public void attack(RiskModel playGame) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // nothing to do
+    }
+
+    @Override
+    public boolean exchangeCardsToArmies() {
+        List<String> selectedCards = this.getHand().getSelectedCards();
+        LinkedList<String> typeOfArmie = new LinkedList<>();
+        this.getHand().getCards().stream()
+                .filter(c -> selectedCards.contains(c.getCountryName()))
+                .forEach(cs -> typeOfArmie.add(cs.getTypeOfArmie()));
+
+        boolean areEqual = typeOfArmie.stream()
+                .allMatch(a -> a.equals(typeOfArmie.getFirst()));
+        boolean different = !(typeOfArmie.get(0).equals(typeOfArmie.get(1))) && !(typeOfArmie.get(0).equals(typeOfArmie.get(2))) && !(typeOfArmie.get(2).equals(typeOfArmie.get(1)));
+
+        if (areEqual || different) {
+            super.setHanded(true);
+            this.getHand().removeCards(selectedCards, super.game.getDeck());
+            armiesCardAssignation();
+            this.setChanged();
+            this.notifyObservers(super.game);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }

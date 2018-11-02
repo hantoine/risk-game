@@ -36,11 +36,12 @@ public final class RiskController {
     /**
      * playGame it is a reference to the controller of the game flow
      */
-    private GameController playGame;
+    private GameController gameController;
     /**
      * Listener for the menu events
      */
     private MenuListener menuListener;
+
     /**
      * mapEditor reference to the map editor view
      */
@@ -58,9 +59,9 @@ public final class RiskController {
 
         this.countryListener = new MapListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
+        this.gameController = new GameController(this.modelRisk);
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.setVisible(true);
-
     }
 
     /**
@@ -89,7 +90,6 @@ public final class RiskController {
      * after setting the players and board information
      */
     void playGame() {
-        this.setPlayGame(new GameController(this.modelRisk, this.viewRisk));
         this.modelRisk.initializePlayersArmies();
         this.modelRisk.assignCoutriesToPlayers();
         this.viewRisk.observeModel(modelRisk);
@@ -105,30 +105,12 @@ public final class RiskController {
     }
 
     /**
-     * Setter of the viewRisk attribute
-     *
-     * @param viewRisk the viewRisk to set
-     */
-    public void setViewRisk(RiskView viewRisk) {
-        this.viewRisk = viewRisk;
-    }
-
-    /**
      * Getter of the modelRisk attribute
      *
      * @return the modelRisk
      */
     public RiskModel getModelRisk() {
         return modelRisk;
-    }
-
-    /**
-     * Setter of the modelRisk attribute
-     *
-     * @param modelRisk the modelRisk to set
-     */
-    public void setModelRisk(RiskModel modelRisk) {
-        this.modelRisk = modelRisk;
     }
 
     /**
@@ -141,15 +123,6 @@ public final class RiskController {
     }
 
     /**
-     * Setter of the menuListener attribute
-     *
-     * @param menuListener the menuListener to set
-     */
-    public void setMenuListener(MenuListener menuListener) {
-        this.menuListener = menuListener;
-    }
-
-    /**
      * Getter of the countryListener attribute
      *
      * @return the countryListener
@@ -159,25 +132,9 @@ public final class RiskController {
     }
 
     /**
-     * Setter of the countryListener attribute
-     *
-     * @param countryListener the countryListener to set
-     */
-    public void setCountryListener(MapListener countryListener) {
-        this.countryListener = countryListener;
-    }
-
-    /**
      * @return the playGame
      */
-    public GameController getPlayGame() {
-        return playGame;
-    }
-
-    /**
-     * @param playGame the playGame to set
-     */
-    public void setPlayGame(GameController playGame) {
-        this.playGame = playGame;
+    public GameController getGameController() {
+        return gameController;
     }
 }

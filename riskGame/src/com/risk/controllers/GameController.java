@@ -5,10 +5,13 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.GamePhase;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
-import com.risk.views.RiskViewInterface;
+import com.risk.views.reinforcement.CardExchangeView;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 /**
  * It represents the game process. It contains all methods corresponding to the
@@ -21,22 +24,21 @@ public class GameController {
     /**
      * modelRisk It is an attribute that represents a reference to the model
      */
-    RiskModel modelRisk;
+    RiskModel rm;
     /**
-     * riskView It is an attribute that represents a reference to the view
+     * Card exchange panel
      */
-    RiskViewInterface riskView;
+    private CardExchangeView exchangeView;
+
+    private CardExchangeListener cardExchangeListener;
 
     /**
      * Constructor
      *
-     * @param riskModel model of the game
-     * @param riskView view of the game
+     * @param riskModel Model of the Risk game
      */
-    public GameController(RiskModel riskModel, RiskViewInterface riskView) {
-        this.modelRisk = riskModel;
-        this.riskView = riskView;
-
+    public GameController(RiskModel riskModel) {
+        this.rm = riskModel;
     }
 
     /**
@@ -47,35 +49,30 @@ public class GameController {
      * clicked
      */
     public void clickOnTerritory(String territoryClickedName) {
-        TerritoryModel territoryClicked = this.modelRisk.getMap().getTerritoryByName(territoryClickedName);
-        PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
+        TerritoryModel territoryClicked = this.rm.getMap().getTerritoryByName(territoryClickedName);
+        PlayerModel currentPlayer = this.rm.getCurrentPlayer();
 
-        switch (this.modelRisk.getPhase()) {
+        switch (this.rm.getPhase()) {
             case STARTUP:
                 try {
-                    this.modelRisk.placeArmy(currentPlayer, territoryClicked);
+                    this.rm.placeArmy(currentPlayer, territoryClicked);
+                    this.rm.nextTurn();
+                    if (currentPlayer.getNumArmiesAvailable() == 0 && rm.getTurn() == 0) {
+                        this.rm.finishPhase();
+                    }
                 } catch (RiskModel.ArmyPlacementImpossible ex) {
-                    this.riskView.showMessage(ex.getReason());
-                }
-                this.modelRisk.nextTurn();
-                if (currentPlayer.getNumArmiesAvailable() == 0 && modelRisk.getTurn() == 0) {
-                    this.modelRisk.finishPhase();
+                    this.rm.addNewEvent(ex.getReason());
                 }
                 break;
             case REINFORCEMENT:
-                if (currentPlayer.getHand().getNbCards() == 5) {
-                    riskView.showMessage("You have 5 cards. Please hand some cards");
-                    break;
-                }
                 try {
-                    this.modelRisk.placeArmy(currentPlayer, territoryClicked);
+                    this.rm.placeArmy(currentPlayer, territoryClicked);
+                    if (currentPlayer.getNumArmiesAvailable() == 0) {
+                        this.rm.finishPhase();
+                    }
                 } catch (RiskModel.ArmyPlacementImpossible ex) {
-                    this.riskView.showMessage(ex.getReason());
+                    this.rm.addNewEvent(ex.getReason());
                 }
-                if (currentPlayer.getNumArmiesAvailable() == 0) {
-                    this.modelRisk.finishPhase();
-                }
-
                 break;
         }
     }
@@ -90,37 +87,93 @@ public class GameController {
      * and drop operation
      */
     public void dragNDropTerritory(String sourceTerritoryName, String destTerritoryName) {
-        TerritoryModel sourceTerritory = this.modelRisk.getMap().getTerritoryByName(sourceTerritoryName);
-        TerritoryModel destTerritory = this.modelRisk.getMap().getTerritoryByName(destTerritoryName);
-        PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
+        TerritoryModel sourceTerritory = this.rm.getMap().getTerritoryByName(sourceTerritoryName);
+        TerritoryModel destTerritory = this.rm.getMap().getTerritoryByName(destTerritoryName);
+        PlayerModel currentPlayer = this.rm.getCurrentPlayer();
 
-        switch (this.modelRisk.getPhase()) {
-            case FORTIFICATION: {
+        switch (this.rm.getPhase()) {
+            case FORTIFICATION:
                 try {
-                    this.modelRisk.tryFortificationMove(sourceTerritory, destTerritory);
+                    this.rm.tryFortificationMove(sourceTerritory, destTerritory);
                 } catch (RiskModel.FortificationMoveImpossible ex) {
                     if (ex.getReason() != null) {
-                        this.riskView.showMessage(ex.getReason());
+                        this.rm.addNewEvent(ex.getReason());
                     }
                 }
-            }
-            break;
+                break;
+            case ATTACK:
+                if (!sourceTerritory.getAdj().contains(destTerritory)) {
+                    break;
+                }
+                if (rm.getCurrentPlayer().getCurrentAttack() != null) {
+                    this.rm.addNewEvent("You are already attacking.");
+                    break;
+                }
+                if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
+                        || currentPlayer.getContriesOwned().contains(destTerritory)) {
+                    this.rm.addNewEvent("Invalid movement");
+                    break;
+                }
+                if (sourceTerritory.getNumArmies() < 2) {
+                    this.rm.addNewEvent("You can't attack with only one armie");
+                    break;
+                }
+
+                this.rm.attackMove(sourceTerritory, destTerritory);
+                break;
         }
 
     }
 
     /**
-     * Called when the player click on the Hand cards button during the
-     * reinforcement phase
+     * Press one of the dices
+     *
+     * @param source source of attack
+     * @param dest destiny of attack
+     * @param dice the number of dices
      */
-    public void clickHand() {
-        modelRisk.exchangeCardsWithArmiesForCurrentPlayer();
+    public void clickAttack(int dice) {
+        rm.performAttack(this.rm.getCurrentPlayer(), dice);
+    }
+
+    /**
+     * Move the given number of armies from the source Territory to the
+     * destination territory of the attack move of the current player
+     *
+     * @param armies the number of armies to move to the newly conquered
+     * territory
+     */
+    public void moveArmiesToConqueredTerritory(int armies) {
+        this.rm.moveArmiesToConqueredTerritory(armies);
     }
 
     /**
      * Called when the end of phase button is pressed in the UI
      */
     public void endPhaseButtonPressed() {
-        this.modelRisk.finishPhase();
+        this.rm.finishPhase();
+        if (this.rm.getPhase() == GamePhase.REINFORCEMENT
+                && this.rm.getCurrentPlayer().getHand().cardHandingPossible()) {
+            openCardExchangeView();
+        }
+    }
+
+    void closeCardExchangeView() {
+        this.exchangeView.setVisible(false);
+        this.exchangeView = null;
+    }
+
+    void openCardExchangeView() {
+        this.exchangeView = new CardExchangeView();
+        this.exchangeView.updateView(this.rm.getCurrentPlayer().getHand());
+        this.exchangeView.observe(rm);
+        this.cardExchangeListener = new CardExchangeListener(this.rm, this);
+        this.exchangeView.setListener(cardExchangeListener);
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        exchangeView.setLocation(
+                dimension.width / 2 - (this.exchangeView.getWidth()) / 2,
+                dimension.height / 2 - 500 / 2
+        );
+        exchangeView.setVisible(true);
     }
 }

@@ -25,6 +25,11 @@ public class HandModel extends Observable {
     private LinkedList<CardModel> cards;
     private PlayerModel owner;
     private boolean current;
+    private boolean handed;
+    /**
+     * Cards selected to be handed
+     */
+    List<String> selectedCards;
 
     /**
      * Constructor
@@ -35,7 +40,7 @@ public class HandModel extends Observable {
         this.cards.add(new CardModel("France", "infantry"));
         this.cards.add(new CardModel("China", "infantry"));
         this.cards.add(new CardModel("India", "artillery"));
-        this.cards.add(new CardModel("Africa", "artillery"));
+        this.selectedCards = new LinkedList<>();
     }
 
     /**
@@ -116,7 +121,7 @@ public class HandModel extends Observable {
      *
      * @return true if the player has 3 different cards or 3 identical ones
      */
-    public boolean threeDifferentCardsOrThreeEqualCards() {
+    public boolean cardHandingPossible() {
         int[] cardDuplicates = this.getCardDuplicates();
 
         return cardDuplicates[0] >= 3
@@ -128,38 +133,22 @@ public class HandModel extends Observable {
     /**
      * Removes the cards from a players hand depending on their type
      *
-     * @param typeOfArmie type of card
+     * @param selectedCards cards to be eliminated
      * @param deck deck of card in which to put the card removed
      */
-    void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
-        String[] typeOfArmieDum = {"infantry", "artillery", "cavalry"};
+    public void removeCards(List<String> selectedCards, List<CardModel> deck) {
+        this.getCards().stream()
+                .filter(c -> selectedCards.contains(c.getCountryName()))
+                .forEach(cs -> deck.add(0, cs));
 
-        if (typeOfArmie.equals("different")) {
-
-            Arrays.stream(typeOfArmieDum).forEach(typeA -> {
-                CardModel card = this.getCardsList().stream()
-                        .filter(c -> c.getTypeOfArmie().equals(typeA))
-                        .findFirst()
-                        .get();
-
-                deck.addFirst(card);
-                this.cards.remove(card);
-            });
-
-        } else {
-            for (Iterator<CardModel> iterator = this.cards.iterator(); iterator.hasNext();) {
-                CardModel card = iterator.next();
-                if (card.getTypeOfArmie().equals(typeOfArmie)) {
-                    deck.addFirst(card);
-                    iterator.remove();
-                }
-            }
-        }
-
-        setChanged();
-        notifyObservers();
+        this.cards.removeIf(c -> selectedCards.contains(c.getCountryName()));
     }
 
+    /**
+     * Getter for current attribute
+     *
+     * @return whether or not this Hand is the Hand of the current player
+     */
     public boolean isCurrent() {
         return current;
     }
@@ -171,4 +160,73 @@ public class HandModel extends Observable {
         notifyObservers();
     }
 
+    public void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
+        String[] typeOfArmieDum = {"infantry", "artillery", "cavalry"};
+
+        if (typeOfArmie.equals("different")) {
+
+            Arrays.stream(typeOfArmieDum).forEach(typeA -> {
+                CardModel card = this.getCards().stream()
+                        .filter(c -> c.getTypeOfArmie().equals(typeA))
+                        .findFirst()
+                        .get();
+
+                deck.addFirst(card);
+                this.getCards().remove(card);
+            });
+
+        } else {
+            for (Iterator<CardModel> iterator = this.getCards().iterator(); iterator.hasNext();) {
+                CardModel card = iterator.next();
+                if (card.getTypeOfArmie().equals(typeOfArmie)) {
+                    deck.addFirst(card);
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
+    public boolean isHanded() {
+        return handed;
+    }
+
+    public void setHanded(boolean handed) {
+        this.handed = handed;
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public int getNbSelectedCards() {
+        return this.selectedCards.size();
+    }
+
+    public void unselectAllCards() {
+        this.selectedCards.clear();
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public List<String> getSelectedCards() {
+        return Collections.unmodifiableList(this.selectedCards);
+    }
+
+    public boolean isCardSelected(String cardName) {
+        return this.selectedCards.contains(cardName);
+    }
+
+    public void unselectCard(String cardName) {
+        this.selectedCards.remove(cardName);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public void selectCard(String cardName) {
+        this.selectedCards.add(cardName);
+
+        setChanged();
+        notifyObservers();
+    }
 }

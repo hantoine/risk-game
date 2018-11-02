@@ -9,8 +9,8 @@ import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
 import com.risk.views.game.MapPanel;
+import com.risk.views.game.PhaseAuxiliar;
 import com.risk.views.game.PhasePanel;
-import com.risk.views.game.PlayerGameHandPanel;
 import com.risk.views.game.PlayerGameInfoPanel;
 import com.risk.views.menu.MenuView;
 import com.risk.views.menu.NewGamePanel;
@@ -23,6 +23,7 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Observable;
 import javax.swing.BoxLayout;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -52,7 +53,8 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     /**
      * playerHandPanel reference to the view that has the cards of the plater
      */
-    final private PlayerGameHandPanel playerHandPanel;
+    final private PhaseAuxiliar phaseAuxiliarPanel;
+
     /**
      * stagePanel reference to the view that manages the information of the
      * current stage
@@ -68,14 +70,15 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(true);
 
-        this.playerHandPanel = new PlayerGameHandPanel();
+        this.phaseAuxiliarPanel = new PhaseAuxiliar();
+
         this.stagePanel = new PhasePanel();
         this.playerPanel = new PlayerGameInfoPanel();
         this.mapPanel = new MapPanel();
 
         Container cp = this.getContentPane();
         cp.setLayout(new BorderLayout());
-        cp.add(this.playerHandPanel, BorderLayout.SOUTH);
+        cp.add(this.phaseAuxiliarPanel, BorderLayout.SOUTH);
         cp.add(this.stagePanel, BorderLayout.NORTH);
         cp.add(this.playerPanel, BorderLayout.EAST);
         cp.add(this.mapPanel, BorderLayout.CENTER);
@@ -86,27 +89,23 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.centerWindow();
     }
 
-    /**
-     * Add view elements as observer on corresponding model elements
-     *
-     * @param rm model of the game
-     */
     @Override
     public void observeModel(RiskModel rm) {
         updateView(rm, true);
         rm.getPlayerList().forEach((pl) -> {
             pl.addObserver(playerPanel);
-            pl.getHand().addObserver(playerHandPanel);
         });
         rm.addObserver(this.stagePanel);
         rm.addObserver(this.mapPanel);
+        rm.getMap().addObserver(this.mapPanel);
+        rm.addObserver(this);
+        rm.addObserver(this.phaseAuxiliarPanel);
     }
 
     private void updateView(RiskModel rm, boolean newMap) {
         this.getStagePanel().updateView(rm);
         this.getMapPanel().updateView(rm.getMap(), newMap);
         this.getPlayerPanel().updateView(rm.getCurrentPlayer());
-        this.getPlayerHandPanel().updateView(rm.getCurrentPlayer().getHand());
 
         this.setSize(
                 rm.getMap().getMapWidth() + 200,
@@ -121,7 +120,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      *
      * @param message Text to be displayed in the message dialog
      */
-    public void showMessage(String message) {
+    void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
 
@@ -134,11 +133,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.getMapPanel().setListener(rc.getCountryListener());
 
         this.getStagePanel().getEndPhase().addActionListener(e -> {
-            rc.getPlayGame().endPhaseButtonPressed();
-        });
-
-        this.getStagePanel().getHandCards().addActionListener(e -> {
-            rc.getPlayGame().clickHand();
+            rc.getGameController().endPhaseButtonPressed();
         });
 
         Component c = this.getJMenuBar().getMenu(0).getMenuComponent(0);
@@ -152,6 +147,8 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.getMenuPanel().getStartMenu().getNewGamePanel().getOpenMapEditor().addActionListener(e -> {
             rc.openMapEditor();
         });
+
+        phaseAuxiliarPanel.setListeners(rc.getGameController());
     }
 
     /**
@@ -195,8 +192,8 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      *
      * @return the hands panel of the player
      */
-    PlayerGameHandPanel getPlayerHandPanel() {
-        return playerHandPanel;
+    PhaseAuxiliar getPhaseAuxiliarPanel() {
+        return phaseAuxiliarPanel;
     }
 
     /**
@@ -280,5 +277,15 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      */
     PhasePanel getStagePanel() {
         return stagePanel;
+    }
+
+    @Override
+    public void update(Observable o, Object o1) {
+        if (o instanceof RiskModel) {
+            if (o1 instanceof String) {
+                String eventMessage = (String) o1;
+                this.showMessage(eventMessage);
+            }
+        }
     }
 }

@@ -13,6 +13,7 @@ import com.risk.views.RiskViewInterface;
 import com.risk.views.menu.NewGamePanel;
 import java.awt.Color;
 import java.lang.reflect.Method;
+import java.util.Observable;
 import static org.junit.Assert.assertEquals;
 import org.junit.AssumptionViolatedException;
 import org.junit.Before;
@@ -38,7 +39,8 @@ public class GameControllerTest {
         rm.addPlayerToPlayerList("PlayerB", Color.red, true);
         rm.setMap(getTestMap());
         drv = new DummyRiskView();
-        instance = new GameController(rm, drv);
+        drv.observeModel(rm);
+        instance = new GameController(rm);
     }
 
     private static MapModel getTestMap() {
@@ -328,12 +330,7 @@ public class GameControllerTest {
 
         @Override
         public void observeModel(RiskModel rm) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public void showMessage(String message) {
-            this.message = message;
+            rm.addObserver(this);
         }
 
         @Override
@@ -358,6 +355,13 @@ public class GameControllerTest {
 
         public String getMessage() {
             return this.message;
+        }
+
+        @Override
+        public void update(Observable o, Object o1) {
+            if (o instanceof RiskModel && o1 instanceof String) {
+                this.message = (String) o1;
+            }
         }
     }
 }
