@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 
 /**
@@ -29,8 +30,8 @@ public abstract class PlayerModel extends Observable {
      */
     private String name;
     private Color color;
-    private Collection<TerritoryModel> contriesOwned;
-    private Collection<ContinentModel> continentsOwned;
+    private List<TerritoryModel> contriesOwned;
+    private List<ContinentModel> continentsOwned;
     private HandModel hand;
     private int numArmiesAvailable;
     private int returnedCards;
@@ -181,8 +182,8 @@ public abstract class PlayerModel extends Observable {
      *
      * @return the contriesOwned
      */
-    public Collection<TerritoryModel> getContriesOwned() {
-        return Collections.unmodifiableCollection(this.contriesOwned);
+    public List<TerritoryModel> getContriesOwned() {
+        return Collections.unmodifiableList(this.contriesOwned);
     }
 
     public boolean checkOwnTerritory(TerritoryModel territory) {
@@ -272,7 +273,7 @@ public abstract class PlayerModel extends Observable {
      *
      * @param continentsOwned the continentsOwned to set
      */
-    void setContinentsOwned(Collection<ContinentModel> continentsOwned) {
+    void setContinentsOwned(List<ContinentModel> continentsOwned) {
         this.continentsOwned = continentsOwned;
 
         setChanged();
@@ -350,7 +351,7 @@ public abstract class PlayerModel extends Observable {
             case 2:
                 return 40;
             case 3:
-                return 3;
+                return 35;
             case 4:
                 return 30;
             case 5:

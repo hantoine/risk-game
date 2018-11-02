@@ -18,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author Nellybett
  */
-public class StagePanel extends JPanel implements Observer {
+public class InstructionsPanel extends JPanel implements Observer {
 
     /**
      * endPhase button to finish a phase
@@ -33,7 +33,7 @@ public class StagePanel extends JPanel implements Observer {
     /**
      * Constructor
      */
-    public StagePanel() {
+    public InstructionsPanel() {
         this.text = new JLabel();
         this.endPhase = new JButton("End Phase");
 
@@ -61,8 +61,8 @@ public class StagePanel extends JPanel implements Observer {
 
         switch (rm.getPhase()) {
             case STARTUP:
-                this.endPhase.setVisible(false);
-
+                this.endPhase.setVisible(true);
+                this.endPhase.setText("Place armies for all players");
                 this.text.setText(String.format("<html>Startup phase: Click on one of your territory to place an army on it. <br />Remaining armies to be placed: %d</html>",
                         currentPlayer.getNumArmiesAvailable()));
                 this.text.setVisible(true);
@@ -75,13 +75,13 @@ public class StagePanel extends JPanel implements Observer {
                 break;
             case ATTACK:
                 this.endPhase.setVisible(true);
-
+                this.endPhase.setText("End Phase");
                 this.text.setText("Attack phase:");
                 this.text.setVisible(true);
                 break;
             case FORTIFICATION:
                 this.endPhase.setVisible(true);
-
+                this.endPhase.setText("End Phase");
                 this.text.setText("<html>Fortification phase: You can drag'n'drop between territories you own. <br />Move your armies <br /></html>");
                 this.text.setVisible(true);
                 break;
