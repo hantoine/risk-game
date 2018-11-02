@@ -9,12 +9,13 @@ import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
 import com.risk.views.menu.NewGamePanel;
+import java.util.Observer;
 
 /**
  *
  * @author hantoine
  */
-public interface RiskViewInterface {
+public interface RiskViewInterface extends Observer {
 
     /**
      * Add view elements as observer on corresponding model elements
@@ -22,13 +23,6 @@ public interface RiskViewInterface {
      * @param rm model of the game
      */
     public void observeModel(RiskModel rm);
-
-    /**
-     * Open a Message Dialog to show message to user
-     *
-     * @param message Text to be displayed in the message dialog
-     */
-    public void showMessage(String message);
 
     /**
      * Link the view to the controller by setting all required listeners

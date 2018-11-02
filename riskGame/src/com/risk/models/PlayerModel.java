@@ -34,8 +34,9 @@ public abstract class PlayerModel extends Observable {
     private HandModel hand;
     private int numArmiesAvailable;
     private int returnedCards;
-    private RiskModel game;
+    protected RiskModel game;
     private FortificationMove currentFortificationMove;
+    private AttackMove currentAttack;
     private boolean currentPlayer;
 
     /**
@@ -56,6 +57,7 @@ public abstract class PlayerModel extends Observable {
         this.numArmiesAvailable = 0;
         this.returnedCards = 0;
         this.game = game;
+        this.currentAttack = null;
         this.currentPlayer = false;
     }
 
@@ -477,33 +479,17 @@ public abstract class PlayerModel extends Observable {
     /**
      * Function that removes the cards and calls a function that assigns armies
      * depending on the number of cards the player has handed
+     *
+     * @return true if the cards are equal or different; false in other case
      */
-    void exchangeCardsToArmies() {
-        int[] cardDuplicates = this.getHand().getCardDuplicates();
-
-        if (cardDuplicates[0] >= 3) {
-            this.getHand().removeCards("infantry", this.game.getDeck());
-        } else if (cardDuplicates[1] >= 3) {
-            this.getHand().removeCards("cavalry", this.game.getDeck());
-        } else if (cardDuplicates[2] >= 3) {
-            this.getHand().removeCards("artillery", this.game.getDeck());
-        } else {
-            this.getHand().removeCards("different", this.game.getDeck());
-        }
-        armiesCardAssignation();
-    }
+    abstract boolean exchangeCardsToArmies();
 
     /**
      * Adds a card to the player's hand from the deck
      */
     void addCardToPlayerHand() {
-        LinkedList<String> cardsOperation = new LinkedList<>();
         HandModel handCurrentPlayer = this.getHand();
         CardModel card = this.game.getDeck().getLast();
-
-        cardsOperation.add("add");
-        cardsOperation.add(card.getCountryName());
-        cardsOperation.add(card.getTypeOfArmie());
         handCurrentPlayer.getCardsList().add(card);
         this.game.getDeck().removeLast();
 
@@ -532,6 +518,82 @@ public abstract class PlayerModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * @return the handed
+     */
+    public boolean isHanded() {
+        return hand.isHanded();
+    }
+
+    /**
+     * @param handed the handed to set
+     */
+    public void setHanded(boolean handed) {
+        this.hand.setHanded(handed);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * @return the currentAttack
+     */
+    public AttackMove getCurrentAttack() {
+        return currentAttack;
+    }
+
+    /**
+     * @param currentAttack the currentAttack to set
+     */
+    public void setCurrentAttack(AttackMove currentAttack) {
+        this.currentAttack = currentAttack;
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Perform the current attack of this player with the given number of dice
+     * The value -1 correspond to the special mode in which battles are made
+     * until one of the territory has no more armies
+     *
+     * @param dice the number of dice to use to perform the attack
+     */
+    public void performCurrentAttack(int dice) {
+        if (this.getCurrentAttack() == null) {
+            return;
+        }
+
+        this.getCurrentAttack().perform(dice);
+
+        /*
+        when the battle is finished if there is still armies on the attacked
+        territory, then this attack is terminated. If not the the attacked
+        territory needs to be conquered before the attack terminates
+         */
+        if (this.currentAttack.getDest()
+                .getNumArmies() != 0) {
+            this.setCurrentAttack(null);
+        }
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Conquer a country after an attack
+     *
+     * @param armies number of armies to move to the new conquered country
+     */
+    public void conquerCountry(int armies) {
+        int newArmies = this.getCurrentAttack().getSource().getNumArmies();
+        this.getCurrentAttack().getSource().setNumArmies(newArmies - armies);
+        this.getCurrentAttack().getDest().setNumArmies(armies);
+
+        addCountryOwned(this.getCurrentAttack().getDest());
+        this.setCurrentAttack(null);
+    }
+
     void resetCurrentFortificationMove() {
         this.currentFortificationMove = null;
 
@@ -542,5 +604,4 @@ public abstract class PlayerModel extends Observable {
     boolean checkOwnContinent(ContinentModel continent) {
         return this.continentsOwned.contains(continent);
     }
-
 }

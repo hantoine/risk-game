@@ -24,10 +24,7 @@ public class PhasePanel extends JPanel implements Observer {
      * endPhase button to finish a phase
      */
     final private JButton endPhase;
-    /**
-     * handCards button to hand cards
-     */
-    final private JButton handCards;
+
     /**
      * text information that informs a player about the current phase
      */
@@ -39,15 +36,13 @@ public class PhasePanel extends JPanel implements Observer {
     public PhasePanel() {
         this.text = new JLabel();
         this.endPhase = new JButton("End Phase");
-        this.handCards = new JButton("Hand");
 
         this.text.setVisible(false);
         this.endPhase.setVisible(false);
-        this.handCards.setVisible(false);
 
         this.add(text);
         this.add(this.endPhase);
-        this.add(this.handCards);
+
     }
 
     /**
@@ -60,13 +55,12 @@ public class PhasePanel extends JPanel implements Observer {
         switch (rm.getPhase()) {
             case STARTUP:
                 this.endPhase.setVisible(false);
-                this.handCards.setVisible(false);
+
                 this.text.setText(String.format("<html>Startup phase: Click on one of your territory to place an army on it. <br />Remaining armies to be placed: %d</html>",
                         currentPlayer.getNumArmiesAvailable()));
                 this.text.setVisible(true);
                 break;
             case REINFORCEMENT:
-                this.handCards.setVisible(rm.getCurrentPlayer().getHand().threeDifferentCardsOrThreeEqualCards());
                 this.endPhase.setVisible(false);
                 this.text.setText(String.format("<html>Reinforcement phase: Click on one of your territory to place an army on it. <br />Remaining armies to be placed: %d</html>",
                         currentPlayer.getNumArmiesAvailable()));
@@ -74,13 +68,13 @@ public class PhasePanel extends JPanel implements Observer {
                 break;
             case ATTACK:
                 this.endPhase.setVisible(true);
-                this.handCards.setVisible(false);
+
                 this.text.setText("Attack phase:");
                 this.text.setVisible(true);
                 break;
             case FORTIFICATION:
                 this.endPhase.setVisible(true);
-                this.handCards.setVisible(false);
+
                 this.text.setText("<html>Fortification phase: You can drag'n'drop between territories you own. <br />Move your armies <br /></html>");
                 this.text.setVisible(true);
                 break;
@@ -98,15 +92,6 @@ public class PhasePanel extends JPanel implements Observer {
      */
     public JButton getEndPhase() {
         return endPhase;
-    }
-
-    /**
-     * Getter of the handCards attribute
-     *
-     * @return handCards
-     */
-    public JButton getHandCards() {
-        return handCards;
     }
 
     @Override
