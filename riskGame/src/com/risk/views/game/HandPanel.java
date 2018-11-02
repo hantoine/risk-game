@@ -7,14 +7,12 @@ package com.risk.views.game;
 
 import com.risk.models.CardModel;
 import com.risk.models.HandModel;
-import com.risk.models.RiskModel;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.ImageIcon;
@@ -26,18 +24,18 @@ import javax.swing.JPanel;
  *
  * @author liyixuan
  */
-public final class PlayerGameHandPanel extends JPanel implements Observer {
+public final class HandPanel extends JPanel implements Observer {
 
     /**
      * The view of the cards of the current player
      */
-    private HashMap<String, JButton> handCards = new HashMap<>();
+    private HashMap<String, JButton> cardButtons = new HashMap<>();
 
     /**
      * Constructor
      *
      */
-    public PlayerGameHandPanel() {
+    public HandPanel() {
         this.setLayout(new FlowLayout());
         //BoxLayout(this, BoxLayout.X_AXIS));
     }
@@ -46,16 +44,38 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
      * Update the information displayed by the PlayerGameHandPanl according to
      * the information of the current player
      *
-     * @param currentHand The model of the current game hand
+     * @param hand The model of the current game hand
      */
-    public void updateView(HandModel currentHand) {
-        this.removeAll();
-        currentHand.getCards().forEach((card) -> {
-            addCard(card.getTypeOfArmie(),
-                    card.getCountryName(),
-                    currentHand.getOwner().getColor()
-            );
+    public void updateView(HandModel hand) {
+
+        // Remove cards that have been removed
+        Iterator<JButton> it = this.getCardButtons().values().iterator();
+        while (it.hasNext()) {
+            JButton cb = it.next();
+            boolean cardDeleted = hand.getCards().stream()
+                    .anyMatch(c -> c.getCountryName().equals(cb.getName()));
+            if (!cardDeleted) {
+                it.remove();
+                this.remove(cb);
+            }
+        }
+
+        // Add cards that have been added
+        hand.getCards().stream()
+                .filter((c) -> !this.cardButtons.containsKey(c.getCountryName()))
+                .forEach((c) -> {
+                    this.addCard(c, Color.BLACK);
+                });
+
+        // Change color of buttons depending on which cards have been selected
+        this.cardButtons.values().stream().forEach(cb -> {
+            if (hand.isCardSelected(cb.getName())) {
+                cb.setBackground(Color.BLACK);
+            } else {
+                cb.setBackground(hand.getOwner().getColor());
+            }
         });
+
         this.repaint();
         this.revalidate();
     }
@@ -79,59 +99,29 @@ public final class PlayerGameHandPanel extends JPanel implements Observer {
     /**
      * Add a card to be displayed in this panel
      *
-     * @param armyType The name of the type of armies associated with the card
-     * @param territoryName The name of the territory associated with the card
+     * @param card the card model corresponding to the card to add
      * @param bgColor The background color of the card
      */
-    public void addCard(String armyType, String territoryName, Color bgColor) {
+    public void addCard(CardModel card, Color bgColor) {
         ImageIcon cardIcon = new ImageIcon("." + File.separator + "images"
-                + File.separator + armyType + ".png");
+                + File.separator + card.getTypeOfArmie() + ".png");
         Image image = cardIcon.getImage();
         Image newImage = image.getScaledInstance(50, 70, Image.SCALE_SMOOTH);
         cardIcon = new ImageIcon(newImage);
         JButton aux = new JButton();
         aux.setIcon(cardIcon);
-        aux.setName(territoryName);
+        aux.setName(card.getCountryName());
         aux.setText("");
         aux.setBackground(bgColor);
-        getHandCards().put(territoryName, aux);
+        getCardButtons().put(card.getCountryName(), aux);
         this.add(aux);
-    }
-
-    public void removeCard(RiskModel rm) {
-        LinkedList<String> removeList = new LinkedList<>();
-        Iterator it = this.handCards.keySet().iterator();
-        while (it.hasNext()) {
-            String select = (String) it.next();
-            CardModel card;
-            card = rm.getCurrentPlayer().getHand().getCards().stream()
-                    .filter(c -> c.getCountryName().equals(select))
-                    .findFirst()
-                    .orElse(null);
-
-            if (card == null) {
-                removeList.add(select);
-            }
-
-        }
-
-        if (removeList.size() > 0) {
-            removeList.stream()
-                    .forEach(c -> {
-                        this.remove(this.handCards.get(c));
-                        this.handCards.remove(c);
-                    });
-        }
-
-        this.repaint();
-        this.revalidate();
     }
 
     /**
      * @return the handCards
      */
-    public HashMap<String, JButton> getHandCards() {
-        return handCards;
+    public HashMap<String, JButton> getCardButtons() {
+        return cardButtons;
     }
 
 }

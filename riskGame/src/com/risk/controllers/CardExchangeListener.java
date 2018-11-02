@@ -5,110 +5,91 @@
  */
 package com.risk.controllers;
 
-
-import com.risk.views.game.PlayerGameHandPanel;
-import com.risk.views.reinforcement.CardExchangeView;
-import java.awt.Color;
+import com.risk.models.HandModel;
+import com.risk.models.RiskModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
-
 /**
  * The listener of the exchange card view
+ *
  * @author rebecca
  */
-public class CardExchangeListener extends MouseAdapter{
+public class CardExchangeListener extends MouseAdapter {
+
+    RiskModel rm;
+    GameController gc;
+
     /**
-     * The controller of the views in the game
+     * Constructor
+     *
      */
-    RiskController riskController;
-    /**
-     * Panel of cards
-     */
-    PlayerGameHandPanel playerGameHandPanel;
-    /**
-     * Cards to be handed
-     */
-    LinkedList<String> selectedCards=new LinkedList<>();
-    /**
-     * Boolean to validate that the player hand cards at least 1 time
-     */
-    boolean handed;
-    
-    /**
-     * Constructor  
-     * @param rc controller of the game
-     */
-    public CardExchangeListener(RiskController rc){
-        riskController=rc;
-        handed=false;
+    public CardExchangeListener(RiskModel rm, GameController gc) {
+        this.gc = gc;
+        this.rm = rm;
     }
-    
+
     /**
      * The event manager of the exchange card view
+     *
      * @param e the event
      */
     @Override
     public void mouseClicked(MouseEvent e) {
         JComponent c = (JComponent) e.getSource();
-       
-        if (c instanceof JButton) {
-           
-           JButton buttonPressed=(JButton) c;
-           if(buttonPressed.isEnabled()){
-                if(buttonPressed.getText().equals("Exit")){             
-                    riskController.getViewRisk().closeExchangeMenu();
-                    selectedCards.clear();
-                    (riskController.getModelRisk().getCurrentPlayer()).setHanded(false);
-                    
-                }else if(buttonPressed.getText().equals("Hand")){
-                    if(selectedCards.size()<3)
-                        this.showMessage("You have to select 3 cards first.");
-                    else{
-                        if(riskController.getGameController().clickHand(selectedCards)){
-                            this.showMessage("You can only hand 3 equal or 3 different cards");
-                        }else{
-                            selectedCards.clear();
-                        }
-                        
-                    }
-                    
-                }else{
-                    if(buttonPressed.getBackground()==Color.black){
-                        buttonPressed.setBackground(riskController.getModelRisk().getCurrentPlayer().getColor());
-                        selectedCards.remove(buttonPressed.getName());
-                    }else{
-                        if(selectedCards.size()<3){
-                            buttonPressed.setOpaque(true);
-                            buttonPressed.setBackground(Color.black);
-                            selectedCards.add(buttonPressed.getName());
-                        }else{
-                            this.showMessage("You selected 3 cards. Please press hand.");
-                        }
-                    }
-                    
-                }
-           }    
+        HandModel hand = rm.getCurrentPlayer().getHand();
+
+        if (!(c instanceof JButton)) {
+            return;
         }
+
+        JButton buttonPressed = (JButton) c;
+        if (!buttonPressed.isEnabled()) {
+            return;
+        }
+
+        switch (buttonPressed.getText()) {
+            case "Exit":
+                gc.closeCardExchangeView();
+                hand.unselectAllCards();
+                rm.getCurrentPlayer().setHanded(false);
+                break;
+            case "Hand":
+                if (hand.getNbSelectedCards() < 3) {
+                    this.showMessage("You have to select 3 cards first.");
+                    break;
+                }
+                if (rm.exchangeCardsWithArmiesForCurrentPlayer()) {
+                    this.showMessage(
+                            "You can only hand 3 equal or 3 different cards");
+                    break;
+                }
+                hand.unselectAllCards();
+                break;
+            default:
+                String buttonName = buttonPressed.getName();
+                if (hand.isCardSelected(buttonName)) {
+                    hand.unselectCard(buttonName);
+                    break;
+                }
+                if (hand.getNbSelectedCards() == 3) {
+                    this.showMessage("You cannot select more than 3 cards.");
+                    break;
+                }
+                hand.selectCard(buttonName);
+
+                break;
+        }
+
     }
-    
-    /**
-     * Assignation of observers
-     * @param cardExchangeView the observer
-     */
-    public void setPanel(CardExchangeView cardExchangeView){
-        this.playerGameHandPanel=cardExchangeView.getPlayerGameHandPanel();
-        riskController.getModelRisk().getCurrentPlayer().addObserver(cardExchangeView.getPlayerGameHandPanel());
-        riskController.getModelRisk().getCurrentPlayer().addObserver(cardExchangeView);
-    }
-    
+
     /**
      * Error message
-     * @param message the error 
+     *
+     * @param message the error
      */
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message);

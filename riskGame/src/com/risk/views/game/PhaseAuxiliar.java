@@ -24,7 +24,7 @@ public class PhaseAuxiliar extends JPanel implements Observer {
     /**
      * Panel with the cards
      */
-    private PlayerGameHandPanel playerHandPanel;
+    private HandPanel playerHandPanel;
     /**
      * Panel with the dice for attacking
      */
@@ -62,7 +62,7 @@ public class PhaseAuxiliar extends JPanel implements Observer {
      *
      * @return the playerHandPanel
      */
-    PlayerGameHandPanel getPlayerHandPanel() {
+    HandPanel getPlayerHandPanel() {
         return playerHandPanel;
     }
 
@@ -71,7 +71,7 @@ public class PhaseAuxiliar extends JPanel implements Observer {
      *
      * @param playerHandPanel the playerHandPanel to set
      */
-    private void setPlayerHandPanel(PlayerGameHandPanel playerHandPanel) {
+    private void setPlayerHandPanel(HandPanel playerHandPanel) {
         this.playerHandPanel = playerHandPanel;
     }
 

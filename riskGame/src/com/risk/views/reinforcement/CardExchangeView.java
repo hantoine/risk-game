@@ -6,8 +6,9 @@
 package com.risk.views.reinforcement;
 
 import com.risk.controllers.CardExchangeListener;
+import com.risk.models.HandModel;
 import com.risk.models.RiskModel;
-import com.risk.views.game.PlayerGameHandPanel;
+import com.risk.views.game.HandPanel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.Observable;
@@ -27,7 +28,7 @@ public class CardExchangeView extends JDialog implements Observer {
     /**
      * Panel of cards
      */
-    PlayerGameHandPanel playerGameHandPanel;
+    HandPanel playerGameHandPanel;
     /**
      * Button to hand cards
      */
@@ -48,9 +49,8 @@ public class CardExchangeView extends JDialog implements Observer {
     /**
      * Constructor of the view
      *
-     * @param rm model of the game
      */
-    public CardExchangeView(RiskModel rm) {
+    public CardExchangeView() {
         this.setLayout(new BorderLayout());
 
         exchangeMessage = new JLabel("Select 3 cards to exchange:");
@@ -63,11 +63,7 @@ public class CardExchangeView extends JDialog implements Observer {
         buttonPanel.add(handCards);
         buttonPanel.add(exit);
 
-        playerGameHandPanel = new PlayerGameHandPanel();
-        playerGameHandPanel.updateView(rm.getCurrentPlayer().getHand());
-        this.setSize(((playerGameHandPanel.getHandCards().size() + 1) * 50) + 150, 400);
-
-        this.setEnableHand(rm);
+        playerGameHandPanel = new HandPanel();
 
         this.add(exchangeMessage, BorderLayout.NORTH);
         this.add(playerGameHandPanel, BorderLayout.CENTER);
@@ -83,7 +79,7 @@ public class CardExchangeView extends JDialog implements Observer {
     public void setListener(CardExchangeListener cardExchangeListener) {
         exit.addMouseListener(cardExchangeListener);
         handCards.addMouseListener(cardExchangeListener);
-        getPlayerGameHandPanel().getHandCards().values().stream()
+        getPlayerGameHandPanel().getCardButtons().values().stream()
                 .forEach(b -> b.addMouseListener(cardExchangeListener));
     }
 
@@ -92,26 +88,36 @@ public class CardExchangeView extends JDialog implements Observer {
      *
      * @return the playerGameHandPanel
      */
-    public PlayerGameHandPanel getPlayerGameHandPanel() {
+    public HandPanel getPlayerGameHandPanel() {
         return playerGameHandPanel;
     }
 
     /**
      * It enables the hand button of the view
      *
-     * @param rm the model of the game
+     * @param hand
      */
-    public void setEnableHand(RiskModel rm) {
-        if (rm.getCurrentPlayer().getHand().threeDifferentCardsOrThreeEqualCards()) {
+    private void setEnableHand(HandModel hand) {
+        if (hand.cardHandingPossible()) {
             handCards.setEnabled(true);
         } else {
             handCards.setEnabled(false);
             exit.setEnabled(true);
         }
 
-        if (rm.getCurrentPlayer().isHanded() || rm.getCurrentPlayer().getHand().getCards().size() < 5) {
+        if (hand.isHanded() || hand.getCards().size() < 5) {
             exit.setEnabled(true);
         }
+    }
+
+    /**
+     *
+     * @param hand
+     */
+    public void updateView(HandModel hand) {
+        this.setEnableHand(hand);
+        playerGameHandPanel.updateView(hand);
+        this.setSize(((hand.getNbCards() + 1) * 50) + 150, 400);
     }
 
     /**
@@ -122,9 +128,23 @@ public class CardExchangeView extends JDialog implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof RiskModel) {
-            setEnableHand((RiskModel) arg);
+        if (o instanceof HandModel) {
+            HandModel updatedHand = (HandModel) o;
+            if (updatedHand.isCurrent()) {
+                updateView(updatedHand);
+            }
         }
+    }
+
+    /**
+     *
+     * @param rm
+     */
+    public void observe(RiskModel rm) {
+        rm.getPlayerList().stream().forEach((pl) -> {
+            pl.getHand().addObserver(this.getPlayerGameHandPanel());
+            pl.getHand().addObserver(this);
+        });
     }
 
 }

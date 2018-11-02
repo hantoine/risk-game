@@ -15,7 +15,6 @@ import com.risk.views.game.PlayerGameInfoPanel;
 import com.risk.views.menu.MenuView;
 import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.StartMenuView;
-import com.risk.views.reinforcement.CardExchangeView;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -39,10 +38,6 @@ import javax.swing.KeyStroke;
  */
 public final class RiskView extends javax.swing.JFrame implements RiskViewInterface {
 
-    /**
-     * Card exchange panel
-     */
-    private CardExchangeView exchangeView;
     /**
      * menuPanel reference to the menu panel
      */
@@ -175,31 +170,6 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     }
 
     /**
-     * Creates the card exchange view
-     *
-     * @param riskModel the model of the game
-     * @param rc the controller of the game
-     */
-    public void cardExchangeMenu(RiskModel riskModel, RiskController rc) {
-        this.exchangeView = new CardExchangeView(riskModel);
-        this.getExchangeView().setListener(rc.getCardExchangeListener());
-        rc.getCardExchangeListener().setPanel(this.getExchangeView());
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        getExchangeView().setLocation(dimension.width / 2 - (this.exchangeView.getWidth()) / 2, dimension.height / 2 - 500 / 2);
-        getExchangeView().setVisible(true);
-
-    }
-
-    /**
-     * Closes the exchange card view
-     */
-    public void closeExchangeMenu() {
-        this.exchangeView.setVisible(false);
-        this.remove(this.getExchangeView());
-        this.exchangeView = null;
-    }
-
-    /**
      * Close menu action
      */
     public void closeMenu() {
@@ -309,18 +279,13 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         return stagePanel;
     }
 
-    /**
-     * @return the exchangeView
-     */
-    public CardExchangeView getExchangeView() {
-        return exchangeView;
-    }
-
     @Override
     public void update(Observable o, Object o1) {
-        if (o instanceof RiskModel && o1 instanceof String) {
-            String eventMessage = (String) o1;
-            this.showMessage(eventMessage);
+        if (o instanceof RiskModel) {
+            if (o1 instanceof String) {
+                String eventMessage = (String) o1;
+                this.showMessage(eventMessage);
+            }
         }
     }
 }
