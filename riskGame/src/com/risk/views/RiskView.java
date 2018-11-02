@@ -12,7 +12,7 @@ import com.risk.views.game.MapPanel;
 import com.risk.views.game.PhaseAuxiliar;
 import com.risk.views.game.PhaseView;
 import com.risk.views.game.PlayerGameInfoPanel;
-import com.risk.views.game.StagePanel;
+import com.risk.views.game.InstructionsPanel;
 import com.risk.views.menu.MenuView;
 import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.StartMenuView;
@@ -61,7 +61,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      * stagePanel reference to the view that manages the information of the
      * current stage
      */
-    final private StagePanel stagePanel;
+    final private InstructionsPanel stagePanel;
     final private PhaseView phaseView;
 
     /**
@@ -75,7 +75,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
 
         this.phaseAuxiliarPanel = new PhaseAuxiliar();
 
-        this.stagePanel = new StagePanel();
+        this.stagePanel = new InstructionsPanel();
         this.playerPanel = new PlayerGameInfoPanel();
         this.mapPanel = new MapPanel();
         this.phaseView = new PhaseView();
@@ -287,7 +287,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     /**
      * @return the reinforcementArmies
      */
-    StagePanel getStagePanel() {
+    InstructionsPanel getStagePanel() {
         return stagePanel;
     }
 

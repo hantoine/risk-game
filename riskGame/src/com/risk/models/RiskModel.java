@@ -466,6 +466,16 @@ public final class RiskModel extends Observable {
     private void executeEndOfPhaseSteps() {
         switch (this.getPhase()) {
             case STARTUP:
+                Random rand = new Random();
+                players.stream().forEach((pl) -> {
+                    while (pl.getNumArmiesAvailable() != 0) {
+                        int randTerr = rand.nextInt(pl.getNbCountriesOwned());
+                        try {
+                            placeArmy(pl, pl.getContriesOwned().get(randTerr));
+                        } catch (ArmyPlacementImpossible ex) {
+                        }
+                    }
+                });
                 break;
             case REINFORCEMENT:
                 break;
