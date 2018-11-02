@@ -200,6 +200,14 @@ public final class RiskModel extends Observable {
         notifyObservers();
     }
 
+    public void attackMove(TerritoryModel src, TerritoryModel dest) {
+        AttackMove attack = new AttackMove(src, dest);
+        this.getCurrentPlayer().setCurrentAttack(attack);
+
+        setChanged();
+        notifyObservers();
+    }
+
     public void tryFortificationMove(TerritoryModel src, TerritoryModel dest)
             throws FortificationMoveImpossible {
 
@@ -453,6 +461,9 @@ public final class RiskModel extends Observable {
             case REINFORCEMENT:
                 break;
             case ATTACK:
+                this.getCurrentPlayer().addCardToPlayerHand();
+                //riskView.updateAuxiliarPhasePanel("", "", this, 0, 3);
+                this.getCurrentPlayer().setCurrentAttack(null);
                 checkForDeadPlayers();
                 break;
             case FORTIFICATION:
@@ -474,16 +485,10 @@ public final class RiskModel extends Observable {
                 break;
             case REINFORCEMENT:
                 this.getCurrentPlayer().reinforcement(this);
+                //riskView.cardExchangeMenu(modelRisk, riskController);
                 break;
             case ATTACK:
-                try {
-                    this.getCurrentPlayer().attack(this);
-                } catch (UnsupportedOperationException e) {
-                    //since attack is not implemented yet, we skip it
-                    this.finishPhase();
-                }
-
-                this.getCurrentPlayer().addCardToPlayerHand();
+                this.getCurrentPlayer().attack(this);
                 break;
             case FORTIFICATION:
                 this.getCurrentPlayer().fortification(this);
@@ -540,10 +545,20 @@ public final class RiskModel extends Observable {
 
         private final String reason;
 
+        /**
+         * Constructor
+         *
+         * @param reason The reason why the fortification move is not possible
+         */
         public FortificationMoveImpossible(String reason) {
             this.reason = reason;
         }
 
+        /**
+         * Getter for reason attribute
+         *
+         * @return the reason attribute
+         */
         public String getReason() {
             return reason;
         }
@@ -553,19 +568,72 @@ public final class RiskModel extends Observable {
 
         private final String reason;
 
+        /**
+         * Constructor
+         *
+         * @param reason The reason why the army placement is not possible
+         */
         public ArmyPlacementImpossible(String reason) {
             this.reason = reason;
         }
 
+        /**
+         * Getter for reason attribute
+         *
+         * @return the reason attribute
+         */
         public String getReason() {
             return reason;
         }
     }
 
-    public void exchangeCardsWithArmiesForCurrentPlayer() {
-        this.getCurrentPlayer().exchangeCardsToArmies();
+    /**
+     *
+     * @return
+     */
+    public boolean exchangeCardsWithArmiesForCurrentPlayer() {
+
+        boolean res = this.getCurrentPlayer().exchangeCardsToArmies();
 
         setChanged();
         notifyObservers();
+
+        return !res;
+    }
+
+    /**
+     * If the destination country have 0 armies it is conquered
+     *
+     * @param armies the number of armies to move
+     */
+    public void moveArmiesToConqueredTerritory(int armies) {
+        this.getCurrentPlayer().conquerCountry(armies);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Battle between countries in an attack move
+     *
+     * @param attacker attacking player
+     * @param dice number of dice
+     */
+    public void performAttack(PlayerModel attacker, int dice) {
+        attacker.performCurrentAttack(dice);
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Inform observers that an event occurred in the RiskGame
+     *
+     * @param eventMessage message to describe the event (Used in the view to
+     * display it)
+     */
+    public void addNewEvent(String eventMessage) {
+        setChanged();
+        notifyObservers(eventMessage);
     }
 }

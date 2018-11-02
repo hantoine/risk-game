@@ -85,7 +85,7 @@ public class MapListener extends MouseAdapter {
                     return;
                 }
                 System.out.println(source.getName() + "--->" + destiny.getName());
-                this.riskController.getPlayGame().dragNDropTerritory(source.getName(), destiny.getName());
+                this.riskController.getGameController().dragNDropTerritory(source.getName(), destiny.getName());
             }
         }
         if (this.getCountrySource() != null) {
@@ -109,7 +109,7 @@ public class MapListener extends MouseAdapter {
                 CountryLabel countryClicked = (CountryLabel) cAux;
                 countryClicked.setBackground(Color.white);
 
-                this.riskController.getPlayGame().clickOnTerritory(countryClicked.getName());
+                this.riskController.getGameController().clickOnTerritory(countryClicked.getName());
             }
         }
     }

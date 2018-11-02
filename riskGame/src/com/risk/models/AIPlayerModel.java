@@ -49,4 +49,21 @@ public class AIPlayerModel extends PlayerModel {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public boolean exchangeCardsToArmies() {
+        int[] cardDuplicates = this.getHand().getCardDuplicates();
+
+        if (cardDuplicates[0] >= 3) {
+            this.getHand().removeCards("infantry", super.game.getDeck());
+        } else if (cardDuplicates[1] >= 3) {
+            this.getHand().removeCards("cavalry", super.game.getDeck());
+        } else if (cardDuplicates[2] >= 3) {
+            this.getHand().removeCards("artillery", super.game.getDeck());
+        } else {
+            this.getHand().removeCards("different", super.game.getDeck());
+        }
+        armiesCardAssignation();
+        return true;
+    }
+
 }
