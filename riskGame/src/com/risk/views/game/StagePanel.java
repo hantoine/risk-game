@@ -18,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author Nellybett
  */
-public class PhasePanel extends JPanel implements Observer {
+public class StagePanel extends JPanel implements Observer {
 
     /**
      * endPhase button to finish a phase
@@ -33,7 +33,7 @@ public class PhasePanel extends JPanel implements Observer {
     /**
      * Constructor
      */
-    public PhasePanel() {
+    public StagePanel() {
         this.text = new JLabel();
         this.endPhase = new JButton("End Phase");
 
@@ -52,6 +52,13 @@ public class PhasePanel extends JPanel implements Observer {
      */
     public void updateView(RiskModel rm) {
         PlayerModel currentPlayer = rm.getCurrentPlayer();
+
+        if (rm.getWinningPlayer() != null) {
+            this.endPhase.setVisible(false);
+            this.text.setVisible(false);
+            return;
+        }
+
         switch (rm.getPhase()) {
             case STARTUP:
                 this.endPhase.setVisible(false);
