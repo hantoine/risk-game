@@ -42,7 +42,6 @@ public final class RiskController {
      */
     private MenuListener menuListener;
 
-    private CardExchangeListener cardExchangeListener;
     /**
      * mapEditor reference to the map editor view
      */
@@ -59,7 +58,6 @@ public final class RiskController {
         this.viewRisk = riskView;
 
         this.countryListener = new MapListener(this);
-        this.cardExchangeListener = new CardExchangeListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
         this.gameController = new GameController(this.modelRisk);
         viewRisk.initialMenu(modelRisk, menuListener);
@@ -139,12 +137,4 @@ public final class RiskController {
     public GameController getGameController() {
         return gameController;
     }
-
-    /**
-     * @return the cardExchangeListener
-     */
-    public CardExchangeListener getCardExchangeListener() {
-        return cardExchangeListener;
-    }
-
 }

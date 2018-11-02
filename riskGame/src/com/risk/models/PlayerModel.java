@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Observable;
 
 /**
@@ -38,7 +37,6 @@ public abstract class PlayerModel extends Observable {
     protected RiskModel game;
     private FortificationMove currentFortificationMove;
     private AttackMove currentAttack;
-    private boolean handed;
     private boolean currentPlayer;
 
     /**
@@ -482,10 +480,9 @@ public abstract class PlayerModel extends Observable {
      * Function that removes the cards and calls a function that assigns armies
      * depending on the number of cards the player has handed
      *
-     * @param selectedCards the cards to be eliminated
      * @return true if the cards are equal or different; false in other case
      */
-    abstract boolean exchangeCardsToArmies(List<String> selectedCards);
+    abstract boolean exchangeCardsToArmies();
 
     /**
      * Adds a card to the player's hand from the deck
@@ -525,14 +522,14 @@ public abstract class PlayerModel extends Observable {
      * @return the handed
      */
     public boolean isHanded() {
-        return handed;
+        return hand.isHanded();
     }
 
     /**
      * @param handed the handed to set
      */
     public void setHanded(boolean handed) {
-        this.handed = handed;
+        this.hand.setHanded(handed);
 
         setChanged();
         notifyObservers();

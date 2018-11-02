@@ -6,7 +6,6 @@
 package com.risk.models;
 
 import java.awt.Color;
-import java.util.List;
 
 /**
  * It represents an AI player (child of PlayerModel)
@@ -51,7 +50,7 @@ public class AIPlayerModel extends PlayerModel {
     }
 
     @Override
-    public boolean exchangeCardsToArmies(List<String> selectedCards) {
+    public boolean exchangeCardsToArmies() {
         int[] cardDuplicates = this.getHand().getCardDuplicates();
 
         if (cardDuplicates[0] >= 3) {
