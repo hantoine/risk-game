@@ -100,6 +100,9 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     @Override
     public void observeModel(RiskModel rm) {
         updateView(rm, true);
+        rm.getPlayerList().forEach((pl) -> {
+            pl.addObserver(this.phaseView);
+        });
         rm.addObserver(this.stagePanel);
         rm.addObserver(this.mapPanel);
         rm.getMap().addObserver(this.mapPanel);
