@@ -67,11 +67,15 @@ public class ArmiesLeft extends JPanel {
      * attacking
      * @param countryDest name of the country that receives the attack
      * @param max max number of dices
+     * @param min min number of armies
      */
-    public void update(String sourceCountry, String countryDest, int max) {
+    public void update(String sourceCountry, String countryDest, int max, int min) {
         this.max = max;
-        more.setEnabled(true);
-        armiesMoved.setText("1");
+        if(min==max-1)
+            more.setEnabled(false);
+        else
+            more.setEnabled(true);
+        armiesMoved.setText(Integer.toString(min));
         message.setText(sourceCountry + " -> " + countryDest);
         this.setVisible(true);
     }

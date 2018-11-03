@@ -105,7 +105,7 @@ public class CardExchangeView extends JDialog implements Observer {
             exit.setEnabled(true);
         }
 
-        if (hand.isHanded() || hand.getCards().size() < 5) {
+        if (hand.getCards().size() < 5) {
             exit.setEnabled(true);
         }
     }
