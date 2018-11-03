@@ -606,11 +606,12 @@ public final class RiskModel extends Observable {
      *
      * @param armies the number of armies to move
      */
-    public void moveArmiesToConqueredTerritory(int armies) {
-        this.getCurrentPlayer().conquerCountry(armies);
-
+    public int moveArmiesToConqueredTerritory(int armies) {
+        
+        int conquered=this.getCurrentPlayer().conquerCountry(armies);
         setChanged();
         notifyObservers();
+        return conquered;
     }
 
     /**
