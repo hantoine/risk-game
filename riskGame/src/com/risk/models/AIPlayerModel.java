@@ -30,6 +30,11 @@ public class AIPlayerModel extends PlayerModel {
      */
     @Override
     public void reinforcement(RiskModel playGame) {
+        addNewLogEvent(String.format(
+                "%s starts its reinforcement phase",
+                getName()
+        ));
+
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -38,6 +43,10 @@ public class AIPlayerModel extends PlayerModel {
      */
     @Override
     public void fortification(RiskModel playGame) {
+        addNewLogEvent(String.format(
+                "%s starts its fortification phase",
+                getName()
+        ));
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -46,6 +55,10 @@ public class AIPlayerModel extends PlayerModel {
      */
     @Override
     public void attack(RiskModel playGame) {
+        addNewLogEvent(String.format(
+                "%s starts its attack phase",
+                getName()
+        ));
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
