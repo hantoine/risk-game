@@ -462,9 +462,9 @@ public final class RiskModel extends Observable {
                 break;
             case ATTACK:
                 this.getCurrentPlayer().addCardToPlayerHand();
-                //riskView.updateAuxiliarPhasePanel("", "", this, 0, 3);
                 this.getCurrentPlayer().setCurrentAttack(null);
                 checkForDeadPlayers();
+                attackEndValidations();
                 break;
             case FORTIFICATION:
                 this.getCurrentPlayer().resetCurrentFortificationMove();
@@ -476,6 +476,17 @@ public final class RiskModel extends Observable {
         notifyObservers();
     }
 
+    public void attackEndValidations(){
+        if((this.getCurrentPlayer().getContriesOwned().stream()
+                        .filter(c -> c.getNumArmies()<2)).count()==this.getCurrentPlayer().getContinentsOwned().size())
+                    finishPhase();
+        
+        if(this.getCurrentPlayer().getContriesOwned().size()==this.getMap().getTerritories().size()){
+            this.setWinningPlayer(this.getCurrentPlayer());
+            this.finishPhase();
+        }
+            
+    }
     /**
      * Steps at the beginning of a phase
      */
