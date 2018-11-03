@@ -102,29 +102,32 @@ public class GameController {
                 }
                 break;
             case ATTACK:
-                if (!sourceTerritory.getAdj().contains(destTerritory)) {
-                    break;
-                }
-                if (rm.getCurrentPlayer().getCurrentAttack() != null) {
-                    this.rm.addNewEvent("You are already attacking.");
-                    break;
-                }
-                if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
-                        || currentPlayer.getContriesOwned().contains(destTerritory)) {
-                    this.rm.addNewEvent("Invalid movement");
-                    break;
-                }
-                if (sourceTerritory.getNumArmies() < 2) {
-                    this.rm.addNewEvent("You can't attack with only one armie");
-                    break;
-                }
-
-                this.rm.attackMove(sourceTerritory, destTerritory);
+                int result=rm.getCurrentPlayer().validateAttack(sourceTerritory,destTerritory);
+                if(result==0)               
+                    this.rm.attackMove(sourceTerritory, destTerritory);
+                else
+                    exceptionManagerAttack(result);
                 break;
         }
 
     }
-
+    
+    public void exceptionManagerAttack(int e){
+        switch(e){
+            case -2:
+                this.rm.addNewEvent("You are already attacking.");
+                break;
+            case -3:
+                this.rm.addNewEvent("Invalid movement");
+                break;
+            case -4:
+                this.rm.addNewEvent("You can't attack with only one armie");
+                break;
+            default:
+                break;
+        }
+    }
+    
     /**
      * Press one of the dices
      *
