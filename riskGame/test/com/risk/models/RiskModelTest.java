@@ -110,7 +110,7 @@ public class RiskModelTest {
      */
     @Test
     public void testAssignCoutriesToPlayers() {
-        riskModel.assignCoutriesToPlayers();
+        riskModel.assignTerritoriesToPlayers();
         Collection<TerritoryModel> territories = mapModel.getGraphTerritories().values();
         territories.stream().forEach((c) -> {
             assertNotNull(c.getOwner());
@@ -123,7 +123,7 @@ public class RiskModelTest {
      */
     @Test
     public void testAssignCoutriesToPlayersArmies() {
-        riskModel.assignCoutriesToPlayers();
+        riskModel.assignTerritoriesToPlayers();
         Collection<TerritoryModel> territories = mapModel.getGraphTerritories().values();
         territories.stream().forEach((c) -> {
             assertEquals(c.getNumArmies(), 1);
@@ -143,7 +143,7 @@ public class RiskModelTest {
         continentC.addMember(territoryA);
         territoryA.setContinentName("ContinentC");
 
-        riskModel.assignCoutriesToPlayers();
+        riskModel.assignTerritoriesToPlayers();
 
         assertTrue(riskModel.getPlayerList().stream()
                 .anyMatch((p) -> (p.checkOwnContinent(continentC))));
