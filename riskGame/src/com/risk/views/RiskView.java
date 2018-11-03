@@ -8,11 +8,11 @@ package com.risk.views;
 import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
+import com.risk.views.game.DominationView;
+import com.risk.views.game.InstructionsPanel;
 import com.risk.views.game.MapPanel;
 import com.risk.views.game.PhaseAuxiliar;
 import com.risk.views.game.PhaseView;
-import com.risk.views.game.PlayerGameInfoPanel;
-import com.risk.views.game.InstructionsPanel;
 import com.risk.views.menu.MenuView;
 import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.StartMenuView;
@@ -51,7 +51,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     /**
      * playerPanel reference to the view that manages the player information
      */
-    final private PlayerGameInfoPanel playerPanel;
+    final private DominationView dominationView;
     /**
      * playerHandPanel reference to the view that has the cards of the plater
      */
@@ -76,7 +76,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.phaseAuxiliarPanel = new PhaseAuxiliar();
 
         this.stagePanel = new InstructionsPanel();
-        this.playerPanel = new PlayerGameInfoPanel();
+        this.dominationView = new DominationView();
         this.mapPanel = new MapPanel();
         this.phaseView = new PhaseView();
 
@@ -88,7 +88,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         mainContainer.setLayout(new BorderLayout());
         mainContainer.add(southContainer, BorderLayout.SOUTH);
         mainContainer.add(this.stagePanel, BorderLayout.NORTH);
-        mainContainer.add(this.playerPanel, BorderLayout.EAST);
+        mainContainer.add(this.dominationView, BorderLayout.EAST);
         mainContainer.add(this.mapPanel, BorderLayout.CENTER);
 
         this.addMenuBar();
@@ -101,26 +101,25 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     public void observeModel(RiskModel rm) {
         updateView(rm, true);
         rm.getPlayerList().forEach((pl) -> {
-            pl.addObserver(playerPanel);
-            pl.addObserver(phaseView);
+            pl.addObserver(this.phaseView);
         });
         rm.addObserver(this.stagePanel);
         rm.addObserver(this.mapPanel);
         rm.getMap().addObserver(this.mapPanel);
         rm.addObserver(this);
         rm.addObserver(this.phaseAuxiliarPanel);
-
+        rm.addObserver(this.dominationView);
         this.phaseView.updateView(rm);
         rm.addObserver(this.phaseView);
     }
 
     private void updateView(RiskModel rm, boolean newMap) {
-        this.getStagePanel().updateView(rm);
-        this.getMapPanel().updateView(rm.getMap(), newMap);
-        this.getPlayerPanel().updateView(rm.getCurrentPlayer());
+        this.stagePanel.updateView(rm);
+        this.mapPanel.updateView(rm.getMap(), newMap);
+        this.dominationView.updateView(rm);
 
         this.setSize(
-                rm.getMap().getMapWidth() + 200,
+                rm.getMap().getMapWidth() + 250,
                 rm.getMap().getMapHeight() + 230
         );
 
@@ -141,6 +140,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      *
      * @param rc Controller
      */
+    @Override
     public void setController(RiskController rc) {
         this.getMapPanel().setListener(rc.getCountryListener());
 
@@ -169,6 +169,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      * @param riskModel model of the game
      * @param menuListener listen the events in the menu
      */
+    @Override
     public void initialMenu(RiskModel riskModel, MenuListener menuListener) {
 
         StartMenuView start = new StartMenuView(riskModel, menuListener);
@@ -184,6 +185,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     /**
      * Close menu action
      */
+    @Override
     public void closeMenu() {
         this.menuPanel.setVisible(false);
         this.remove(this.menuPanel);
@@ -195,6 +197,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      *
      * @return the new panel
      */
+    @Override
     public NewGamePanel getNewGamePanel() {
         return this.getMenuPanel().getStartMenu().getNewGamePanel();
     }
@@ -273,15 +276,6 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     private void centerWindow() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
-    }
-
-    /**
-     * Getter of the playerPanel attribute
-     *
-     * @return the playerPanel
-     */
-    PlayerGameInfoPanel getPlayerPanel() {
-        return playerPanel;
     }
 
     /**
