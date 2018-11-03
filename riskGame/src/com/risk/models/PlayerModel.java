@@ -584,14 +584,18 @@ public abstract class PlayerModel extends Observable {
      * Conquer a country after an attack
      *
      * @param armies number of armies to move to the new conquered country
+     * @return -1 error; 0 success
      */
-    public void conquerCountry(int armies) {
+    public int conquerCountry(int armies) {
+        if(!(armies>=this.getCurrentAttack().getDice()))
+            return -1;
         int newArmies = this.getCurrentAttack().getSource().getNumArmies();
         this.getCurrentAttack().getSource().setNumArmies(newArmies - armies);
         this.getCurrentAttack().getDest().setNumArmies(armies);
 
         addCountryOwned(this.getCurrentAttack().getDest());
         this.setCurrentAttack(null);
+        return 0;
     }
 
     void resetCurrentFortificationMove() {

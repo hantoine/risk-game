@@ -36,10 +36,6 @@ public class HandModel extends Observable {
      */
     HandModel() {
         this.cards = new LinkedList();
-        this.cards.add(new CardModel("Venezuela", "infantry"));
-        this.cards.add(new CardModel("France", "infantry"));
-        this.cards.add(new CardModel("China", "infantry"));
-        this.cards.add(new CardModel("India", "artillery"));
         this.selectedCards = new LinkedList<>();
     }
 

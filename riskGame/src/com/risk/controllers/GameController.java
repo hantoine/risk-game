@@ -128,8 +128,6 @@ public class GameController {
     /**
      * Press one of the dices
      *
-     * @param source source of attack
-     * @param dest destiny of attack
      * @param dice the number of dices
      */
     public void clickAttack(int dice) {

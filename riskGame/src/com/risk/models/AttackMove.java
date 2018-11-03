@@ -24,6 +24,7 @@ public class AttackMove {
      */
     private TerritoryModel dest;
 
+    private int dice;
     /**
      * Constructor
      *
@@ -82,7 +83,7 @@ public class AttackMove {
         int[] attacker = createDice(dice);
         int defenseArmies = min(this.getDest().getNumArmies(), dice);
         int[] defense = createDice(min(defenseArmies, 2));
-
+        this.setDice(dice);
         Arrays.sort(attacker);
         Arrays.sort(defense);
 
@@ -168,4 +169,20 @@ public class AttackMove {
         int range = (6 - 0) + 1;
         return (int) (Math.random() * range) + 0;
     }
+
+    /**
+     * @return the dice
+     */
+    public int getDice() {
+        return dice;
+    }
+
+    /**
+     * @param dice the dice to set
+     */
+    public void setDice(int dice) {
+        this.dice = dice;
+    }
+    
+    
 }
