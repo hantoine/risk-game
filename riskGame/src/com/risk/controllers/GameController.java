@@ -102,34 +102,39 @@ public class GameController {
                 }
                 break;
             case ATTACK:
-                if (!sourceTerritory.getAdj().contains(destTerritory)) {
-                    break;
-                }
-                if (rm.getCurrentPlayer().getCurrentAttack() != null) {
-                    this.rm.addNewEvent("You are already attacking.");
-                    break;
-                }
-                if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
-                        || currentPlayer.getContriesOwned().contains(destTerritory)) {
-                    this.rm.addNewEvent("Invalid movement");
-                    break;
-                }
-                if (sourceTerritory.getNumArmies() < 2) {
-                    this.rm.addNewEvent("You can't attack with only one armie");
-                    break;
-                }
-
-                this.rm.attackMove(sourceTerritory, destTerritory);
+                int result=rm.getCurrentPlayer().validateAttack(sourceTerritory,destTerritory);
+                if(result==0){               
+                    this.rm.attackMove(sourceTerritory, destTerritory);
+                }else
+                    exceptionManagerAttack(result);
                 break;
         }
 
     }
-
+    
+    /**
+     * 
+     * @param e 
+     */
+    public void exceptionManagerAttack(int e){
+        switch(e){
+            case -2:
+                this.rm.addNewEvent("You are already attacking.");
+                break;
+            case -3:
+                this.rm.addNewEvent("Invalid movement");
+                break;
+            case -4:
+                this.rm.addNewEvent("You can't attack with only one armie");
+                break;
+            default:
+                break;
+        }
+    }
+    
     /**
      * Press one of the dices
      *
-     * @param source source of attack
-     * @param dest destiny of attack
      * @param dice the number of dices
      */
     public void clickAttack(int dice) {
@@ -158,11 +163,17 @@ public class GameController {
         }
     }
 
+    /**
+     * 
+     */
     void closeCardExchangeView() {
         this.exchangeView.setVisible(false);
         this.exchangeView = null;
     }
-
+    
+    /**
+     * 
+     */
     void openCardExchangeView() {
         this.exchangeView = new CardExchangeView();
         this.exchangeView.updateView(this.rm.getCurrentPlayer().getHand());

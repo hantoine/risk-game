@@ -115,7 +115,7 @@ public class PhaseAuxiliar extends JPanel implements Observer {
     public void update(Observable o, Object o1) {
         if (o instanceof RiskModel) {
             RiskModel rm = (RiskModel) o;
-
+            
             AttackMove currentAttack = rm.getCurrentPlayer().getCurrentAttack();
             if (currentAttack == null) {
                 this.selectPanel(null);
@@ -128,7 +128,7 @@ public class PhaseAuxiliar extends JPanel implements Observer {
 
             if (currentAttack.getDest().getNumArmies() == 0) {
                 this.selectPanel(this.getArmiesLeft());
-                this.armiesLeft.update(srcTerritory, destTerritory, nbArmies);
+                this.armiesLeft.update(srcTerritory, destTerritory, nbArmies, rm.getCurrentPlayer().getCurrentAttack().getDice());
             } else {
                 this.selectPanel(this.getAttackPanel());
                 this.attackPanel.update(srcTerritory, destTerritory, nbArmies);

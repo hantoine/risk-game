@@ -28,6 +28,7 @@ public class AttackMove {
      */
     private PlayerModel attacker;
 
+    private int dice;
     /**
      * Constructor
      *
@@ -87,6 +88,7 @@ public class AttackMove {
         int[] attack = createDice(dice);
         int defenseArmies = min(this.getDest().getNumArmies(), dice);
         int[] defense = createDice(min(defenseArmies, 2));
+        this.setDice(dice);
 
         Arrays.sort(attack);
         Arrays.sort(defense);
@@ -155,12 +157,14 @@ public class AttackMove {
      * @param i position for defense
      * @return the loosing territory name
      */
-    private String compareDice(int[] attacker, int[] defense, int j, int i) {
+    public String compareDice(int[] attacker, int[] defense, int j, int i) {
         if (attacker[j] <= defense[i]) {
             this.getSource().setNumArmies(this.getSource().getNumArmies() - 1);
             return this.getSource().getName();
         } else {
-            this.getDest().setNumArmies(this.getDest().getNumArmies() - 1);
+            if(this.getDest().getNumArmies()>0){
+                this.getDest().setNumArmies(this.getDest().getNumArmies() - 1);
+            }
             return this.getDest().getName();
         }
     }
@@ -203,7 +207,23 @@ public class AttackMove {
      * @return random value
      */
     int roolDice() {
-        int range = (6 - 0) + 1;
-        return (int) (Math.random() * range) + 0;
+        int range = (6 - 1) + 1;
+        return (int) (Math.random() * range) + 1;
     }
+
+    /**
+     * @return the dice
+     */
+    public int getDice() {
+        return dice;
+    }
+
+    /**
+     * @param dice the dice to set
+     */
+    public void setDice(int dice) {
+        this.dice = dice;
+    }
+    
+    
 }
