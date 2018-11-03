@@ -597,7 +597,23 @@ public abstract class PlayerModel extends Observable {
         this.setCurrentAttack(null);
         return 0;
     }
-
+    
+    
+    public int validateAttack(TerritoryModel sourceTerritory, TerritoryModel destTerritory){
+        if (!sourceTerritory.getAdj().contains(destTerritory)) 
+            return -1;
+        if (this.getCurrentAttack() != null) 
+            return -2;
+        
+        if (!this.getContriesOwned().contains(sourceTerritory)
+        || this.getContriesOwned().contains(destTerritory)) 
+            return -3;
+        if (sourceTerritory.getNumArmies() < 2) 
+            return -4;
+        
+        return 0;
+    }
+    
     void resetCurrentFortificationMove() {
         this.currentFortificationMove = null;
 

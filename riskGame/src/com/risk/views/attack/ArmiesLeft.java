@@ -90,7 +90,8 @@ public class ArmiesLeft extends JPanel {
             int i = Integer.parseInt(armiesMoved.getText()) + 1;
             if (i < max) {
                 armiesMoved.setText(Integer.toString(i));
-            } else {
+            }
+            if(i==max-1){
                 more.setEnabled(false);
             }
         });
