@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 
 /**
@@ -29,8 +30,8 @@ public abstract class PlayerModel extends Observable {
      */
     private String name;
     private Color color;
-    private Collection<TerritoryModel> contriesOwned;
-    private Collection<ContinentModel> continentsOwned;
+    private List<TerritoryModel> contriesOwned;
+    private List<ContinentModel> continentsOwned;
     private HandModel hand;
     private int numArmiesAvailable;
     private int returnedCards;
@@ -133,8 +134,15 @@ public abstract class PlayerModel extends Observable {
         this.currentPlayer = currentPlayer;
         this.hand.setCurrent(currentPlayer);
 
-        setChanged();
-        notifyObservers();
+        if (currentPlayer) {
+            addNewLogEvent(String.format(
+                    "%s starts its turn",
+                    getName()
+            ));
+        } else {
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -174,8 +182,8 @@ public abstract class PlayerModel extends Observable {
      *
      * @return the contriesOwned
      */
-    public Collection<TerritoryModel> getContriesOwned() {
-        return Collections.unmodifiableCollection(this.contriesOwned);
+    public List<TerritoryModel> getContriesOwned() {
+        return Collections.unmodifiableList(this.contriesOwned);
     }
 
     public boolean checkOwnTerritory(TerritoryModel territory) {
@@ -265,7 +273,7 @@ public abstract class PlayerModel extends Observable {
      *
      * @param continentsOwned the continentsOwned to set
      */
-    void setContinentsOwned(Collection<ContinentModel> continentsOwned) {
+    void setContinentsOwned(List<ContinentModel> continentsOwned) {
         this.continentsOwned = continentsOwned;
 
         setChanged();
@@ -302,7 +310,7 @@ public abstract class PlayerModel extends Observable {
      *
      * @param numArmies the numArmies to set
      */
-    private void setNumArmiesAvailable(int numArmies) {
+    void setNumArmiesAvailable(int numArmies) {
         this.numArmiesAvailable = numArmies;
 
         setChanged();
@@ -333,28 +341,23 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     * Initialize the number of initial armies of this player depending on the
+     * Get the number of initial armies players should get depending on the
      * number of players in the game
      *
      * @param nbPlayers number of players in the game
      */
-    void initializeArmies(int nbPlayers) {
+    static int getNbInitialArmies(int nbPlayers) {
         switch (nbPlayers) {
             case 2:
-                this.setNumArmiesAvailable(40);
-                break;
+                return 40;
             case 3:
-                this.setNumArmiesAvailable(3);
-                break;
+                return 35;
             case 4:
-                this.setNumArmiesAvailable(30);
-                break;
+                return 30;
             case 5:
-                this.setNumArmiesAvailable(25);
-                break;
+                return 25;
             case 6:
-                this.setNumArmiesAvailable(20);
-                break;
+                return 20;
             default:
                 throw new IllegalArgumentException("Invalid number of players");
         }
@@ -365,7 +368,13 @@ public abstract class PlayerModel extends Observable {
      *
      */
     void assignNewArmies() {
-        this.setNumArmiesAvailable(this.armiesAssignation());
+        int newArmies = this.armiesAssignation();
+        this.setNumArmiesAvailable(newArmies);
+        addNewLogEvent(String.format(
+                "%s receives %d new armies",
+                getName(),
+                newArmies
+        ));
     }
 
     /**
@@ -493,8 +502,10 @@ public abstract class PlayerModel extends Observable {
         handCurrentPlayer.getCardsList().add(card);
         this.game.getDeck().removeLast();
 
-        this.setChanged();
-        this.notifyObservers();
+        addNewLogEvent(String.format(
+                "%s receives a new card",
+                getName()
+        ));
     }
 
     /**
@@ -571,13 +582,15 @@ public abstract class PlayerModel extends Observable {
         territory, then this attack is terminated. If not the the attacked
         territory needs to be conquered before the attack terminates
          */
-        if (this.currentAttack.getDest()
-                .getNumArmies() != 0) {
+        if (this.currentAttack.getDest().getNumArmies() != 0) {
             this.setCurrentAttack(null);
+        } else {
+            addNewLogEvent(String.format(
+                    "%s conquered the territory %s",
+                    getName(),
+                    this.currentAttack.getDest().getName()
+            ));
         }
-
-        setChanged();
-        notifyObservers();
     }
 
     /**
@@ -627,5 +640,19 @@ public abstract class PlayerModel extends Observable {
 
     boolean checkOwnContinent(ContinentModel continent) {
         return this.continentsOwned.contains(continent);
+    }
+
+    /**
+     *
+     * @param logMessage
+     */
+    void addNewLogEvent(String logMessage) {
+        setChanged();
+        notifyObservers(new LogEvent(logMessage));
+    }
+
+    void startAttackMove(TerritoryModel src, TerritoryModel dest) {
+        AttackMove attack = new AttackMove(this, src, dest);
+        this.setCurrentAttack(attack);
     }
 }

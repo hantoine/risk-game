@@ -23,18 +23,23 @@ public class AttackMove {
      * Destiny of the attack
      */
     private TerritoryModel dest;
+    /*
+    * Player performing the attack
+     */
+    private PlayerModel attacker;
 
     private int dice;
     /**
      * Constructor
      *
+     * @param attacker
      * @param source source of the attack
      * @param dest destiny of the attack
      */
-    public AttackMove(TerritoryModel source, TerritoryModel dest) {
+    public AttackMove(PlayerModel attacker, TerritoryModel source, TerritoryModel dest) {
         this.source = source;
         this.dest = dest;
-
+        this.attacker = attacker;
     }
 
     /**
@@ -79,21 +84,53 @@ public class AttackMove {
      * @param dice number of dices
      */
     private void battle(int dice) {
-
-        int[] attacker = createDice(dice);
+        String looser1, looser2 = null;
+        int[] attack = createDice(dice);
         int defenseArmies = min(this.getDest().getNumArmies(), dice);
         int[] defense = createDice(min(defenseArmies, 2));
         this.setDice(dice);
-        Arrays.sort(attacker);
+
+
+        Arrays.sort(attack);
         Arrays.sort(defense);
 
         if (defenseArmies == 1) {
-            compareDice(attacker, defense, attacker.length - 1, 0);
+            looser1 = compareDice(attack, defense, attack.length - 1, 0);
         } else {
-            compareDice(attacker, defense, attacker.length - 1, 1);
-            compareDice(attacker, defense, attacker.length - 2, 0);
+            looser1 = compareDice(attack, defense, attack.length - 1, 1);
+            looser2 = compareDice(attack, defense, attack.length - 2, 0);
         }
 
+        this.attacker.addNewLogEvent(getBattleLogMsg(looser1, looser2));
+    }
+
+    private String getBattleLogMsg(String firstLooser, String secondLooser) {
+        String logMessage = String.format(
+                "%s launch battle between %s and %s",
+                this.attacker.getName(),
+                this.source.getName(),
+                this.dest.getName()
+        );
+
+        if (secondLooser == null) {
+            logMessage += String.format(
+                    ", %s loose 1 army",
+                    firstLooser
+            );
+            return logMessage;
+        }
+
+        if (firstLooser.equals(secondLooser)) {
+            logMessage += String.format(
+                    ", %s loose 2 armies",
+                    firstLooser
+            );
+
+        } else {
+            logMessage += String.format(", both territories loose 1 army");
+        }
+
+        return logMessage;
     }
 
     /**
@@ -119,13 +156,18 @@ public class AttackMove {
      * @param defense defense dices results
      * @param j position for attacker
      * @param i position for defense
+     * @return the loosing territory name
      */
-    public void compareDice(int[] attacker, int[] defense, int j, int i) {
+    public String compareDice(int[] attacker, int[] defense, int j, int i) {
         if (attacker[j] <= defense[i]) {
             this.getSource().setNumArmies(this.getSource().getNumArmies() - 1);
+            return this.getSource().getName();
         } else {
-            if(this.getDest().getNumArmies()>0)
+
+            if(this.getDest().getNumArmies()>0){
                 this.getDest().setNumArmies(this.getDest().getNumArmies() - 1);
+            }
+            return this.getDest().getName();
         }
     }
 

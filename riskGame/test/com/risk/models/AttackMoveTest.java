@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import java.awt.Color;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class AttackMoveTest {
         TerritoryModel dest=new TerritoryModel("France");
         source.setNumArmies(7);
         dest.setNumArmies(1);
-        attack=new AttackMove(source, dest);
+        attack=new AttackMove(new HumanPlayerModel("Player 1", Color.yellow, null),source, dest);
     }
      
     /**
