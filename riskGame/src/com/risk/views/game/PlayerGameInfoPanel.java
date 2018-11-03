@@ -6,9 +6,6 @@
 package com.risk.views.game;
 
 import com.risk.models.PlayerModel;
-import java.awt.Dimension;
-import java.util.Observable;
-import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
@@ -23,7 +20,7 @@ import javax.swing.border.TitledBorder;
  *
  * @author Will
  */
-public final class PlayerGameInfoPanel extends JPanel implements Observer {
+public final class PlayerGameInfoPanel extends JPanel {
 
     /**
      * playerName name of the player
@@ -53,7 +50,6 @@ public final class PlayerGameInfoPanel extends JPanel implements Observer {
         this.continentsOwnedLabel = new JLabel();
 
         this.percentMapControlled.setStringPainted(true);
-        this.percentMapControlled.setPreferredSize(new Dimension(200, 200));
         this.percentMapControlledLabel.setText("Percentage of map controlled:");
 
         GroupLayout gl = new GroupLayout(this);
@@ -93,6 +89,7 @@ public final class PlayerGameInfoPanel extends JPanel implements Observer {
 
         TitledBorder border = (TitledBorder) this.getBorder();
         border.setTitle(player.getName());
+        border.setTitleColor(player.getColor());
 
         this.percentMapControlled.setValue(player.getPercentMapControlled());
 
@@ -107,15 +104,5 @@ public final class PlayerGameInfoPanel extends JPanel implements Observer {
         }
         this.continentsOwned.setListData(listContinentsOwned);
         this.repaint();
-    }
-
-    @Override
-    public void update(Observable o, Object o1) {
-        if (o instanceof PlayerModel) {
-            PlayerModel updatedPlayer = (PlayerModel) o;
-            if (updatedPlayer.isCurrentPlayer()) {
-                updateView(updatedPlayer);
-            }
-        }
     }
 }
