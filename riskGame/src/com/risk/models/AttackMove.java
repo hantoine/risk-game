@@ -90,7 +90,6 @@ public class AttackMove {
         int[] defense = createDice(min(defenseArmies, 2));
         this.setDice(dice);
 
-
         Arrays.sort(attack);
         Arrays.sort(defense);
 
@@ -163,7 +162,6 @@ public class AttackMove {
             this.getSource().setNumArmies(this.getSource().getNumArmies() - 1);
             return this.getSource().getName();
         } else {
-
             if(this.getDest().getNumArmies()>0){
                 this.getDest().setNumArmies(this.getDest().getNumArmies() - 1);
             }
