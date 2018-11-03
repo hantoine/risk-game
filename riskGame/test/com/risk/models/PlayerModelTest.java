@@ -53,7 +53,7 @@ public class PlayerModelTest {
         
         source.setNumArmies(7);
         dest.setNumArmies(1);
-        AttackMove attack=new AttackMove(source, dest);
+        AttackMove attack=new AttackMove(player,source, dest);
         player.setCurrentAttack(attack);
 
     }
