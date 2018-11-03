@@ -103,15 +103,19 @@ public class GameController {
                 break;
             case ATTACK:
                 int result=rm.getCurrentPlayer().validateAttack(sourceTerritory,destTerritory);
-                if(result==0)               
+                if(result==0){               
                     this.rm.attackMove(sourceTerritory, destTerritory);
-                else
+                }else
                     exceptionManagerAttack(result);
                 break;
         }
 
     }
     
+    /**
+     * 
+     * @param e 
+     */
     public void exceptionManagerAttack(int e){
         switch(e){
             case -2:
@@ -159,11 +163,17 @@ public class GameController {
         }
     }
 
+    /**
+     * 
+     */
     void closeCardExchangeView() {
         this.exchangeView.setVisible(false);
         this.exchangeView = null;
     }
-
+    
+    /**
+     * 
+     */
     void openCardExchangeView() {
         this.exchangeView = new CardExchangeView();
         this.exchangeView.updateView(this.rm.getCurrentPlayer().getHand());

@@ -124,7 +124,8 @@ public class AttackMove {
         if (attacker[j] <= defense[i]) {
             this.getSource().setNumArmies(this.getSource().getNumArmies() - 1);
         } else {
-            this.getDest().setNumArmies(this.getDest().getNumArmies() - 1);
+            if(this.getDest().getNumArmies()>0)
+                this.getDest().setNumArmies(this.getDest().getNumArmies() - 1);
         }
     }
 
@@ -166,8 +167,8 @@ public class AttackMove {
      * @return random value
      */
     int roolDice() {
-        int range = (6 - 0) + 1;
-        return (int) (Math.random() * range) + 0;
+        int range = (6 - 1) + 1;
+        return (int) (Math.random() * range) + 1;
     }
 
     /**

@@ -587,7 +587,7 @@ public abstract class PlayerModel extends Observable {
      * @return -1 error; 0 success
      */
     public int conquerCountry(int armies) {
-        if(!(armies>=this.getCurrentAttack().getDice()))
+        if(!(armies>=this.getCurrentAttack().getDice() && armies<this.getCurrentAttack().getSource().getNumArmies()))
             return -1;
         int newArmies = this.getCurrentAttack().getSource().getNumArmies();
         this.getCurrentAttack().getSource().setNumArmies(newArmies - armies);
@@ -598,13 +598,17 @@ public abstract class PlayerModel extends Observable {
         return 0;
     }
     
-    
+    /**
+     * 
+     * @param sourceTerritory
+     * @param destTerritory
+     * @return 
+     */
     public int validateAttack(TerritoryModel sourceTerritory, TerritoryModel destTerritory){
         if (!sourceTerritory.getAdj().contains(destTerritory)) 
             return -1;
         if (this.getCurrentAttack() != null) 
-            return -2;
-        
+            return -2; 
         if (!this.getContriesOwned().contains(sourceTerritory)
         || this.getContriesOwned().contains(destTerritory)) 
             return -3;
