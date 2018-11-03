@@ -162,7 +162,7 @@ public final class RiskModel extends Observable {
     /**
      * Assigns random countries to players
      */
-    private void assignTerritoriesToPlayers() {
+    public void assignTerritoriesToPlayers() {
         if (players == null) {
             throw new IllegalArgumentException();
         }

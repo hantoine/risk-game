@@ -424,7 +424,7 @@ public abstract class PlayerModel extends Observable {
      *
      * @return Total number of armies owned by this player
      */
-    public int getNumArmiesOwned() {
+    public int getNbArmiesOwned() {
         int numArmiesDeployed = this.contriesOwned.stream()
                 .mapToInt((country) -> country.getNumArmies()).sum();
 
@@ -618,6 +618,11 @@ public abstract class PlayerModel extends Observable {
         return this.continentsOwned.contains(continent);
     }
 
+    public int getPercentMapControlled() {
+        int nbTerrInMap = this.getGame().getMap().getTerritories().size();
+        return (100 * this.getNbCountriesOwned()) / nbTerrInMap;
+    }
+    
     /**
      *
      * @param logMessage
