@@ -95,7 +95,7 @@ public class CardExchangeView extends JDialog implements Observer {
     /**
      * It enables the hand button of the view
      *
-     * @param hand
+     * @param hand gand of the player
      */
     private void setEnableHand(HandModel hand) {
         if (hand.cardHandingPossible()) {
@@ -111,8 +111,8 @@ public class CardExchangeView extends JDialog implements Observer {
     }
 
     /**
-     *
-     * @param hand
+     * Update size of the card exchange view
+     * @param hand hand of the player
      */
     public void updateView(HandModel hand) {
         this.setEnableHand(hand);
@@ -137,8 +137,8 @@ public class CardExchangeView extends JDialog implements Observer {
     }
 
     /**
-     *
-     * @param rm
+     * Implementation of observer pattern
+     * @param rm model of the game
      */
     public void observe(RiskModel rm) {
         rm.getPlayerList().stream().forEach((pl) -> {

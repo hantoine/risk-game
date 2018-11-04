@@ -82,7 +82,7 @@ public final class PlayerGameInfoPanel extends JPanel {
      * Update the information displayed by the PlayerGameInfoPanel according to
      * the information of the current player
      *
-     * @param player
+     * @param player current player
      */
     public void updateView(PlayerModel player) {
         this.setVisible(true);
