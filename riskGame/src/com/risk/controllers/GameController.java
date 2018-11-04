@@ -151,9 +151,9 @@ public class GameController {
             }
             //System.out.println("atacante: "+rm.getCurrentPlayer().getCurrentAttack().getDiceAttack()+", atacado: "+rm.getCurrentPlayer().getCurrentAttack().getDiceAttacked());
             rm.performAttack(this.rm.getCurrentPlayer());
-            
         }else{
             rm.getCurrentPlayer().getCurrentAttack().setDiceAttack(dice);
+            rm.getCurrentPlayer().getCurrentAttack().setAttackDefense(1);
         }
             
         
