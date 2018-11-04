@@ -32,6 +32,8 @@ public class AttackView extends JPanel {
     JLabel countriesInvolve;
     
     JLabel actionSubject;
+    
+    int attackDefense;
     /**
      * Constructor
      *
@@ -39,6 +41,7 @@ public class AttackView extends JPanel {
     public AttackView() {
 
         attackOptions = new JPanel();
+        attackDefense=0;
         options = new JButton[4];
         options[0] = new JButton("1");
         options[1] = new JButton("2");
@@ -76,7 +79,7 @@ public class AttackView extends JPanel {
         this.setVisible(true);
         this.actionSubject.setText("Attacker");
         countriesInvolve.setText(countrySource + " vs " + countryDest);
-
+        attackDefense=0;
         for (int i = 0; i < 4; i++) {
             options[i].setEnabled(i < armies - 1);
             options[i].setVisible(true);
@@ -94,39 +97,56 @@ public class AttackView extends JPanel {
         options[0].addActionListener(e -> {    
             int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
             gc.clickAttack(1);
-            options[3].setVisible(false);
-            options[2].setVisible(false);
-            
-            options[1].setEnabled(armiesDest>2);
-            actionSubject.setText("Attacked");
+            attackDefense=attackDefense+1;
+            if(attackDefense==1){
+                int attackDice=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
+                options[3].setVisible(false);
+                options[2].setVisible(false);
+                options[1].setEnabled(attackDice!=1 && armiesDest>2);
+                actionSubject.setText("Attacked");
+            }
         });
 
         options[1].addActionListener(e -> {
             int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
             gc.clickAttack(2);
-            options[3].setVisible(false);
-            options[2].setVisible(false);
-            options[1].setEnabled(armiesDest>2);
-            options[1].setEnabled(armiesDest>2);
-            actionSubject.setText("Attacked");
+            
+            attackDefense=attackDefense+1;
+            if(attackDefense==1){
+                int attackDice=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
+                options[3].setVisible(false);
+                options[2].setVisible(false);
+                options[1].setEnabled(attackDice!=1 && armiesDest>2);
+                actionSubject.setText("Attacked");
+            }
         });
 
         options[2].addActionListener(e -> {
             int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
             gc.clickAttack(3);
-            options[3].setVisible(false);
-            options[2].setVisible(false);
-            options[1].setEnabled(armiesDest>2);
-            actionSubject.setText("Attacked");
+            attackDefense=attackDefense+1;
+            
+            if(attackDefense==1){
+                int attackDice=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
+                options[3].setVisible(false);
+                options[2].setVisible(false);
+                options[1].setEnabled(attackDice!=1 && armiesDest>2);
+                actionSubject.setText("Attacked");
+            }
         });
 
         options[3].addActionListener(e -> {
             int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
             gc.clickAttack(-1);
-            options[3].setVisible(false);
-            options[2].setVisible(false);
-            options[1].setEnabled(armiesDest>2);
-            actionSubject.setText("Attacked");
+            attackDefense=attackDefense+1;
+            
+            if(attackDefense==1){
+                int attackDice=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
+                options[3].setVisible(false);
+                options[2].setVisible(false);
+                options[1].setEnabled(attackDice!=1 && armiesDest>2);
+                actionSubject.setText("Attacked");
+            }
         });
     }
 }
