@@ -120,7 +120,11 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
 
         this.setSize(
                 rm.getMap().getMapWidth() + 250,
-                rm.getMap().getMapHeight() + 230
+                Math.max(
+                        rm.getMap().getMapHeight() + 230,
+                        215 + 135 * rm.getPlayerList().size()
+                        + 17 * rm.getMap().getContinents().size()
+                )
         );
 
         this.centerWindow();

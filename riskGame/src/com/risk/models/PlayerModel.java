@@ -10,7 +10,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Observable;
+import java.util.stream.Collectors;
 
 /**
  * It represents a Player in the game It is the parent of HumanPlayerModel and
@@ -251,6 +253,8 @@ public abstract class PlayerModel extends Observable {
             c.setOwner(this);
         });
 
+        updateContinentsOwned();
+
         setChanged();
         notifyObservers();
     }
@@ -267,6 +271,8 @@ public abstract class PlayerModel extends Observable {
         this.contriesOwned.add(countryOwned);
         countryOwned.setOwner(this);
 
+        updateContinentsOwned();
+
         setChanged();
         notifyObservers();
     }
@@ -279,6 +285,8 @@ public abstract class PlayerModel extends Observable {
     void removeCountryOwned(TerritoryModel countryOwned) {
         this.contriesOwned.remove(countryOwned);
         countryOwned.setOwner(this);
+
+        updateContinentsOwned();
 
         setChanged();
         notifyObservers();
@@ -524,14 +532,18 @@ public abstract class PlayerModel extends Observable {
      */
     void addCardToPlayerHand() {
         HandModel handCurrentPlayer = this.getHand();
-        CardModel card = this.game.getDeck().getLast();
-        handCurrentPlayer.getCardsList().add(card);
-        this.game.getDeck().removeLast();
+        try {
+            CardModel card = this.game.getDeck().getLast();
+            handCurrentPlayer.getCardsList().add(card);
+            this.game.getDeck().removeLast();
 
-        addNewLogEvent(String.format(
-                "%s receives a new card",
-                getName()
-        ));
+            addNewLogEvent(String.format(
+                    "%s receives a new card",
+                    getName()
+            ));
+        } catch (NoSuchElementException ex) {
+            System.out.println("No card left in deck");
+        }
     }
 
     /**
@@ -629,8 +641,7 @@ public abstract class PlayerModel extends Observable {
     public int conquerCountry(int armies) {
         if(armies<this.getCurrentAttack().getDiceAttack() || armies>=this.getCurrentAttack().getSource().getNumArmies())
             return -1;
-        
-        
+
         int newArmies = this.getCurrentAttack().getSource().getNumArmies();
         this.getCurrentAttack().getSource().setNumArmies(newArmies - armies);
         this.getCurrentAttack().getDest().setNumArmies(armies);
@@ -639,24 +650,28 @@ public abstract class PlayerModel extends Observable {
         this.setCurrentAttack(null);
         return 0;
     }
-    
+
     /**
      *  It verifies that the current attack is valid
      * @param sourceTerritory source territory of attack
      * @param destTerritory territory attacked
      * @return -1 error;0 success
      */
-    public int validateAttack(TerritoryModel sourceTerritory, TerritoryModel destTerritory){
-        if (!sourceTerritory.getAdj().contains(destTerritory)) 
+    public int validateAttack(TerritoryModel sourceTerritory, TerritoryModel destTerritory) {
+        if (!sourceTerritory.getAdj().contains(destTerritory)) {
             return -1;
-        if (this.getCurrentAttack() != null) 
-            return -2; 
+        }
+        if (this.getCurrentAttack() != null) {
+            return -2;
+        }
         if (!this.getContriesOwned().contains(sourceTerritory)
-        || this.getContriesOwned().contains(destTerritory)) 
+                || this.getContriesOwned().contains(destTerritory)) {
             return -3;
-        if (sourceTerritory.getNumArmies() < 2) 
+        }
+        if (sourceTerritory.getNumArmies() < 2) {
             return -4;
-        
+        }
+
         return 0;
     }
     
@@ -687,7 +702,7 @@ public abstract class PlayerModel extends Observable {
         int nbTerrInMap = this.getGame().getMap().getTerritories().size();
         return (100 * this.getNbCountriesOwned()) / nbTerrInMap;
     }
-    
+
     /**
      * Addition of an event in the log
      * @param logMessage message to add to the log
@@ -705,5 +720,18 @@ public abstract class PlayerModel extends Observable {
     void startAttackMove(TerritoryModel src, TerritoryModel dest) {
         AttackMove attack = new AttackMove(this, src, dest);
         this.setCurrentAttack(attack);
+    }
+
+    /**
+     * Update the list of continents owned by this players from the list of
+     * territories owned by this player
+     */
+    private void updateContinentsOwned() {
+        List<ContinentModel> newContinentsOwned;
+        newContinentsOwned = this.game.getMap().getContinents().stream()
+                .filter((c) -> c.getMembers().stream()
+                .allMatch((t) -> this.contriesOwned.contains(t)))
+                .collect(Collectors.toList());
+        this.setContinentsOwned(newContinentsOwned);
     }
 }
