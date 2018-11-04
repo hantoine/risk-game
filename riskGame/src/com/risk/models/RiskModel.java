@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import com.risk.views.attack.AttackView;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -202,9 +203,12 @@ public final class RiskModel extends Observable {
         addNewLogEvent("Territories are assigned randomly to players");
     }
 
+    public void addObserverToAttack(AttackView attackView){
+        this.getCurrentPlayer().getCurrentAttack().addObserver(attackView);
+    }
+    
     public void attackMove(TerritoryModel src, TerritoryModel dest) {
         this.getCurrentPlayer().startAttackMove(src, dest);
-
         addNewLogEvent(String.format(
                 "%s attacks the territory %s from the territory %s",
                 currentPlayer.getName(),
@@ -558,7 +562,7 @@ public final class RiskModel extends Observable {
      *
      * @param player Player whose army is going to be taken
      * @param territory Territory on which the army will be added
-     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible
+     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible exception for bad assignation of armies
      */
     public void placeArmy(PlayerModel player, TerritoryModel territory)
             throws ArmyPlacementImpossible {
@@ -627,8 +631,8 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     *
-     * @return
+     * Exchange cards to armies
+     * @return true if correct; false if error
      */
     public boolean exchangeCardsWithArmiesForCurrentPlayer() {
 
@@ -646,6 +650,7 @@ public final class RiskModel extends Observable {
      * @param armies the number of armies to move
      */
     public void moveArmiesToConqueredTerritory(int armies) {
+        
         this.getCurrentPlayer().conquerCountry(armies);
 
         addNewLogEvent(String.format(
@@ -668,10 +673,9 @@ public final class RiskModel extends Observable {
      * Battle between countries in an attack move
      *
      * @param attacker attacking player
-     * @param dice number of dice
      */
-    public void performAttack(PlayerModel attacker, int dice) {
-        attacker.performCurrentAttack(dice);
+    public void performAttack(PlayerModel attacker) {
+        attacker.performCurrentAttack(this.getCurrentPlayer().getCurrentAttack().getDiceAttack(),this.getCurrentPlayer().getCurrentAttack().getDiceAttacked());
 
         setChanged();
         notifyObservers();

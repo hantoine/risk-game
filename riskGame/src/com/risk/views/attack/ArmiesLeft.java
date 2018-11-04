@@ -98,6 +98,7 @@ public class ArmiesLeft extends JPanel {
 
         move.addActionListener(e -> {
             int armiesToTransfer = Integer.parseInt(armiesMoved.getText());
+           
             gc.moveArmiesToConqueredTerritory(armiesToTransfer);
         });
 
