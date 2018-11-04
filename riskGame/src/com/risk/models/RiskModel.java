@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import com.risk.views.attack.AttackView;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -202,6 +203,10 @@ public final class RiskModel extends Observable {
         addNewLogEvent("Territories are assigned randomly to players");
     }
 
+    public void addObserverToAttack(AttackView attackView){
+        this.getCurrentPlayer().getCurrentAttack().addObserver(attackView);
+    }
+    
     public void attackMove(TerritoryModel src, TerritoryModel dest) {
         this.getCurrentPlayer().startAttackMove(src, dest);
         addNewLogEvent(String.format(
