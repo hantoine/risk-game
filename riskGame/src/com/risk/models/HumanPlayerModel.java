@@ -62,6 +62,10 @@ public class HumanPlayerModel extends PlayerModel {
         ));
     }
 
+    /**
+     * Exchange selected cards
+     * @return true success; false error
+     */
     @Override
     public boolean exchangeCardsToArmies() {
         List<String> selectedCards = this.getHand().getSelectedCards();

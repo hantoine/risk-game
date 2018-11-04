@@ -27,14 +27,18 @@ public class AttackMove {
     * Player performing the attack
      */
     private PlayerModel attacker;
-
+    /**
+     * Number of dice selected by the attacker
+     */
     private int diceAttack;
-    
+    /**
+     * Number of dice selected by the attacked
+     */
     private int diceAttacked;
     /**
      * Constructor
      *
-     * @param attacker
+     * @param attacker player attacking
      * @param source source of the attack
      * @param dest destiny of the attack
      */
@@ -85,7 +89,8 @@ public class AttackMove {
     /**
      * Battle between countries in an attack move
      *
-     * @param dice number of dices
+     * @param diceAttack number of dices selected by the attacker
+     * @param diceAttacked number of dices selected by the attacked
      */
     private void battle(int diceAttack, int diceAttacked) {
         String looser1, looser2 = null;
@@ -139,8 +144,8 @@ public class AttackMove {
  -1 correspond to the special mode in which battles are made until one of
  the territory has no more armies
      *
-     * @param diceAttack
-     * @param diceAttacked
+     * @param diceAttack number of dices selected by attacker
+     * @param diceAttacked number of dices selected by attacked
      */
     public void perform(int diceAttack, int diceAttacked) {
         if (diceAttack == -1) {

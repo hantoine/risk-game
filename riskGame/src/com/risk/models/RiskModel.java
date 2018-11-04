@@ -552,7 +552,7 @@ public final class RiskModel extends Observable {
      *
      * @param player Player whose army is going to be taken
      * @param territory Territory on which the army will be added
-     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible
+     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible exception for bad assignation of armies
      */
     public void placeArmy(PlayerModel player, TerritoryModel territory)
             throws ArmyPlacementImpossible {
@@ -621,8 +621,8 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     *
-     * @return
+     * Exchange cards to armies
+     * @return true if correct; false if error
      */
     public boolean exchangeCardsWithArmiesForCurrentPlayer() {
 
@@ -683,8 +683,8 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     *
-     * @param logMessage
+     * Add new log message
+     * @param logMessage the message
      */
     public void addNewLogEvent(String logMessage) {
         setChanged();

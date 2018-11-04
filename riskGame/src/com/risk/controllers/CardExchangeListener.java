@@ -26,6 +26,8 @@ public class CardExchangeListener extends MouseAdapter {
     /**
      * Constructor
      *
+     * @param rm model of the game
+     * @param gc game controller
      */
     public CardExchangeListener(RiskModel rm, GameController gc) {
         this.gc = gc;

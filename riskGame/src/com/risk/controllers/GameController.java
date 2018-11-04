@@ -113,8 +113,8 @@ public class GameController {
     }
     
     /**
-     * 
-     * @param e 
+     * Function that shows errors from an attack
+     * @param e event to manage
      */
     public void exceptionManagerAttack(int e){
         switch(e){
@@ -179,7 +179,7 @@ public class GameController {
     }
 
     /**
-     * 
+     * Destroy card exchange view
      */
     void closeCardExchangeView() {
         this.exchangeView.setVisible(false);
@@ -187,7 +187,7 @@ public class GameController {
     }
     
     /**
-     * 
+     * Shows and creates a card exchange view
      */
     void openCardExchangeView() {
         this.exchangeView = new CardExchangeView();
