@@ -547,6 +547,10 @@ public final class RiskModel extends Observable {
                             p.getName()
                     ));
                 });
+
+        // the position of the current player in the list might have changed
+        int newPos = this.getPlayerList().indexOf(this.currentPlayer);
+        this.setTurn(newPos);
     }
 
     /**
