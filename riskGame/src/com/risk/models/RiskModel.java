@@ -499,17 +499,19 @@ public final class RiskModel extends Observable {
         notifyObservers();
     }
 
-    public void attackEndValidations(){
-        if((this.getCurrentPlayer().getContriesOwned().stream()
-                        .filter(c -> c.getNumArmies()<2)).count()==this.getCurrentPlayer().getContinentsOwned().size())
-                    finishPhase();
-        
-        if(this.getCurrentPlayer().getContriesOwned().size()==this.getMap().getTerritories().size()){
+    public void attackEndValidations() {
+        if ((this.getCurrentPlayer().getContriesOwned().stream()
+                .filter(c -> c.getNumArmies() < 2)).count() == this.getCurrentPlayer().getContinentsOwned().size()) {
+            finishPhase();
+        }
+
+        if (this.getCurrentPlayer().getContriesOwned().size() == this.getMap().getTerritories().size()) {
             this.setWinningPlayer(this.getCurrentPlayer());
             this.finishPhase();
         }
-            
+
     }
+
     /**
      * Steps at the beginning of a phase
      */
@@ -549,6 +551,10 @@ public final class RiskModel extends Observable {
                             p.getName()
                     ));
                 });
+
+        // the position of the current player in the list might have changed
+        int newPos = this.getPlayerList().indexOf(this.currentPlayer);
+        this.setTurn(newPos);
     }
 
     /**
@@ -659,7 +665,7 @@ public final class RiskModel extends Observable {
         this.assignTerritoriesToPlayers();
         this.initializePlayersArmies();
 
-        addNewLogEvent("The game starts");
+        addNewLogEvent("The game starts", true);
         this.currentPlayer.setCurrentPlayer(true);
     }
 
@@ -687,11 +693,22 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     * Add new log message
-     * @param logMessage the message
+     * Notify observer of a new event that can be displayed in the logs
+     *
+     * @param logMessage Message describing this event
      */
     public void addNewLogEvent(String logMessage) {
+        addNewLogEvent(logMessage, false);
+    }
+
+    /**
+     * Notify observer of a new event that can be displayed in the logs
+     *
+     * @param logMessage Message describing this event
+     * @param clear true if this event should clear previous log messages
+     */
+    private void addNewLogEvent(String logMessage, boolean clear) {
         setChanged();
-        notifyObservers(new LogEvent(logMessage));
+        notifyObservers(new LogEvent(logMessage, clear));
     }
 }
