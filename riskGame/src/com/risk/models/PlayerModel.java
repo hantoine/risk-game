@@ -568,14 +568,15 @@ public abstract class PlayerModel extends Observable {
      * The value -1 correspond to the special mode in which battles are made
      * until one of the territory has no more armies
      *
-     * @param dice the number of dice to use to perform the attack
+     * @param diceAttack
+     * @param diceAttacked
      */
-    public void performCurrentAttack(int dice) {
+    public void performCurrentAttack(int diceAttack, int diceAttacked) {
         if (this.getCurrentAttack() == null) {
             return;
         }
-
-        this.getCurrentAttack().perform(dice);
+      
+        this.getCurrentAttack().perform(diceAttack, diceAttacked);
 
         /*
         when the battle is finished if there is still armies on the attacked
@@ -600,8 +601,10 @@ public abstract class PlayerModel extends Observable {
      * @return -1 error; 0 success
      */
     public int conquerCountry(int armies) {
-        if(!(armies>=this.getCurrentAttack().getDice() && armies<this.getCurrentAttack().getSource().getNumArmies()))
+        if(armies<this.getCurrentAttack().getDiceAttack() || armies>this.getCurrentAttack().getSource().getNumArmies())
             return -1;
+        
+        
         int newArmies = this.getCurrentAttack().getSource().getNumArmies();
         this.getCurrentAttack().getSource().setNumArmies(newArmies - armies);
         this.getCurrentAttack().getDest().setNumArmies(armies);
