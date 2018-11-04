@@ -82,7 +82,11 @@ public class PhaseView extends JPanel implements Observer {
             this.updateView((RiskModel) o);
         }
         if (o1 instanceof LogEvent) {
-            actions.append((LogEvent) o1 + "\n");
+            LogEvent le = (LogEvent) o1;
+            if (le.isClear()) {
+                actions.setText("");
+            }
+            actions.append(le + "\n");
         }
     }
 
