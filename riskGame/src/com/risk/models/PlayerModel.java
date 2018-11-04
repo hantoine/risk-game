@@ -24,22 +24,47 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * name the name of the player color the color of the player contriesOwned
-     * countries owned by a player cardsOwned cards owned by a player
-     * numArmiesAvailable the number of armies available to place returnedCards
-     * the number of cards that have been returned game the game in which this
-     * player belongs to currentFortificationMove the current movement in the
-     * fortification phase
      */
     private String name;
+    /**
+     * color of the player
+     */
     private Color color;
+    /**
+     * cardsOwned cards owned by a player
+     */
     private List<TerritoryModel> contriesOwned;
+    /**
+     * continents owned by a player 
+     */
     private List<ContinentModel> continentsOwned;
+    /**
+     * hand of the player
+     */
     private HandModel hand;
+    /**
+     * The number of armies available to place returnedCards
+     */
     private int numArmiesAvailable;
+    /**
+     * the number of cards that have been returned game the game in which this
+     */
     private int returnedCards;
+    /**
+     * the model of the game
+     */
     protected RiskModel game;
+    /**
+     * the current movement in the fortification phase
+     */
     private FortificationMove currentFortificationMove;
+    /**
+     * The current attack in the attack phase
+     */
     private AttackMove currentAttack;
+    /**
+     * the current player
+     */
     private boolean currentPlayer;
 
     /**
@@ -353,6 +378,7 @@ public abstract class PlayerModel extends Observable {
      * number of players in the game
      *
      * @param nbPlayers number of players in the game
+     * @return number of initial armies
      */
     static int getNbInitialArmies(int nbPlayers) {
         switch (nbPlayers) {
@@ -531,8 +557,8 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * Setter of the currentFortificationMove attribute
-     *
-     * @param currentFortificationMove the current move
+     *@param src source territory
+     *@param dest destiny of the fortification move
      */
     void setCurrentFortificationMove(TerritoryModel src, TerritoryModel dest) {
         this.currentFortificationMove = new FortificationMove(src, dest);
@@ -580,14 +606,15 @@ public abstract class PlayerModel extends Observable {
      * The value -1 correspond to the special mode in which battles are made
      * until one of the territory has no more armies
      *
-     * @param dice the number of dice to use to perform the attack
+     * @param diceAttack number of dices selected by the attacker
+     * @param diceAttacked number of dices selected by the attacked player
      */
-    public void performCurrentAttack(int dice) {
+    public void performCurrentAttack(int diceAttack, int diceAttacked) {
         if (this.getCurrentAttack() == null) {
             return;
         }
-
-        this.getCurrentAttack().perform(dice);
+      
+        this.getCurrentAttack().perform(diceAttack, diceAttacked);
 
         /*
         when the battle is finished if there is still armies on the attacked
@@ -612,9 +639,9 @@ public abstract class PlayerModel extends Observable {
      * @return -1 error; 0 success
      */
     public int conquerCountry(int armies) {
-        if (!(armies >= this.getCurrentAttack().getDice() && armies < this.getCurrentAttack().getSource().getNumArmies())) {
+        if(armies<this.getCurrentAttack().getDiceAttack() || armies>=this.getCurrentAttack().getSource().getNumArmies())
             return -1;
-        }
+
         int newArmies = this.getCurrentAttack().getSource().getNumArmies();
         this.getCurrentAttack().getSource().setNumArmies(newArmies - armies);
         this.getCurrentAttack().getDest().setNumArmies(armies);
@@ -625,10 +652,10 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     *
-     * @param sourceTerritory
-     * @param destTerritory
-     * @return
+     *  It verifies that the current attack is valid
+     * @param sourceTerritory source territory of attack
+     * @param destTerritory territory attacked
+     * @return -1 error;0 success
      */
     public int validateAttack(TerritoryModel sourceTerritory, TerritoryModel destTerritory) {
         if (!sourceTerritory.getAdj().contains(destTerritory)) {
@@ -647,7 +674,10 @@ public abstract class PlayerModel extends Observable {
 
         return 0;
     }
-
+    
+    /**
+     * Set fortification move to null
+     */
     void resetCurrentFortificationMove() {
         this.currentFortificationMove = null;
 
@@ -655,24 +685,38 @@ public abstract class PlayerModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * Verifies that a continent is not owned
+     * @param continent continent to be verified
+     * @return true id it is owned; false in other case
+     */
     boolean checkOwnContinent(ContinentModel continent) {
         return this.continentsOwned.contains(continent);
     }
 
+    /**
+     * Calculates the % of countries owned
+     * @return % of countries owned
+     */
     public int getPercentMapControlled() {
         int nbTerrInMap = this.getGame().getMap().getTerritories().size();
         return (100 * this.getNbCountriesOwned()) / nbTerrInMap;
     }
 
     /**
-     *
-     * @param logMessage
+     * Addition of an event in the log
+     * @param logMessage message to add to the log
      */
     void addNewLogEvent(String logMessage) {
         setChanged();
         notifyObservers(new LogEvent(logMessage));
     }
 
+    /**
+     * Setter of the current attack
+     * @param src source country
+     * @param dest country attacked
+     */
     void startAttackMove(TerritoryModel src, TerritoryModel dest) {
         AttackMove attack = new AttackMove(this, src, dest);
         this.setCurrentAttack(attack);
