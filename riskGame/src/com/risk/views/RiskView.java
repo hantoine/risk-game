@@ -160,7 +160,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
             rc.openMapEditor();
         });
 
-        phaseAuxiliarPanel.setListeners(rc.getGameController(), rc.getModelRisk());
+        phaseAuxiliarPanel.setListeners(rc.getGameController());
     }
 
     /**
