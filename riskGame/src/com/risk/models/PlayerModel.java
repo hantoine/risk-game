@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.stream.Collectors;
 
@@ -505,14 +506,18 @@ public abstract class PlayerModel extends Observable {
      */
     void addCardToPlayerHand() {
         HandModel handCurrentPlayer = this.getHand();
-        CardModel card = this.game.getDeck().getLast();
-        handCurrentPlayer.getCardsList().add(card);
-        this.game.getDeck().removeLast();
+        try {
+            CardModel card = this.game.getDeck().getLast();
+            handCurrentPlayer.getCardsList().add(card);
+            this.game.getDeck().removeLast();
 
-        addNewLogEvent(String.format(
-                "%s receives a new card",
-                getName()
-        ));
+            addNewLogEvent(String.format(
+                    "%s receives a new card",
+                    getName()
+            ));
+        } catch (NoSuchElementException ex) {
+            System.out.println("No card left in deck");
+        }
     }
 
     /**
