@@ -93,8 +93,8 @@ public class PhaseAuxiliar extends JPanel implements Observer {
         return armiesLeft;
     }
 
-    public void setListeners(GameController gc , RiskModel rm) {
-        this.getAttackPanel().setListeners(gc, rm);
+    public void setListeners(GameController gc) {
+        this.getAttackPanel().setListeners(gc);
         this.getArmiesLeft().setListener(gc);
     }
 

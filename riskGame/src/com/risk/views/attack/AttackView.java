@@ -90,23 +90,22 @@ public class AttackView extends JPanel implements Observer{
      * Adds the listener for each button
      *
      * @param gc game controller
-     * @param rm model of the game
      */
-    public void setListeners(GameController gc, RiskModel rm) {
+    public void setListeners(GameController gc) {
         
         options[0].addActionListener(e -> {    
-            rm.getCurrentPlayer().getCurrentAttack().addObserver(this);
+            gc.addObserverToAttack(this);
             gc.clickAttack(1);
         });
 
         options[1].addActionListener(e -> {
-            rm.getCurrentPlayer().getCurrentAttack().addObserver(this);
+            gc.addObserverToAttack(this);
             gc.clickAttack(2);
             
         });
 
         options[2].addActionListener(e -> {
-            rm.getCurrentPlayer().getCurrentAttack().addObserver(this);
+            gc.addObserverToAttack(this);
             gc.clickAttack(3);
             
         });
