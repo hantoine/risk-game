@@ -118,6 +118,9 @@ public class GameController {
      */
     public void exceptionManagerAttack(int e){
         switch(e){
+            case -1:
+                this.rm.addNewEvent("The country is not adjacent.");
+                break;
             case -2:
                 this.rm.addNewEvent("You are already attacking.");
                 break;
@@ -142,9 +145,11 @@ public class GameController {
             
             if(rm.getCurrentPlayer().getCurrentAttack().getDiceAttack()!=-1)
                 rm.getCurrentPlayer().getCurrentAttack().setDiceAttacked(dice);
-            else
+            else{
                 rm.getCurrentPlayer().getCurrentAttack().setDiceAttack(dice);
- 
+                rm.getCurrentPlayer().getCurrentAttack().setDiceAttacked(1);
+            }
+            //System.out.println("atacante: "+rm.getCurrentPlayer().getCurrentAttack().getDiceAttack()+", atacado: "+rm.getCurrentPlayer().getCurrentAttack().getDiceAttacked());
             rm.performAttack(this.rm.getCurrentPlayer());
             
         }else{
