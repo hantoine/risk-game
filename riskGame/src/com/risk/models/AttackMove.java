@@ -28,7 +28,9 @@ public class AttackMove {
      */
     private PlayerModel attacker;
 
-    private int dice;
+    private int diceAttack;
+    
+    private int diceAttacked;
     /**
      * Constructor
      *
@@ -40,6 +42,8 @@ public class AttackMove {
         this.source = source;
         this.dest = dest;
         this.attacker = attacker;
+        this.diceAttack=-1;
+        this.diceAttacked=100;
     }
 
     /**
@@ -83,17 +87,15 @@ public class AttackMove {
      *
      * @param dice number of dices
      */
-    private void battle(int dice) {
+    private void battle(int diceAttack, int diceAttacked) {
         String looser1, looser2 = null;
-        int[] attack = createDice(dice);
-        int defenseArmies = min(this.getDest().getNumArmies(), dice);
-        int[] defense = createDice(min(defenseArmies, 2));
-        this.setDice(dice);
+        int[] attack = createDice(diceAttack);
+        int[] defense = createDice(diceAttacked);
 
         Arrays.sort(attack);
         Arrays.sort(defense);
 
-        if (defenseArmies == 1) {
+        if (diceAttacked == 1) {
             looser1 = compareDice(attack, defense, attack.length - 1, 0);
         } else {
             looser1 = compareDice(attack, defense, attack.length - 1, 1);
@@ -133,18 +135,18 @@ public class AttackMove {
     }
 
     /**
-     * Perform the attack of this player with the given number of dice The value
-     * -1 correspond to the special mode in which battles are made until one of
-     * the territory has no more armies
+     * Perform the attack of this player with the given number of diceAttack The value
+ -1 correspond to the special mode in which battles are made until one of
+ the territory has no more armies
      *
-     * @param dice the number of dice to use to perform the attack
+     * @param diceAttack
+     * @param diceAttacked
      */
-    public void perform(int dice) {
-
-        if (dice == -1) {
+    public void perform(int diceAttack, int diceAttacked) {
+        if (diceAttack == -1) {
             battleAll();
         } else {
-            battle(dice);
+            battle(diceAttack,diceAttacked);
         }
     }
 
@@ -173,14 +175,24 @@ public class AttackMove {
      * Uses all the armies in an attack
      */
     private void battleAll() {
-        while (this.getDest().getNumArmies() != 0
-                && this.getSource().getNumArmies() > 1) {
+       
+        while (this.getDest().getNumArmies() != 0 && this.getSource().getNumArmies() > 1) {
             int nbArmiesInSrc = this.getSource().getNumArmies();
+            int defenseArmies;
             if (nbArmiesInSrc > 3) {
-                battle(3);
+                this.setDiceAttack(3);
+                defenseArmies = min(this.getDest().getNumArmies(), this.getDiceAttack());
+                defenseArmies = min(defenseArmies, 2);
+                this.setDiceAttacked(defenseArmies);
+                battle(3, defenseArmies);
             } else {
-                battle(nbArmiesInSrc - 1);
+                this.setDiceAttack(nbArmiesInSrc - 1);
+                defenseArmies = min(this.getDest().getNumArmies(), this.getDiceAttack());
+                defenseArmies = min(defenseArmies, 2);
+                this.setDiceAttacked(defenseArmies);
+                battle((nbArmiesInSrc - 1),defenseArmies);
             }
+            
         }
     }
 
@@ -202,7 +214,7 @@ public class AttackMove {
     }
 
     /**
-     * Random value after rolling the dice
+     * Random value after rolling the diceAttack
      *
      * @return random value
      */
@@ -212,17 +224,31 @@ public class AttackMove {
     }
 
     /**
-     * @return the dice
+     * @return the diceAttack
      */
-    public int getDice() {
-        return dice;
+    public int getDiceAttack() {
+        return diceAttack;
     }
 
     /**
-     * @param dice the dice to set
+     * @param diceAttack the diceAttack to set
      */
-    public void setDice(int dice) {
-        this.dice = dice;
+    public void setDiceAttack(int diceAttack) {
+        this.diceAttack = diceAttack;
+    }
+
+    /**
+     * @return the diceAttacked
+     */
+    public int getDiceAttacked() {
+        return diceAttacked;
+    }
+
+    /**
+     * @param diceAttacked the diceAttacked to set
+     */
+    public void setDiceAttacked(int diceAttacked) {
+        this.diceAttacked = diceAttacked;
     }
     
     
