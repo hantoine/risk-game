@@ -138,7 +138,21 @@ public class GameController {
      * @param dice the number of dices
      */
     public void clickAttack(int dice) {
-        rm.performAttack(this.rm.getCurrentPlayer(), dice);
+        if(rm.getCurrentPlayer().getCurrentAttack().getDiceAttack()!=-1 || dice==-1 || rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies()==1){
+            
+            if(rm.getCurrentPlayer().getCurrentAttack().getDiceAttack()!=-1)
+                rm.getCurrentPlayer().getCurrentAttack().setDiceAttacked(dice);
+            else
+                rm.getCurrentPlayer().getCurrentAttack().setDiceAttack(dice);
+ 
+            rm.performAttack(this.rm.getCurrentPlayer());
+            
+        }else{
+            rm.getCurrentPlayer().getCurrentAttack().setDiceAttack(dice);
+        }
+            
+        
+        
     }
 
     /**
@@ -149,6 +163,7 @@ public class GameController {
      * territory
      */
     public void moveArmiesToConqueredTerritory(int armies) {
+         
         this.rm.moveArmiesToConqueredTerritory(armies);
     }
 

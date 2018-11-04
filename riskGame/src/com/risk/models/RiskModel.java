@@ -640,6 +640,7 @@ public final class RiskModel extends Observable {
      * @param armies the number of armies to move
      */
     public void moveArmiesToConqueredTerritory(int armies) {
+        
         this.getCurrentPlayer().conquerCountry(armies);
 
         addNewLogEvent(String.format(
@@ -662,10 +663,9 @@ public final class RiskModel extends Observable {
      * Battle between countries in an attack move
      *
      * @param attacker attacking player
-     * @param dice number of dice
      */
-    public void performAttack(PlayerModel attacker, int dice) {
-        attacker.performCurrentAttack(dice);
+    public void performAttack(PlayerModel attacker) {
+        attacker.performCurrentAttack(this.getCurrentPlayer().getCurrentAttack().getDiceAttack(),this.getCurrentPlayer().getCurrentAttack().getDiceAttacked());
 
         setChanged();
         notifyObservers();

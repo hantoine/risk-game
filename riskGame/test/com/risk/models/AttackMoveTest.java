@@ -43,7 +43,7 @@ public class AttackMoveTest {
         System.out.println("compareDice");
         int[] attacker = {3,6};
         int[] defense = {1,2};
-        attack.setDice(2);
+        attack.setDiceAttack(2);
         int j = 1;
         int i = 1;
         attack.compareDice(attacker, defense, j, i);
@@ -59,7 +59,7 @@ public class AttackMoveTest {
         System.out.println("compareDice1");
         int[] attacker = {3,6};
         int[] defense = {1,2};
-        attack.setDice(2);
+        attack.setDiceAttack(2);
         attack.getDest().setNumArmies(0);
         int j = 1;
         int i = 1;
@@ -76,7 +76,7 @@ public class AttackMoveTest {
         System.out.println("compareDice2");
         int[] attacker = {3,2};
         int[] defense = {1,4};
-        attack.setDice(2);
+        attack.setDiceAttack(2);
         int j = 1;
         int i = 1;
         attack.compareDice(attacker, defense, j, i);

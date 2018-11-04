@@ -140,7 +140,7 @@ public class PlayerModelTest {
      */
     @Test
     public void testConquerCountry() {
-        player.getCurrentAttack().setDice(2);
+        player.getCurrentAttack().setDiceAttack(2);
         int result=player.conquerCountry(1);
         assertEquals(-1, result);
     }
@@ -151,7 +151,7 @@ public class PlayerModelTest {
      */
     @Test
     public void testConquerCountry1() {
-        player.getCurrentAttack().setDice(2);
+        player.getCurrentAttack().setDiceAttack(2);
         int result=player.conquerCountry(3);
         assertEquals(0, result);
     }
@@ -162,7 +162,7 @@ public class PlayerModelTest {
      */
     @Test
     public void testConquerCountry2() {
-        player.getCurrentAttack().setDice(2);
+        player.getCurrentAttack().setDiceAttack(2);
         int result=player.conquerCountry(7);
         assertEquals(-1, result);
     }

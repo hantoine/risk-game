@@ -6,6 +6,7 @@
 package com.risk.views.attack;
 
 import com.risk.controllers.GameController;
+import com.risk.models.RiskModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,7 +30,8 @@ public class AttackView extends JPanel {
      * Message with the name of the countries involve in an attack
      */
     JLabel countriesInvolve;
-
+    
+    JLabel actionSubject;
     /**
      * Constructor
      *
@@ -42,7 +44,7 @@ public class AttackView extends JPanel {
         options[1] = new JButton("2");
         options[2] = new JButton("3");
         options[3] = new JButton("All");
-
+        actionSubject=new JLabel("Attacker");
         countriesInvolve = new JLabel("source vs destination");
 
         options[0].setSize(50, 70);
@@ -50,6 +52,7 @@ public class AttackView extends JPanel {
         options[2].setSize(50, 70);
         options[3].setSize(50, 70);
 
+        attackOptions.add(actionSubject);
         attackOptions.add(countriesInvolve);
         attackOptions.add(options[0]);
         attackOptions.add(options[1]);
@@ -71,32 +74,59 @@ public class AttackView extends JPanel {
      */
     public void update(String countrySource, String countryDest, int armies) {
         this.setVisible(true);
+        this.actionSubject.setText("Attacker");
         countriesInvolve.setText(countrySource + " vs " + countryDest);
 
         for (int i = 0; i < 4; i++) {
             options[i].setEnabled(i < armies - 1);
+            options[i].setVisible(true);
         }
     }
 
     /**
      * Adds the listener for each button
      *
+     * @param gc
+     * @param rm
      */
-    public void setListeners(GameController gc) {
-        options[0].addActionListener(e -> {
+    public void setListeners(GameController gc, RiskModel rm) {
+        
+        options[0].addActionListener(e -> {    
+            int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
             gc.clickAttack(1);
+            options[3].setVisible(false);
+            options[2].setVisible(false);
+            
+            options[1].setEnabled(armiesDest>2);
+            actionSubject.setText("Attacked");
         });
 
         options[1].addActionListener(e -> {
+            int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
             gc.clickAttack(2);
+            options[3].setVisible(false);
+            options[2].setVisible(false);
+            options[1].setEnabled(armiesDest>2);
+            options[1].setEnabled(armiesDest>2);
+            actionSubject.setText("Attacked");
         });
 
         options[2].addActionListener(e -> {
+            int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
             gc.clickAttack(3);
+            options[3].setVisible(false);
+            options[2].setVisible(false);
+            options[1].setEnabled(armiesDest>2);
+            actionSubject.setText("Attacked");
         });
 
         options[3].addActionListener(e -> {
+            int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
             gc.clickAttack(-1);
+            options[3].setVisible(false);
+            options[2].setVisible(false);
+            options[1].setEnabled(armiesDest>2);
+            actionSubject.setText("Attacked");
         });
     }
 }

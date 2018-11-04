@@ -93,8 +93,8 @@ public class PhaseAuxiliar extends JPanel implements Observer {
         return armiesLeft;
     }
 
-    public void setListeners(GameController gc) {
-        this.getAttackPanel().setListeners(gc);
+    public void setListeners(GameController gc , RiskModel rm) {
+        this.getAttackPanel().setListeners(gc, rm);
         this.getArmiesLeft().setListener(gc);
     }
 
@@ -128,7 +128,8 @@ public class PhaseAuxiliar extends JPanel implements Observer {
 
             if (currentAttack.getDest().getNumArmies() == 0) {
                 this.selectPanel(this.getArmiesLeft());
-                this.armiesLeft.update(srcTerritory, destTerritory, nbArmies, rm.getCurrentPlayer().getCurrentAttack().getDice());
+                int diceAttack=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
+                this.armiesLeft.update(srcTerritory, destTerritory, nbArmies,diceAttack);
             } else {
                 this.selectPanel(this.getAttackPanel());
                 this.attackPanel.update(srcTerritory, destTerritory, nbArmies);
