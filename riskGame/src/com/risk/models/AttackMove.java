@@ -184,17 +184,20 @@ public class AttackMove {
         while (this.getDest().getNumArmies() != 0 && this.getSource().getNumArmies() > 1) {
             int nbArmiesInSrc = this.getSource().getNumArmies();
             int defenseArmies;
+            
             if (nbArmiesInSrc > 3) {
                 this.setDiceAttack(3);
                 defenseArmies = min(this.getDest().getNumArmies(), this.getDiceAttack());
                 defenseArmies = min(defenseArmies, 2);
                 this.setDiceAttacked(defenseArmies);
+                //System.out.println("atacante: "+this.getDiceAttack()+", atacado: "+this.getDiceAttacked());
                 battle(3, defenseArmies);
             } else {
                 this.setDiceAttack(nbArmiesInSrc - 1);
                 defenseArmies = min(this.getDest().getNumArmies(), this.getDiceAttack());
                 defenseArmies = min(defenseArmies, 2);
                 this.setDiceAttacked(defenseArmies);
+                //System.out.println("atacante: "+this.getDiceAttack()+", atacado: "+this.getDiceAttacked());
                 battle((nbArmiesInSrc - 1),defenseArmies);
             }
             
