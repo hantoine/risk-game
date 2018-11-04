@@ -84,7 +84,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
      * @param initMapModel Model of the map which is being edited, used to
      * intialize the map editor.
      * @see MapEditorController
-     * @see EditableMapModel
+     * @see MapModel
      */
     public MapEditorView(int width, int height, MapEditorController editorController, MapModel initMapModel) {
         init(width, height);

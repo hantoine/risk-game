@@ -86,8 +86,8 @@ public class AttackView extends JPanel {
     /**
      * Adds the listener for each button
      *
-     * @param gc
-     * @param rm
+     * @param gc game controller
+     * @param rm model of the game
      */
     public void setListeners(GameController gc, RiskModel rm) {
         
