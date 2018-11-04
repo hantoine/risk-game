@@ -7,13 +7,14 @@ package com.risk.models;
 
 import static java.lang.Integer.min;
 import java.util.Arrays;
+import java.util.Observable;
 
 /**
  * Class to represent an attack
  *
  * @author Nellybett
  */
-public class AttackMove {
+public class AttackMove extends Observable{
 
     /**
      * Source of the attack
@@ -35,6 +36,8 @@ public class AttackMove {
      * Number of dice selected by the attacked
      */
     private int diceAttacked;
+    
+    private int attackDefense;
     /**
      * Constructor
      *
@@ -43,6 +46,7 @@ public class AttackMove {
      * @param dest destiny of the attack
      */
     public AttackMove(PlayerModel attacker, TerritoryModel source, TerritoryModel dest) {
+        this.attackDefense=0;
         this.source = source;
         this.dest = dest;
         this.attacker = attacker;
@@ -257,6 +261,22 @@ public class AttackMove {
      */
     public void setDiceAttacked(int diceAttacked) {
         this.diceAttacked = diceAttacked;
+    }
+
+    /**
+     * @return the attackDefense
+     */
+    public int getAttackDefense() {
+        return attackDefense;
+    }
+
+    /**
+     * @param attackDefense the attackDefense to set
+     */
+    public void setAttackDefense(int attackDefense) {
+        this.attackDefense = attackDefense;
+        setChanged();
+        notifyObservers(this);
     }
     
     

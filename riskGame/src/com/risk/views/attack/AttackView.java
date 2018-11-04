@@ -6,7 +6,10 @@
 package com.risk.views.attack;
 
 import com.risk.controllers.GameController;
+import com.risk.models.AttackMove;
 import com.risk.models.RiskModel;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +19,7 @@ import javax.swing.JPanel;
  *
  * @author Nellybett
  */
-public class AttackView extends JPanel {
+public class AttackView extends JPanel implements Observer{
 
     /**
      * Panel with the different buttons
@@ -33,15 +36,13 @@ public class AttackView extends JPanel {
     
     JLabel actionSubject;
     
-    int attackDefense;
     /**
      * Constructor
      *
      */
-    public AttackView() {
+    public AttackView(){
 
         attackOptions = new JPanel();
-        attackDefense=0;
         options = new JButton[4];
         options[0] = new JButton("1");
         options[1] = new JButton("2");
@@ -63,7 +64,6 @@ public class AttackView extends JPanel {
         attackOptions.add(options[3]);
 
         this.add(attackOptions);
-
         this.setVisible(false);
     }
 
@@ -79,7 +79,7 @@ public class AttackView extends JPanel {
         this.setVisible(true);
         this.actionSubject.setText("Attacker");
         countriesInvolve.setText(countrySource + " vs " + countryDest);
-        attackDefense=0;
+       
         for (int i = 0; i < 4; i++) {
             options[i].setEnabled(i < armies - 1);
             options[i].setVisible(true);
@@ -95,58 +95,40 @@ public class AttackView extends JPanel {
     public void setListeners(GameController gc, RiskModel rm) {
         
         options[0].addActionListener(e -> {    
-            int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
+            rm.getCurrentPlayer().getCurrentAttack().addObserver(this);
             gc.clickAttack(1);
-            attackDefense=attackDefense+1;
-            if(attackDefense==1){
-                int attackDice=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
-                options[3].setVisible(false);
-                options[2].setVisible(false);
-                options[1].setEnabled(attackDice!=1 && armiesDest>2);
-                actionSubject.setText("Attacked");
-            }
         });
 
         options[1].addActionListener(e -> {
-            int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
+            rm.getCurrentPlayer().getCurrentAttack().addObserver(this);
             gc.clickAttack(2);
             
-            attackDefense=attackDefense+1;
-            if(attackDefense==1){
-                int attackDice=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
-                options[3].setVisible(false);
-                options[2].setVisible(false);
-                options[1].setEnabled(attackDice!=1 && armiesDest>2);
-                actionSubject.setText("Attacked");
-            }
         });
 
         options[2].addActionListener(e -> {
-            int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
+            rm.getCurrentPlayer().getCurrentAttack().addObserver(this);
             gc.clickAttack(3);
-            attackDefense=attackDefense+1;
             
-            if(attackDefense==1){
-                int attackDice=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
-                options[3].setVisible(false);
-                options[2].setVisible(false);
-                options[1].setEnabled(attackDice!=1 && armiesDest>2);
-                actionSubject.setText("Attacked");
-            }
         });
 
         options[3].addActionListener(e -> {
-            int armiesDest=rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies();
             gc.clickAttack(-1);
-            attackDefense=attackDefense+1;
-            
-            if(attackDefense==1){
-                int attackDice=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
-                options[3].setVisible(false);
-                options[2].setVisible(false);
-                options[1].setEnabled(attackDice!=1 && armiesDest>2);
-                actionSubject.setText("Attacked");
-            }
+          
         });
+    }
+    
+    
+    @Override
+    public void update(Observable o, Object arg) {
+        AttackMove attack=(AttackMove) o;
+        if(attack.getAttackDefense()==1){
+            int armiesDest=attack.getDest().getNumArmies();
+            int attackDice=attack.getDiceAttack();
+        
+            options[3].setVisible(false);
+            options[2].setVisible(false);
+            options[1].setEnabled(attackDice!=1 && armiesDest>2);
+            actionSubject.setText("Attacked");
+        }
     }
 }

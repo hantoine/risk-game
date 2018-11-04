@@ -204,7 +204,6 @@ public final class RiskModel extends Observable {
 
     public void attackMove(TerritoryModel src, TerritoryModel dest) {
         this.getCurrentPlayer().startAttackMove(src, dest);
-
         addNewLogEvent(String.format(
                 "%s attacks the territory %s from the territory %s",
                 currentPlayer.getName(),
