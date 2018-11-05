@@ -67,6 +67,9 @@ public abstract class PlayerModel extends Observable {
      */
     private boolean currentPlayer;
 
+    /**
+     * 
+     */
     private boolean conquered;
     /**
      * Constructor
@@ -182,10 +185,18 @@ public abstract class PlayerModel extends Observable {
         return this.color;
     }
 
+    /**
+     * 
+     * @return 
+     */
     RiskModel getGame() {
         return game;
     }
 
+    /**
+     * 
+     * @param game 
+     */
     void setGame(RiskModel game) {
         this.game = game;
 
