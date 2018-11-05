@@ -111,6 +111,11 @@ public class PhaseAuxiliar extends JPanel implements Observer {
         }
     }
 
+    /**
+     * 
+     * @param o
+     * @param o1 
+     */
     @Override
     public void update(Observable o, Object o1) {
         if (o instanceof RiskModel) {

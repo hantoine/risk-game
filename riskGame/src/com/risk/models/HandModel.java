@@ -87,10 +87,18 @@ public class HandModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * 
+     * @return 
+     */
     public PlayerModel getOwner() {
         return owner;
     }
 
+    /**
+     * 
+     * @param owner 
+     */
     void setOwner(PlayerModel owner) {
         this.owner = owner;
 
@@ -158,6 +166,10 @@ public class HandModel extends Observable {
         return current;
     }
 
+    /**
+     * 
+     * @param current 
+     */
     void setCurrent(boolean current) {
         this.current = current;
 
@@ -165,6 +177,11 @@ public class HandModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * 
+     * @param typeOfArmie
+     * @param deck 
+     */
     public void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
         String[] typeOfArmieDum = {"infantry", "artillery", "cavalry"};
 
@@ -191,10 +208,18 @@ public class HandModel extends Observable {
         }
     }
 
+    /**
+     * 
+     * @return 
+     */
     public boolean isHanded() {
         return handed;
     }
 
+    /**
+     * 
+     * @param handed 
+     */
     public void setHanded(boolean handed) {
         this.handed = handed;
 
@@ -202,10 +227,17 @@ public class HandModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getNbSelectedCards() {
         return this.selectedCards.size();
     }
 
+    /**
+     * 
+     */
     public void unselectAllCards() {
         this.selectedCards.clear();
 
@@ -213,14 +245,27 @@ public class HandModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * 
+     * @return 
+     */
     public List<String> getSelectedCards() {
         return Collections.unmodifiableList(this.selectedCards);
     }
 
+    /**
+     * 
+     * @param cardName
+     * @return 
+     */
     public boolean isCardSelected(String cardName) {
         return this.selectedCards.contains(cardName);
     }
 
+    /**
+     * 
+     * @param cardName 
+     */
     public void unselectCard(String cardName) {
         this.selectedCards.remove(cardName);
 
@@ -228,6 +273,10 @@ public class HandModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * 
+     * @param cardName 
+     */
     public void selectCard(String cardName) {
         this.selectedCards.add(cardName);
 

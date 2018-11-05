@@ -62,6 +62,9 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      * current stage
      */
     final private InstructionsPanel stagePanel;
+    /**
+     * 
+     */
     final private PhaseView phaseView;
 
     /**
@@ -97,6 +100,10 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.centerWindow();
     }
 
+    /**
+     * 
+     * @param rm 
+     */
     @Override
     public void observeModel(RiskModel rm) {
         updateView(rm, true);
@@ -113,6 +120,11 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         rm.addObserver(this.phaseView);
     }
 
+    /**
+     * 
+     * @param rm
+     * @param newMap 
+     */
     private void updateView(RiskModel rm, boolean newMap) {
         this.stagePanel.updateView(rm);
         this.mapPanel.updateView(rm.getMap(), newMap);
@@ -289,6 +301,11 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         return stagePanel;
     }
 
+    /**
+     * 
+     * @param o
+     * @param o1 
+     */
     @Override
     public void update(Observable o, Object o1) {
         if (o instanceof RiskModel) {
