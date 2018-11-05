@@ -9,8 +9,10 @@ import com.risk.controllers.MapEditorController;
 import com.risk.models.MapConfig;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
+import com.risk.models.TerritoryModel;
 import com.risk.observable.UpdateTypes;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -120,6 +122,12 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
         addMenuBar(editorController);
     }
 
+    public void setTerritoryColor(TerritoryModel target){
+        String continentName = target.getContinentName();
+        Color backgroundColor = this.continentsPanel.getColor(continentName);
+        this.mapPanel.countriesButtons.get(target.getName()).setBackground(backgroundColor);
+    }
+    
     /**
      * Initialize the view by setting its size and location.
      *

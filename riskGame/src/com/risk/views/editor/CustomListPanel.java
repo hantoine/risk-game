@@ -115,7 +115,6 @@ public class CustomListPanel extends JPanel {
     public void removeElement(String name) {
         this.remove(items.get(name));
         this.items.remove(name);
-        //gbc.gridy -= 1;
         addDummyLabel();
         revalidate();
         repaint();

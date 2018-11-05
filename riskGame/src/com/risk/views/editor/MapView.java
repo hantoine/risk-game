@@ -203,13 +203,23 @@ public class MapView extends JPanel implements Observer {
             }
         }
 
-        //pop territory button to update
+        
         CountryButton2 territoryButton;
-        territoryButton = this.countriesButtons.remove(formerName);
-        territoryButton.setName(newName);
+        
+        if(formerName != null){
+            //pop territory button to update
+            territoryButton = this.countriesButtons.remove(formerName);
+            
+            //set new name
+            territoryButton.setName(newName);
+            
+            //push the updated button back into the map
+            countriesButtons.put(newName, territoryButton);
+        }
+        
+        ((MapEditorView)this.getParent().getParent().getParent().getParent()).setTerritoryColor(mapModel.getTerritoryByName(newName));
 
-        //push the updated button back into the map
-        countriesButtons.put(newName, territoryButton);
+        
     }
 
     /**
@@ -448,6 +458,10 @@ public class MapView extends JPanel implements Observer {
 
                 //add the missing territory to the view
                 this.addTerritory(target.getPositionX(), target.getPositionY(), target.getName());
+                
+                //get continent's color
+                ((MapEditorView)this.getParent().getParent().getParent().getParent()).setTerritoryColor(target);
+                
                 break;
             }
         }
