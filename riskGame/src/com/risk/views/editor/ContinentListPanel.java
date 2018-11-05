@@ -6,6 +6,7 @@
 package com.risk.views.editor;
 
 import com.risk.controllers.MapEditorController;
+import com.risk.models.MapModel;
 import com.risk.observable.MapModelObserver;
 import com.risk.observable.UpdateTypes;
 import java.awt.Color;
@@ -13,9 +14,12 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,7 +32,7 @@ import javax.swing.JOptionPane;
  * @see MapModelObserver
  * @see CustomListPanel
  */
-public class ContinentListPanel extends CustomListPanel implements MapModelObserver {
+public class ContinentListPanel extends CustomListPanel implements Observer {
 
     /**
      * Controller of the map editor useful to get the listeners to be attached
@@ -169,21 +173,40 @@ public class ContinentListPanel extends CustomListPanel implements MapModelObser
         removeElement(continentName);
     }
 
+    
     /**
-     * Method from the MapModelObserver interface that will update the view when
-     * the model will change.
+     * Update method of the Observer pattern
      *
-     * @param updateType Nature of the update.
-     * @param object Object to be used to do the update.
+     * @param object
+     * @param arg
      */
-    @Override
-    public void update(UpdateTypes updateType, Object object) {
-        String continentName;
+    public void update(Observable object, Object arg) {
+        UpdateTypes updateType = (UpdateTypes)arg;
+        
+        
         switch (updateType) {
             case ADD_CONTINENT:
-                continentName = (String) object;
-                this.addContinent(continentName);
+                Collection<Component> componentsInView = this.items.values();
+                List<String> continentsInModel = ((MapModel)object).getContinentList();
+                LinkedList<String> continentsInView = new LinkedList();
+                
+                //get list of names of continents in the view
+                for(Component component: componentsInView){
+                    continentsInView.add(component.getName());
+                }
+                
+                //search for the continent which is in the model and not in the view
+                for(String name : continentsInModel){
+                    if(!continentsInView.contains(name)){
+                        
+                        //add the missing continent to the view
+                        this.addContinent(name);
+                        break;
+                    }
+                }
+                this.addContinent(name);
                 break;
+                
             case REMOVE_CONTINENT:
                 continentName = (String) object;
                 this.removeContinent(continentName);

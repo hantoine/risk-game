@@ -21,6 +21,8 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -39,7 +41,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author timot
  */
-public class MapEditorView extends javax.swing.JFrame implements MapModelObserver {
+public class MapEditorView extends javax.swing.JFrame implements Observer {
 
     /**
      * Main panel in which all other panels are included.
@@ -326,6 +328,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
         return new ToolButtonListener(this.mapPanel);
     }
 
+
     /**
      * Button listener to change the current mode of the "map panel" when the
      * user click on a tool to select it. The map panel is the panel where the
@@ -384,14 +387,14 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
     }
 
     /**
-     * Update method of the Oberver pattern
+     * Update method of the Observer pattern
      *
-     * @param updateType element of the UpdateTypes enums that will indicate
-     * which action to do.
-     * @param object Object that will be used to update the view.
+     * @param object
+     * @param arg
      */
     @Override
-    public void update(UpdateTypes updateType, Object object) {
+    public void update(Observable object, Object arg) {
+        UpdateTypes updateType = (UpdateTypes)arg;
         switch (updateType) {
             case ADD_TERRITORY:
                 break;
@@ -407,7 +410,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                     break;
                 }
 
-                BufferedImage backgroundImage = (BufferedImage) object;
+                BufferedImage backgroundImage = (BufferedImage) ((MapModel)object).getImage();
 
                 //get current sizes of components
                 int width = backgroundImage.getWidth();

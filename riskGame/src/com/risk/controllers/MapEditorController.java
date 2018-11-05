@@ -467,7 +467,7 @@ public class MapEditorController {
         if (!data.isEmpty()) {
             data.put("name", territoryName);
             data.put("formerContinent", formerContinent);
-            this.newMap.updateTerritory(data);
+            this.newMap.updateTerritoryName(data);
         }
     }
 

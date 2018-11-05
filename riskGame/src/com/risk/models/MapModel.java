@@ -5,8 +5,6 @@ package com.risk.models;
  * To change this template file, choose Tools | Templates and open the template
  * in the editor.
  */
-import com.risk.observable.MapModelObservable;
-import com.risk.observable.MapModelObserver;
 import com.risk.observable.UpdateTypes;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -28,7 +26,7 @@ import java.util.stream.Stream;
  *
  * @author timot
  */
-public final class MapModel extends Observable implements MapModelObservable {
+public final class MapModel extends Observable {
 
     /**
      * mapConfig configurations of the map like author, wrap, image, and others
@@ -55,10 +53,7 @@ public final class MapModel extends Observable implements MapModelObservable {
      */
     private HashMap<String, TerritoryModel> graphTerritories;
 
-    /**
-     * List of the observers of the model.
-     */
-    private LinkedList<MapModelObserver> observers;
+    
 
     /**
      * Constructor.
@@ -68,7 +63,6 @@ public final class MapModel extends Observable implements MapModelObservable {
         graphTerritories = new HashMap<>();
         mapConfig = new MapConfig();
         image = null;
-        observers = new LinkedList<>();
         addDefaultContinent();
     }
 
@@ -326,10 +320,9 @@ public final class MapModel extends Observable implements MapModelObservable {
         this.getGraphTerritories().get(neighbour).addNeighbour(territoryModel);
 
         String[] newLink = {territoryName, neighbour};
-        notifyObserversCustom(UpdateTypes.ADD_LINK, newLink);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.ADD_LINK);
     }
 
     /**
@@ -349,10 +342,9 @@ public final class MapModel extends Observable implements MapModelObservable {
 
         //remove from the view
         String[] link = {territoryName, neighbour};
-        notifyObserversCustom(UpdateTypes.REMOVE_LINK, link);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.REMOVE_LINK);
     }
 
     /**
@@ -409,10 +401,9 @@ public final class MapModel extends Observable implements MapModelObservable {
     public boolean addContinent(String continentName, int continentBonus) {
         ContinentModel newContinent = new ContinentModel(continentName, continentBonus);
         getGraphContinents().put(continentName, newContinent);
-        notifyObserversCustom(UpdateTypes.ADD_CONTINENT, continentName);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.ADD_CONTINENT);
         return true;
     }
 
@@ -479,10 +470,9 @@ public final class MapModel extends Observable implements MapModelObservable {
         getGraphContinents().remove(continentName);
         int nbContinents = this.getContinentList().size();
         System.out.println("nb continents : " + Integer.toString(nbContinents));
-        notifyObserversCustom(UpdateTypes.REMOVE_CONTINENT, continentName);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.REMOVE_CONTINENT);
         return true;
     }
 
@@ -508,10 +498,9 @@ public final class MapModel extends Observable implements MapModelObservable {
         this.getGraphTerritories().put(newName, newTerritory);
 
         //update views
-        notifyObserversCustom(UpdateTypes.ADD_TERRITORY, newTerritory);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.ADD_TERRITORY);
         return true;
     }
 
@@ -537,10 +526,9 @@ public final class MapModel extends Observable implements MapModelObservable {
         this.getGraphTerritories().put(newName, newTerritory);
 
         //update views
-        notifyObserversCustom(UpdateTypes.ADD_TERRITORY, newTerritory);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.ADD_TERRITORY);
         return true;
     }
 
@@ -564,15 +552,13 @@ public final class MapModel extends Observable implements MapModelObservable {
 
             //remove from the view
             String[] link = {territoryToDel.getName(), neighbour.getName()};
-            notifyObserversCustom(UpdateTypes.REMOVE_LINK, link);
         }
 
         //delete the territory
         this.getGraphTerritories().remove(territoryName);
-        notifyObserversCustom(UpdateTypes.REMOVE_TERRITORY, territoryName);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.REMOVE_TERRITORY);
     }
 
     /**
@@ -580,7 +566,7 @@ public final class MapModel extends Observable implements MapModelObservable {
      *
      * @param data contains information to update the territory.
      */
-    public void updateTerritory(Map<String, String> data) {
+    public void updateTerritoryName(Map<String, String> data) {
         //get data
         String formerName = data.get("name");
         String newName = data.get("newName");
@@ -599,12 +585,8 @@ public final class MapModel extends Observable implements MapModelObservable {
             this.graphContinents.get(newContinent).addMember(modifiedTerritory);
         }
 
-        //replace the old entry by the updated one
-        //this.getGraphTerritories().put(newName, modifiedTerritory);
-        notifyObserversCustom(UpdateTypes.UPDATE_TERRITORY_NAME, data);
-
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.UPDATE_TERRITORY_NAME);
     }
 
     /**
@@ -631,36 +613,9 @@ public final class MapModel extends Observable implements MapModelObservable {
                 member.setContinentName(newName);
             }
         }
-
-        notifyObserversCustom(UpdateTypes.UPDATE_CONTINENT, data);
-
+        
         setChanged();
-        notifyObservers();
-    }
-
-    /**
-     * Add a new view that will be informed of changes in the model to update
-     * itself.
-     *
-     * @param newObserver the new map model observer
-     */
-    @Override
-    public void addObserverCustom(MapModelObserver newObserver) {
-        observers.add(newObserver);
-    }
-
-    /**
-     * Notify the views that a change occurred in the model so that they update
-     * themselves.
-     *
-     * @param updateType type of the update.
-     * @param object data to update the observers.
-     */
-    @Override
-    public void notifyObserversCustom(UpdateTypes updateType, Object object) {
-        for (MapModelObserver observer : observers) {
-            observer.update(updateType, object);
-        }
+        notifyObservers(UpdateTypes.UPDATE_CONTINENT);
     }
 
     /**
@@ -712,7 +667,6 @@ public final class MapModel extends Observable implements MapModelObservable {
 
             entryValue.setPositionX(x);
             entryValue.setPositionY(y);
-            notifyObserversCustom(UpdateTypes.UPDATE_TERRITORY_POS, entryValue);
             verifiedValues.add(newDim);
 
             setChanged();
@@ -728,13 +682,13 @@ public final class MapModel extends Observable implements MapModelObservable {
      */
     public void setImage(BufferedImage image, Dimension buttonDims) {
         this.setImage(image);
-        notifyObserversCustom(UpdateTypes.UPDATE_BACKGROUND_IMAGE, image);
+        
         if (image != null) {
             checkTerritoriesPositions(image.getWidth(), image.getHeight(), buttonDims);
         }
 
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.UPDATE_BACKGROUND_IMAGE);
     }
 
     /**
