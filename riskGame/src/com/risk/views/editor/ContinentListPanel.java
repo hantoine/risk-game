@@ -76,10 +76,10 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
         this.add(addButton, gbc);
 
         //add a dummy label for the display
-        addDummyLabel();
         for (String continentName : continentList) {
             this.addContinent(continentName);
         }
+        addDummyLabel();
     }
 
     /**
@@ -93,7 +93,7 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
         dummyGbc.weighty = 1;
         dummyGbc.weightx = 1;
         dummyGbc.gridx = 0;
-        dummyGbc.gridy = gbc.gridy + 1;
+        dummyGbc.gridy = this.gbc.gridy + 1;
         this.add(this.dummyLabel, dummyGbc);
     }
 
@@ -151,7 +151,7 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
     public void removeElement(String name) {
         this.remove(items.get(name));
         this.items.remove(name);
-        gbc.gridy -= 1;
+        //gbc.gridy -= 1;
         revalidate();
         repaint();
     }
@@ -242,7 +242,7 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
                     }
                 }
                 
-                if(formerName ==null)
+                if(formerName == null)
                     return;
                 
                 JLabel elementToModify = (JLabel) this.items.get(formerName);
