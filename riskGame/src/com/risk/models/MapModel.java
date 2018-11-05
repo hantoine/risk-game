@@ -356,17 +356,6 @@ public final class MapModel extends Observable implements MapModelObservable {
     }
 
     /**
-     * Check if a given string is in a given list of strings
-     *
-     * @param list the country list
-     * @param element the element you want to check
-     * @return whether the string is in the list
-     */
-    public boolean isInList(List<String> list, String element) {
-        return list.stream().anyMatch(x -> x.equals(element));
-    }
-
-    /**
      * Get a new name when creating a new element (territory or continent)
      *
      * @param continent boolean that the continent is in the list or not
@@ -387,7 +376,7 @@ public final class MapModel extends Observable implements MapModelObservable {
         }
 
         newName = prefix + Integer.toString(i);
-        while (isInList(nameList, newName)) {
+        while (nameList.contains(newName)) {
             i += 1;
             newName = prefix + Integer.toString(i);
         }
@@ -789,7 +778,7 @@ public final class MapModel extends Observable implements MapModelObservable {
      * @param scrollConfig the string of the config
      */
     public void setScrollConfig(String scrollConfig) {
-        this.getMapConfig().setScroll(scrollConfig);
+        this.getConfigurationInfo().setScroll(scrollConfig);
 
         setChanged();
         notifyObservers();
@@ -801,7 +790,7 @@ public final class MapModel extends Observable implements MapModelObservable {
      * @param wrapConfig the boolean of the config
      */
     public void setWrapConfig(boolean wrapConfig) {
-        this.getMapConfig().setWrap(wrapConfig);
+        this.mapConfig.setWrap(wrapConfig);
 
         setChanged();
         notifyObservers();
@@ -813,7 +802,7 @@ public final class MapModel extends Observable implements MapModelObservable {
      * @param warnConfig the boolean of warning config
      */
     public void setWarnConfig(boolean warnConfig) {
-        this.getMapConfig().setWarn(warnConfig);
+        this.mapConfig.setWarn(warnConfig);
 
         setChanged();
         notifyObservers();
@@ -825,7 +814,7 @@ public final class MapModel extends Observable implements MapModelObservable {
      * @param authorName the author of the map
      */
     public void setAuthorConfig(String authorName) {
-        this.getMapConfig().setAuthor(authorName);
+        this.mapConfig.setAuthor(authorName);
 
         setChanged();
         notifyObservers();
@@ -837,19 +826,9 @@ public final class MapModel extends Observable implements MapModelObservable {
      * @param path the path of the img
      */
     public void setImagePath(String path) {
-        this.getMapConfig().setImagePath(path);
+        this.mapConfig.setImagePath(path);
 
         setChanged();
         notifyObservers();
     }
-
-    /**
-     * Getter of the whole map configuration model of the map model
-     *
-     * @return the object containing all the configuration parameters.
-     */
-    public MapConfig getMapConfig() {
-        return this.getConfigurationInfo();
-    }
-
 }
