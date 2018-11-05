@@ -6,6 +6,7 @@
 package com.risk.views.editor;
 
 import com.risk.controllers.MapEditorController;
+import com.risk.models.ContinentModel;
 import com.risk.models.MapModel;
 import com.risk.observable.MapModelObserver;
 import com.risk.observable.UpdateTypes;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -181,20 +183,24 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
      * @param object
      * @param arg
      */
+    @Override
     public void update(Observable object, Object arg) {
+        //get update type
         UpdateTypes updateType = (UpdateTypes)arg;
         
-        Collection<Component> componentsInView = this.items.values();
-        List<String> continentsInModel = ((MapModel)object).getContinentList();
+        //get model that has changed
+        MapModel mapModel = (MapModel)object;
+        
+        //get the list of continents in the model
+        List<String> continentsInModel = (mapModel).getContinentList();
+        
+        //get the list of continents in the view
         LinkedList<String> continentsInView = new LinkedList();
+        Set<String> continentsInViewSet = this.items.keySet();
+        continentsInView.addAll(continentsInViewSet);
         
         switch (updateType) {
             case ADD_CONTINENT:
-                
-                //get list of names of continents in the view
-                for(Component component: componentsInView){
-                    continentsInView.add(component.getName());
-                }
                 
                 //search for the continent which is in the model and not in the view
                 for(String name : continentsInModel){
@@ -208,10 +214,6 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
                 break;
                 
             case REMOVE_CONTINENT:
-                //get list of names of continents in the view
-                for(Component component: componentsInView){
-                    continentsInView.add(component.getName());
-                }
                 
                 //search for the continent which is in the view and not in the model
                 for(String name : continentsInView){
@@ -225,12 +227,22 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
                 break;
                 
             case UPDATE_CONTINENT:
-                Map<String, String> data = (Map<String, String>) object;
-                String formerName = data.get("name");
-                String newName = data.get("newName");
-
+                ContinentModel updatedContinent = (ContinentModel)mapModel.getLastUpdate();
+                String newName = updatedContinent.getName();
+                String formerName=null;
+                
+                for(String name : continentsInView){
+                    if(!continentsInModel.contains(name)){
+                        formerName = name;
+                    }
+                }
+                
+                if(formerName ==null)
+                    return;
+                
                 JLabel elementToModify = (JLabel) this.items.get(formerName);
                 elementToModify.setText(newName);
+                elementToModify.setName(newName);
                 this.items.remove(formerName);
                 this.items.put(newName, elementToModify);
                 break;

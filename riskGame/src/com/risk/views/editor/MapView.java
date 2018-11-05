@@ -189,35 +189,26 @@ public class MapView extends JPanel implements Observer {
      * observable model.
      *
      * @param mapModel
+     * @param territoriesInModel
+     * @param territoriesInView
+     * @param newName
      */
-    public void updateTerritoryName(MapModel mapModel) {
-
-        CountryButton2 territoryButton;
-        TerritoryModel updatedTerritory = (TerritoryModel) mapModel.getLastUpdate();
-
-        String newName = updatedTerritory.getName();
-
-        Collection<CountryButton2> componentsInView = this.countriesButtons.values();
-        List<String> territoriesInModel = (mapModel).getTerritoryList();
-        LinkedList<String> territoriesInView;
-        territoriesInView = new LinkedList();
-
-        //get list of names of territories in the view
-        for (Component component : componentsInView) {
-            territoriesInView.add(component.getName());
-        }
-        territoriesInView.add(newName);
-
-        //search for the territory which is in the model and not in the view
+    public void updateTerritoryName(MapModel mapModel, List territoriesInModel, List<String> territoriesInView, String newName) {
+        //search for the territory which is in the view and not in the model 
+        //(because the territory in the model have been modified already)
         String formerName = null;
-        for (String name : territoriesInModel) {
-            if (!territoriesInView.contains(name)) {
+        for (String name : territoriesInView) {
+            if (!territoriesInModel.contains(name)) {
                 formerName = name;
             }
         }
 
+        //pop territory button to update
+        CountryButton2 territoryButton;
         territoryButton = this.countriesButtons.remove(formerName);
         territoryButton.setName(newName);
+
+        //push the updated button back into the map
         countriesButtons.put(newName, territoryButton);
     }
 
@@ -229,61 +220,75 @@ public class MapView extends JPanel implements Observer {
      */
     public void updateTerritoryPos(MapModel mapModel) {
         TerritoryModel updatedTerritory = (TerritoryModel) mapModel.getLastUpdate();
-        CountryButton2 territoryButton;
-        territoryButton = this.countriesButtons.get(updatedTerritory.getName());
-        territoryButton.setPosition(updatedTerritory.getPositionX(), updatedTerritory.getPositionY());
+        CountryButton2 territoryButtonToUpdate;
+        territoryButtonToUpdate = this.countriesButtons.get(updatedTerritory.getName());
+        territoryButtonToUpdate.setPosition(updatedTerritory.getPositionX(), updatedTerritory.getPositionY());
     }
 
+    /**
+     * Returns the list of neighbors of a given territory given its name
+     * @param nameOfUpdatedTerritory
+     * @return the list of the neighbors (list of Strings)
+     */
+    private LinkedList<String> getNeighborsOfTerritory(String nameOfUpdatedTerritory){
+        //initialize the list
+        LinkedList<String> neighborsInView = null;
+        
+        //get iterator on the links
+        Iterator linkIt = this.links.keySet().iterator(); 
+        
+        //iterate over all links using iterator
+        for (int i = 0; i < this.links.keySet().size(); i++) {
+            
+            //get names of the two territories of the current link
+            String existingLinkName = (String) linkIt.next();
+            String[] existingNeighbours = existingLinkName.split(";");
+
+            //if one name is the name of the nameOfUpdatedTerritory we add the other name to the list of neighbors of nameOfUpdatedTerritory
+            if (existingNeighbours[0].equals(nameOfUpdatedTerritory)) {
+                neighborsInView.add(existingNeighbours[1]);
+            } else if (existingNeighbours[1].equals(nameOfUpdatedTerritory)) {
+                neighborsInView.add(existingNeighbours[0]);
+            }
+        }
+        
+        //return the resulting list
+        return neighborsInView;
+    }
+    
     /**
      * Remove a link between two territories in response to a notification from
      * observable model.
      *
      * @param mapModel
      */
-    public void removeLink(MapModel mapModel) {
-        
-        String nameOfUpdatedTerritory = ((TerritoryModel)mapModel.getLastUpdate()).getName();
-        
+    public void updateRemoveLink(MapModel mapModel) {
+        String nameOfUpdatedTerritory = ((TerritoryModel) mapModel.getLastUpdate()).getName();
+
         //get neigbors of nameOfUpdatedTerritory in the view
-        LinkedList<String> neighborsInView = null;
-        //iterate over all links
-        Iterator linkIt = this.links.keySet().iterator();
-        for (int i = 0; i < this.links.keySet().size(); i++) {
-            
-            //get both names
-            String existingLinkName = (String) linkIt.next();
-            String[] existingNeighbours = existingLinkName.split(";");
-            
-            if (existingNeighbours[0].equals(nameOfUpdatedTerritory)) {
-                neighborsInView.add(existingNeighbours[1]);
-            }
-            else if (existingNeighbours[1].equals(nameOfUpdatedTerritory)) {
-                neighborsInView.add(existingNeighbours[0]);
-            }
-        }
-        
+        LinkedList<String> neighborsInView = getNeighborsOfTerritory(nameOfUpdatedTerritory);
+
         //get neighbors of nameOfUpdatedTerritory in the model
-        List<TerritoryModel> neighborsModelsInModel =  ((TerritoryModel)mapModel.getLastUpdate()).getAdj();
+        List<TerritoryModel> neighborsModelsInModel = ((TerritoryModel) mapModel.getLastUpdate()).getAdj();
         LinkedList<String> neighborsInModel = null;
-        for(TerritoryModel neighborModel: neighborsModelsInModel){
+        for (TerritoryModel neighborModel : neighborsModelsInModel) {
             neighborsInModel.add(neighborModel.getName());
         }
-        
+
         //search for the link to delete
-        for(String viewNeighbor: neighborsInView){
-            if(neighborsInModel.contains(viewNeighbor)){
+        for (String viewNeighbor : neighborsInView) {
+            if (neighborsInModel.contains(viewNeighbor)) {
             } else {
-                String possibleName1=viewNeighbor + ";" + nameOfUpdatedTerritory;
-                String possibleName2=nameOfUpdatedTerritory + ";" + viewNeighbor;
-                if(this.links.keySet().contains(possibleName1)){
+                String possibleName1 = viewNeighbor + ";" + nameOfUpdatedTerritory;
+                String possibleName2 = nameOfUpdatedTerritory + ";" + viewNeighbor;
+                if (this.links.keySet().contains(possibleName1)) {
                     links.remove(possibleName1);
-                }
-                else if(this.links.keySet().contains(possibleName2)){
+                } else if (this.links.keySet().contains(possibleName2)) {
                     links.remove(possibleName2);
                 }
             }
         }
-         
+
         //undraw
         repaint();
     }
@@ -294,46 +299,47 @@ public class MapView extends JPanel implements Observer {
      *
      * @param mapModel
      */
-    public void addLink(MapModel mapModel) {
-        String nameOfUpdatedTerritory = ((TerritoryModel)mapModel.getLastUpdate()).getName();
-        
-        //get neigbors of nameOfUpdatedTerritory in the view
+    public void updateAddLink(MapModel mapModel) {
+        String nameOfUpdatedTerritory = ((TerritoryModel) mapModel.getLastUpdate()).getName();
+
+        //get neigbors of nameOfUpdatedTerritory in the view:
         LinkedList<String> neighborsInView = null;
+
         //iterate over all links
         Iterator linkIt = this.links.keySet().iterator();
         for (int i = 0; i < this.links.keySet().size(); i++) {
-            
+
             //get both names
             String existingLinkName = (String) linkIt.next();
             String[] existingNeighbours = existingLinkName.split(";");
-            
+
             if (existingNeighbours[0].equals(nameOfUpdatedTerritory)) {
                 neighborsInView.add(existingNeighbours[1]);
-            }
-            else if (existingNeighbours[1].equals(nameOfUpdatedTerritory)) {
+            } else if (existingNeighbours[1].equals(nameOfUpdatedTerritory)) {
                 neighborsInView.add(existingNeighbours[0]);
             }
         }
-        
+
         //get neighbors of nameOfUpdatedTerritory in the model
-        List<TerritoryModel> neighborsModelsInModel =  ((TerritoryModel)mapModel.getLastUpdate()).getAdj();
+        List<TerritoryModel> neighborsModelsInModel = ((TerritoryModel) mapModel.getLastUpdate()).getAdj();
         LinkedList<String> neighborsInModel = null;
-        for(TerritoryModel neighborModel: neighborsModelsInModel){
+        for (TerritoryModel neighborModel : neighborsModelsInModel) {
             neighborsInModel.add(neighborModel.getName());
         }
-        
+
         //search for the link to add 
-        String target=null;
-        for(String modelNeighbor: neighborsInModel){
-            if(neighborsInView.contains(modelNeighbor)){
+        String target = null;
+        for (String modelNeighbor : neighborsInModel) {
+            if (neighborsInView.contains(modelNeighbor)) {
             } else {
                 target = modelNeighbor;
             }
         }
-        
-        if(target == null)
+
+        if (target == null) {
             return;
-        
+        }
+
         //add new link
         String[] linkNames = {nameOfUpdatedTerritory, target};
         CountryButton2 firstItem = this.countriesButtons.get(linkNames[0]);
@@ -361,43 +367,28 @@ public class MapView extends JPanel implements Observer {
      */
     @Override
     public void update(Observable object, Object arg) {
+        //get update type
         UpdateTypes updateType = (UpdateTypes) arg;
+
+        //get observable model
         MapModel mapModel = (MapModel) object;
-        Collection<CountryButton2> componentsInView = this.countriesButtons.values();
-        List<String> territoriesInModel = (mapModel).getTerritoryList();
-        LinkedList<String> territoriesInView;
-        territoriesInView = new LinkedList();
 
         //get list of names of territories in the view
-        for (Component component : componentsInView) {
-            territoriesInView.add(component.getName());
-        }
+        LinkedList<String> territoriesInView = new LinkedList();
+        territoriesInView.addAll(this.countriesButtons.keySet());
+
+        //get list of names of territories in the model
+        List<String> territoriesInModel = (mapModel).getTerritoryList();
 
         switch (updateType) {
             case ADD_TERRITORY:
-                //search for the territory which is in the model and not in the view
-                for (String name : territoriesInModel) {
-                    if (!territoriesInView.contains(name)) {
-
-                        TerritoryModel target = mapModel.getTerritoryByName(name);
-
-                        //add the missing continent to the view
-                        this.addTerritory(target.getPositionX(), target.getPositionY(), target.getName());
-                        break;
-                    }
-                }
+                updateAddTerritory(mapModel, territoriesInModel, territoriesInView);
                 break;
             case REMOVE_TERRITORY:
-                //search for the territory which is in the model and not in the view
-                for (String name : territoriesInView) {
-                    if (!territoriesInModel.contains(name)) {
-                        removeTerritory(name);
-                        break;
-                    }
-                }
+                updateRemoveTerritory(territoriesInModel, territoriesInView);
                 break;
             case UPDATE_TERRITORY_NAME:
-                updateTerritoryName(mapModel);
+                updateTerritoryName(mapModel, territoriesInModel, territoriesInView, ((TerritoryModel) mapModel.getLastUpdate()).getName());
                 break;
             case UPDATE_TERRITORY_POS:
                 updateTerritoryPos(mapModel);
@@ -407,11 +398,36 @@ public class MapView extends JPanel implements Observer {
             case UPDATE_CONTINENT:
                 break;
             case REMOVE_LINK:
-                removeLink(mapModel);
+                updateRemoveLink(mapModel);
                 break;
             case ADD_LINK:
-                addLink(mapModel);
+                updateAddLink(mapModel);
                 break;
+        }
+    }
+
+    private void updateRemoveTerritory(List<String> territoriesInModel, List<String> territoriesInView) {
+        //search for the territory which is in the view and not in the model
+        for (String name : territoriesInView) {
+            if (!territoriesInModel.contains(name)) {
+                removeTerritory(name);
+                break;
+            }
+        }
+    }
+
+    private void updateAddTerritory(MapModel mapModel, List<String> territoriesInModel, List<String> territoriesInView) {
+        //search for the territory which is in the model and not in the view
+        for (String name : territoriesInModel) {
+            if (!territoriesInView.contains(name)) {
+
+                //get target territory model to add
+                TerritoryModel target = mapModel.getTerritoryByName(name);
+
+                //add the missing territory to the view
+                this.addTerritory(target.getPositionX(), target.getPositionY(), target.getName());
+                break;
+            }
         }
     }
 
@@ -464,7 +480,7 @@ public class MapView extends JPanel implements Observer {
         String boxName = "Add link to " + territoryName;
         String neighbourName = (String) JOptionPane.showInputDialog(
                 null,
-                "Select a new neighbour for " + territoryName,
+                "Select a new neighbor for " + territoryName,
                 boxName,
                 JOptionPane.PLAIN_MESSAGE,
                 null,

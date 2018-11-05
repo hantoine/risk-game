@@ -470,15 +470,20 @@ public final class MapModel extends Observable {
      * @return return if the continent is removed or not
      */
     public boolean removeContinent(String continentName) {
+        if(this.graphContinents.size() == 1)
+            return false;
+        
+        //get continent to delete
         ContinentModel continentToDel = this.getGraphContinents().get(continentName);
         if (continentToDel == null) {
             return false;
         }
+        
         LinkedList<TerritoryModel> members = continentToDel.getMembers();
 
-        for (TerritoryModel member : members) {
+        members.forEach((member) -> {
             member.setContinentName(getAvailableContinent(member));
-        }
+        });
 
         getGraphContinents().remove(continentName);
         int nbContinents = this.getContinentList().size();
@@ -589,7 +594,7 @@ public final class MapModel extends Observable {
 
         
         //get territory to be modified
-        TerritoryModel modifiedTerritory = this.getGraphTerritories().get(formerName);
+        TerritoryModel modifiedTerritory = this.getGraphTerritories().remove(formerName);
 
         //modify territory
         modifiedTerritory.setName(newName);
@@ -600,7 +605,8 @@ public final class MapModel extends Observable {
             this.graphContinents.get(newContinent).addMember(modifiedTerritory);
         }
 
-        this.lastUpdatedElement = this.getTerritoryByName(newName);
+        this.graphTerritories.put(newName, modifiedTerritory);
+        this.lastUpdatedElement = modifiedTerritory;
         
         setChanged();
         notifyObservers(UpdateTypes.UPDATE_TERRITORY_NAME);
