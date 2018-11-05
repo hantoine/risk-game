@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 import java.util.Set;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -52,6 +52,8 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
      * Button to add new continents.
      */
     private JButton addButton;
+    
+    Random color = new Random();
 
     /**
      * Constructor.
@@ -82,6 +84,10 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
         addDummyLabel();
     }
 
+    public Color getColor(String continentName){
+        return this.items.get(continentName).getBackground();
+    }
+    
     /**
      * Add a dummy label for having a good display of the elements using
      * GridBagConstraints.
@@ -98,19 +104,6 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
     }
 
     /**
-     * Function that will be called any time a new continent is created in order
-     * to customize its appearance.
-     *
-     * @param label JLabel to be customized.
-     * @param name Name of the continent.
-     */
-    private void customize(JLabel label, String name) {
-        label.setText(name);
-        label.setBackground(Color.white);
-        label.setFont(new java.awt.Font("Arial", Font.PLAIN, 12));
-    }
-
-    /**
      * Add a new continent to the list of continents.
      *
      * @param newComponent Continent's container.
@@ -118,13 +111,13 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
      */
     @Override
     public void addElement(Component newComponent, String name) {
-        if (!"javax.swing.JLabel".equals(newComponent.getClass().getName())) {
+        if (!"javax.swing.JButton".equals(newComponent.getClass().getName())) {
             return;
         }
 
         //create element
-        JLabel newElement = (JLabel) newComponent;
-        customize(newElement, name);
+        JButton newElement = (JButton) newComponent;
+       
 
         //add listeners
         newElement.addMouseListener(this.controller.getContinentMouseListener());
@@ -163,7 +156,10 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
      * @see CustomListPanel
      */
     public void addContinent(String continentName) {
-        addElement(new JLabel(continentName), continentName);
+        
+        JButton newContinent = new JButton(continentName);
+        newContinent.setBackground(new Color(color.nextInt(255), color.nextInt(255), color.nextInt(255)));
+        addElement(newContinent, continentName);
     }
 
     /**
@@ -245,7 +241,7 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
                 if(formerName == null)
                     return;
                 
-                JLabel elementToModify = (JLabel) this.items.get(formerName);
+                JButton elementToModify = (JButton) this.items.get(formerName);
                 elementToModify.setText(newName);
                 elementToModify.setName(newName);
                 this.items.remove(formerName);
