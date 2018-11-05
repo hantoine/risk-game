@@ -484,10 +484,12 @@ public final class RiskModel extends Observable {
             case REINFORCEMENT:
                 break;
             case ATTACK:
-                this.getCurrentPlayer().addCardToPlayerHand();
+                if(this.currentPlayer.isConquered())
+                    this.getCurrentPlayer().addCardToPlayerHand();
+                
+                this.getCurrentPlayer().setConquered(false);
                 this.getCurrentPlayer().setCurrentAttack(null);
-                checkForDeadPlayers();
-                attackEndValidations();
+
                 break;
             case FORTIFICATION:
                 this.getCurrentPlayer().resetCurrentFortificationMove();
@@ -501,7 +503,7 @@ public final class RiskModel extends Observable {
 
     public void attackEndValidations() {
         if ((this.getCurrentPlayer().getContriesOwned().stream()
-                .filter(c -> c.getNumArmies() < 2)).count() == this.getCurrentPlayer().getContinentsOwned().size()) {
+                .filter(c -> c.getNumArmies() < 2)).count() == this.getCurrentPlayer().getContriesOwned().size()) {
             finishPhase();
         }
 
@@ -539,7 +541,7 @@ public final class RiskModel extends Observable {
      * Check if any player has no more territories owned and remove these player
      * from the game
      */
-    private void checkForDeadPlayers() {
+    public void checkForDeadPlayers() {
         List<PlayerModel> previousPlayerList = new ArrayList<>(players);
         previousPlayerList.stream()
                 .filter(p -> p.getNbCountriesOwned() == 0)
