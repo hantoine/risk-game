@@ -53,7 +53,12 @@ public final class MapModel extends Observable {
      */
     private HashMap<String, TerritoryModel> graphTerritories;
 
-    
+    /**
+     * Last element that have been updated.
+     * Territory or Continent
+     * Update only (not remove or insert)
+     */
+    public Object lastUpdatedElement;
 
     /**
      * Constructor.
@@ -66,6 +71,10 @@ public final class MapModel extends Observable {
         addDefaultContinent();
     }
 
+    public Object getLastUpdate(){
+        return lastUpdatedElement;
+    }
+    
     /**
      * It prints the countries and relationships between them
      */
@@ -320,7 +329,9 @@ public final class MapModel extends Observable {
         this.getGraphTerritories().get(neighbour).addNeighbour(territoryModel);
 
         String[] newLink = {territoryName, neighbour};
-
+        
+        this.lastUpdatedElement = this.getTerritoryByName(territoryName);
+        
         setChanged();
         notifyObservers(UpdateTypes.ADD_LINK);
     }
@@ -342,6 +353,8 @@ public final class MapModel extends Observable {
 
         //remove from the view
         String[] link = {territoryName, neighbour};
+        
+        this.lastUpdatedElement = this.getTerritoryByName(territoryName);
 
         setChanged();
         notifyObservers(UpdateTypes.REMOVE_LINK);
@@ -568,11 +581,13 @@ public final class MapModel extends Observable {
      */
     public void updateTerritoryName(Map<String, String> data) {
         //get data
+        
         String formerName = data.get("name");
         String newName = data.get("newName");
         String formerContinent = data.get("formerContinent");
         String newContinent = data.get("continent");
 
+        
         //get territory to be modified
         TerritoryModel modifiedTerritory = this.getGraphTerritories().get(formerName);
 
@@ -585,6 +600,8 @@ public final class MapModel extends Observable {
             this.graphContinents.get(newContinent).addMember(modifiedTerritory);
         }
 
+        this.lastUpdatedElement = this.getTerritoryByName(newName);
+        
         setChanged();
         notifyObservers(UpdateTypes.UPDATE_TERRITORY_NAME);
     }
@@ -613,6 +630,8 @@ public final class MapModel extends Observable {
                 member.setContinentName(newName);
             }
         }
+        
+        this.lastUpdatedElement = this.getContinentByName(newName);
         
         setChanged();
         notifyObservers(UpdateTypes.UPDATE_CONTINENT);
@@ -738,6 +757,7 @@ public final class MapModel extends Observable {
         return territoryArray;
     }
 
+    
     /**
      * Setter of the scroll configuration parameter of the map.
      *

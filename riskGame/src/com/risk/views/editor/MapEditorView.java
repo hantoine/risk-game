@@ -9,7 +9,6 @@ import com.risk.controllers.MapEditorController;
 import com.risk.models.MapConfig;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
-import com.risk.observable.MapModelObserver;
 import com.risk.observable.UpdateTypes;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
