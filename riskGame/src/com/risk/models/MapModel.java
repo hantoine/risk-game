@@ -69,7 +69,7 @@ public final class MapModel extends Observable implements MapModelObservable {
         mapConfig = new MapConfig();
         image = null;
         observers = new LinkedList<>();
-        addContinent();
+        addDefaultContinent();
     }
 
     /**
@@ -317,7 +317,7 @@ public final class MapModel extends Observable implements MapModelObservable {
         TerritoryModel neighbourModel = this.getGraphTerritories().get(neighbour);
         TerritoryModel territoryModel = this.getGraphTerritories().get(territoryName);
 
-        if (neighbourModel.getAdj().contains(neighbourModel)) {
+        if (territoryModel.getAdj().contains(neighbourModel) || neighbourModel.getAdj().contains(territoryModel)) { //undirected graph
             return;
         }
 
@@ -390,15 +390,10 @@ public final class MapModel extends Observable implements MapModelObservable {
      *
      * @return whether the continent is added or not
      */
-    public boolean addContinent() {
+    public boolean addDefaultContinent() {
         String newName = getNewName(true);
-
-        ContinentModel newContinent = new ContinentModel(newName, 1);
-        getGraphContinents().put(newName, newContinent);
-        notifyObserversCustom(UpdateTypes.ADD_CONTINENT, newName);
-
-        setChanged();
-        notifyObservers();
+        int continentBonus = 1;
+        addContinent(newName, continentBonus);
         return true;
     }
 
@@ -437,7 +432,7 @@ public final class MapModel extends Observable implements MapModelObservable {
         }
 
         //add first continent
-        this.addContinent();
+        this.addDefaultContinent();
 
         //reset map configuration
         this.setScrollConfig("none");
