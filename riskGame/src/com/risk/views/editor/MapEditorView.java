@@ -112,7 +112,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
         this.toolsPanel = new ToolsListPanel(120, 600, toolsList, getToolButtonListener());
 
         //panel to set map configuration
-        this.mapConfigPanel = new MapConfigPanel(editorController, initMapModel.getMapConfig());
+        this.mapConfigPanel = new MapConfigPanel(editorController, initMapModel.getConfigurationInfo());
 
         //add elements
         addPanes();
@@ -210,7 +210,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                 System.out.println("nb links loaded:"+ Integer.toString(nbLinks));
                 
                 //update map configuration
-                this.mapConfigPanel.setView(editorController.getNewMap().getMapConfig());
+                this.mapConfigPanel.setView(editorController.getNewMap().getConfigurationInfo());
             }
         });
     }
@@ -282,7 +282,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                 }
                 
                 
-                MapConfig newConfig = editorController.getNewMap().getMapConfig();
+                MapConfig newConfig = editorController.getNewMap().getConfigurationInfo();
                 this.mapConfigPanel.setView(newConfig);
             }
         });
