@@ -73,6 +73,7 @@ public class CustomListPanel extends JPanel {
      */
     public void setAddButtonName(String newName) {
         this.addButton.setName(newName);
+        this.add(addButton);
         addDummyLabel();
     }
 
@@ -82,26 +83,22 @@ public class CustomListPanel extends JPanel {
      * @param newElement the new element which we want to add into
      * @param name the name of the item which we want to add
      */
-    public void addElement(Component newElement, String name) {
+    public void addElement(Component newElement, String name) {        
         this.items.put(name, newElement);
-
-        this.remove(this.dummyLabel);
-
         gbc.gridy += 1;
         this.add(newElement, this.gbc, items.size() - 1);
         this.setVisible(true);
-
         addDummyLabel();
-
         revalidate();
         repaint();
+        
     }
 
     /**
      * Add a dummy label to fill the space of GridBag (just a matter of
      * graphism)
      */
-    protected void addDummyLabel() {
+    protected void addDummyLabel() {        
         GridBagConstraints dummyGbc = new GridBagConstraints();
         dummyGbc.weighty = 1;
         dummyGbc.weightx = 1;
@@ -118,7 +115,8 @@ public class CustomListPanel extends JPanel {
     public void removeElement(String name) {
         this.remove(items.get(name));
         this.items.remove(name);
-        gbc.gridy -= 1;
+        //gbc.gridy -= 1;
+        addDummyLabel();
         revalidate();
         repaint();
     }
