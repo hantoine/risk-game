@@ -185,6 +185,9 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
      */
     @Override
     public void update(Observable object, Object arg) {
+        if(arg == null || !(arg instanceof UpdateTypes))
+            return;
+        
         //get update type
         UpdateTypes updateType = (UpdateTypes)arg;
         
@@ -200,6 +203,8 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
         continentsInView.addAll(continentsInViewSet);
         
         switch (updateType) {
+            default:
+                break;
             case ADD_CONTINENT:
                 
                 //search for the continent which is in the model and not in the view

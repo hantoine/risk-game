@@ -232,7 +232,7 @@ public class MapView extends JPanel implements Observer {
      */
     private LinkedList<String> getNeighborsOfTerritory(String nameOfUpdatedTerritory){
         //initialize the list
-        LinkedList<String> neighborsInView = null;
+        LinkedList<String> neighborsInView = new LinkedList();
         
         //get iterator on the links
         Iterator linkIt = this.links.keySet().iterator(); 
@@ -270,7 +270,7 @@ public class MapView extends JPanel implements Observer {
 
         //get neighbors of nameOfUpdatedTerritory in the model
         List<TerritoryModel> neighborsModelsInModel = ((TerritoryModel) mapModel.getLastUpdate()).getAdj();
-        LinkedList<String> neighborsInModel = null;
+        LinkedList<String> neighborsInModel = new LinkedList();
         for (TerritoryModel neighborModel : neighborsModelsInModel) {
             neighborsInModel.add(neighborModel.getName());
         }
@@ -290,7 +290,8 @@ public class MapView extends JPanel implements Observer {
                 //if one does exist, remove it
                 if (this.links.keySet().contains(possibleName1)) {
                     links.remove(possibleName1);
-                } else if (this.links.keySet().contains(possibleName2)) {
+                } 
+                if (this.links.keySet().contains(possibleName2)) {
                     links.remove(possibleName2);
                 }
             }
@@ -314,7 +315,7 @@ public class MapView extends JPanel implements Observer {
 
         //get neighbors of nameOfUpdatedTerritory in the model
         List<TerritoryModel> neighborsModelsInModel = ((TerritoryModel) mapModel.getLastUpdate()).getAdj();
-        LinkedList<String> neighborsInModel = null;
+        LinkedList<String> neighborsInModel = new LinkedList();
         for (TerritoryModel neighborModel : neighborsModelsInModel) {
             neighborsInModel.add(neighborModel.getName());
         }
@@ -374,6 +375,9 @@ public class MapView extends JPanel implements Observer {
      */
     @Override
     public void update(Observable object, Object arg) {
+        if(arg == null || !(arg instanceof UpdateTypes))
+            return;
+        
         //get update type
         UpdateTypes updateType = (UpdateTypes) arg;
 
@@ -413,6 +417,11 @@ public class MapView extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Remove a territory in the view according to the update of the model
+     * @param territoriesInModel
+     * @param territoriesInView 
+     */
     private void updateRemoveTerritory(List<String> territoriesInModel, List<String> territoriesInView) {
         //search for the territory which is in the view and not in the model
         for (String name : territoriesInView) {
@@ -423,6 +432,12 @@ public class MapView extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Add a territory in the view according to the update of the model
+     * @param mapModel
+     * @param territoriesInModel
+     * @param territoriesInView 
+     */
     private void updateAddTerritory(MapModel mapModel, List<String> territoriesInModel, List<String> territoriesInView) {
         //search for the territory which is in the model and not in the view
         for (String name : territoriesInModel) {
