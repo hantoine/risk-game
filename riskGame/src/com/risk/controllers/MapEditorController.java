@@ -570,6 +570,13 @@ public class MapEditorController {
                     case UNLINK:
                         unLinkTerritories(territoryName, clickedPanel);
                         break;
+                        
+                    case REMOVE:
+                        Object sourceObj = e.getSource();
+                        String className = sourceObj.getClass().getName();
+                        String countryName = ((CountryButton2) sourceObj).getName();
+                        this.newMap.removeTerritory(countryName);
+                        break;
                 }
             }
         }
@@ -606,15 +613,9 @@ public class MapEditorController {
          *
          * @param e the releasing mouse which is captured
          */
+        @Override
         public void mouseReleased(MouseEvent e) {
-            if (SwingUtilities.isRightMouseButton(e)) {
-                Object sourceObj = e.getSource();
-                String className = sourceObj.getClass().getName();
-                if (className.equals("com.risk.mapeditor.CountryButton2")) {
-                    String countryName = ((CountryButton2) sourceObj).getName();
-                    this.newMap.removeTerritory(countryName);
-                }
-            }
+            
         }
     }
 
