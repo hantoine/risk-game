@@ -1,0 +1,57 @@
+[Map]
+author=Sean O'Connor
+image=Atlantis.bmp
+wrap=yes
+scroll=horizontal
+warn=yes
+
+[Continents]
+Enevim=3
+Kala=6
+Nova=5
+Barak Los=2
+Neimaach=7
+Barba Moya=6
+
+[Territories]
+Ssag,228,59,Kala,Lurd,Fali,Jer
+Obar,511,128,Nova,Arvi,Inve,Eritus
+San Funander,584,304,Barak Los,Pierco,Marakas
+Spora,127,139,Kala,Forgoth,Rove,Jer,Kinsha
+Larkan,483,236,Neimaach,Clokan,Aqualia
+Valinor,389,26,Enevim,Evor,Evim
+Pierco,620,292,Barak Los,San Funander,Aqualia,Marakas,Tocko
+Kasten,305,370,Neimaach,Friedartika,Nurta,Engel,Kalthausen,Unterkan
+Kinsha,115,254,Barba Moya,Spora,Lo,Blanki Vista,Mittenmoth,Farla
+Aqualia,570,203,Nova,Larkan,Pierco,Inve
+Friedartika,271,422,Neimaach,Kasten,Har
+Forgoth,74,137,Kala,Spora,Rove
+Lankia,346,155,Neimaach,Eritus,Asturmina
+Teor,289,252,Neimaach,Asturmina,Farla,Nurta,Engel
+Evim,434,44,Enevim,Valinor,Eritus,Evor
+Evor,370,58,Enevim,Valinor,Evim,Lurd
+Inve,561,142,Nova,Obar,Aqualia,Arvi
+Bilon,134,421,Barba Moya,Batan,Blanki Vista,Mittenmoth,Har
+Blanki Vista,68,343,Barba Moya,Kinsha,Bilon,Lo,Mittenmoth,Batan,Tocko
+Nurta,276,300,Neimaach,Kasten,Teor,Farla,Engel
+Engel,346,316,Neimaach,Kasten,Teor,Nurta,Kalthausen
+Arvi,547,89,Nova,Obar,Inve,Polaris
+Tocko,651,342,Barak Los,Pierco,Blanki Vista,Marakas
+Eritus,467,98,Nova,Obar,Lankia,Evim
+Marakas,613,369,Barak Los,San Funander,Pierco,Tocko
+Lo,59,252,Barba Moya,Kinsha,Blanki Vista
+Horkan,465,343,Neimaach,Kalthausen,Unterkan
+Farla,167,266,Barba Moya,Kinsha,Teor,Nurta,Asturmina,Esgarpok,Mittenmoth
+Mittenmoth,136,349,Barba Moya,Kinsha,Bilon,Blanki Vista,Farla,Esgarpok,Har
+Clokan,414,229,Neimaach,Larkan,Asturmina,Kalthausen
+Rove,112,75,Kala,Spora,Forgoth,Jer,Polaris
+Batan,82,422,Barba Moya,Bilon,Blanki Vista
+Esgarpok,186,344,Barba Moya,Farla,Mittenmoth,Har
+Polaris,618,62,Nova,Arvi,Rove
+Asturmina,318,199,Neimaach,Lankia,Teor,Farla,Clokan
+Jer,165,92,Kala,Ssag,Spora,Rove,Fali
+Kalthausen,404,331,Neimaach,Kasten,Engel,Horkan,Clokan,Unterkan
+Har,190,410,Barba Moya,Friedartika,Bilon,Mittenmoth,Esgarpok
+Unterkan,406,385,Neimaach,Kasten,Horkan,Kalthausen
+Fali,217,113,Kala,Ssag,Jer
+Lurd,315,47,Enevim,Ssag,Evor

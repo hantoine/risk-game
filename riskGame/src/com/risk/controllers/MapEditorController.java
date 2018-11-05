@@ -213,10 +213,9 @@ public class MapEditorController {
 
             //get object we clicked on (jlabel)
             Object sourceObj = e.getSource();
-            String className = sourceObj.getClass().getName();
 
             //if JLabel then process
-            if (className != "javax.swing.JLabel") {
+            if (!(sourceObj instanceof JLabel)){
                 return;
             }
 
@@ -292,11 +291,13 @@ public class MapEditorController {
             return;
         }
 
+        //clear existing map
         this.newMap.clearMap();
 
+        //get the default continent to delete
         List<String> remainingContinents = this.newMap.getContinentList();
         if (remainingContinents.size() != 1) {
-            System.out.println("wrong number of continents after the clear");
+            System.out.println("Wrong number of continents after the clear");
         }
         String continentToDelete = remainingContinents.get(0);
 
@@ -333,6 +334,12 @@ public class MapEditorController {
                 this.newMap.addLink(t.getName(), ta.getName());
             });
         });
+        
+        if (!map.isValid()) {
+            this.newMap.clearMap();
+            view.showError(MapFileManagement.readingError(-7));
+            return;
+        }
 
         updateConfigurationInfo(map);
     }
