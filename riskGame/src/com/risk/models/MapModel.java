@@ -385,8 +385,10 @@ public final class MapModel extends Observable implements MapModelObservable {
     }
 
     /**
-     * Add a new continent to the model and notify the observers to change the
-     * view
+     * Add a new continent to the model using addContinent.
+     * This time the continent is a default one as we must have 
+     * at least one continent. That is why there is a call to getNewName 
+     * and the default continentBonus is set to 1.
      *
      * @return whether the continent is added or not
      */
@@ -397,6 +399,13 @@ public final class MapModel extends Observable implements MapModelObservable {
         return true;
     }
 
+    /**
+     * Add a new continent to the model and notify the observers to change the
+     * view
+     * @param continentName
+     * @param continentBonus
+     * @return 
+     */
     public boolean addContinent(String continentName, int continentBonus) {
         ContinentModel newContinent = new ContinentModel(continentName, continentBonus);
         getGraphContinents().put(continentName, newContinent);
@@ -407,6 +416,14 @@ public final class MapModel extends Observable implements MapModelObservable {
         return true;
     }
 
+    /**
+     * Find a continent that can be assigned to a given territory.
+     * To that aim, this function looks at the neighbors of the given 
+     * territory and pick a random continent from them.
+     * 
+     * @param territory
+     * @return 
+     */
     public String getAvailableContinent(TerritoryModel territory) {
         List<TerritoryModel> neighbours = territory.getAdj();
         if (neighbours != null && !neighbours.isEmpty()) {
