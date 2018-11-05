@@ -451,6 +451,14 @@ public final class RiskModel extends Observable {
      */
     public boolean finishPhase() {
         if (this.getWinningPlayer() != null) {
+            this.players.clear();
+            addPlayerToPlayerList("Player 1", Color.red, true);
+            addPlayerToPlayerList("Player 2", Color.green, true);
+            addPlayerToPlayerList("Player 3", Color.blue, true);
+            this.currentPlayer = this.players.getFirst();
+            this.turn = 0;
+            this.phase = GamePhase.STARTUP;
+            
             return false;
         }
 
