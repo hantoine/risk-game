@@ -6,6 +6,7 @@
 package com.risk.views.editor;
 
 import com.risk.controllers.MapEditorController;
+import com.risk.models.ContinentModel;
 import com.risk.models.MapConfig;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
@@ -122,6 +123,10 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
         addMenuBar(editorController);
     }
 
+    /**
+     * Set background color of territory button to its continent background color
+     * @param target 
+     */
     public void setTerritoryColor(TerritoryModel target){
         String continentName = target.getContinentName();
         Color backgroundColor = this.continentsPanel.getColor(continentName);
@@ -412,10 +417,12 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
         
         switch (updateType) {
             case ADD_TERRITORY:
+                setTerritoryColor((TerritoryModel)((MapModel)object).getLastUpdate());
                 break;
             case REMOVE_TERRITORY:
                 break;
             case UPDATE_TERRITORY_NAME:
+                setTerritoryColor((TerritoryModel)((MapModel)object).getLastUpdate());
                 break;
             case UPDATE_TERRITORY_POS:
                 break;
@@ -447,7 +454,10 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
                 this.repaint();
 
                 break;
-            case UPDATE_CONTINENT:
+            case REMOVE_CONTINENT:
+                ((MapModel)object).getTerritories().stream().forEach((t)->{
+                    this.setTerritoryColor(t);
+                });
                 break;
         }
     }
