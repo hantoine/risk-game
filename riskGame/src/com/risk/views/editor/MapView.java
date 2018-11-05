@@ -6,6 +6,7 @@
 package com.risk.views.editor;
 
 import com.risk.controllers.MapEditorController;
+import com.risk.models.ContinentModel;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
 import com.risk.observable.MapModelObserver;
@@ -217,7 +218,7 @@ public class MapView extends JPanel implements Observer {
             countriesButtons.put(newName, territoryButton);
         }
         
-        ((MapEditorView)this.getParent().getParent().getParent().getParent()).setTerritoryColor(mapModel.getTerritoryByName(newName));
+        
 
         
     }
@@ -458,10 +459,6 @@ public class MapView extends JPanel implements Observer {
 
                 //add the missing territory to the view
                 this.addTerritory(target.getPositionX(), target.getPositionY(), target.getName());
-                
-                //get continent's color
-                ((MapEditorView)this.getParent().getParent().getParent().getParent()).setTerritoryColor(target);
-                
                 break;
             }
         }

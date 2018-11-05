@@ -55,8 +55,7 @@ public final class MapModel extends Observable {
 
     /**
      * Last element that have been updated.
-     * Territory or Continent
-     * Update only (not remove or insert)
+     * Territory or Continent (includes adding a new element).
      */
     public Object lastUpdatedElement;
 
@@ -410,6 +409,7 @@ public final class MapModel extends Observable {
         ContinentModel newContinent = new ContinentModel(continentName, continentBonus);
         getGraphContinents().put(continentName, newContinent);
 
+        this.lastUpdatedElement = newContinent;
         setChanged();
         notifyObservers(UpdateTypes.ADD_CONTINENT);
         return true;
@@ -428,7 +428,7 @@ public final class MapModel extends Observable {
         if (neighbours != null && !neighbours.isEmpty()) {
             return neighbours.get(0).getContinentName();
         } else {
-            return null;
+            return this.getGraphContinents().keySet().iterator().next();
         }
     }
 
@@ -502,7 +502,7 @@ public final class MapModel extends Observable {
         TerritoryModel newTerritory = new TerritoryModel(newName, posX, posY);
 
         //add it to a continent
-        String continentName = this.getGraphContinents().entrySet().iterator().next().getKey();
+        String continentName = this.getGraphContinents().keySet().iterator().next();
         newTerritory.setContinentName(continentName);
         this.getGraphContinents().get(continentName).addMember(newTerritory);
 
@@ -510,7 +510,7 @@ public final class MapModel extends Observable {
         this.getGraphTerritories().put(newName, newTerritory);
 
         //update views
-
+        this.lastUpdatedElement = newTerritory;
         setChanged();
         notifyObservers(UpdateTypes.ADD_TERRITORY);
         return true;
@@ -538,7 +538,7 @@ public final class MapModel extends Observable {
         this.getGraphTerritories().put(newName, newTerritory);
 
         //update views
-
+        this.lastUpdatedElement = newTerritory;
         setChanged();
         notifyObservers(UpdateTypes.ADD_TERRITORY);
         return true;
