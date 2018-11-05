@@ -154,7 +154,7 @@ public class MapEditorController {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (newMap.addContinent() == true) {
+            if (newMap.addDefaultContinent() == true) {
                 return;
             }
             JButton buttonClicked = (JButton) e.getSource();
