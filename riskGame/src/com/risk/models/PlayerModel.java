@@ -33,11 +33,11 @@ public abstract class PlayerModel extends Observable {
     /**
      * cardsOwned cards owned by a player
      */
-    private List<TerritoryModel> contriesOwned;
+    public List<TerritoryModel> contriesOwned;
     /**
      * continents owned by a player 
      */
-    private List<ContinentModel> continentsOwned;
+    public List<ContinentModel> continentsOwned;
     /**
      * hand of the player
      */
@@ -661,8 +661,10 @@ public abstract class PlayerModel extends Observable {
         addCountryOwned(this.getCurrentAttack().getDest());
         setConquered(true);
         this.setCurrentAttack(null);
-        game.checkForDeadPlayers();
-        game.attackEndValidations();
+        if(game!=null){
+            game.checkForDeadPlayers();
+            game.attackEndValidations();
+        }
         return 0;
     }
 
@@ -742,6 +744,9 @@ public abstract class PlayerModel extends Observable {
      * territories owned by this player
      */
     private void updateContinentsOwned() {
+        if (this.game == null) {
+            return;
+        }
         List<ContinentModel> newContinentsOwned;
         newContinentsOwned = this.game.getMap().getContinents().stream()
                 .filter((c) -> c.getMembers().stream()
