@@ -36,7 +36,9 @@ public class AttackMove extends Observable{
      * Number of dice selected by the attacked
      */
     private int diceAttacked;
-    
+    /**
+     * 
+     */
     private int attackDefense;
     /**
      * Constructor
@@ -114,6 +116,12 @@ public class AttackMove extends Observable{
         this.attacker.addNewLogEvent(getBattleLogMsg(looser1, looser2));
     }
 
+    /**
+     * 
+     * @param firstLooser
+     * @param secondLooser
+     * @return 
+     */
     private String getBattleLogMsg(String firstLooser, String secondLooser) {
         String logMessage = String.format(
                 "%s launch battle between %s and %s",

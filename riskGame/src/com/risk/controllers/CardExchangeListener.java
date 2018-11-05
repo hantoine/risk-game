@@ -19,8 +19,13 @@ import javax.swing.JOptionPane;
  * @author rebecca
  */
 public class CardExchangeListener extends MouseAdapter {
-
+    /**
+     * Model of the game
+     */
     RiskModel rm;
+    /**
+     * 
+     */
     GameController gc;
 
     /**

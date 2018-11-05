@@ -86,7 +86,33 @@ public class MenuListener extends MouseAdapter {
                 this.getPlayerList().addElement(this.getPlayerList().getNewPlayerName(), this.getPlayerList().getNewColor());
                 break;
             case "-":
+                minusButton(addPlayer);
+                break;
+            case "    ":
+                Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
+                if (this.getPlayerList().getColorUsed().contains(selectedColor)) {
+                    JOptionPane.showMessageDialog(null, "This color is already used");
+                } else {
+                    this.getPlayerList().getColorUsed().remove(addPlayer.getBackground());
+                    this.getPlayerList().getColorUsed().add(selectedColor);
+                    addPlayer.setBackground(selectedColor);
 
+                }
+                break;
+            case "PLAY":
+                playButton(addPlayer);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 
+     * @param addPlayer 
+     */
+    public void minusButton(JButton addPlayer){
+        
                 if ((this.getPlayerList().getPlayersArray().size()) <= 3) {
                     JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
                 } else {
@@ -107,37 +133,30 @@ public class MenuListener extends MouseAdapter {
                     }
 
                 }
-                break;
-            case "    ":
-                Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
-                if (this.getPlayerList().getColorUsed().contains(selectedColor)) {
-                    JOptionPane.showMessageDialog(null, "This color is already used");
-                } else {
-                    this.getPlayerList().getColorUsed().remove(addPlayer.getBackground());
-                    this.getPlayerList().getColorUsed().add(selectedColor);
-                    addPlayer.setBackground(selectedColor);
-
-                }
-                break;
-            case "PLAY":
-                NewGamePanel newGamePanel = this.getRiskView().getNewGamePanel();
+    }
+    /**
+     * 
+     * @param addPlayer 
+     */
+    public void playButton(JButton addPlayer){
+        NewGamePanel newGamePanel = this.getRiskView().getNewGamePanel();
                 String selectedPath = newGamePanel.getSelectFileTextField().getText();
 
                 if (selectedPath.equals("")) {
                     JOptionPane.showMessageDialog(null, "You have not selected a map");
-                    break;
+                    return;
                 }
                 MapModel map = new MapModel();
                 int resultReadingValidation = MapFileManagement.createBoard(selectedPath, map);
                 if (resultReadingValidation != 0) {
                     JOptionPane.showMessageDialog(null, MapFileManagement.readingError(resultReadingValidation));
-                    break;
+                    return;
                 }
                 getRiskModel().setMap(map);
 
                 if (!getRiskModel().getMap().isValid()) {
                     JOptionPane.showMessageDialog(null, MapFileManagement.readingError(-7));
-                    break;
+                    return;
                 }
 
                 LinkedList<PlayerPanel> listPlayerPanels = newGamePanel.getPlayersPanel().getPlayersArray();
@@ -157,17 +176,12 @@ public class MenuListener extends MouseAdapter {
 
                 if (!this.getRiskModel().validateCountries()) {
                     JOptionPane.showMessageDialog(null, "No enough countries in this map for the number of players. Select another map.");
-                    break;
+                    return;
                 }
                 this.getRiskView().closeMenu();
                 this.getRiskController().playGame();
 
-                break;
-            default:
-                break;
-        }
     }
-
     /**
      * Getter for the riskModel attribute
      *
