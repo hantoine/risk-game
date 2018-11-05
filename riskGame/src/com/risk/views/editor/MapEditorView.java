@@ -108,7 +108,7 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
         this.continentsPanel = new ContinentListPanel(120, 600, editorController, initMapModel.getContinentList());
 
         //panel with buttons to select a mode
-        String[] toolsList = {"Add Territory", "Edit Territory", "Create Link", "Remove Link"};
+        String[] toolsList = {"Add Territory", "Edit Territory", "Create Link", "Remove Link", "Del Territory"};
         this.mapPanel.setCurrentTool(Tools.CREATE);
         this.toolsPanel = new ToolsListPanel(120, 600, toolsList, getToolButtonListener());
 
@@ -363,6 +363,9 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
                 case "Remove Link":
                     this.mapPanel.setCurrentTool(Tools.UNLINK);
                     break;
+                case "Del Territory":
+                    this.mapPanel.setCurrentTool(Tools.REMOVE);
+                    break;
             }
         }
     }
@@ -394,6 +397,7 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
     @Override
     public void update(Observable object, Object arg) {
         UpdateTypes updateType = (UpdateTypes)arg;
+        
         switch (updateType) {
             case ADD_TERRITORY:
                 break;
@@ -404,20 +408,20 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
             case UPDATE_TERRITORY_POS:
                 break;
             case UPDATE_BACKGROUND_IMAGE:
-                if (object == null) {
+                BufferedImage backgroundImage = (BufferedImage) ((MapModel)object).getImage();
+
+                if (backgroundImage == null) {
                     this.mapPanel.setImage(null);
                     break;
                 }
-
-                BufferedImage backgroundImage = (BufferedImage) ((MapModel)object).getImage();
-
-                //get current sizes of components
+                
+                //get current sizes of map panel and its parent
                 int width = backgroundImage.getWidth();
                 int height = backgroundImage.getHeight();
                 Dimension mapPanelSize = this.mapPanel.getSize();
                 Dimension parentSize = this.getSize();
 
-                //compute new size to adapt to the image
+                //compute new size to adapt the size of the map panel and its parent to the size of the new image
                 double difWidth = width - mapPanelSize.getWidth();
                 double difHeight = height - mapPanelSize.getHeight();
                 parentSize.width += difWidth;
@@ -426,6 +430,8 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
                 //set new size and set new background image
                 this.setSize(parentSize);
                 this.mapPanel.setImage(backgroundImage);
+                
+                //draw the new background
                 this.repaint();
 
                 break;
