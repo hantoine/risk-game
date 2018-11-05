@@ -211,11 +211,11 @@ public class MapEditorController {
         @Override
         public void mouseReleased(MouseEvent e) {
 
-            //get object we clicked on (jlabel)
+            //get object we clicked on (JButton)
             Object sourceObj = e.getSource();
 
-            //if JLabel then process
-            if (!(sourceObj instanceof JLabel)){
+            //if JButton then process
+            if (!(sourceObj instanceof JButton)){
                 return;
             }
 
@@ -229,12 +229,12 @@ public class MapEditorController {
          * @param sourceObj object that has been clicked on
          */
         private void releaseHandling(MouseEvent e, Object sourceObj) {
-            JLabel clickedLabel = (JLabel) sourceObj;
+            JButton clickedLabel = (JButton) sourceObj;
             ContinentListPanel clickedPanel
                     = (ContinentListPanel) clickedLabel.getParent();
 
             if (SwingUtilities.isRightMouseButton(e)) {
-                String continentName = ((JLabel) sourceObj).getText();
+                String continentName = ((JButton) sourceObj).getText();
                 boolean success = this.newMap.removeContinent(continentName);
                 if (!success) {
                     clickedPanel.showError("Any map needs at least one continent.");
