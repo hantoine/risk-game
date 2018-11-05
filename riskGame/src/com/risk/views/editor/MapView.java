@@ -275,12 +275,19 @@ public class MapView extends JPanel implements Observer {
             neighborsInModel.add(neighborModel.getName());
         }
 
-        //search for the link to delete
+        //search for the link to delete:
+        
+        //for all neighbors in the view
         for (String viewNeighbor : neighborsInView) {
             if (neighborsInModel.contains(viewNeighbor)) {
             } else {
+                //if the neighbor is not in the model, remove it:
+                
+                //get the two possible names of the link in the view
                 String possibleName1 = viewNeighbor + ";" + nameOfUpdatedTerritory;
                 String possibleName2 = nameOfUpdatedTerritory + ";" + viewNeighbor;
+                
+                //if one does exist, remove it
                 if (this.links.keySet().contains(possibleName1)) {
                     links.remove(possibleName1);
                 } else if (this.links.keySet().contains(possibleName2)) {
@@ -303,22 +310,7 @@ public class MapView extends JPanel implements Observer {
         String nameOfUpdatedTerritory = ((TerritoryModel) mapModel.getLastUpdate()).getName();
 
         //get neigbors of nameOfUpdatedTerritory in the view:
-        LinkedList<String> neighborsInView = null;
-
-        //iterate over all links
-        Iterator linkIt = this.links.keySet().iterator();
-        for (int i = 0; i < this.links.keySet().size(); i++) {
-
-            //get both names
-            String existingLinkName = (String) linkIt.next();
-            String[] existingNeighbours = existingLinkName.split(";");
-
-            if (existingNeighbours[0].equals(nameOfUpdatedTerritory)) {
-                neighborsInView.add(existingNeighbours[1]);
-            } else if (existingNeighbours[1].equals(nameOfUpdatedTerritory)) {
-                neighborsInView.add(existingNeighbours[0]);
-            }
-        }
+        LinkedList<String> neighborsInView = getNeighborsOfTerritory(nameOfUpdatedTerritory);
 
         //get neighbors of nameOfUpdatedTerritory in the model
         List<TerritoryModel> neighborsModelsInModel = ((TerritoryModel) mapModel.getLastUpdate()).getAdj();
@@ -327,25 +319,40 @@ public class MapView extends JPanel implements Observer {
             neighborsInModel.add(neighborModel.getName());
         }
 
-        //search for the link to add 
+        //search for the link to add:
+        
+        //for all neighbors in the model
         String target = null;
         for (String modelNeighbor : neighborsInModel) {
             if (neighborsInView.contains(modelNeighbor)) {
             } else {
+                //if the neighbor is not in the view, add it
                 target = modelNeighbor;
             }
         }
 
+        //if there is no difference found between the model and the view, do nothing
         if (target == null) {
             return;
         }
 
-        //add new link
-        String[] linkNames = {nameOfUpdatedTerritory, target};
+        //else, actually add the new neighbor
+        addLink(nameOfUpdatedTerritory, target);
+    }
+
+    /**
+     * Add a new link between two country buttons
+     * @param territory1
+     * @param territory2 
+     */
+    private void addLink(String territory1, String territory2){
+        String[] linkNames = {territory1, territory2};
+        
+        //get the two buttons corresponding to the two countries
         CountryButton2 firstItem = this.countriesButtons.get(linkNames[0]);
         CountryButton2 secondItem = this.countriesButtons.get(linkNames[1]);
 
-        //create line to be drawn
+        //create line to be drawn given the positions of the buttons
         Line2D newLink = new Line2D.Double();
         newLink.setLine(firstItem.getBounds().x + ((double) this.buttonsDims.width / 2.),
                 firstItem.getBounds().y + ((double) this.buttonsDims.height / 2.),
@@ -358,7 +365,7 @@ public class MapView extends JPanel implements Observer {
         //draw line
         repaint();
     }
-
+    
     /**
      * Update method of the Observer pattern
      *
