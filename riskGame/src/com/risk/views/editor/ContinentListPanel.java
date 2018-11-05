@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -183,12 +184,12 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
     public void update(Observable object, Object arg) {
         UpdateTypes updateType = (UpdateTypes)arg;
         
+        Collection<Component> componentsInView = this.items.values();
+        List<String> continentsInModel = ((MapModel)object).getContinentList();
+        LinkedList<String> continentsInView = new LinkedList();
         
         switch (updateType) {
             case ADD_CONTINENT:
-                Collection<Component> componentsInView = this.items.values();
-                List<String> continentsInModel = ((MapModel)object).getContinentList();
-                LinkedList<String> continentsInView = new LinkedList();
                 
                 //get list of names of continents in the view
                 for(Component component: componentsInView){
@@ -204,13 +205,25 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
                         break;
                     }
                 }
-                this.addContinent(name);
                 break;
                 
             case REMOVE_CONTINENT:
-                continentName = (String) object;
-                this.removeContinent(continentName);
+                //get list of names of continents in the view
+                for(Component component: componentsInView){
+                    continentsInView.add(component.getName());
+                }
+                
+                //search for the continent which is in the view and not in the model
+                for(String name : continentsInView){
+                    if(!continentsInModel.contains(name)){
+                        
+                        //remove the missing continent from the view
+                        this.removeContinent(name);
+                        break;
+                    }
+                }
                 break;
+                
             case UPDATE_CONTINENT:
                 Map<String, String> data = (Map<String, String>) object;
                 String formerName = data.get("name");
