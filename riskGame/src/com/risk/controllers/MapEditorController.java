@@ -610,7 +610,7 @@ public class MapEditorController {
             if (SwingUtilities.isRightMouseButton(e)) {
                 Object sourceObj = e.getSource();
                 String className = sourceObj.getClass().getName();
-                if (className == "com.risk.mapeditor.CountryButton2") {
+                if (className.equals("com.risk.mapeditor.CountryButton2")) {
                     String countryName = ((CountryButton2) sourceObj).getName();
                     this.newMap.removeTerritory(countryName);
                 }
