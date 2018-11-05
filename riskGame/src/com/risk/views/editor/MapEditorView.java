@@ -396,7 +396,11 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
      */
     @Override
     public void update(Observable object, Object arg) {
+        if(arg == null || !(arg instanceof UpdateTypes))
+            return;
+        
         UpdateTypes updateType = (UpdateTypes)arg;
+        
         
         switch (updateType) {
             case ADD_TERRITORY:

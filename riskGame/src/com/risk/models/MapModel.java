@@ -308,7 +308,7 @@ public final class MapModel extends Observable {
         }
     }
 
-    //############################################## methods of editable map model :
+    
     /**
      * Add an edge between two vertices (territories).
      *
@@ -327,11 +327,9 @@ public final class MapModel extends Observable {
         //add neighbours
         this.getGraphTerritories().get(territoryName).addNeighbour(neighbourModel);
         this.getGraphTerritories().get(neighbour).addNeighbour(territoryModel);
-
-        String[] newLink = {territoryName, neighbour};
         
+        //update view
         this.lastUpdatedElement = this.getTerritoryByName(territoryName);
-        
         setChanged();
         notifyObservers(UpdateTypes.ADD_LINK);
     }
@@ -352,10 +350,7 @@ public final class MapModel extends Observable {
         this.getGraphTerritories().get(neighbour).removeNeighbour(territoryModel);
 
         //remove from the view
-        String[] link = {territoryName, neighbour};
-        
         this.lastUpdatedElement = this.getTerritoryByName(territoryName);
-
         setChanged();
         notifyObservers(UpdateTypes.REMOVE_LINK);
     }
@@ -451,10 +446,7 @@ public final class MapModel extends Observable {
         for (String continentName : continentList) {
             this.removeContinent(continentName);
         }
-
-        //add first continent
-        this.addDefaultContinent();
-
+        
         //reset map configuration
         this.setScrollConfig("none");
         this.setWarnConfig(false);
@@ -470,9 +462,7 @@ public final class MapModel extends Observable {
      * @return return if the continent is removed or not
      */
     public boolean removeContinent(String continentName) {
-        if(this.graphContinents.size() == 1)
-            return false;
-        
+              
         //get continent to delete
         ContinentModel continentToDel = this.getGraphContinents().get(continentName);
         if (continentToDel == null) {
@@ -489,6 +479,10 @@ public final class MapModel extends Observable {
         int nbContinents = this.getContinentList().size();
         System.out.println("nb continents : " + Integer.toString(nbContinents));
 
+        if(this.graphContinents.isEmpty()){
+            addDefaultContinent();
+        }
+        
         setChanged();
         notifyObservers(UpdateTypes.REMOVE_CONTINENT);
         return true;
@@ -567,9 +561,7 @@ public final class MapModel extends Observable {
         LinkedList<TerritoryModel> neighbours = new LinkedList<>(territoryToDel.getAdj());
         for (TerritoryModel neighbour : neighbours) {
             neighbour.removeNeighbour(territoryToDel);
-
-            //remove from the view
-            String[] link = {territoryToDel.getName(), neighbour.getName()};
+            this.removeLink(neighbour.getName(), territoryToDel.getName());
         }
 
         //delete the territory
@@ -770,7 +762,7 @@ public final class MapModel extends Observable {
      * @param scrollConfig the string of the config
      */
     public void setScrollConfig(String scrollConfig) {
-        this.getConfigurationInfo().setScroll(scrollConfig);
+        this.mapConfig.setScroll(scrollConfig);
 
         setChanged();
         notifyObservers();
