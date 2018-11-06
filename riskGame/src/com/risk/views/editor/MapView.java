@@ -6,21 +6,27 @@
 package com.risk.views.editor;
 
 import com.risk.controllers.MapEditorController;
+import com.risk.models.ContinentModel;
+import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
 import com.risk.observable.MapModelObserver;
 import com.risk.observable.UpdateTypes;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,7 +37,7 @@ import javax.swing.JPanel;
  * @author timot
  * @see MapModelObserver
  */
-public class MapView extends JPanel implements MapModelObserver {
+public class MapView extends JPanel implements Observer {
 
     /**
      * Background image of the map being edited.
@@ -183,17 +189,31 @@ public class MapView extends JPanel implements MapModelObserver {
      * Update the name of a territory in response to a notification from
      * observable model.
      *
-     * @param object New name of the territory
+     * @param mapModel
+     * @param territoriesInModel
+     * @param territoriesInView
+     * @param newName
      */
-    public void updateTerritoryName(Object object) {
+    public void updateTerritoryName(MapModel mapModel, List territoriesInModel, List<String> territoriesInView, String newName) {
+        //search for the territory which is in the view and not in the model 
+        //(because the territory in the model have been modified already)
+        String formerName = null;
+        for (String name : territoriesInView) {
+            if (!territoriesInModel.contains(name)) {
+                formerName = name;
+            }
+        }
+        
         CountryButton2 territoryButton;
-        Map<String, String> data = (Map<String, String>) object;
-        String formerName = data.get("name");
-        String newName = data.get("newName");
-
-        territoryButton = this.countriesButtons.remove(formerName);
-        if (territoryButton != null) {
+        
+        if(formerName != null){
+            //pop territory button to update
+            territoryButton = this.countriesButtons.remove(formerName);
+            
+            //set new name
             territoryButton.setName(newName);
+            
+            //push the updated button back into the map
             countriesButtons.put(newName, territoryButton);
         }
     }
@@ -202,64 +222,144 @@ public class MapView extends JPanel implements MapModelObserver {
      * Update the position of a button representing a territory in response to a
      * notification from observable model.
      *
-     * @param object model of the territory to get its coordinates.
+     * @param mapModel
      */
-    public void updateTerritoryPos(Object object) {
-        CountryButton2 territoryButton;
-        TerritoryModel territoryModel = (TerritoryModel) object;
-        territoryButton = this.countriesButtons.get(territoryModel.getName());
-        territoryButton.setPosition(territoryModel.getPositionX(), territoryModel.getPositionY());
+    public void updateTerritoryPos(MapModel mapModel) {
+        TerritoryModel updatedTerritory = (TerritoryModel) mapModel.getLastUpdate();
+        CountryButton2 territoryButtonToUpdate;
+        territoryButtonToUpdate = this.countriesButtons.get(updatedTerritory.getName());
+        territoryButtonToUpdate.setPosition(updatedTerritory.getPositionX(), updatedTerritory.getPositionY());
     }
 
+    /**
+     * Returns the list of neighbors of a given territory given its name
+     * @param nameOfUpdatedTerritory
+     * @return the list of the neighbors (list of Strings)
+     */
+    private LinkedList<String> getNeighborsOfTerritory(String nameOfUpdatedTerritory){
+        //initialize the list
+        LinkedList<String> neighborsInView = new LinkedList();
+        
+        //get iterator on the links
+        Iterator linkIt = this.links.keySet().iterator(); 
+        
+        //iterate over all links using iterator
+        for (int i = 0; i < this.links.keySet().size(); i++) {
+            
+            //get names of the two territories of the current link
+            String existingLinkName = (String) linkIt.next();
+            String[] existingNeighbours = existingLinkName.split(";");
+
+            //if one name is the name of the nameOfUpdatedTerritory we add the other name to the list of neighbors of nameOfUpdatedTerritory
+            if (existingNeighbours[0].equals(nameOfUpdatedTerritory)) {
+                neighborsInView.add(existingNeighbours[1]);
+            } else if (existingNeighbours[1].equals(nameOfUpdatedTerritory)) {
+                neighborsInView.add(existingNeighbours[0]);
+            }
+        }
+        
+        //return the resulting list
+        return neighborsInView;
+    }
+    
     /**
      * Remove a link between two territories in response to a notification from
      * observable model.
      *
-     * @param object names of the two countries that are linked.
+     * @param mapModel
      */
-    public void removeLink(Object object) {
-        String name1;
-        String name2;
-        String[] neighbours = (String[]) object;
-        String linkName = "";
+    public void updateRemoveLink(MapModel mapModel) {
+        String nameOfUpdatedTerritory = ((TerritoryModel) mapModel.getLastUpdate()).getName();
 
-        Iterator linkIt = this.links.keySet().iterator();
-        for (int i = 0; i < this.links.keySet().size(); i++) {
-            String existingLinkName = (String) linkIt.next();
-            String[] existingNeighbours = existingLinkName.split(";");
-            if (existingNeighbours.length == 2) {
-                name1 = existingNeighbours[0];
-                name2 = existingNeighbours[1];
-                if (neighbours[0].equals(name1) && neighbours[1].equals(name2) || neighbours[0].equals(name2) && neighbours[1].equals(name1)) {
-                    linkName = existingLinkName;
-                    break;
+        //get neigbors of nameOfUpdatedTerritory in the view
+        LinkedList<String> neighborsInView = getNeighborsOfTerritory(nameOfUpdatedTerritory);
+
+        //get neighbors of nameOfUpdatedTerritory in the model
+        List<TerritoryModel> neighborsModelsInModel = ((TerritoryModel) mapModel.getLastUpdate()).getAdj();
+        LinkedList<String> neighborsInModel = new LinkedList();
+        for (TerritoryModel neighborModel : neighborsModelsInModel) {
+            neighborsInModel.add(neighborModel.getName());
+        }
+
+        //search for the link to delete:
+        
+        //for all neighbors in the view
+        for (String viewNeighbor : neighborsInView) {
+            if (neighborsInModel.contains(viewNeighbor)) {
+            } else {
+                //if the neighbor is not in the model, remove it:
+                
+                //get the two possible names of the link in the view
+                String possibleName1 = viewNeighbor + ";" + nameOfUpdatedTerritory;
+                String possibleName2 = nameOfUpdatedTerritory + ";" + viewNeighbor;
+                
+                //if one does exist, remove it
+                if (this.links.keySet().contains(possibleName1)) {
+                    links.remove(possibleName1);
+                } 
+                if (this.links.keySet().contains(possibleName2)) {
+                    links.remove(possibleName2);
                 }
             }
         }
 
-        //remove from list of links
-        if (!linkName.equals("")) {
-            links.remove(linkName);
-            //undraw
-            repaint();
-        }
+        //undraw
+        repaint();
     }
 
     /**
      * Add a new link on the map between two territories in response to a
      * notification from observable model.
      *
-     * @param object Names of the territories to be linked.
+     * @param mapModel
      */
-    public void addLink(Object object) {
-        String[] linkNames = (String[]) object;
-        String name1;
-        String name2;
+    public void updateAddLink(MapModel mapModel) {
+        String nameOfUpdatedTerritory = ((TerritoryModel) mapModel.getLastUpdate()).getName();
 
+        //get neigbors of nameOfUpdatedTerritory in the view:
+        LinkedList<String> neighborsInView = getNeighborsOfTerritory(nameOfUpdatedTerritory);
+
+        //get neighbors of nameOfUpdatedTerritory in the model
+        List<TerritoryModel> neighborsModelsInModel = ((TerritoryModel) mapModel.getLastUpdate()).getAdj();
+        LinkedList<String> neighborsInModel = new LinkedList();
+        for (TerritoryModel neighborModel : neighborsModelsInModel) {
+            neighborsInModel.add(neighborModel.getName());
+        }
+
+        //search for the link to add:
+        
+        //for all neighbors in the model
+        String target = null;
+        for (String modelNeighbor : neighborsInModel) {
+            if (neighborsInView.contains(modelNeighbor)) {
+            } else {
+                //if the neighbor is not in the view, add it
+                target = modelNeighbor;
+            }
+        }
+
+        //if there is no difference found between the model and the view, do nothing
+        if (target == null) {
+            return;
+        }
+
+        //else, actually add the new neighbor
+        addLink(nameOfUpdatedTerritory, target);
+    }
+
+    /**
+     * Add a new link between two country buttons
+     * @param territory1
+     * @param territory2 
+     */
+    private void addLink(String territory1, String territory2){
+        String[] linkNames = {territory1, territory2};
+        
+        //get the two buttons corresponding to the two countries
         CountryButton2 firstItem = this.countriesButtons.get(linkNames[0]);
         CountryButton2 secondItem = this.countriesButtons.get(linkNames[1]);
 
-        //create line to be drawn
+        //create line to be drawn given the positions of the buttons
         Line2D newLink = new Line2D.Double();
         newLink.setLine(firstItem.getBounds().x + ((double) this.buttonsDims.width / 2.),
                 firstItem.getBounds().y + ((double) this.buttonsDims.height / 2.),
@@ -272,45 +372,90 @@ public class MapView extends JPanel implements MapModelObserver {
         //draw line
         repaint();
     }
-
+    
     /**
-     * Function of the observer interface that update the view in response to an
-     * update of the model.
+     * Update method of the Observer pattern
      *
-     * @param updateType type of the change that has been performed on the
-     * model.
-     * @param object Can be different regarding the update type.
+     * @param object
+     * @param arg
      */
     @Override
-    public void update(UpdateTypes updateType, Object object) {
-        String territoryName;
-        TerritoryModel territoryModel;
+    public void update(Observable object, Object arg) {
+        if(arg == null || !(arg instanceof UpdateTypes))
+            return;
+        
+        //get update type
+        UpdateTypes updateType = (UpdateTypes) arg;
+
+        //get observable model
+        MapModel mapModel = (MapModel) object;
+
+        //get list of names of territories in the view
+        LinkedList<String> territoriesInView = new LinkedList();
+        territoriesInView.addAll(this.countriesButtons.keySet());
+
+        //get list of names of territories in the model
+        List<String> territoriesInModel = (mapModel).getTerritoryList();
 
         switch (updateType) {
             case ADD_TERRITORY:
-                TerritoryModel newTerritory = (TerritoryModel) object;
-                addTerritory(newTerritory.getPositionX(), newTerritory.getPositionY(), newTerritory.getName());
+                updateAddTerritory(mapModel, territoriesInModel, territoriesInView);
                 break;
             case REMOVE_TERRITORY:
-                territoryName = (String) object;
-                removeTerritory(territoryName);
+                updateRemoveTerritory(territoriesInModel, territoriesInView);
                 break;
             case UPDATE_TERRITORY_NAME:
-                updateTerritoryName(object);
+                updateTerritoryName(mapModel, territoriesInModel, territoriesInView, ((TerritoryModel) mapModel.getLastUpdate()).getName());
                 break;
             case UPDATE_TERRITORY_POS:
-                updateTerritoryPos(object);
+                updateTerritoryPos(mapModel);
                 break;
             case UPDATE_BACKGROUND_IMAGE:
                 break;
             case UPDATE_CONTINENT:
                 break;
             case REMOVE_LINK:
-                removeLink(object);
+                updateRemoveLink(mapModel);
                 break;
             case ADD_LINK:
-                addLink(object);
+                updateAddLink(mapModel);
                 break;
+        }
+    }
+
+    /**
+     * Remove a territory in the view according to the update of the model
+     * @param territoriesInModel
+     * @param territoriesInView 
+     */
+    private void updateRemoveTerritory(List<String> territoriesInModel, List<String> territoriesInView) {
+        //search for the territory which is in the view and not in the model
+        for (String name : territoriesInView) {
+            if (!territoriesInModel.contains(name)) {
+                removeTerritory(name);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Add a territory in the view according to the update of the model
+     * @param mapModel
+     * @param territoriesInModel
+     * @param territoriesInView 
+     */
+    private void updateAddTerritory(MapModel mapModel, List<String> territoriesInModel, List<String> territoriesInView) {
+        //search for the territory which is in the model and not in the view
+        for (String name : territoriesInModel) {
+            if (!territoriesInView.contains(name)) {
+
+                //get target territory model to add
+                TerritoryModel target = mapModel.getTerritoryByName(name);
+
+                //add the missing territory to the view
+                this.addTerritory(target.getPositionX(), target.getPositionY(), target.getName());
+                break;
+            }
         }
     }
 
@@ -352,18 +497,18 @@ public class MapView extends JPanel implements MapModelObserver {
 
     /**
      * When this tool is selected, opens a dialog to ask the user to add a
-     * neighbour to a given territory he/she selected.
+     * neighbor to a given territory he/she selected.
      *
-     * @param territoryArray List of the territories that can be neighbours.
+     * @param territoryArray List of the territories that can be neighbors.
      * @param territoryName name of the territory that is modified.
-     * @return the name of the new neighbour that has been selected by the user.
+     * @return the name of the new neighbor that has been selected by the user.
      */
     public String createLink(String[] territoryArray, String territoryName) {
 
         String boxName = "Add link to " + territoryName;
         String neighbourName = (String) JOptionPane.showInputDialog(
                 null,
-                "Select a new neighbour for " + territoryName,
+                "Select a new neighbor for " + territoryName,
                 boxName,
                 JOptionPane.PLAIN_MESSAGE,
                 null,
@@ -393,8 +538,8 @@ public class MapView extends JPanel implements MapModelObserver {
      * Tool of the map panel that allows the user to remove a link between two
      * territories.
      *
-     * @param neighbourStringList the string list of the neighbour
-     * @return the name of the neighbour that the user wants to remove.
+     * @param neighbourStringList the string list of the neighbor
+     * @return the name of the neighbor that the user wants to remove.
      */
     public String removeLink(LinkedList<String> neighbourStringList) {
         String boxName = "Remove link";
@@ -411,7 +556,7 @@ public class MapView extends JPanel implements MapModelObserver {
     }
 
     /**
-     * Show a popup error to the user to inform of an error
+     * Show a pop-up error to the user to inform of an error
      *
      * @param errorMessage message to be displayed into the dialog.
      */

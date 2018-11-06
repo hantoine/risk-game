@@ -72,9 +72,9 @@ public final class RiskController {
         MapEditorController editorController = new MapEditorController(newMap);
         this.mapEditor = new MapEditorView(1000, 600, editorController, newMap);
         this.mapEditor.setVisible(true);
-        newMap.addObserverCustom(mapEditor);
-        newMap.addObserverCustom(mapEditor.getMapView());
-        newMap.addObserverCustom(mapEditor.getContinentListPanel());
+        newMap.addObserver(mapEditor);
+        newMap.addObserver(mapEditor.getMapView());
+        newMap.addObserver(mapEditor.getContinentListPanel());
     }
 
     /**

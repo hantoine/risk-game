@@ -14,5 +14,6 @@ public enum Tools {
     CREATE,
     EDIT,
     LINK,
-    UNLINK;
+    UNLINK,
+    REMOVE;
 }
