@@ -67,6 +67,13 @@ public class HandModel extends Observable {
     }
 
     /**
+     * Adds a card to the player hand
+     * @param card the card to add
+     */
+    public void addCardToPlayerHand(CardModel card){
+        cards.add(card);
+    }
+    /**
      * Returns the number of cards in this hand
      *
      * @return the number of cards in this hand
