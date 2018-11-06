@@ -90,9 +90,8 @@ public final class RiskController {
      * after setting the players and board information
      */
     void playGame() {
-        this.modelRisk.initializePlayersArmies();
-        this.modelRisk.assignCoutriesToPlayers();
         this.viewRisk.observeModel(modelRisk);
+        this.modelRisk.startGame();
     }
 
     /**

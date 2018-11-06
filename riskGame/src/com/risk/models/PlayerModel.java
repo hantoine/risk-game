@@ -9,7 +9,10 @@ import java.awt.Color;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Observable;
+import java.util.stream.Collectors;
 
 /**
  * It represents a Player in the game It is the parent of HumanPlayerModel and
@@ -21,22 +24,47 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * name the name of the player color the color of the player contriesOwned
-     * countries owned by a player cardsOwned cards owned by a player
-     * numArmiesAvailable the number of armies available to place returnedCards
-     * the number of cards that have been returned game the game in which this
-     * player belongs to currentFortificationMove the current movement in the
-     * fortification phase
      */
     private String name;
+    /**
+     * color of the player
+     */
     private Color color;
-    private Collection<TerritoryModel> contriesOwned;
-    private Collection<ContinentModel> continentsOwned;
+    /**
+     * cardsOwned cards owned by a player
+     */
+    private List<TerritoryModel> contriesOwned;
+    /**
+     * continents owned by a player
+     */
+    private List<ContinentModel> continentsOwned;
+    /**
+     * hand of the player
+     */
     private HandModel hand;
+    /**
+     * The number of armies available to place returnedCards
+     */
     private int numArmiesAvailable;
+    /**
+     * the number of cards that have been returned game the game in which this
+     */
     private int returnedCards;
+    /**
+     * the model of the game
+     */
     protected RiskModel game;
+    /**
+     * the current movement in the fortification phase
+     */
     private FortificationMove currentFortificationMove;
+    /**
+     * The current attack in the attack phase
+     */
     private AttackMove currentAttack;
+    /**
+     * the current player
+     */
     private boolean currentPlayer;
 
     /**
@@ -133,8 +161,15 @@ public abstract class PlayerModel extends Observable {
         this.currentPlayer = currentPlayer;
         this.hand.setCurrent(currentPlayer);
 
-        setChanged();
-        notifyObservers();
+        if (currentPlayer) {
+            addNewLogEvent(String.format(
+                    "%s starts its turn",
+                    getName()
+            ));
+        } else {
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -174,8 +209,8 @@ public abstract class PlayerModel extends Observable {
      *
      * @return the contriesOwned
      */
-    public Collection<TerritoryModel> getContriesOwned() {
-        return Collections.unmodifiableCollection(this.contriesOwned);
+    public List<TerritoryModel> getContriesOwned() {
+        return Collections.unmodifiableList(this.contriesOwned);
     }
 
     public boolean checkOwnTerritory(TerritoryModel territory) {
@@ -218,6 +253,8 @@ public abstract class PlayerModel extends Observable {
             c.setOwner(this);
         });
 
+        updateContinentsOwned();
+
         setChanged();
         notifyObservers();
     }
@@ -234,6 +271,8 @@ public abstract class PlayerModel extends Observable {
         this.contriesOwned.add(countryOwned);
         countryOwned.setOwner(this);
 
+        updateContinentsOwned();
+
         setChanged();
         notifyObservers();
     }
@@ -246,6 +285,8 @@ public abstract class PlayerModel extends Observable {
     void removeCountryOwned(TerritoryModel countryOwned) {
         this.contriesOwned.remove(countryOwned);
         countryOwned.setOwner(this);
+
+        updateContinentsOwned();
 
         setChanged();
         notifyObservers();
@@ -265,7 +306,7 @@ public abstract class PlayerModel extends Observable {
      *
      * @param continentsOwned the continentsOwned to set
      */
-    void setContinentsOwned(Collection<ContinentModel> continentsOwned) {
+    void setContinentsOwned(List<ContinentModel> continentsOwned) {
         this.continentsOwned = continentsOwned;
 
         setChanged();
@@ -302,7 +343,7 @@ public abstract class PlayerModel extends Observable {
      *
      * @param numArmies the numArmies to set
      */
-    private void setNumArmiesAvailable(int numArmies) {
+    void setNumArmiesAvailable(int numArmies) {
         this.numArmiesAvailable = numArmies;
 
         setChanged();
@@ -333,28 +374,24 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     * Initialize the number of initial armies of this player depending on the
+     * Get the number of initial armies players should get depending on the
      * number of players in the game
      *
      * @param nbPlayers number of players in the game
+     * @return number of initial armies
      */
-    void initializeArmies(int nbPlayers) {
+    static int getNbInitialArmies(int nbPlayers) {
         switch (nbPlayers) {
             case 2:
-                this.setNumArmiesAvailable(40);
-                break;
+                return 40;
             case 3:
-                this.setNumArmiesAvailable(3);
-                break;
+                return 35;
             case 4:
-                this.setNumArmiesAvailable(30);
-                break;
+                return 30;
             case 5:
-                this.setNumArmiesAvailable(25);
-                break;
+                return 25;
             case 6:
-                this.setNumArmiesAvailable(20);
-                break;
+                return 20;
             default:
                 throw new IllegalArgumentException("Invalid number of players");
         }
@@ -365,7 +402,13 @@ public abstract class PlayerModel extends Observable {
      *
      */
     void assignNewArmies() {
-        this.setNumArmiesAvailable(this.armiesAssignation());
+        int newArmies = this.armiesAssignation();
+        this.setNumArmiesAvailable(newArmies);
+        addNewLogEvent(String.format(
+                "%s receives %d new armies",
+                getName(),
+                newArmies
+        ));
     }
 
     /**
@@ -415,7 +458,7 @@ public abstract class PlayerModel extends Observable {
      *
      * @return Total number of armies owned by this player
      */
-    public int getNumArmiesOwned() {
+    public int getNbArmiesOwned() {
         int numArmiesDeployed = this.contriesOwned.stream()
                 .mapToInt((country) -> country.getNumArmies()).sum();
 
@@ -489,12 +532,18 @@ public abstract class PlayerModel extends Observable {
      */
     void addCardToPlayerHand() {
         HandModel handCurrentPlayer = this.getHand();
-        CardModel card = this.game.getDeck().getLast();
-        handCurrentPlayer.getCardsList().add(card);
-        this.game.getDeck().removeLast();
+        try {
+            CardModel card = this.game.getDeck().getLast();
+            handCurrentPlayer.getCardsList().add(card);
+            this.game.getDeck().removeLast();
 
-        this.setChanged();
-        this.notifyObservers();
+            addNewLogEvent(String.format(
+                    "%s receives a new card",
+                    getName()
+            ));
+        } catch (NoSuchElementException ex) {
+            System.out.println("No card left in deck");
+        }
     }
 
     /**
@@ -509,7 +558,8 @@ public abstract class PlayerModel extends Observable {
     /**
      * Setter of the currentFortificationMove attribute
      *
-     * @param currentFortificationMove the current move
+     * @param src source territory
+     * @param dest destiny of the fortification move
      */
     void setCurrentFortificationMove(TerritoryModel src, TerritoryModel dest) {
         this.currentFortificationMove = new FortificationMove(src, dest);
@@ -557,43 +607,80 @@ public abstract class PlayerModel extends Observable {
      * The value -1 correspond to the special mode in which battles are made
      * until one of the territory has no more armies
      *
-     * @param dice the number of dice to use to perform the attack
+     * @param diceAttack number of dices selected by the attacker
+     * @param diceAttacked number of dices selected by the attacked player
      */
-    public void performCurrentAttack(int dice) {
+    public void performCurrentAttack(int diceAttack, int diceAttacked) {
         if (this.getCurrentAttack() == null) {
             return;
         }
 
-        this.getCurrentAttack().perform(dice);
+        this.getCurrentAttack().perform(diceAttack, diceAttacked);
 
         /*
         when the battle is finished if there is still armies on the attacked
         territory, then this attack is terminated. If not the the attacked
         territory needs to be conquered before the attack terminates
          */
-        if (this.currentAttack.getDest()
-                .getNumArmies() != 0) {
+        if (this.currentAttack.getDest().getNumArmies() != 0) {
             this.setCurrentAttack(null);
+        } else {
+            addNewLogEvent(String.format(
+                    "%s conquered the territory %s",
+                    getName(),
+                    this.currentAttack.getDest().getName()
+            ));
         }
-
-        setChanged();
-        notifyObservers();
     }
 
     /**
      * Conquer a country after an attack
      *
      * @param armies number of armies to move to the new conquered country
+     * @return -1 error; 0 success
      */
-    public void conquerCountry(int armies) {
+    public int conquerCountry(int armies) {
+        if (armies < this.getCurrentAttack().getDiceAttack() || armies >= this.getCurrentAttack().getSource().getNumArmies()) {
+            return -1;
+        }
+
         int newArmies = this.getCurrentAttack().getSource().getNumArmies();
         this.getCurrentAttack().getSource().setNumArmies(newArmies - armies);
         this.getCurrentAttack().getDest().setNumArmies(armies);
 
         addCountryOwned(this.getCurrentAttack().getDest());
         this.setCurrentAttack(null);
+        return 0;
     }
 
+    /**
+     * It verifies that the current attack is valid
+     *
+     * @param sourceTerritory source territory of attack
+     * @param destTerritory territory attacked
+     * @return -1 error;0 success
+     */
+    public int validateAttack(TerritoryModel sourceTerritory, TerritoryModel destTerritory) {
+        if (!sourceTerritory.getAdj().contains(destTerritory)) {
+            return -1;
+        }
+        if (this.getCurrentAttack() != null) {
+            return -2;
+        }
+        if (!this.getContriesOwned().contains(sourceTerritory)
+                || this.getContriesOwned().contains(destTerritory)) {
+            return -3;
+        }
+        if (sourceTerritory.getNumArmies() < 2) {
+            return -4;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Set fortification move to null
+     */
     void resetCurrentFortificationMove() {
         this.currentFortificationMove = null;
 
@@ -601,7 +688,64 @@ public abstract class PlayerModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * Verifies that a continent is not owned
+     *
+     * @param continent continent to be verified
+     * @return true id it is owned; false in other case
+     */
     boolean checkOwnContinent(ContinentModel continent) {
         return this.continentsOwned.contains(continent);
+    }
+
+    /**
+     * Calculates the % of countries owned
+     *
+     * @return % of countries owned
+     */
+    public int getPercentMapControlled() {
+        int nbTerrInMap = this.getGame().getMap().getTerritories().size();
+        return (100 * this.getNbCountriesOwned()) / nbTerrInMap;
+    }
+
+    /**
+     * Addition of an event in the log
+     *
+     * @param logMessage message to add to the log
+     */
+    void addNewLogEvent(String logMessage) {
+        setChanged();
+        notifyObservers(new LogEvent(logMessage));
+    }
+
+    /**
+     * Setter of the current attack
+     *
+     * @param src source country
+     * @param dest country attacked
+     */
+    void startAttackMove(TerritoryModel src, TerritoryModel dest) {
+        AttackMove attack = new AttackMove(this, src, dest);
+        this.setCurrentAttack(attack);
+    }
+
+    /**
+     * Update the list of continents owned by this players from the list of
+     * territories owned by this player
+     */
+    private void updateContinentsOwned() {
+        /* If this player is not associated with a game we cannot update
+        owned continents
+         */
+        if (this.game == null) {
+            return;
+        }
+
+        List<ContinentModel> newContinentsOwned;
+        newContinentsOwned = this.game.getMap().getContinents().stream()
+                .filter((c) -> c.getMembers().stream()
+                .allMatch((t) -> this.contriesOwned.contains(t)))
+                .collect(Collectors.toList());
+        this.setContinentsOwned(newContinentsOwned);
     }
 }
