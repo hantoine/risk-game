@@ -7,6 +7,7 @@ package com.risk.models;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -122,6 +123,21 @@ public class MapModelTest {
         boolean expResult = true;
         boolean result = mapModel.isValid();
         assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test if the new name does not already exists.
+     * I.e. that the new name is really "new".
+     */
+    @Test
+    public void testGetNewName(){
+        String newTerritoryName = this.mapModel.getNewName(false);
+        List<String> names = this.mapModel.getTerritoryList();
+        assertFalse(names.contains(newTerritoryName));
+        
+        String newContinentName = this.mapModel.getNewName(true);
+        names = this.mapModel.getContinentList();
+        assertFalse(names.contains(newContinentName));
     }
 
     /**
