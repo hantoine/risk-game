@@ -424,12 +424,20 @@ public final class MapModel extends Observable {
      * @return 
      */
     public String getAvailableContinent(TerritoryModel territory) {
+        
+        String currentContinent = territory.getContinentName();
+        
         List<TerritoryModel> neighbours = territory.getAdj();
-        if (neighbours != null && !neighbours.isEmpty()) {
-            return neighbours.get(0).getContinentName();
-        } else {
-            return this.getGraphContinents().keySet().iterator().next();
+        for(TerritoryModel neighbor : neighbours){
+            if(!neighbor.getContinentName().equals(currentContinent))
+                return neighbor.getContinentName();
         }
+        
+        for(ContinentModel continent: this.graphContinents.values())
+            if(!continent.getName().equals(currentContinent))
+                return continent.getName();
+        
+        return currentContinent;
     }
 
     /**
@@ -443,6 +451,7 @@ public final class MapModel extends Observable {
         for (String territoryName : territoryList) {
             this.removeTerritory(territoryName);
         }
+        
         for (String continentName : continentList) {
             this.removeContinent(continentName);
         }
@@ -469,19 +478,26 @@ public final class MapModel extends Observable {
             return false;
         }
         
+        //get members of the continent
         LinkedList<TerritoryModel> members = continentToDel.getMembers();
 
-        members.forEach((member) -> {
-            member.setContinentName(getAvailableContinent(member));
-        });
+        //remove the continent
+        this.graphContinents.remove(continentName);
+        setChanged();
+        notifyObservers(UpdateTypes.REMOVE_CONTINENT);
+        System.out.println("nb continents : " + Integer.toString(this.getContinentList().size()));
 
-        getGraphContinents().remove(continentName);
-        int nbContinents = this.getContinentList().size();
-        System.out.println("nb continents : " + Integer.toString(nbContinents));
-
+        //if there is no continent, add one by default
         if(this.graphContinents.isEmpty()){
             addDefaultContinent();
         }
+        
+        //set members of the new continent
+        members.forEach((member) -> {
+            String newContinentName = getAvailableContinent(member);
+            member.setContinentName(newContinentName);
+            this.graphContinents.get(newContinentName).addMember(member);
+        });
         
         setChanged();
         notifyObservers(UpdateTypes.REMOVE_CONTINENT);
@@ -578,7 +594,6 @@ public final class MapModel extends Observable {
      */
     public void updateTerritoryName(Map<String, String> data) {
         //get data
-        
         String formerName = data.get("name");
         String newName = data.get("newName");
         String formerContinent = data.get("formerContinent");
@@ -593,8 +608,10 @@ public final class MapModel extends Observable {
         modifiedTerritory.setContinentName(newContinent);
 
         if (!formerContinent.equals(newContinent)) {
-            this.graphContinents.get(formerContinent).removeMember(this.getTerritoryByName(newName));
-            this.graphContinents.get(newContinent).addMember(modifiedTerritory);
+            ContinentModel formerContinentModel = this.graphContinents.get(formerContinent);
+            formerContinentModel.removeMember(modifiedTerritory);
+            ContinentModel newContinentModel = this.graphContinents.get(newContinent);
+            newContinentModel.addMember(modifiedTerritory);
         }
 
         this.graphTerritories.put(newName, modifiedTerritory);
