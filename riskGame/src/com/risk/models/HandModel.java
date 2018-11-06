@@ -23,8 +23,17 @@ public class HandModel extends Observable {
      * cards it is the group of cards of the hand
      */
     private LinkedList<CardModel> cards;
+    /**
+     * Owner of the hand
+     */
     private PlayerModel owner;
+    /**
+     * Current cards show
+     */
     private boolean current;
+    /**
+     * if have handed cards
+     */
     private boolean handed;
     /**
      * Cards selected to be handed
@@ -36,10 +45,6 @@ public class HandModel extends Observable {
      */
     HandModel() {
         this.cards = new LinkedList();
-        this.cards.add(new CardModel("Venezuela", "infantry"));
-        this.cards.add(new CardModel("France", "infantry"));
-        this.cards.add(new CardModel("China", "infantry"));
-        this.cards.add(new CardModel("India", "artillery"));
         this.selectedCards = new LinkedList<>();
     }
 
@@ -55,7 +60,7 @@ public class HandModel extends Observable {
     /**
      * Read-only Getter for the cards attribute
      *
-     * @return
+     * @return list of cards
      */
     public List<CardModel> getCards() {
         return Collections.unmodifiableList(cards);
@@ -82,10 +87,18 @@ public class HandModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * 
+     * @return 
+     */
     public PlayerModel getOwner() {
         return owner;
     }
 
+    /**
+     * 
+     * @param owner 
+     */
     void setOwner(PlayerModel owner) {
         this.owner = owner;
 
@@ -153,6 +166,10 @@ public class HandModel extends Observable {
         return current;
     }
 
+    /**
+     * 
+     * @param current 
+     */
     void setCurrent(boolean current) {
         this.current = current;
 
@@ -160,6 +177,11 @@ public class HandModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * 
+     * @param typeOfArmie
+     * @param deck 
+     */
     public void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
         String[] typeOfArmieDum = {"infantry", "artillery", "cavalry"};
 
@@ -186,10 +208,18 @@ public class HandModel extends Observable {
         }
     }
 
+    /**
+     * 
+     * @return 
+     */
     public boolean isHanded() {
         return handed;
     }
 
+    /**
+     * 
+     * @param handed 
+     */
     public void setHanded(boolean handed) {
         this.handed = handed;
 
@@ -197,10 +227,17 @@ public class HandModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getNbSelectedCards() {
         return this.selectedCards.size();
     }
 
+    /**
+     * 
+     */
     public void unselectAllCards() {
         this.selectedCards.clear();
 
@@ -208,14 +245,27 @@ public class HandModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * 
+     * @return 
+     */
     public List<String> getSelectedCards() {
         return Collections.unmodifiableList(this.selectedCards);
     }
 
+    /**
+     * 
+     * @param cardName
+     * @return 
+     */
     public boolean isCardSelected(String cardName) {
         return this.selectedCards.contains(cardName);
     }
 
+    /**
+     * 
+     * @param cardName 
+     */
     public void unselectCard(String cardName) {
         this.selectedCards.remove(cardName);
 
@@ -223,6 +273,10 @@ public class HandModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * 
+     * @param cardName 
+     */
     public void selectCard(String cardName) {
         this.selectedCards.add(cardName);
 
