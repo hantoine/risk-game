@@ -6,6 +6,7 @@
 package com.risk.views.editor;
 
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -19,10 +20,20 @@ import javax.swing.SpinnerNumberModel;
 public class ModifyContinentPanel extends JPanel {
 
     /**
+     * Label that describes the textfield field below. 
+     */
+    protected JLabel nameDescriptor;
+    
+    /**
      * Textfield that contains the name of the continent
      */
     protected JTextField continentNameField;
 
+    /**
+     * Label that describes the spinner field below. 
+     */
+    protected JLabel spinnerDescriptor;
+    
     /**
      * Spinner that contains the bonus score of the continent being edited.
      */
@@ -38,14 +49,17 @@ public class ModifyContinentPanel extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(500, 500);
 
+        this.nameDescriptor = new JLabel("Name of the continent:");
         this.continentNameField = new JTextField(continentName);
+        this.spinnerDescriptor = new JLabel("Bonus score of the continent:");
         SpinnerNumberModel bonusScoreModel = new SpinnerNumberModel(bonusScore, //initial value
                 0, //min
                 20, //max
                 1);     //step
         this.bonusScore = new JSpinner(bonusScoreModel);
-
+        this.add(nameDescriptor);
         this.add(continentNameField);
+        this.add(spinnerDescriptor);
         this.add(this.bonusScore);
     }
 

@@ -5,8 +5,6 @@ package com.risk.models;
  * To change this template file, choose Tools | Templates and open the template
  * in the editor.
  */
-import com.risk.observable.MapModelObservable;
-import com.risk.observable.MapModelObserver;
 import com.risk.observable.UpdateTypes;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -28,7 +26,7 @@ import java.util.stream.Stream;
  *
  * @author timot
  */
-public final class MapModel extends Observable implements MapModelObservable {
+public final class MapModel extends Observable {
 
     /**
      * mapConfig configurations of the map like author, wrap, image, and others
@@ -56,9 +54,10 @@ public final class MapModel extends Observable implements MapModelObservable {
     private HashMap<String, TerritoryModel> graphTerritories;
 
     /**
-     * List of the observers of the model.
+     * Last element that have been updated.
+     * Territory or Continent (includes adding a new element).
      */
-    private LinkedList<MapModelObserver> observers;
+    public Object lastUpdatedElement;
 
     /**
      * Constructor.
@@ -68,10 +67,13 @@ public final class MapModel extends Observable implements MapModelObservable {
         graphTerritories = new HashMap<>();
         mapConfig = new MapConfig();
         image = null;
-        observers = new LinkedList<>();
-        addContinent();
+        addDefaultContinent();
     }
 
+    public Object getLastUpdate(){
+        return lastUpdatedElement;
+    }
+    
     /**
      * It prints the countries and relationships between them
      */
@@ -305,7 +307,7 @@ public final class MapModel extends Observable implements MapModelObservable {
         }
     }
 
-    //############################################## methods of editable map model :
+    
     /**
      * Add an edge between two vertices (territories).
      *
@@ -317,19 +319,18 @@ public final class MapModel extends Observable implements MapModelObservable {
         TerritoryModel neighbourModel = this.getGraphTerritories().get(neighbour);
         TerritoryModel territoryModel = this.getGraphTerritories().get(territoryName);
 
-        if (neighbourModel.getAdj().contains(neighbourModel)) {
+        if (territoryModel.getAdj().contains(neighbourModel) || neighbourModel.getAdj().contains(territoryModel)) { //undirected graph
             return;
         }
 
         //add neighbours
         this.getGraphTerritories().get(territoryName).addNeighbour(neighbourModel);
         this.getGraphTerritories().get(neighbour).addNeighbour(territoryModel);
-
-        String[] newLink = {territoryName, neighbour};
-        notifyObserversCustom(UpdateTypes.ADD_LINK, newLink);
-
+        
+        //update view
+        this.lastUpdatedElement = this.getTerritoryByName(territoryName);
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.ADD_LINK);
     }
 
     /**
@@ -348,22 +349,9 @@ public final class MapModel extends Observable implements MapModelObservable {
         this.getGraphTerritories().get(neighbour).removeNeighbour(territoryModel);
 
         //remove from the view
-        String[] link = {territoryName, neighbour};
-        notifyObserversCustom(UpdateTypes.REMOVE_LINK, link);
-
+        this.lastUpdatedElement = this.getTerritoryByName(territoryName);
         setChanged();
-        notifyObservers();
-    }
-
-    /**
-     * Check if a given string is in a given list of strings
-     *
-     * @param list the country list
-     * @param element the element you want to check
-     * @return whether the string is in the list
-     */
-    public boolean isInList(List<String> list, String element) {
-        return list.stream().anyMatch(x -> x.equals(element));
+        notifyObservers(UpdateTypes.REMOVE_LINK);
     }
 
     /**
@@ -387,7 +375,7 @@ public final class MapModel extends Observable implements MapModelObservable {
         }
 
         newName = prefix + Integer.toString(i);
-        while (isInList(nameList, newName)) {
+        while (nameList.contains(newName)) {
             i += 1;
             newName = prefix + Integer.toString(i);
         }
@@ -396,40 +384,60 @@ public final class MapModel extends Observable implements MapModelObservable {
     }
 
     /**
-     * Add a new continent to the model and notify the observers to change the
-     * view
+     * Add a new continent to the model using addContinent.
+     * This time the continent is a default one as we must have 
+     * at least one continent. That is why there is a call to getNewName 
+     * and the default continentBonus is set to 1.
      *
      * @return whether the continent is added or not
      */
-    public boolean addContinent() {
+    public boolean addDefaultContinent() {
         String newName = getNewName(true);
-
-        ContinentModel newContinent = new ContinentModel(newName, 1);
-        getGraphContinents().put(newName, newContinent);
-        notifyObserversCustom(UpdateTypes.ADD_CONTINENT, newName);
-
-        setChanged();
-        notifyObservers();
+        int continentBonus = 1;
+        addContinent(newName, continentBonus);
         return true;
     }
 
+    /**
+     * Add a new continent to the model and notify the observers to change the
+     * view
+     * @param continentName
+     * @param continentBonus
+     * @return 
+     */
     public boolean addContinent(String continentName, int continentBonus) {
         ContinentModel newContinent = new ContinentModel(continentName, continentBonus);
         getGraphContinents().put(continentName, newContinent);
-        notifyObserversCustom(UpdateTypes.ADD_CONTINENT, continentName);
 
+        this.lastUpdatedElement = newContinent;
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.ADD_CONTINENT);
         return true;
     }
 
+    /**
+     * Find a continent that can be assigned to a given territory.
+     * To that aim, this function looks at the neighbors of the given 
+     * territory and pick a random continent from them.
+     * 
+     * @param territory
+     * @return 
+     */
     public String getAvailableContinent(TerritoryModel territory) {
+        
+        String currentContinent = territory.getContinentName();
+        
         List<TerritoryModel> neighbours = territory.getAdj();
-        if (neighbours != null && !neighbours.isEmpty()) {
-            return neighbours.get(0).getContinentName();
-        } else {
-            return null;
+        for(TerritoryModel neighbor : neighbours){
+            if(!neighbor.getContinentName().equals(currentContinent))
+                return neighbor.getContinentName();
         }
+        
+        for(ContinentModel continent: this.graphContinents.values())
+            if(!continent.getName().equals(currentContinent))
+                return continent.getName();
+        
+        return currentContinent;
     }
 
     /**
@@ -443,13 +451,11 @@ public final class MapModel extends Observable implements MapModelObservable {
         for (String territoryName : territoryList) {
             this.removeTerritory(territoryName);
         }
+        
         for (String continentName : continentList) {
             this.removeContinent(continentName);
         }
-
-        //add first continent
-        this.addContinent();
-
+        
         //reset map configuration
         this.setScrollConfig("none");
         this.setWarnConfig(false);
@@ -465,23 +471,36 @@ public final class MapModel extends Observable implements MapModelObservable {
      * @return return if the continent is removed or not
      */
     public boolean removeContinent(String continentName) {
+              
+        //get continent to delete
         ContinentModel continentToDel = this.getGraphContinents().get(continentName);
         if (continentToDel == null) {
             return false;
         }
+        
+        //get members of the continent
         LinkedList<TerritoryModel> members = continentToDel.getMembers();
 
-        for (TerritoryModel member : members) {
-            member.setContinentName(getAvailableContinent(member));
-        }
-
-        getGraphContinents().remove(continentName);
-        int nbContinents = this.getContinentList().size();
-        System.out.println("nb continents : " + Integer.toString(nbContinents));
-        notifyObserversCustom(UpdateTypes.REMOVE_CONTINENT, continentName);
-
+        //remove the continent
+        this.graphContinents.remove(continentName);
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.REMOVE_CONTINENT);
+        System.out.println("nb continents : " + Integer.toString(this.getContinentList().size()));
+
+        //if there is no continent, add one by default
+        if(this.graphContinents.isEmpty()){
+            addDefaultContinent();
+        }
+        
+        //set members of the new continent
+        members.forEach((member) -> {
+            String newContinentName = getAvailableContinent(member);
+            member.setContinentName(newContinentName);
+            this.graphContinents.get(newContinentName).addMember(member);
+        });
+        
+        setChanged();
+        notifyObservers(UpdateTypes.REMOVE_CONTINENT);
         return true;
     }
 
@@ -499,7 +518,7 @@ public final class MapModel extends Observable implements MapModelObservable {
         TerritoryModel newTerritory = new TerritoryModel(newName, posX, posY);
 
         //add it to a continent
-        String continentName = this.getGraphContinents().entrySet().iterator().next().getKey();
+        String continentName = this.getGraphContinents().keySet().iterator().next();
         newTerritory.setContinentName(continentName);
         this.getGraphContinents().get(continentName).addMember(newTerritory);
 
@@ -507,10 +526,9 @@ public final class MapModel extends Observable implements MapModelObservable {
         this.getGraphTerritories().put(newName, newTerritory);
 
         //update views
-        notifyObserversCustom(UpdateTypes.ADD_TERRITORY, newTerritory);
-
+        this.lastUpdatedElement = newTerritory;
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.ADD_TERRITORY);
         return true;
     }
 
@@ -536,10 +554,9 @@ public final class MapModel extends Observable implements MapModelObservable {
         this.getGraphTerritories().put(newName, newTerritory);
 
         //update views
-        notifyObserversCustom(UpdateTypes.ADD_TERRITORY, newTerritory);
-
+        this.lastUpdatedElement = newTerritory;
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.ADD_TERRITORY);
         return true;
     }
 
@@ -560,18 +577,14 @@ public final class MapModel extends Observable implements MapModelObservable {
         LinkedList<TerritoryModel> neighbours = new LinkedList<>(territoryToDel.getAdj());
         for (TerritoryModel neighbour : neighbours) {
             neighbour.removeNeighbour(territoryToDel);
-
-            //remove from the view
-            String[] link = {territoryToDel.getName(), neighbour.getName()};
-            notifyObserversCustom(UpdateTypes.REMOVE_LINK, link);
+            this.removeLink(neighbour.getName(), territoryToDel.getName());
         }
 
         //delete the territory
         this.getGraphTerritories().remove(territoryName);
-        notifyObserversCustom(UpdateTypes.REMOVE_TERRITORY, territoryName);
 
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.REMOVE_TERRITORY);
     }
 
     /**
@@ -579,31 +592,33 @@ public final class MapModel extends Observable implements MapModelObservable {
      *
      * @param data contains information to update the territory.
      */
-    public void updateTerritory(Map<String, String> data) {
+    public void updateTerritoryName(Map<String, String> data) {
         //get data
         String formerName = data.get("name");
         String newName = data.get("newName");
         String formerContinent = data.get("formerContinent");
         String newContinent = data.get("continent");
 
+        
         //get territory to be modified
-        TerritoryModel modifiedTerritory = this.getGraphTerritories().get(formerName);
+        TerritoryModel modifiedTerritory = this.getGraphTerritories().remove(formerName);
 
         //modify territory
         modifiedTerritory.setName(newName);
         modifiedTerritory.setContinentName(newContinent);
 
         if (!formerContinent.equals(newContinent)) {
-            this.graphContinents.get(formerContinent).removeMember(this.getTerritoryByName(newName));
-            this.graphContinents.get(newContinent).addMember(modifiedTerritory);
+            ContinentModel formerContinentModel = this.graphContinents.get(formerContinent);
+            formerContinentModel.removeMember(modifiedTerritory);
+            ContinentModel newContinentModel = this.graphContinents.get(newContinent);
+            newContinentModel.addMember(modifiedTerritory);
         }
 
-        //replace the old entry by the updated one
-        //this.getGraphTerritories().put(newName, modifiedTerritory);
-        notifyObserversCustom(UpdateTypes.UPDATE_TERRITORY_NAME, data);
-
+        this.graphTerritories.put(newName, modifiedTerritory);
+        this.lastUpdatedElement = modifiedTerritory;
+        
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.UPDATE_TERRITORY_NAME);
     }
 
     /**
@@ -630,36 +645,11 @@ public final class MapModel extends Observable implements MapModelObservable {
                 member.setContinentName(newName);
             }
         }
-
-        notifyObserversCustom(UpdateTypes.UPDATE_CONTINENT, data);
-
+        
+        this.lastUpdatedElement = this.getContinentByName(newName);
+        
         setChanged();
-        notifyObservers();
-    }
-
-    /**
-     * Add a new view that will be informed of changes in the model to update
-     * itself.
-     *
-     * @param newObserver the new map model observer
-     */
-    @Override
-    public void addObserverCustom(MapModelObserver newObserver) {
-        observers.add(newObserver);
-    }
-
-    /**
-     * Notify the views that a change occurred in the model so that they update
-     * themselves.
-     *
-     * @param updateType type of the update.
-     * @param object data to update the observers.
-     */
-    @Override
-    public void notifyObserversCustom(UpdateTypes updateType, Object object) {
-        for (MapModelObserver observer : observers) {
-            observer.update(updateType, object);
-        }
+        notifyObservers(UpdateTypes.UPDATE_CONTINENT);
     }
 
     /**
@@ -711,7 +701,6 @@ public final class MapModel extends Observable implements MapModelObservable {
 
             entryValue.setPositionX(x);
             entryValue.setPositionY(y);
-            notifyObserversCustom(UpdateTypes.UPDATE_TERRITORY_POS, entryValue);
             verifiedValues.add(newDim);
 
             setChanged();
@@ -727,13 +716,13 @@ public final class MapModel extends Observable implements MapModelObservable {
      */
     public void setImage(BufferedImage image, Dimension buttonDims) {
         this.setImage(image);
-        notifyObserversCustom(UpdateTypes.UPDATE_BACKGROUND_IMAGE, image);
+        
         if (image != null) {
             checkTerritoriesPositions(image.getWidth(), image.getHeight(), buttonDims);
         }
 
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateTypes.UPDATE_BACKGROUND_IMAGE);
     }
 
     /**
@@ -783,13 +772,14 @@ public final class MapModel extends Observable implements MapModelObservable {
         return territoryArray;
     }
 
+    
     /**
      * Setter of the scroll configuration parameter of the map.
      *
      * @param scrollConfig the string of the config
      */
     public void setScrollConfig(String scrollConfig) {
-        this.getMapConfig().setScroll(scrollConfig);
+        this.mapConfig.setScroll(scrollConfig);
 
         setChanged();
         notifyObservers();
@@ -801,7 +791,7 @@ public final class MapModel extends Observable implements MapModelObservable {
      * @param wrapConfig the boolean of the config
      */
     public void setWrapConfig(boolean wrapConfig) {
-        this.getMapConfig().setWrap(wrapConfig);
+        this.mapConfig.setWrap(wrapConfig);
 
         setChanged();
         notifyObservers();
@@ -813,7 +803,7 @@ public final class MapModel extends Observable implements MapModelObservable {
      * @param warnConfig the boolean of warning config
      */
     public void setWarnConfig(boolean warnConfig) {
-        this.getMapConfig().setWarn(warnConfig);
+        this.mapConfig.setWarn(warnConfig);
 
         setChanged();
         notifyObservers();
@@ -825,7 +815,7 @@ public final class MapModel extends Observable implements MapModelObservable {
      * @param authorName the author of the map
      */
     public void setAuthorConfig(String authorName) {
-        this.getMapConfig().setAuthor(authorName);
+        this.mapConfig.setAuthor(authorName);
 
         setChanged();
         notifyObservers();
@@ -837,19 +827,9 @@ public final class MapModel extends Observable implements MapModelObservable {
      * @param path the path of the img
      */
     public void setImagePath(String path) {
-        this.getMapConfig().setImagePath(path);
+        this.mapConfig.setImagePath(path);
 
         setChanged();
         notifyObservers();
     }
-
-    /**
-     * Getter of the whole map configuration model of the map model
-     *
-     * @return the object containing all the configuration parameters.
-     */
-    public MapConfig getMapConfig() {
-        return this.getConfigurationInfo();
-    }
-
 }

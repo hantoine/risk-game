@@ -6,12 +6,14 @@
 package com.risk.views.editor;
 
 import com.risk.controllers.MapEditorController;
+import com.risk.models.ContinentModel;
 import com.risk.models.MapConfig;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
-import com.risk.observable.MapModelObserver;
+import com.risk.models.TerritoryModel;
 import com.risk.observable.UpdateTypes;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -21,6 +23,8 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -39,7 +43,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author timot
  */
-public class MapEditorView extends javax.swing.JFrame implements MapModelObserver {
+public class MapEditorView extends javax.swing.JFrame implements Observer {
 
     /**
      * Main panel in which all other panels are included.
@@ -107,18 +111,28 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
         this.continentsPanel = new ContinentListPanel(120, 600, editorController, initMapModel.getContinentList());
 
         //panel with buttons to select a mode
-        String[] toolsList = {"Add Territory", "Edit Territory", "Create Link", "Remove Link"};
+        String[] toolsList = {"Add Territory", "Edit Territory", "Create Link", "Remove Link", "Del Territory"};
         this.mapPanel.setCurrentTool(Tools.CREATE);
         this.toolsPanel = new ToolsListPanel(120, 600, toolsList, getToolButtonListener());
 
         //panel to set map configuration
-        this.mapConfigPanel = new MapConfigPanel(editorController, initMapModel.getMapConfig());
+        this.mapConfigPanel = new MapConfigPanel(editorController, initMapModel.getConfigurationInfo());
 
         //add elements
         addPanes();
         addMenuBar(editorController);
     }
 
+    /**
+     * Set background color of territory button to its continent background color
+     * @param target 
+     */
+    public void setTerritoryColor(TerritoryModel target){
+        String continentName = target.getContinentName();
+        Color backgroundColor = this.continentsPanel.getColor(continentName);
+        this.mapPanel.countriesButtons.get(target.getName()).setBackground(backgroundColor);
+    }
+    
     /**
      * Initialize the view by setting its size and location.
      *
@@ -210,7 +224,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                 System.out.println("nb links loaded:"+ Integer.toString(nbLinks));
                 
                 //update map configuration
-                this.mapConfigPanel.setView(editorController.getNewMap().getMapConfig());
+                this.mapConfigPanel.setView(editorController.getNewMap().getConfigurationInfo());
             }
         });
     }
@@ -282,7 +296,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                 }
                 
                 
-                MapConfig newConfig = editorController.getNewMap().getMapConfig();
+                MapConfig newConfig = editorController.getNewMap().getConfigurationInfo();
                 this.mapConfigPanel.setView(newConfig);
             }
         });
@@ -326,6 +340,7 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
         return new ToolButtonListener(this.mapPanel);
     }
 
+
     /**
      * Button listener to change the current mode of the "map panel" when the
      * user click on a tool to select it. The map panel is the panel where the
@@ -361,6 +376,9 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                 case "Remove Link":
                     this.mapPanel.setCurrentTool(Tools.UNLINK);
                     break;
+                case "Del Territory":
+                    this.mapPanel.setCurrentTool(Tools.REMOVE);
+                    break;
             }
         }
     }
@@ -384,38 +402,45 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
     }
 
     /**
-     * Update method of the Oberver pattern
+     * Update method of the Observer pattern
      *
-     * @param updateType element of the UpdateTypes enums that will indicate
-     * which action to do.
-     * @param object Object that will be used to update the view.
+     * @param object
+     * @param arg
      */
     @Override
-    public void update(UpdateTypes updateType, Object object) {
+    public void update(Observable object, Object arg) {
+        if(arg == null || !(arg instanceof UpdateTypes))
+            return;
+        
+        UpdateTypes updateType = (UpdateTypes)arg;
+        
+        
         switch (updateType) {
             case ADD_TERRITORY:
+                setTerritoryColor((TerritoryModel)((MapModel)object).getLastUpdate());
                 break;
             case REMOVE_TERRITORY:
                 break;
             case UPDATE_TERRITORY_NAME:
+                setTerritoryColor((TerritoryModel)((MapModel)object).getLastUpdate());
                 break;
             case UPDATE_TERRITORY_POS:
                 break;
             case UPDATE_BACKGROUND_IMAGE:
-                if (object == null) {
+                BufferedImage backgroundImage = (BufferedImage) ((MapModel)object).getImage();
+
+                if (backgroundImage == null) {
                     this.mapPanel.setImage(null);
                     break;
                 }
-
-                BufferedImage backgroundImage = (BufferedImage) object;
-
-                //get current sizes of components
+                
+                //get current sizes of map panel and its parent
                 int width = backgroundImage.getWidth();
                 int height = backgroundImage.getHeight();
                 Dimension mapPanelSize = this.mapPanel.getSize();
                 Dimension parentSize = this.getSize();
 
-                //compute new size to adapt to the image
+                //compute new size to adapt the size of the map panel and its parent to the size of the new image
                 double difWidth = width - mapPanelSize.getWidth();
                 double difHeight = height - mapPanelSize.getHeight();
                 parentSize.width += difWidth;
@@ -424,10 +449,15 @@ public class MapEditorView extends javax.swing.JFrame implements MapModelObserve
                 //set new size and set new background image
                 this.setSize(parentSize);
                 this.mapPanel.setImage(backgroundImage);
+                
+                //draw the new background
                 this.repaint();
 
                 break;
-            case UPDATE_CONTINENT:
+            case REMOVE_CONTINENT:
+                ((MapModel)object).getTerritories().stream().forEach((t)->{
+                    this.setTerritoryColor(t);
+                });
                 break;
         }
     }

@@ -61,7 +61,7 @@ public class GameControllerTest {
      */
     @Test
     public void testDragNDropTerritory() {
-        System.out.println("dragNDropTerritory");
+        
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
         TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
@@ -90,7 +90,6 @@ public class GameControllerTest {
      */
     @Test
     public void testDragNDropTerritoryNotAdjacentTerritories() {
-        System.out.println("dragNDropTerritory");
 
         rm.getMap().loadTerritory(150, 50, "TerritoryC", "ContinentA");
         rm.getMap().addLink("TerritoryB", "TerritoryC");
@@ -121,7 +120,6 @@ public class GameControllerTest {
      */
     @Test
     public void testDragNDropTerritorySourceTerritorNotOwned() {
-        System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
         TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
@@ -151,7 +149,6 @@ public class GameControllerTest {
      */
     @Test
     public void testDragNDropTerritoryDestinationTerritorNotOwned() {
-        System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
         TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
@@ -180,7 +177,6 @@ public class GameControllerTest {
      */
     @Test
     public void testDragNDropTerritoryOtherMoveStarted() {
-        System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
         TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
@@ -212,7 +208,6 @@ public class GameControllerTest {
      */
     @Test
     public void testDragNDropTerritorySameMoveStarted() {
-        System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
         TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
@@ -243,7 +238,6 @@ public class GameControllerTest {
      */
     @Test
     public void testDragNDropTerritoryNotFortification() {
-        System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
         TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
@@ -269,7 +263,6 @@ public class GameControllerTest {
      */
     @Test
     public void testDragNDropTerritoryNotFortificationOnlyOneArmy() {
-        System.out.println("dragNDropTerritory");
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
         TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
@@ -288,7 +281,7 @@ public class GameControllerTest {
 
         assertEquals(1, territoryA.getNumArmies());
         assertEquals(1, territoryB.getNumArmies());
-        System.out.println("done");
+        
         assertEquals("There is only one army in the source country !",
                 drv.getMessage());
     }

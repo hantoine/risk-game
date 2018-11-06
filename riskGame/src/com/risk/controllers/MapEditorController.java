@@ -154,7 +154,7 @@ public class MapEditorController {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (newMap.addContinent() == true) {
+            if (newMap.addDefaultContinent() == true) {
                 return;
             }
             JButton buttonClicked = (JButton) e.getSource();
@@ -211,12 +211,11 @@ public class MapEditorController {
         @Override
         public void mouseReleased(MouseEvent e) {
 
-            //get object we clicked on (jlabel)
+            //get object we clicked on (JButton)
             Object sourceObj = e.getSource();
-            String className = sourceObj.getClass().getName();
 
-            //if JLabel then process
-            if (className != "javax.swing.JLabel") {
+            //if JButton then process
+            if (!(sourceObj instanceof JButton)){
                 return;
             }
 
@@ -230,12 +229,12 @@ public class MapEditorController {
          * @param sourceObj object that has been clicked on
          */
         private void releaseHandling(MouseEvent e, Object sourceObj) {
-            JLabel clickedLabel = (JLabel) sourceObj;
+            JButton clickedLabel = (JButton) sourceObj;
             ContinentListPanel clickedPanel
                     = (ContinentListPanel) clickedLabel.getParent();
 
             if (SwingUtilities.isRightMouseButton(e)) {
-                String continentName = ((JLabel) sourceObj).getText();
+                String continentName = ((JButton) sourceObj).getText();
                 boolean success = this.newMap.removeContinent(continentName);
                 if (!success) {
                     clickedPanel.showError("Any map needs at least one continent.");
@@ -292,11 +291,13 @@ public class MapEditorController {
             return;
         }
 
+        //clear existing map
         this.newMap.clearMap();
 
+        //get the default continent to delete
         List<String> remainingContinents = this.newMap.getContinentList();
         if (remainingContinents.size() != 1) {
-            System.out.println("wrong number of continents after the clear");
+            System.out.println("Wrong number of continents after the clear");
         }
         String continentToDelete = remainingContinents.get(0);
 
@@ -333,6 +334,12 @@ public class MapEditorController {
                 this.newMap.addLink(t.getName(), ta.getName());
             });
         });
+        
+        if (!map.isValid()) {
+            this.newMap.clearMap();
+            view.showError(MapFileManagement.readingError(-7));
+            return;
+        }
 
         updateConfigurationInfo(map);
     }
@@ -467,7 +474,7 @@ public class MapEditorController {
         if (!data.isEmpty()) {
             data.put("name", territoryName);
             data.put("formerContinent", formerContinent);
-            this.newMap.updateTerritory(data);
+            this.newMap.updateTerritoryName(data);
         }
     }
 
@@ -570,6 +577,13 @@ public class MapEditorController {
                     case UNLINK:
                         unLinkTerritories(territoryName, clickedPanel);
                         break;
+                        
+                    case REMOVE:
+                        Object sourceObj = e.getSource();
+                        String className = sourceObj.getClass().getName();
+                        String countryName = ((CountryButton2) sourceObj).getName();
+                        this.newMap.removeTerritory(countryName);
+                        break;
                 }
             }
         }
@@ -606,15 +620,9 @@ public class MapEditorController {
          *
          * @param e the releasing mouse which is captured
          */
+        @Override
         public void mouseReleased(MouseEvent e) {
-            if (SwingUtilities.isRightMouseButton(e)) {
-                Object sourceObj = e.getSource();
-                String className = sourceObj.getClass().getName();
-                if (className == "com.risk.mapeditor.CountryButton2") {
-                    String countryName = ((CountryButton2) sourceObj).getName();
-                    this.newMap.removeTerritory(countryName);
-                }
-            }
+            
         }
     }
 
