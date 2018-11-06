@@ -101,9 +101,11 @@ public class MapPanel extends JPanel implements Observer {
         this.countriesButtons.values()
                 .forEach((cb) -> {
                     TerritoryModel terri = map.getTerritoryByName(cb.getName());
-                    cb.setText(Integer.toString(terri.getNumArmies()));
-                    if (terri.getOwner() != null) {
-                        cb.setForeground(terri.getOwner().getColor());
+                    if (terri != null) {
+                        cb.setText(Integer.toString(terri.getNumArmies()));
+                        if (terri.getOwner() != null) {
+                            cb.setForeground(terri.getOwner().getColor());
+                        }
                     }
                 });
     }
@@ -114,6 +116,7 @@ public class MapPanel extends JPanel implements Observer {
      * @param g Graphics object used to draw
      */
     @Override
+
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
@@ -156,6 +159,11 @@ public class MapPanel extends JPanel implements Observer {
         return image;
     }
 
+    /**
+     * 
+     * @param o
+     * @param o1 
+     */
     @Override
     public void update(Observable o, Object o1) {
         boolean mapChanged = false;

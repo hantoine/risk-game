@@ -111,11 +111,16 @@ public class PhaseAuxiliar extends JPanel implements Observer {
         }
     }
 
+    /**
+     * 
+     * @param o
+     * @param o1 
+     */
     @Override
     public void update(Observable o, Object o1) {
         if (o instanceof RiskModel) {
             RiskModel rm = (RiskModel) o;
-
+            
             AttackMove currentAttack = rm.getCurrentPlayer().getCurrentAttack();
             if (currentAttack == null) {
                 this.selectPanel(null);
@@ -128,7 +133,8 @@ public class PhaseAuxiliar extends JPanel implements Observer {
 
             if (currentAttack.getDest().getNumArmies() == 0) {
                 this.selectPanel(this.getArmiesLeft());
-                this.armiesLeft.update(srcTerritory, destTerritory, nbArmies);
+                int diceAttack=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
+                this.armiesLeft.update(srcTerritory, destTerritory, nbArmies,diceAttack);
             } else {
                 this.selectPanel(this.getAttackPanel());
                 this.attackPanel.update(srcTerritory, destTerritory, nbArmies);

@@ -32,6 +32,10 @@ public class HumanPlayerModel extends PlayerModel {
      */
     @Override
     public void reinforcement(RiskModel playGame) {
+        addNewLogEvent(String.format(
+                "%s starts its reinforcement phase",
+                getName()
+        ));
         this.setHanded(false);
         this.assignNewArmies();
     }
@@ -41,7 +45,10 @@ public class HumanPlayerModel extends PlayerModel {
      */
     @Override
     public void fortification(RiskModel playGame) {
-        // nothing to do
+        addNewLogEvent(String.format(
+                "%s starts its fortification phase",
+                getName()
+        ));
     }
 
     /**
@@ -49,9 +56,16 @@ public class HumanPlayerModel extends PlayerModel {
      */
     @Override
     public void attack(RiskModel playGame) {
-        // nothing to do
+        addNewLogEvent(String.format(
+                "%s starts its attack phase",
+                getName()
+        ));
     }
 
+    /**
+     * Exchange selected cards
+     * @return true success; false error
+     */
     @Override
     public boolean exchangeCardsToArmies() {
         List<String> selectedCards = this.getHand().getSelectedCards();

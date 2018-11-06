@@ -6,39 +6,34 @@
 package com.risk.views.game;
 
 import com.risk.models.PlayerModel;
-import java.util.Observable;
-import java.util.Observer;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
+import javax.swing.GroupLayout;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.border.TitledBorder;
 
 /**
  * View of the player information
  *
  * @author Will
  */
-public final class PlayerGameInfoPanel extends JPanel implements Observer {
+public final class PlayerGameInfoPanel extends JPanel {
 
     /**
      * playerName name of the player
      */
-    private final JButton playerName;
+    private final JLabel percentMapControlledLabel;
+    private final JProgressBar percentMapControlled;
+    private final JList<String> continentsOwned;
+    private final JLabel continentsOwnedLabel;
+
     /**
      * numArmiesOwned the number of armies owned by the player
      */
-    private final JButton numArmiesOwned;
-    /**
-     * numCountries the number of countries owned by the player
-     */
-    private final JButton numCountries;
-    /**
-     * numContinents the number of continent owned by the player
-     */
-    private final JButton numContinents;
-    /**
-     * numCards the number of cards owned by the player
-     */
-    private final JButton numCards;
+    private final JLabel numArmiesOwned;
 
     /**
      * Constructor
@@ -48,55 +43,68 @@ public final class PlayerGameInfoPanel extends JPanel implements Observer {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setVisible(false);
 
-        this.playerName = new JButton();
-        this.numArmiesOwned = new JButton();
-        this.numContinents = new JButton();
-        this.numCountries = new JButton();
-        this.numCards = new JButton();
+        this.percentMapControlledLabel = new JLabel();
+        this.numArmiesOwned = new JLabel();
+        this.percentMapControlled = new JProgressBar();
+        this.continentsOwned = new JList<>();
+        this.continentsOwnedLabel = new JLabel();
 
-        this.add(this.playerName);
-        this.add(this.numArmiesOwned);
-        this.add(this.numCountries);
-        this.add(this.numContinents);
-        this.add(this.numCards);
+        this.percentMapControlled.setStringPainted(true);
+        this.percentMapControlledLabel.setText("Percentage of map controlled:");
+
+        GroupLayout gl = new GroupLayout(this);
+        this.setLayout(gl);
+        gl.setAutoCreateGaps(true);
+        gl.setAutoCreateContainerGaps(true);
+
+        gl.setVerticalGroup(gl.createSequentialGroup()
+                .addComponent(this.percentMapControlledLabel)
+                .addComponent(this.percentMapControlled)
+                .addComponent(this.numArmiesOwned)
+                .addComponent(this.continentsOwnedLabel)
+                .addComponent(this.continentsOwned)
+        );
+        gl.setHorizontalGroup(gl.createParallelGroup()
+                .addComponent(this.percentMapControlledLabel)
+                .addComponent(this.percentMapControlled)
+                .addComponent(this.numArmiesOwned)
+                .addComponent(this.continentsOwnedLabel)
+                .addComponent(this.continentsOwned)
+        );
+
+        TitledBorder border;
+        border = BorderFactory.createTitledBorder("PlayerName");
+        border.setTitleJustification(TitledBorder.CENTER);
+        this.setBorder(border);
     }
 
     /**
      * Update the information displayed by the PlayerGameInfoPanel according to
      * the information of the current player
      *
-     * @param rm The model of the game containing all information about the
-     * current player
+     * @param player current player
      */
-    public void updateView(PlayerModel currentPlayer) {
+    public void updateView(PlayerModel player) {
         this.setVisible(true);
 
-        // update player name and color
-        playerName.setText(currentPlayer.getName());
-        playerName.setBackground(currentPlayer.getColor());
+        TitledBorder border = (TitledBorder) this.getBorder();
+        border.setTitle(player.getName());
+        border.setTitleColor(player.getColor());
 
-        //update the number of armies
-        this.numArmiesOwned.setText("Army Owned: "
-                + currentPlayer.getNumArmiesOwned());
+        this.percentMapControlled.setValue(player.getPercentMapControlled());
 
-        // update countries and continents
-        this.numCountries.setText("Countries Owned: "
-                + Integer.toString(currentPlayer.getNbCountriesOwned()));
-        this.numContinents.setText("Continents Owned: "
-                + Integer.toString(currentPlayer.getNbContinentsOwned()));
+        this.numArmiesOwned.setText("Army Owned: " + player.getNbArmiesOwned());
 
-        // update cards
-        this.numCards.setText("Card Owned: "
-                + currentPlayer.getHand().getNbCards());
-    }
-
-    @Override
-    public void update(Observable o, Object o1) {
-        if (o instanceof PlayerModel) {
-            PlayerModel updatedPlayer = (PlayerModel) o;
-            if (updatedPlayer.isCurrentPlayer()) {
-                updateView(updatedPlayer);
-            }
+        String[] listContinentsOwned = (String[]) player.getContinentsOwned()
+                .stream().map((c) -> c.getName()).toArray(String[]::new);
+        if (listContinentsOwned.length != 0) {
+            continentsOwnedLabel.setText("Continents owned:");
+        } else {
+            continentsOwnedLabel.setText("No continents owned");
         }
+        this.continentsOwned.setListData(listContinentsOwned);
+        this.repaint();
+
+        System.out.println(this.getHeight());
     }
 }

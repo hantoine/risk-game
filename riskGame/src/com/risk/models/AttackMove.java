@@ -7,13 +7,14 @@ package com.risk.models;
 
 import static java.lang.Integer.min;
 import java.util.Arrays;
+import java.util.Observable;
 
 /**
  * Class to represent an attack
  *
  * @author Nellybett
  */
-public class AttackMove {
+public class AttackMove extends Observable{
 
     /**
      * Source of the attack
@@ -23,17 +24,36 @@ public class AttackMove {
      * Destiny of the attack
      */
     private TerritoryModel dest;
-
+    /*
+    * Player performing the attack
+     */
+    private PlayerModel attacker;
+    /**
+     * Number of dice selected by the attacker
+     */
+    private int diceAttack;
+    /**
+     * Number of dice selected by the attacked
+     */
+    private int diceAttacked;
+    /**
+     * 
+     */
+    private int attackDefense;
     /**
      * Constructor
      *
+     * @param attacker player attacking
      * @param source source of the attack
      * @param dest destiny of the attack
      */
-    public AttackMove(TerritoryModel source, TerritoryModel dest) {
+    public AttackMove(PlayerModel attacker, TerritoryModel source, TerritoryModel dest) {
+        this.attackDefense=0;
         this.source = source;
         this.dest = dest;
-
+        this.attacker = attacker;
+        this.diceAttack=-1;
+        this.diceAttacked=100;
     }
 
     /**
@@ -75,39 +95,75 @@ public class AttackMove {
     /**
      * Battle between countries in an attack move
      *
-     * @param dice number of dices
+     * @param diceAttack number of dices selected by the attacker
+     * @param diceAttacked number of dices selected by the attacked
      */
-    private void battle(int dice) {
+    private void battle(int diceAttack, int diceAttacked) {
+        String looser1, looser2 = null;
+        int[] attack = createDice(diceAttack);
+        int[] defense = createDice(diceAttacked);
 
-        int[] attacker = createDice(dice);
-        int defenseArmies = min(this.getDest().getNumArmies(), dice);
-        int[] defense = createDice(min(defenseArmies, 2));
-
-        Arrays.sort(attacker);
+        Arrays.sort(attack);
         Arrays.sort(defense);
 
-        if (defenseArmies == 1) {
-            compareDice(attacker, defense, attacker.length - 1, 0);
+        if (diceAttacked == 1) {
+            looser1 = compareDice(attack, defense, attack.length - 1, 0);
         } else {
-            compareDice(attacker, defense, attacker.length - 1, 1);
-            compareDice(attacker, defense, attacker.length - 2, 0);
+            looser1 = compareDice(attack, defense, attack.length - 1, 1);
+            looser2 = compareDice(attack, defense, attack.length - 2, 0);
         }
 
+        this.attacker.addNewLogEvent(getBattleLogMsg(looser1, looser2));
     }
 
     /**
-     * Perform the attack of this player with the given number of dice The value
-     * -1 correspond to the special mode in which battles are made until one of
-     * the territory has no more armies
-     *
-     * @param dice the number of dice to use to perform the attack
+     * 
+     * @param firstLooser
+     * @param secondLooser
+     * @return 
      */
-    public void perform(int dice) {
+    private String getBattleLogMsg(String firstLooser, String secondLooser) {
+        String logMessage = String.format(
+                "%s launch battle between %s and %s",
+                this.attacker.getName(),
+                this.source.getName(),
+                this.dest.getName()
+        );
 
-        if (dice == -1) {
+        if (secondLooser == null) {
+            logMessage += String.format(
+                    ", %s loose 1 army",
+                    firstLooser
+            );
+            return logMessage;
+        }
+
+        if (firstLooser.equals(secondLooser)) {
+            logMessage += String.format(
+                    ", %s loose 2 armies",
+                    firstLooser
+            );
+
+        } else {
+            logMessage += String.format(", both territories loose 1 army");
+        }
+
+        return logMessage;
+    }
+
+    /**
+     * Perform the attack of this player with the given number of diceAttack The value
+ -1 correspond to the special mode in which battles are made until one of
+ the territory has no more armies
+     *
+     * @param diceAttack number of dices selected by attacker
+     * @param diceAttacked number of dices selected by attacked
+     */
+    public void perform(int diceAttack, int diceAttacked) {
+        if (diceAttack == -1) {
             battleAll();
         } else {
-            battle(dice);
+            battle(diceAttack,diceAttacked);
         }
     }
 
@@ -118,12 +174,17 @@ public class AttackMove {
      * @param defense defense dices results
      * @param j position for attacker
      * @param i position for defense
+     * @return the loosing territory name
      */
-    public void compareDice(int[] attacker, int[] defense, int j, int i) {
+    public String compareDice(int[] attacker, int[] defense, int j, int i) {
         if (attacker[j] <= defense[i]) {
             this.getSource().setNumArmies(this.getSource().getNumArmies() - 1);
+            return this.getSource().getName();
         } else {
-            this.getDest().setNumArmies(this.getDest().getNumArmies() - 1);
+            if(this.getDest().getNumArmies()>0){
+                this.getDest().setNumArmies(this.getDest().getNumArmies() - 1);
+            }
+            return this.getDest().getName();
         }
     }
 
@@ -131,14 +192,27 @@ public class AttackMove {
      * Uses all the armies in an attack
      */
     private void battleAll() {
-        while (this.getDest().getNumArmies() != 0
-                && this.getSource().getNumArmies() > 1) {
+       
+        while (this.getDest().getNumArmies() != 0 && this.getSource().getNumArmies() > 1) {
             int nbArmiesInSrc = this.getSource().getNumArmies();
+            int defenseArmies;
+            
             if (nbArmiesInSrc > 3) {
-                battle(3);
+                this.setDiceAttack(3);
+                defenseArmies = min(this.getDest().getNumArmies(), this.getDiceAttack());
+                defenseArmies = min(defenseArmies, 2);
+                this.setDiceAttacked(defenseArmies);
+                //System.out.println("atacante: "+this.getDiceAttack()+", atacado: "+this.getDiceAttacked());
+                battle(3, defenseArmies);
             } else {
-                battle(nbArmiesInSrc - 1);
+                this.setDiceAttack(nbArmiesInSrc - 1);
+                defenseArmies = min(this.getDest().getNumArmies(), this.getDiceAttack());
+                defenseArmies = min(defenseArmies, 2);
+                this.setDiceAttacked(defenseArmies);
+                //System.out.println("atacante: "+this.getDiceAttack()+", atacado: "+this.getDiceAttacked());
+                battle((nbArmiesInSrc - 1),defenseArmies);
             }
+            
         }
     }
 
@@ -160,12 +234,58 @@ public class AttackMove {
     }
 
     /**
-     * Random value after rolling the dice
+     * Random value after rolling the diceAttack
      *
      * @return random value
      */
     int roolDice() {
-        int range = (6 - 0) + 1;
-        return (int) (Math.random() * range) + 0;
+        int range = (6 - 1) + 1;
+        return (int) (Math.random() * range) + 1;
     }
+
+    /**
+     * @return the diceAttack
+     */
+    public int getDiceAttack() {
+        return diceAttack;
+    }
+
+    /**
+     * @param diceAttack the diceAttack to set
+     */
+    public void setDiceAttack(int diceAttack) {
+        this.diceAttack = diceAttack;
+    }
+
+    /**
+     * @return the diceAttacked
+     */
+    public int getDiceAttacked() {
+        return diceAttacked;
+    }
+
+    /**
+     * @param diceAttacked the diceAttacked to set
+     */
+    public void setDiceAttacked(int diceAttacked) {
+        this.diceAttacked = diceAttacked;
+    }
+
+    /**
+     * @return the attackDefense
+     */
+    public int getAttackDefense() {
+        return attackDefense;
+    }
+
+    /**
+     * @param attackDefense the attackDefense to set
+     */
+    public void setAttackDefense(int attackDefense) {
+        this.attackDefense = attackDefense;
+        setChanged();
+        notifyObservers(this);
+    }
+    
+    
 }
