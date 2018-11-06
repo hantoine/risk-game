@@ -33,11 +33,11 @@ public abstract class PlayerModel extends Observable {
     /**
      * cardsOwned cards owned by a player
      */
-    private List<TerritoryModel> contriesOwned;
+    public List<TerritoryModel> contriesOwned;
     /**
      * continents owned by a player
      */
-    private List<ContinentModel> continentsOwned;
+    public List<ContinentModel> continentsOwned;
     /**
      * hand of the player
      */
@@ -67,6 +67,10 @@ public abstract class PlayerModel extends Observable {
      */
     private boolean currentPlayer;
 
+    /**
+     * 
+     */
+    private boolean conquered;
     /**
      * Constructor
      *
@@ -181,10 +185,18 @@ public abstract class PlayerModel extends Observable {
         return this.color;
     }
 
+    /**
+     * 
+     * @return 
+     */
     RiskModel getGame() {
         return game;
     }
 
+    /**
+     * 
+     * @param game 
+     */
     void setGame(RiskModel game) {
         this.game = game;
 
@@ -649,7 +661,12 @@ public abstract class PlayerModel extends Observable {
         this.getCurrentAttack().getDest().setNumArmies(armies);
 
         addCountryOwned(this.getCurrentAttack().getDest());
+        setConquered(true);
         this.setCurrentAttack(null);
+        if(game!=null){
+            game.checkForDeadPlayers();
+            game.attackEndValidations();
+        }
         return 0;
     }
 
@@ -748,4 +765,20 @@ public abstract class PlayerModel extends Observable {
                 .collect(Collectors.toList());
         this.setContinentsOwned(newContinentsOwned);
     }
+
+    /**
+     * @return the conquered
+     */
+    public boolean isConquered() {
+        return conquered;
+    }
+
+    /**
+     * @param conquered the conquered to set
+     */
+    public void setConquered(boolean conquered) {
+        this.conquered = conquered;
+    }
+    
+    
 }
