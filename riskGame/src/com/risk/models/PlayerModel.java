@@ -35,7 +35,7 @@ public abstract class PlayerModel extends Observable {
      */
     public List<TerritoryModel> contriesOwned;
     /**
-     * continents owned by a player 
+     * continents owned by a player
      */
     public List<ContinentModel> continentsOwned;
     /**
@@ -569,8 +569,9 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * Setter of the currentFortificationMove attribute
-     *@param src source territory
-     *@param dest destiny of the fortification move
+     *
+     * @param src source territory
+     * @param dest destiny of the fortification move
      */
     void setCurrentFortificationMove(TerritoryModel src, TerritoryModel dest) {
         this.currentFortificationMove = new FortificationMove(src, dest);
@@ -625,7 +626,7 @@ public abstract class PlayerModel extends Observable {
         if (this.getCurrentAttack() == null) {
             return;
         }
-      
+
         this.getCurrentAttack().perform(diceAttack, diceAttacked);
 
         /*
@@ -651,8 +652,9 @@ public abstract class PlayerModel extends Observable {
      * @return -1 error; 0 success
      */
     public int conquerCountry(int armies) {
-        if(armies<this.getCurrentAttack().getDiceAttack() || armies>=this.getCurrentAttack().getSource().getNumArmies())
+        if (armies < this.getCurrentAttack().getDiceAttack() || armies >= this.getCurrentAttack().getSource().getNumArmies()) {
             return -1;
+        }
 
         int newArmies = this.getCurrentAttack().getSource().getNumArmies();
         this.getCurrentAttack().getSource().setNumArmies(newArmies - armies);
@@ -669,7 +671,8 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     *  It verifies that the current attack is valid
+     * It verifies that the current attack is valid
+     *
      * @param sourceTerritory source territory of attack
      * @param destTerritory territory attacked
      * @return -1 error;0 success
@@ -691,7 +694,7 @@ public abstract class PlayerModel extends Observable {
 
         return 0;
     }
-    
+
     /**
      * Set fortification move to null
      */
@@ -704,6 +707,7 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * Verifies that a continent is not owned
+     *
      * @param continent continent to be verified
      * @return true id it is owned; false in other case
      */
@@ -713,6 +717,7 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * Calculates the % of countries owned
+     *
      * @return % of countries owned
      */
     public int getPercentMapControlled() {
@@ -722,6 +727,7 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * Addition of an event in the log
+     *
      * @param logMessage message to add to the log
      */
     void addNewLogEvent(String logMessage) {
@@ -731,6 +737,7 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * Setter of the current attack
+     *
      * @param src source country
      * @param dest country attacked
      */
@@ -744,9 +751,13 @@ public abstract class PlayerModel extends Observable {
      * territories owned by this player
      */
     private void updateContinentsOwned() {
+        /* If this player is not associated with a game we cannot update
+        owned continents
+         */
         if (this.game == null) {
             return;
         }
+
         List<ContinentModel> newContinentsOwned;
         newContinentsOwned = this.game.getMap().getContinents().stream()
                 .filter((c) -> c.getMembers().stream()
