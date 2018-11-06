@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import com.risk.views.attack.AttackView;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,6 +107,9 @@ public final class RiskModel extends Observable {
         players.remove(player);
         if (players.size() == 1) {
             this.winningPlayer = this.players.getFirst();
+            addNewEvent(this.getWinningPlayer().getName() + " win the game");
+            addNewLogEvent(this.getWinningPlayer().getName() + " win the game");
+            return;
         }
 
         setChanged();
@@ -159,30 +163,30 @@ public final class RiskModel extends Observable {
     /**
      * Assigns random countries to players
      */
-    public void assignCoutriesToPlayers() {
+    public void assignTerritoriesToPlayers() {
         if (players == null) {
             throw new IllegalArgumentException();
         }
 
-        List<TerritoryModel> countriesLeft = new LinkedList<>(map.getTerritories());
-        Collections.shuffle(countriesLeft);
+        List<TerritoryModel> terrLeft = new LinkedList<>(map.getTerritories());
+        Collections.shuffle(terrLeft);
 
-        int countriesPerPlayer = (countriesLeft.size() / players.size());
+        int terrPerPlayer = (terrLeft.size() / players.size());
 
         players.stream().forEach((player) -> {
-            List<TerritoryModel> ownedCountries = countriesLeft.subList(0, countriesPerPlayer);
-            ownedCountries.stream().forEach((t) -> {
+            List<TerritoryModel> ownerTerr = terrLeft.subList(0, terrPerPlayer);
+            ownerTerr.stream().forEach((t) -> {
                 t.setNumArmies(1);
             });
-            player.setContriesOwned(ownedCountries);
+            player.setContriesOwned(ownerTerr);
 
-            countriesLeft.removeAll(new ArrayList<>(ownedCountries));
+            terrLeft.removeAll(new ArrayList<>(ownerTerr));
         });
 
         Random rnd = new Random();
-        while (!countriesLeft.isEmpty()) {
+        while (!terrLeft.isEmpty()) {
             int playerIndex = rnd.nextInt(players.size());
-            TerritoryModel territoryAdded = countriesLeft.remove(0);
+            TerritoryModel territoryAdded = terrLeft.remove(0);
             territoryAdded.setNumArmies(1);
             players.get(playerIndex).addCountryOwned(territoryAdded);
         }
@@ -196,16 +200,21 @@ public final class RiskModel extends Observable {
             }
         });
 
-        setChanged();
-        notifyObservers();
+        addNewLogEvent("Territories are assigned randomly to players");
     }
 
+    public void addObserverToAttack(AttackView attackView){
+        this.getCurrentPlayer().getCurrentAttack().addObserver(attackView);
+    }
+    
     public void attackMove(TerritoryModel src, TerritoryModel dest) {
-        AttackMove attack = new AttackMove(src, dest);
-        this.getCurrentPlayer().setCurrentAttack(attack);
-
-        setChanged();
-        notifyObservers();
+        this.getCurrentPlayer().startAttackMove(src, dest);
+        addNewLogEvent(String.format(
+                "%s attacks the territory %s from the territory %s",
+                currentPlayer.getName(),
+                src.getName(),
+                dest.getName()
+        ));
     }
 
     public void tryFortificationMove(TerritoryModel src, TerritoryModel dest)
@@ -217,8 +226,12 @@ public final class RiskModel extends Observable {
         dest.incrementNumArmies();
         currentPlayer.setCurrentFortificationMove(src, dest);
 
-        setChanged();
-        notifyObservers();
+        addNewLogEvent(String.format(
+                "%s moves one army from territory %s to territory %s",
+                currentPlayer.getName(),
+                src.getName(),
+                dest.getName()
+        ));
     }
 
     private void checkFortificationMove(TerritoryModel src, TerritoryModel dest)
@@ -339,13 +352,16 @@ public final class RiskModel extends Observable {
     /**
      * Initialize the initial number of armies for each player
      */
-    public void initializePlayersArmies() {
+    private void initializePlayersArmies() {
+        int nbArmies = PlayerModel.getNbInitialArmies(this.players.size());
         this.players.stream().forEach((player) -> {
-            player.initializeArmies(this.players.size());
+            player.setNumArmiesAvailable(nbArmies);
         });
 
-        setChanged();
-        notifyObservers();
+        addNewLogEvent(String.format(
+                "Players receive %d armies each",
+                nbArmies
+        ));
     }
 
     /**
@@ -388,7 +404,7 @@ public final class RiskModel extends Observable {
     /**
      * Change the order of the cards
      */
-    public void shuffleDeck() {
+    private void shuffleDeck() {
         Collections.shuffle(this.getDeck());
 
         setChanged();
@@ -436,9 +452,6 @@ public final class RiskModel extends Observable {
     public boolean finishPhase() {
         if (this.getWinningPlayer() != null) {
             return false;
-            // this should be triggered by the view itself when RiskView is updated and a winning player is set
-            //            riskView.showMessage("The player " + this.modelRisk.getWinningPlayer().getName() + " has won the game");
-
         }
 
         executeEndOfPhaseSteps();
@@ -457,14 +470,24 @@ public final class RiskModel extends Observable {
     private void executeEndOfPhaseSteps() {
         switch (this.getPhase()) {
             case STARTUP:
+                Random rand = new Random();
+                players.stream().forEach((pl) -> {
+                    while (pl.getNumArmiesAvailable() != 0) {
+                        int randTerr = rand.nextInt(pl.getNbCountriesOwned());
+                        try {
+                            placeArmy(pl, pl.getContriesOwned().get(randTerr));
+                        } catch (ArmyPlacementImpossible ex) {
+                        }
+                    }
+                });
                 break;
             case REINFORCEMENT:
                 break;
             case ATTACK:
                 this.getCurrentPlayer().addCardToPlayerHand();
-                //riskView.updateAuxiliarPhasePanel("", "", this, 0, 3);
                 this.getCurrentPlayer().setCurrentAttack(null);
                 checkForDeadPlayers();
+                attackEndValidations();
                 break;
             case FORTIFICATION:
                 this.getCurrentPlayer().resetCurrentFortificationMove();
@@ -474,6 +497,19 @@ public final class RiskModel extends Observable {
 
         setChanged();
         notifyObservers();
+    }
+
+    public void attackEndValidations() {
+        if ((this.getCurrentPlayer().getContriesOwned().stream()
+                .filter(c -> c.getNumArmies() < 2)).count() == this.getCurrentPlayer().getContinentsOwned().size()) {
+            finishPhase();
+        }
+
+        if (this.getCurrentPlayer().getContriesOwned().size() == this.getMap().getTerritories().size()) {
+            this.setWinningPlayer(this.getCurrentPlayer());
+            this.finishPhase();
+        }
+
     }
 
     /**
@@ -504,19 +540,21 @@ public final class RiskModel extends Observable {
      * from the game
      */
     private void checkForDeadPlayers() {
-        players.stream()
+        List<PlayerModel> previousPlayerList = new ArrayList<>(players);
+        previousPlayerList.stream()
                 .filter(p -> p.getNbCountriesOwned() == 0)
                 .forEach((p) -> {
-                    /*
-                    this.riskView.showMessage(String.format(
-                            "The player %s has no more territories, it is eliminated from the game !",
-                            p.getName())
-                    );//*///setchanged and notifyObserver with the dead player as a parameter
                     this.removePlayer(p);
+                    addNewLogEvent(String.format(
+                            "%s has no more territories, "
+                            + "it is eliminated from the game",
+                            p.getName()
+                    ));
                 });
 
-        setChanged();
-        notifyObservers();
+        // the position of the current player in the list might have changed
+        int newPos = this.getPlayerList().indexOf(this.currentPlayer);
+        this.setTurn(newPos);
     }
 
     /**
@@ -524,11 +562,13 @@ public final class RiskModel extends Observable {
      *
      * @param player Player whose army is going to be taken
      * @param territory Territory on which the army will be added
-     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible
+     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible exception for bad assignation of armies
      */
-    public void placeArmy(PlayerModel player, TerritoryModel territory) throws ArmyPlacementImpossible {
+    public void placeArmy(PlayerModel player, TerritoryModel territory)
+            throws ArmyPlacementImpossible {
         if (player.getNumArmiesAvailable() <= 0) {
-            throw new ArmyPlacementImpossible("You have no armies left to deploy !");
+            throw new ArmyPlacementImpossible(
+                    "You have no armies left to deploy !");
         }
         if (player.checkOwnTerritory(territory) == false) {
             throw new ArmyPlacementImpossible("You don't own this country !");
@@ -537,8 +577,11 @@ public final class RiskModel extends Observable {
         territory.incrementNumArmies();
         player.decrementNumArmiesAvailable();
 
-        setChanged();
-        notifyObservers();
+        addNewLogEvent(String.format(
+                "%s place one army on territory %s",
+                player.getName(),
+                territory.getName()
+        ));
     }
 
     public static class FortificationMoveImpossible extends Exception {
@@ -588,8 +631,8 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     *
-     * @return
+     * Exchange cards to armies
+     * @return true if correct; false if error
      */
     public boolean exchangeCardsWithArmiesForCurrentPlayer() {
 
@@ -607,20 +650,32 @@ public final class RiskModel extends Observable {
      * @param armies the number of armies to move
      */
     public void moveArmiesToConqueredTerritory(int armies) {
+        
         this.getCurrentPlayer().conquerCountry(armies);
 
-        setChanged();
-        notifyObservers();
+        addNewLogEvent(String.format(
+                "%s move %d armies to the newly conquered territory",
+                currentPlayer.getName(),
+                armies
+        ));
+    }
+
+    public void startGame() {
+        this.setWinningPlayer(null);
+        this.assignTerritoriesToPlayers();
+        this.initializePlayersArmies();
+
+        addNewLogEvent("The game starts", true);
+        this.currentPlayer.setCurrentPlayer(true);
     }
 
     /**
      * Battle between countries in an attack move
      *
      * @param attacker attacking player
-     * @param dice number of dice
      */
-    public void performAttack(PlayerModel attacker, int dice) {
-        attacker.performCurrentAttack(dice);
+    public void performAttack(PlayerModel attacker) {
+        attacker.performCurrentAttack(this.getCurrentPlayer().getCurrentAttack().getDiceAttack(),this.getCurrentPlayer().getCurrentAttack().getDiceAttacked());
 
         setChanged();
         notifyObservers();
@@ -635,5 +690,25 @@ public final class RiskModel extends Observable {
     public void addNewEvent(String eventMessage) {
         setChanged();
         notifyObservers(eventMessage);
+    }
+
+    /**
+     * Notify observer of a new event that can be displayed in the logs
+     *
+     * @param logMessage Message describing this event
+     */
+    public void addNewLogEvent(String logMessage) {
+        addNewLogEvent(logMessage, false);
+    }
+
+    /**
+     * Notify observer of a new event that can be displayed in the logs
+     *
+     * @param logMessage Message describing this event
+     * @param clear true if this event should clear previous log messages
+     */
+    private void addNewLogEvent(String logMessage, boolean clear) {
+        setChanged();
+        notifyObservers(new LogEvent(logMessage, clear));
     }
 }

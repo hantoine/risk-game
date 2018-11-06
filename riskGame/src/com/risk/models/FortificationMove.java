@@ -79,6 +79,11 @@ class FortificationMove {
         return true;
     }
 
+    /**
+     * Evaluates if the movements are the same
+     * @param last las fortification move
+     * @return true if compatible; false other case
+     */
     boolean compatible(FortificationMove last) {
         return last != null && !last.equals(this);
     }

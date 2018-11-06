@@ -9,6 +9,7 @@ import com.risk.models.GamePhase;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
+import com.risk.views.attack.AttackView;
 import com.risk.views.reinforcement.CardExchangeView;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -102,38 +103,62 @@ public class GameController {
                 }
                 break;
             case ATTACK:
-                if (!sourceTerritory.getAdj().contains(destTerritory)) {
-                    break;
-                }
-                if (rm.getCurrentPlayer().getCurrentAttack() != null) {
-                    this.rm.addNewEvent("You are already attacking.");
-                    break;
-                }
-                if (!currentPlayer.getContriesOwned().contains(sourceTerritory)
-                        || currentPlayer.getContriesOwned().contains(destTerritory)) {
-                    this.rm.addNewEvent("Invalid movement");
-                    break;
-                }
-                if (sourceTerritory.getNumArmies() < 2) {
-                    this.rm.addNewEvent("You can't attack with only one armie");
-                    break;
-                }
-
-                this.rm.attackMove(sourceTerritory, destTerritory);
+                int result=rm.getCurrentPlayer().validateAttack(sourceTerritory,destTerritory);
+                if(result==0){               
+                    this.rm.attackMove(sourceTerritory, destTerritory);
+                }else
+                    exceptionManagerAttack(result);
                 break;
         }
 
     }
-
+    
+    /**
+     * Function that shows errors from an attack
+     * @param e event to manage
+     */
+    public void exceptionManagerAttack(int e){
+        switch(e){
+            case -1:
+                this.rm.addNewEvent("The country is not adjacent.");
+                break;
+            case -2:
+                this.rm.addNewEvent("You are already attacking.");
+                break;
+            case -3:
+                this.rm.addNewEvent("Invalid movement");
+                break;
+            case -4:
+                this.rm.addNewEvent("You can't attack with only one armie");
+                break;
+            default:
+                break;
+        }
+    }
+    
     /**
      * Press one of the dices
      *
-     * @param source source of attack
-     * @param dest destiny of attack
      * @param dice the number of dices
      */
     public void clickAttack(int dice) {
-        rm.performAttack(this.rm.getCurrentPlayer(), dice);
+        if(rm.getCurrentPlayer().getCurrentAttack().getDiceAttack()!=-1 || dice==-1 || rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies()==1){
+            
+            if(rm.getCurrentPlayer().getCurrentAttack().getDiceAttack()!=-1)
+                rm.getCurrentPlayer().getCurrentAttack().setDiceAttacked(dice);
+            else{
+                rm.getCurrentPlayer().getCurrentAttack().setDiceAttack(dice);
+                rm.getCurrentPlayer().getCurrentAttack().setDiceAttacked(1);
+            }
+            //System.out.println("atacante: "+rm.getCurrentPlayer().getCurrentAttack().getDiceAttack()+", atacado: "+rm.getCurrentPlayer().getCurrentAttack().getDiceAttacked());
+            rm.performAttack(this.rm.getCurrentPlayer());
+        }else{
+            rm.getCurrentPlayer().getCurrentAttack().setDiceAttack(dice);
+            rm.getCurrentPlayer().getCurrentAttack().setAttackDefense(1);
+        }
+            
+        
+        
     }
 
     /**
@@ -144,6 +169,7 @@ public class GameController {
      * territory
      */
     public void moveArmiesToConqueredTerritory(int armies) {
+         
         this.rm.moveArmiesToConqueredTerritory(armies);
     }
 
@@ -158,11 +184,17 @@ public class GameController {
         }
     }
 
+    /**
+     * Destroy card exchange view
+     */
     void closeCardExchangeView() {
         this.exchangeView.setVisible(false);
         this.exchangeView = null;
     }
-
+    
+    /**
+     * Shows and creates a card exchange view
+     */
     void openCardExchangeView() {
         this.exchangeView = new CardExchangeView();
         this.exchangeView.updateView(this.rm.getCurrentPlayer().getHand());
@@ -175,5 +207,10 @@ public class GameController {
                 dimension.height / 2 - 500 / 2
         );
         exchangeView.setVisible(true);
+    }
+    
+    public void addObserverToAttack(AttackView attackView){
+        
+        rm.addObserverToAttack(attackView);
     }
 }

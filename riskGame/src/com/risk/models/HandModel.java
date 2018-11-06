@@ -23,8 +23,17 @@ public class HandModel extends Observable {
      * cards it is the group of cards of the hand
      */
     private LinkedList<CardModel> cards;
+    /**
+     * Owner of the hand
+     */
     private PlayerModel owner;
+    /**
+     * Current cards show
+     */
     private boolean current;
+    /**
+     * if have handed cards
+     */
     private boolean handed;
     /**
      * Cards selected to be handed
@@ -36,10 +45,6 @@ public class HandModel extends Observable {
      */
     HandModel() {
         this.cards = new LinkedList();
-        this.cards.add(new CardModel("Venezuela", "infantry"));
-        this.cards.add(new CardModel("France", "infantry"));
-        this.cards.add(new CardModel("China", "infantry"));
-        this.cards.add(new CardModel("India", "artillery"));
         this.selectedCards = new LinkedList<>();
     }
 
@@ -55,7 +60,7 @@ public class HandModel extends Observable {
     /**
      * Read-only Getter for the cards attribute
      *
-     * @return
+     * @return list of cards
      */
     public List<CardModel> getCards() {
         return Collections.unmodifiableList(cards);
