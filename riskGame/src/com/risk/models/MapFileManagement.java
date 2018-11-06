@@ -91,18 +91,18 @@ public class MapFileManagement {
     public static String readFile(String path) {
         String linesRead;
         String[] extenValid;
-        Path aux;
+        Path pathReadFile;
         try {
             extenValid = path.split("[.]");
             if (!extenValid[extenValid.length - 1].equals("map") || extenValid == null) {
                 return "-1";
             }
             try {
-                aux = Paths.get(path);
+                pathReadFile = Paths.get(path);
             } catch (Exception ex) {
                 return "-1";
             }
-            linesRead = new String(Files.readAllBytes(aux));
+            linesRead = new String(Files.readAllBytes(pathReadFile));
         } catch (FileNotFoundException e) {
             return "-1";
         } catch (IOException e) {
@@ -124,7 +124,7 @@ public class MapFileManagement {
     public static int configurationInf(String info, String path, MapModel map) {
 
         String[] linesInfo;
-        String[] aux;
+        String[] linesRead;
         File fileRead = new File(path);
 
         if (!info.equals("")) {
@@ -134,19 +134,19 @@ public class MapFileManagement {
             }
 
             for (int i = 1; i < linesInfo.length && !linesInfo[i].equals(""); i++) {
-                aux = linesInfo[i].split("=", 2);
+                linesRead = linesInfo[i].split("=", 2);
 
-                switch (aux[0]) {
+                switch (linesRead[0]) {
                     case "author":
-                        map.setAuthorConfig(aux[1]);
+                        map.setAuthorConfig(linesRead[1]);
                         break;
                     case "image":
-                        if (aux[1].isEmpty() || aux[1].equals("null")) {
+                        if (linesRead[1].isEmpty() || linesRead[1].equals("null")) {
                             break;
                         }
 
-                        map.setImagePath(aux[1]);
-                        Path imagePath = fileRead.toPath().resolveSibling(aux[1]);
+                        map.setImagePath(linesRead[1]);
+                        Path imagePath = fileRead.toPath().resolveSibling(linesRead[1]);
                         try {
                             BufferedImage image = ImageIO.read(new File(imagePath.toString()));
                             map.setImage(image);
@@ -157,22 +157,22 @@ public class MapFileManagement {
                         }
                         break;
                     case "wrap":
-                        if ((aux[1].equals("no") || aux[1].equals("yes"))) {
-                            map.setWrapConfig(aux[1].equals("yes"));
+                        if ((linesRead[1].equals("no") || linesRead[1].equals("yes"))) {
+                            map.setWrapConfig(linesRead[1].equals("yes"));
                         } else {
                             return -1;
                         }
                         break;
                     case "scroll":
-                        if ((aux[1].equals("horizontal") || aux[1].equals("vertical") || aux[1].equals("none"))) {
-                            map.setScrollConfig(aux[1]);
+                        if ((linesRead[1].equals("horizontal") || linesRead[1].equals("vertical") || linesRead[1].equals("none"))) {
+                            map.setScrollConfig(linesRead[1]);
                         } else {
                             return -1;
                         }
                         break;
                     case "warn":
-                        if ((aux[1].equals("no") || aux[1].equals("yes"))) {
-                            map.setWarnConfig(aux[1].equals("yes"));
+                        if ((linesRead[1].equals("no") || linesRead[1].equals("yes"))) {
+                            map.setWarnConfig(linesRead[1].equals("yes"));
                         } else {
                             return -1;
                         }
@@ -199,22 +199,22 @@ public class MapFileManagement {
         if (!info.equals("")) {
             String[] linesInfo = info.split("\\r?\\n");
             int i = 0;
-            String aux[];
+            String[] linesRead;
             while (i < linesInfo.length) {
                 if (!linesInfo[i].equals("")) {
-                    aux = linesInfo[i].split("=", 2);
-                    if (aux.length > 1) {
+                    linesRead = linesInfo[i].split("=", 2);
+                    if (linesRead.length > 1) {
                         ContinentModel auxContinent;
                         try {
-                            auxContinent = new ContinentModel(aux[0], Integer.parseInt(aux[1]));
+                            auxContinent = new ContinentModel(linesRead[0], Integer.parseInt(linesRead[1]));
                         } catch (NumberFormatException ex) {
                             return -1;
                         }
 
-                        if (graphContinents.containsKey(aux[0])) {
+                        if (graphContinents.containsKey(linesRead[0])) {
                             return -1;
                         } else {
-                            graphContinents.put(aux[0], auxContinent);
+                            graphContinents.put(linesRead[0], auxContinent);
                         }
                     } else {
                         return -1;
