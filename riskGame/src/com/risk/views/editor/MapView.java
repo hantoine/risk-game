@@ -203,7 +203,6 @@ public class MapView extends JPanel implements Observer {
                 formerName = name;
             }
         }
-
         
         CountryButton2 territoryButton;
         
@@ -217,10 +216,6 @@ public class MapView extends JPanel implements Observer {
             //push the updated button back into the map
             countriesButtons.put(newName, territoryButton);
         }
-        
-        
-
-        
     }
 
     /**

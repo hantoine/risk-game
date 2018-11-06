@@ -85,7 +85,10 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
     }
 
     public Color getColor(String continentName){
-        return this.items.get(continentName).getBackground();
+        if(this.items.keySet().contains(continentName))
+            return this.items.get(continentName).getBackground();
+        else
+            return null;
     }
     
     /**
