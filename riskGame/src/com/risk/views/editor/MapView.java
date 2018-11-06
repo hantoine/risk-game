@@ -6,27 +6,26 @@
 package com.risk.views.editor;
 
 import com.risk.controllers.MapEditorController;
-import com.risk.models.ContinentModel;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
 import com.risk.observable.MapModelObserver;
 import com.risk.observable.UpdateTypes;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -195,7 +194,7 @@ public class MapView extends JPanel implements Observer {
      * @param newName
      */
     public void updateTerritoryName(MapModel mapModel, List territoriesInModel, List<String> territoriesInView, String newName) {
-        //search for the territory which is in the view and not in the model 
+        //search for the territory which is in the view and not in the model
         //(because the territory in the model have been modified already)
         String formerName = null;
         for (String name : territoriesInView) {
@@ -203,18 +202,30 @@ public class MapView extends JPanel implements Observer {
                 formerName = name;
             }
         }
-        
+
         CountryButton2 territoryButton;
-        
-        if(formerName != null){
+
+        if (formerName != null) {
             //pop territory button to update
             territoryButton = this.countriesButtons.remove(formerName);
-            
+
             //set new name
             territoryButton.setName(newName);
-            
+
             //push the updated button back into the map
             countriesButtons.put(newName, territoryButton);
+
+            Set<String> linkNames = new HashSet<>(this.links.keySet());
+            for (String linkName : linkNames) {
+                String[] splittedLinkName = linkName.split(";");
+                if (splittedLinkName[0].equals(formerName)) {
+                    Line2D line = this.links.remove(linkName);
+                    this.links.put(newName + ";" + splittedLinkName[1], line);
+                } else if (splittedLinkName[1].equals(formerName)) {
+                    Line2D line = this.links.remove(linkName);
+                    this.links.put(splittedLinkName[0] + ";" + newName, line);
+                }
+            }
         }
     }
 
@@ -233,19 +244,20 @@ public class MapView extends JPanel implements Observer {
 
     /**
      * Returns the list of neighbors of a given territory given its name
+     *
      * @param nameOfUpdatedTerritory
      * @return the list of the neighbors (list of Strings)
      */
-    private LinkedList<String> getNeighborsOfTerritory(String nameOfUpdatedTerritory){
+    private LinkedList<String> getNeighborsOfTerritory(String nameOfUpdatedTerritory) {
         //initialize the list
         LinkedList<String> neighborsInView = new LinkedList();
-        
+
         //get iterator on the links
-        Iterator linkIt = this.links.keySet().iterator(); 
-        
+        Iterator linkIt = this.links.keySet().iterator();
+
         //iterate over all links using iterator
         for (int i = 0; i < this.links.keySet().size(); i++) {
-            
+
             //get names of the two territories of the current link
             String existingLinkName = (String) linkIt.next();
             String[] existingNeighbours = existingLinkName.split(";");
@@ -257,11 +269,11 @@ public class MapView extends JPanel implements Observer {
                 neighborsInView.add(existingNeighbours[0]);
             }
         }
-        
+
         //return the resulting list
         return neighborsInView;
     }
-    
+
     /**
      * Remove a link between two territories in response to a notification from
      * observable model.
@@ -282,21 +294,20 @@ public class MapView extends JPanel implements Observer {
         }
 
         //search for the link to delete:
-        
         //for all neighbors in the view
         for (String viewNeighbor : neighborsInView) {
             if (neighborsInModel.contains(viewNeighbor)) {
             } else {
                 //if the neighbor is not in the model, remove it:
-                
+
                 //get the two possible names of the link in the view
                 String possibleName1 = viewNeighbor + ";" + nameOfUpdatedTerritory;
                 String possibleName2 = nameOfUpdatedTerritory + ";" + viewNeighbor;
-                
+
                 //if one does exist, remove it
                 if (this.links.keySet().contains(possibleName1)) {
                     links.remove(possibleName1);
-                } 
+                }
                 if (this.links.keySet().contains(possibleName2)) {
                     links.remove(possibleName2);
                 }
@@ -327,7 +338,6 @@ public class MapView extends JPanel implements Observer {
         }
 
         //search for the link to add:
-        
         //for all neighbors in the model
         String target = null;
         for (String modelNeighbor : neighborsInModel) {
@@ -349,12 +359,13 @@ public class MapView extends JPanel implements Observer {
 
     /**
      * Add a new link between two country buttons
+     *
      * @param territory1
-     * @param territory2 
+     * @param territory2
      */
-    private void addLink(String territory1, String territory2){
+    private void addLink(String territory1, String territory2) {
         String[] linkNames = {territory1, territory2};
-        
+
         //get the two buttons corresponding to the two countries
         CountryButton2 firstItem = this.countriesButtons.get(linkNames[0]);
         CountryButton2 secondItem = this.countriesButtons.get(linkNames[1]);
@@ -372,7 +383,7 @@ public class MapView extends JPanel implements Observer {
         //draw line
         repaint();
     }
-    
+
     /**
      * Update method of the Observer pattern
      *
@@ -381,9 +392,10 @@ public class MapView extends JPanel implements Observer {
      */
     @Override
     public void update(Observable object, Object arg) {
-        if(arg == null || !(arg instanceof UpdateTypes))
+        if (arg == null || !(arg instanceof UpdateTypes)) {
             return;
-        
+        }
+
         //get update type
         UpdateTypes updateType = (UpdateTypes) arg;
 
@@ -425,8 +437,9 @@ public class MapView extends JPanel implements Observer {
 
     /**
      * Remove a territory in the view according to the update of the model
+     *
      * @param territoriesInModel
-     * @param territoriesInView 
+     * @param territoriesInView
      */
     private void updateRemoveTerritory(List<String> territoriesInModel, List<String> territoriesInView) {
         //search for the territory which is in the view and not in the model
@@ -440,9 +453,10 @@ public class MapView extends JPanel implements Observer {
 
     /**
      * Add a territory in the view according to the update of the model
+     *
      * @param mapModel
      * @param territoriesInModel
-     * @param territoriesInView 
+     * @param territoriesInView
      */
     private void updateAddTerritory(MapModel mapModel, List<String> territoriesInModel, List<String> territoriesInView) {
         //search for the territory which is in the model and not in the view
