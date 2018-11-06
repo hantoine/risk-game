@@ -21,13 +21,23 @@ import javax.swing.JPanel;
  */
 public class DominationView extends JPanel implements Observer {
 
+    /**
+     * 
+     */
     Map<String, PlayerGameInfoPanel> playerGameInfoPanels;
 
+    /**
+     * 
+     */
     public DominationView() {
         playerGameInfoPanels = new HashMap<>();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 
+    /**
+     * 
+     * @param rm 
+     */
     public void updateView(RiskModel rm) {
         rm.getPlayerList().stream().forEach((pl) -> {
             if (!playerGameInfoPanels.keySet().contains(pl.getName())) {
@@ -50,6 +60,11 @@ public class DominationView extends JPanel implements Observer {
         });
     }
 
+    /**
+     * 
+     * @param o
+     * @param o1 
+     */
     @Override
     public void update(Observable o, Object o1) {
         if (o instanceof RiskModel) {

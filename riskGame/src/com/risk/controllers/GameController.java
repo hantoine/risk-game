@@ -30,7 +30,9 @@ public class GameController {
      * Card exchange panel
      */
     private CardExchangeView exchangeView;
-
+    /**
+     * 
+     */
     private CardExchangeListener cardExchangeListener;
 
     /**
@@ -209,6 +211,10 @@ public class GameController {
         exchangeView.setVisible(true);
     }
     
+    /**
+     * 
+     * @param attackView 
+     */
     public void addObserverToAttack(AttackView attackView){
         
         rm.addObserverToAttack(attackView);

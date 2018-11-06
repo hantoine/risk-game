@@ -62,6 +62,9 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      * current stage
      */
     final private InstructionsPanel stagePanel;
+    /**
+     * 
+     */
     final private PhaseView phaseView;
 
     /**
@@ -97,6 +100,10 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.centerWindow();
     }
 
+    /**
+     * 
+     * @param rm 
+     */
     @Override
     public void observeModel(RiskModel rm) {
         updateView(rm, true);
@@ -113,6 +120,11 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         rm.addObserver(this.phaseView);
     }
 
+    /**
+     * 
+     * @param rm
+     * @param newMap 
+     */
     private void updateView(RiskModel rm, boolean newMap) {
         this.stagePanel.updateView(rm);
         this.mapPanel.updateView(rm.getMap(), newMap);
@@ -177,13 +189,13 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     public void initialMenu(RiskModel riskModel, MenuListener menuListener) {
 
         StartMenuView start = new StartMenuView(riskModel, menuListener);
-        MenuView aux = new MenuView(start, this, "New Game");
-        this.setMenuPanel(aux);
-        aux.add(start);
-        aux.setVisible(true);
-        aux.setSize(300, 500);
+        MenuView menu = new MenuView(start, this, "New Game");
+        this.setMenuPanel(menu);
+        menu.add(start);
+        menu.setVisible(true);
+        menu.setSize(300, 500);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        aux.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
+        menu.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
     }
 
     /**
@@ -289,6 +301,11 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         return stagePanel;
     }
 
+    /**
+     * 
+     * @param o
+     * @param o1 
+     */
     @Override
     public void update(Observable o, Object o1) {
         if (o instanceof RiskModel) {
