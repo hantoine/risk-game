@@ -577,6 +577,7 @@ public final class RiskModel extends Observable {
         previousPlayerList.stream()
                 .filter(p -> p.getNbCountriesOwned() == 0)
                 .forEach((p) -> {
+                    p.getHand().getCards().stream().forEach(c -> this.getCurrentPlayer().getHand().addCardToPlayerHand(c));
                     this.removePlayer(p);
                     addNewLogEvent(String.format(
                             "%s has no more territories, "

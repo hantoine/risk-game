@@ -68,6 +68,7 @@ public class CardExchangeView extends JDialog implements Observer {
         this.add(exchangeMessage, BorderLayout.NORTH);
         this.add(playerGameHandPanel, BorderLayout.CENTER);
         this.add(buttonPanel, BorderLayout.SOUTH);
+        this.setUndecorated(true);
 
     }
 
