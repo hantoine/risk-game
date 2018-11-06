@@ -159,6 +159,11 @@ public class MapPanel extends JPanel implements Observer {
         return image;
     }
 
+    /**
+     * 
+     * @param o
+     * @param o1 
+     */
     @Override
     public void update(Observable o, Object o1) {
         boolean mapChanged = false;

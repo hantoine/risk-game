@@ -33,7 +33,9 @@ public class AttackView extends JPanel implements Observer{
      * Message with the name of the countries involve in an attack
      */
     JLabel countriesInvolve;
-    
+    /**
+     * 
+     */
     JLabel actionSubject;
     
     /**
@@ -116,7 +118,11 @@ public class AttackView extends JPanel implements Observer{
         });
     }
     
-    
+    /**
+     * 
+     * @param o
+     * @param arg 
+     */
     @Override
     public void update(Observable o, Object arg) {
         AttackMove attack=(AttackMove) o;
