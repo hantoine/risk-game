@@ -119,8 +119,8 @@ public class AttackMove extends Observable {
 
     /**
      * this method is to get battle log message
-     * @param firstLooser
-     * @param secondLooser
+     * @param firstLooser the first looser
+     * @param secondLooser the second looser
      * @return the message
      */
     private String getBattleLogMsg(String firstLooser, String secondLooser) {
