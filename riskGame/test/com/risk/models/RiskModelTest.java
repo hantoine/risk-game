@@ -170,7 +170,7 @@ public class RiskModelTest {
         TerritoryModel terr = this.mapModel.getTerritoryByName("TerritoryB");
 
         player.setNumArmiesAvailable(1);
-        player.addTerrOwned(terr);
+        player.addTerritoryOwned(terr);
         terr.setNumArmies(0);
 
         riskModel.placeArmy(player, terr);
@@ -198,7 +198,7 @@ public class RiskModelTest {
         ArmyPlacementImpossible exception = null;
 
         player.setNumArmiesAvailable(0);
-        player.addTerrOwned(terr);
+        player.addTerritoryOwned(terr);
         terr.setNumArmies(0);
 
         try {
@@ -286,6 +286,58 @@ public class RiskModelTest {
     }
 
     /**
+     * Test finish phase to check that the end of game is detected
+     */
+    public void testFinishPhaseEndOfGame() {
+        riskModel.removePlayer(0);
+        riskModel.removePlayer(0);
+
+        boolean res = riskModel.finishPhase();
+
+        assertEquals(false, res);
+    }
+
+    /**
+     * Test of removePlayer: when only one player left the game is over
+     */
+    @Test
+    public void testRemovePlayerEndOfGameDetected() {
+        riskModel.removePlayer(riskModel.getPlayerList().get(0));
+        riskModel.removePlayer(riskModel.getPlayerList().get(0));
+
+        /*
+        only one player left in the game, it should hence be detected the
+        winning player detected
+         */
+        assertTrue(riskModel.getWinningPlayer() != null);
+        assertEquals("Player 3 win the game", this.dummyObserver.getMessage());
+
+    }
+
+    /**
+     * Test of checkForDeadPlayers
+     */
+    @Test
+    public void testCheckForDeadPlayers() {
+        this.riskModel.nextTurn();
+        this.riskModel.nextTurn();
+
+        PlayerModel currentPlayer = riskModel.getCurrentPlayer();
+        PlayerModel playerToKill = this.riskModel.getPlayerList().get(1);
+
+        this.riskModel.getPlayerList().get(0).addTerritoryOwned(
+                this.mapModel.getTerritoryByName("TerritoryA"));
+        this.riskModel.getPlayerList().get(2).addTerritoryOwned(
+                this.mapModel.getTerritoryByName("TerritoryB"));
+
+        riskModel.checkForDeadPlayers();
+
+        assertEquals(2, riskModel.getPlayerList().size());
+        assertFalse(riskModel.getPlayerList().contains(playerToKill));
+        assertSame(currentPlayer, riskModel.getCurrentPlayer());
+    }
+
+    /**
      * Class implementing Observer to test RiskModel is notifying observers
      * correctly
      */
@@ -304,4 +356,5 @@ public class RiskModelTest {
             return message;
         }
     }
+
 }

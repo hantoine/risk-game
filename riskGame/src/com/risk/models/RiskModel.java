@@ -91,7 +91,7 @@ public final class RiskModel extends Observable {
      *
      * @param index the position in the list
      */
-    public void removePlayer(int index) {
+    void removePlayer(int index) {
         players.remove(index);
 
         setChanged();
@@ -188,7 +188,7 @@ public final class RiskModel extends Observable {
             int playerIndex = rnd.nextInt(players.size());
             TerritoryModel territoryAdded = terrLeft.remove(0);
             territoryAdded.setNumArmies(1);
-            players.get(playerIndex).addTerrOwned(territoryAdded);
+            players.get(playerIndex).addTerritoryOwned(territoryAdded);
         }
 
         addNewLogEvent("Territories are assigned randomly to players");
@@ -196,14 +196,16 @@ public final class RiskModel extends Observable {
 
     /**
      * This method is to add the observer
+     *
      * @param attackView the view which is gonna be added
-    */
+     */
     public void addObserverToAttack(AttackView attackView) {
         this.getCurrentPlayer().getCurrentAttack().addObserver(attackView);
     }
 
     /**
      * This method is to do implement the attack move
+     *
      * @param src the previous territory model
      * @param dest the next territory model
      */
@@ -219,9 +221,11 @@ public final class RiskModel extends Observable {
 
     /**
      * This method is to do implement the fortification move
+     *
      * @param src the territory model which is gonna be checked
      * @param dest the territory model which is gonna be checked
-     * @throws FortificationMoveImpossible com.risk.models.RiskModel.FortificationMoveImpossible 
+     * @throws FortificationMoveImpossible
+     * com.risk.models.RiskModel.FortificationMoveImpossible
      */
     public void tryFortificationMove(TerritoryModel src, TerritoryModel dest)
             throws FortificationMoveImpossible {
@@ -242,9 +246,11 @@ public final class RiskModel extends Observable {
 
     /**
      * The method is for check the fortification move
+     *
      * @param src the territory model which is gonna be checked
      * @param dest the territory model which is gonna be checked
-     * @throws FortificationMoveImpossible com.risk.models.RiskModel.FortificationMoveImpossible 
+     * @throws FortificationMoveImpossible
+     * com.risk.models.RiskModel.FortificationMoveImpossible
      */
     private void checkFortificationMove(TerritoryModel src, TerritoryModel dest)
             throws FortificationMoveImpossible {
@@ -578,7 +584,11 @@ public final class RiskModel extends Observable {
                     ));
                 });
 
-        // the position of the current player in the list might have changed
+        /*
+         The position of the current player in the list might have changed.
+         The currentPlayer cannot be the deleted one since this method is
+         called after the current Player conquers a territory, so newPos != -1
+         */
         int newPos = this.getPlayerList().indexOf(this.currentPlayer);
         this.setTurn(newPos);
     }
