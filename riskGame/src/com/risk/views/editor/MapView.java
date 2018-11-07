@@ -188,10 +188,10 @@ public class MapView extends JPanel implements Observer {
      * Update the name of a territory in response to a notification from
      * observable model.
      *
-     * @param mapModel
-     * @param territoriesInModel
-     * @param territoriesInView
-     * @param newName
+     * @param mapModel the map model
+     * @param territoriesInModel the territory model
+     * @param territoriesInView the territory view
+     * @param newName the new name of the territory
      */
     public void updateTerritoryName(MapModel mapModel, List territoriesInModel, List<String> territoriesInView, String newName) {
         //search for the territory which is in the view and not in the model
@@ -233,7 +233,7 @@ public class MapView extends JPanel implements Observer {
      * Update the position of a button representing a territory in response to a
      * notification from observable model.
      *
-     * @param mapModel
+     * @param mapModel the map model
      */
     public void updateTerritoryPos(MapModel mapModel) {
         TerritoryModel updatedTerritory = (TerritoryModel) mapModel.getLastUpdate();
@@ -245,7 +245,7 @@ public class MapView extends JPanel implements Observer {
     /**
      * Returns the list of neighbors of a given territory given its name
      *
-     * @param nameOfUpdatedTerritory
+     * @param nameOfUpdatedTerritory the name of the territory
      * @return the list of the neighbors (list of Strings)
      */
     private LinkedList<String> getNeighborsOfTerritory(String nameOfUpdatedTerritory) {
@@ -278,7 +278,7 @@ public class MapView extends JPanel implements Observer {
      * Remove a link between two territories in response to a notification from
      * observable model.
      *
-     * @param mapModel
+     * @param mapModel the map model
      */
     public void updateRemoveLink(MapModel mapModel) {
         String nameOfUpdatedTerritory = ((TerritoryModel) mapModel.getLastUpdate()).getName();
@@ -322,7 +322,7 @@ public class MapView extends JPanel implements Observer {
      * Add a new link on the map between two territories in response to a
      * notification from observable model.
      *
-     * @param mapModel
+     * @param mapModel the map model
      */
     public void updateAddLink(MapModel mapModel) {
         String nameOfUpdatedTerritory = ((TerritoryModel) mapModel.getLastUpdate()).getName();
@@ -360,8 +360,8 @@ public class MapView extends JPanel implements Observer {
     /**
      * Add a new link between two territory buttons
      *
-     * @param territory1
-     * @param territory2
+     * @param territory1 the territory which is gonna be connected
+     * @param territory2 the territory which is gonna be connected
      */
     private void addLink(String territory1, String territory2) {
         String[] linkNames = {territory1, territory2};
@@ -387,8 +387,8 @@ public class MapView extends JPanel implements Observer {
     /**
      * Update method of the Observer pattern
      *
-     * @param object
-     * @param arg
+     * @param object Observable
+     * @param arg Object
      */
     @Override
     public void update(Observable object, Object arg) {
@@ -438,8 +438,8 @@ public class MapView extends JPanel implements Observer {
     /**
      * Remove a territory in the view according to the update of the model
      *
-     * @param territoriesInModel
-     * @param territoriesInView
+     * @param territoriesInModel model of the territory
+     * @param territoriesInView view of the territory
      */
     private void updateRemoveTerritory(List<String> territoriesInModel, List<String> territoriesInView) {
         //search for the territory which is in the view and not in the model
@@ -454,9 +454,9 @@ public class MapView extends JPanel implements Observer {
     /**
      * Add a territory in the view according to the update of the model
      *
-     * @param mapModel
-     * @param territoriesInModel
-     * @param territoriesInView
+     * @param mapModel the map model
+     * @param territoriesInModel the model of the territory
+     * @param territoriesInView the view of the territory
      */
     private void updateAddTerritory(MapModel mapModel, List<String> territoriesInModel, List<String> territoriesInView) {
         //search for the territory which is in the model and not in the view
