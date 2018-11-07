@@ -61,7 +61,7 @@ public class GameControllerTest {
      */
     @Test
     public void testDragNDropTerritory() {
-        
+
         String sourceTerritoryName = "TerritoryA";
         String destTerritoryName = "TerritoryB";
         TerritoryModel territoryA = rm.getMap().getTerritoryByName(sourceTerritoryName);
@@ -71,8 +71,8 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        addCountryOwned(playerA, territoryA);
-        addCountryOwned(playerA, territoryB);
+        addTerritoryOwned(playerA, territoryA);
+        addTerritoryOwned(playerA, territoryB);
 
         setNumArmies(territoryA, 2);
         setNumArmies(territoryB, 1);
@@ -101,8 +101,8 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        addCountryOwned(playerA, terrA);
-        addCountryOwned(playerA, terrC);
+        addTerritoryOwned(playerA, terrA);
+        addTerritoryOwned(playerA, terrC);
         setNumArmies(terrA, 2);
         setNumArmies(terrC, 1);
 
@@ -130,8 +130,8 @@ public class GameControllerTest {
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
         PlayerModel playerB = rm.getPlayerList().get(1);
-        addCountryOwned(playerB, territoryA);
-        addCountryOwned(playerA, territoryB);
+        addTerritoryOwned(playerB, territoryA);
+        addTerritoryOwned(playerA, territoryB);
         setNumArmies(territoryA, 2);
         setNumArmies(territoryB, 1);
 
@@ -139,7 +139,7 @@ public class GameControllerTest {
 
         assertEquals(2, territoryA.getNumArmies());
         assertEquals(1, territoryB.getNumArmies());
-        assertEquals("You don't own this country !", drv.getMessage());
+        assertEquals("You don't own this territory !", drv.getMessage());
     }
 
     /**
@@ -159,8 +159,8 @@ public class GameControllerTest {
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
         PlayerModel playerB = rm.getPlayerList().get(1);
-        addCountryOwned(playerA, territoryA);
-        addCountryOwned(playerB, territoryB);
+        addTerritoryOwned(playerA, territoryA);
+        addTerritoryOwned(playerB, territoryB);
         setNumArmies(territoryA, 2);
         setNumArmies(territoryB, 1);
 
@@ -168,7 +168,7 @@ public class GameControllerTest {
 
         assertEquals(2, territoryA.getNumArmies());
         assertEquals(1, territoryB.getNumArmies());
-        assertEquals("You don't own this country !", drv.getMessage());
+        assertEquals("You don't own this territory !", drv.getMessage());
     }
 
     /**
@@ -186,8 +186,8 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        addCountryOwned(playerA, territoryA);
-        addCountryOwned(playerA, territoryB);
+        addTerritoryOwned(playerA, territoryA);
+        addTerritoryOwned(playerA, territoryB);
         setNumArmies(territoryA, 1);
         setNumArmies(territoryB, 2);
         instance.dragNDropTerritory(destTerritoryName, sourceTerritoryName);
@@ -217,8 +217,8 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        addCountryOwned(playerA, territoryA);
-        addCountryOwned(playerA, territoryB);
+        addTerritoryOwned(playerA, territoryA);
+        addTerritoryOwned(playerA, territoryB);
         setNumArmies(territoryA, 2);
         setNumArmies(territoryB, 1);
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
@@ -246,8 +246,8 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getPlayerList().get(1);
-        addCountryOwned(playerA, territoryA);
-        addCountryOwned(playerA, territoryB);
+        addTerritoryOwned(playerA, territoryA);
+        addTerritoryOwned(playerA, territoryB);
         setNumArmies(territoryA, 2);
         setNumArmies(territoryB, 1);
 
@@ -272,8 +272,8 @@ public class GameControllerTest {
         rm.nextPhase();
         rm.nextPhase();
         PlayerModel playerA = rm.getCurrentPlayer();
-        addCountryOwned(playerA, territoryA);
-        addCountryOwned(playerA, territoryB);
+        addTerritoryOwned(playerA, territoryA);
+        addTerritoryOwned(playerA, territoryB);
         setNumArmies(territoryA, 1);
         setNumArmies(territoryB, 1);
 
@@ -281,8 +281,8 @@ public class GameControllerTest {
 
         assertEquals(1, territoryA.getNumArmies());
         assertEquals(1, territoryB.getNumArmies());
-        
-        assertEquals("There is only one army in the source country !",
+
+        assertEquals("There is only one army in the source territory !",
                 drv.getMessage());
     }
 
@@ -300,11 +300,11 @@ public class GameControllerTest {
         }
     }
 
-    private void addCountryOwned(PlayerModel player, TerritoryModel territory) {
+    private void addTerritoryOwned(PlayerModel player, TerritoryModel territory) {
         Method method;
         try {
             method = PlayerModel.class
-                    .getDeclaredMethod("addCountryOwned", TerritoryModel.class);
+                    .getDeclaredMethod("addTerrOwned", TerritoryModel.class);
             method.setAccessible(true);
             method.invoke(player, territory);
         } catch (SecurityException

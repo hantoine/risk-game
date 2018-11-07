@@ -13,11 +13,11 @@ package com.risk.models;
 class FortificationMove {
 
     /**
-     * territorySource the country with the armies
+     * territorySource the territory with the armies
      */
     private final TerritoryModel territorySource;
     /**
-     * territoryDest the countries where the player wants to move the armies
+     * territoryDest the territories where the player wants to move the armies
      */
     private final TerritoryModel territoryDest;
 
@@ -52,11 +52,11 @@ class FortificationMove {
     }
 
     /**
-     * It compares two countries for the fortification move If the move its
-     * coming from the same country
+     * It compares two territories for the fortification move If the move its
+     * coming from the same territory
      *
-     * @param obj the object to check whether it is the same country
-     * @return true if it is the same country; false if it is not
+     * @param obj the object to check whether it is the same territory
+     * @return true if it is the same territory; false if it is not
      */
     @Override
     public boolean equals(Object obj) {
@@ -81,6 +81,7 @@ class FortificationMove {
 
     /**
      * Evaluates if the movements are the same
+     *
      * @param last las fortification move
      * @return true if compatible; false other case
      */

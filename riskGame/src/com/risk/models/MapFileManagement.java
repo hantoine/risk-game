@@ -63,7 +63,7 @@ public class MapFileManagement {
                 if (errorConfigurationInfo != 0) {
                     return -3;
                 }
-                errorConfigurationInfo = countryCreator(stringSplit1[1], board);
+                errorConfigurationInfo = territoryCreator(stringSplit1[1], board);
                 if (errorConfigurationInfo != 0) {
                     return -4;
                 }
@@ -230,14 +230,14 @@ public class MapFileManagement {
     }
 
     /**
-     * It sets the countries in the board from a String. It also puts them in a
-     * Continent.
+     * It sets the territories in the board from a String. It also puts them in
+     * a Continent.
      *
-     * @param info the string with the countries
+     * @param info the string with the territories
      * @param board the map from the model
      * @return 0 success or -1 error
      */
-    public static int countryCreator(String info, MapModel board) {
+    public static int territoryCreator(String info, MapModel board) {
         HashMap<String, TerritoryModel> graphTerritories = new HashMap();
 
         if (board.getTerritories() == null) {
@@ -258,14 +258,14 @@ public class MapFileManagement {
                 continue;
             }
 
-            //Splits the country information
+            //Splits the territory information
             currentTerritoryLine = linesInfo[i].split(",");
             int j;
 
-            //The information has to be bigger first country second and third position 4th continent
+            //The information has to be bigger first territory second and third position 4th continent
             if (currentTerritoryLine.length > 4) {
-                // Creates de Country in the file
-                TerritoryModel auxCountry;
+                // Creates de territory in the file
+                TerritoryModel auxterritory;
                 int cordX;
                 int cordY;
                 try {
@@ -288,19 +288,19 @@ public class MapFileManagement {
                         .filter(s -> s.equalsIgnoreCase(currentTerritoryName)).findFirst();
                 if (alreadyCreatedTerritoryName.isPresent()) {
 
-                    auxCountry = graphTerritories.get(alreadyCreatedTerritoryName.get());
-                    if (auxCountry.getPositionX() == -1 && auxCountry.getPositionY() == -1) {
-                        auxCountry.countrySetter(cordX, cordY);
+                    auxterritory = graphTerritories.get(alreadyCreatedTerritoryName.get());
+                    if (auxterritory.getPositionX() == -1 && auxterritory.getPositionY() == -1) {
+                        auxterritory.territorySetter(cordX, cordY);
                     } else {
                         return -1;
                     }
 
                 } else {
-                    auxCountry = new TerritoryModel(currentTerritoryName, cordX, cordY);
+                    auxterritory = new TerritoryModel(currentTerritoryName, cordX, cordY);
                 }
 
-                //Creates adj country
-                TerritoryModel auxCountryAdj;
+                //Creates adj territory
+                TerritoryModel auxTerritoryAdj;
 
                 for (j = 0; j < currentTerritoryLine.length - 4; j++) {
                     final String currentAdjacentTerritoryName = currentTerritoryLine[j + 4].trim();
@@ -308,22 +308,22 @@ public class MapFileManagement {
                             .filter(s -> s.equalsIgnoreCase(currentAdjacentTerritoryName)).findFirst();
 
                     if (alreadyCreatedAdjacentTerritoryName.isPresent()) {
-                        auxCountryAdj = graphTerritories.get(alreadyCreatedAdjacentTerritoryName.get());
+                        auxTerritoryAdj = graphTerritories.get(alreadyCreatedAdjacentTerritoryName.get());
                     } else {
-                        auxCountryAdj = new TerritoryModel(currentAdjacentTerritoryName);
+                        auxTerritoryAdj = new TerritoryModel(currentAdjacentTerritoryName);
                     }
                     //Adds the adj
-                    auxCountry.addAdjacentTerritory(auxCountryAdj);
-                    graphTerritories.put(auxCountryAdj.getName(), auxCountryAdj);
+                    auxterritory.addAdjacentTerritory(auxTerritoryAdj);
+                    graphTerritories.put(auxTerritoryAdj.getName(), auxTerritoryAdj);
                 }
 
                 if (board.getContinentList().contains(currentTerritoryLine[3])) {
-                    board.getContinentByName(currentTerritoryLine[3]).addMember(auxCountry);
-                    auxCountry.setContinentName(currentTerritoryLine[3]);
+                    board.getContinentByName(currentTerritoryLine[3]).addMember(auxterritory);
+                    auxterritory.setContinentName(currentTerritoryLine[3]);
                 } else {
                     return -1;
                 }
-                graphTerritories.put(auxCountry.getName(), auxCountry);
+                graphTerritories.put(auxterritory.getName(), auxterritory);
 
             } else {
                 return -1;
@@ -375,8 +375,8 @@ public class MapFileManagement {
             continents += continent + "=" + board.getContinentByName(continent).getBonusScore() + "\n";
         }
 
-        for (String country : board.getTerritoryList()) {
-            TerritoryModel aux = board.getTerritoryByName(country);
+        for (String terrName : board.getTerritoryList()) {
+            TerritoryModel aux = board.getTerritoryByName(terrName);
             String adj = getAdj(aux);
 
             if (result == 0) {
@@ -398,15 +398,15 @@ public class MapFileManagement {
     }
 
     /**
-     * It creats a string with the adjacencies of a country
+     * It creates a string with the adjacencies of a territory
      *
-     * @param country receives a country
-     * @return return a string with the adj sepaarated by a ,
+     * @param territory receives a territory
+     * @return return a string with the adj separated by a ,
      */
-    public static String getAdj(TerritoryModel country) {
+    public static String getAdj(TerritoryModel territory) {
         String adj = "";
         int i = 0;
-        for (TerritoryModel aux : country.getAdj()) {
+        for (TerritoryModel aux : territory.getAdj()) {
             if (i == 0) {
                 adj += aux.getName();
                 i++;
@@ -467,7 +467,7 @@ public class MapFileManagement {
             case -3:
                 return "Error in continent information.";
             case -4:
-                return "Error in country information.";
+                return "Error in territory information.";
             case -5:
                 return "No territories separator in file.";
             case -6:

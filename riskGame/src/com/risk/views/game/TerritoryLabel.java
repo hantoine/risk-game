@@ -9,14 +9,14 @@ import java.awt.Color;
 import javax.swing.JLabel;
 
 /**
- * JLabel that represents a country in the map
+ * JLabel that represents a territory in the map
  *
  * @author hantoine
  */
-public class CountryLabel extends JLabel {
+public class TerritoryLabel extends JLabel {
 
     /**
-     * Size of the button that represents the country
+     * Size of the button that represents the territory
      */
     private static final int buttonSize = 25;
     /**
@@ -28,7 +28,7 @@ public class CountryLabel extends JLabel {
      */
     private static int positionY;
     /**
-     * Name of the country in the button
+     * Name of the territory in the button
      */
     private String name;
 
@@ -37,9 +37,9 @@ public class CountryLabel extends JLabel {
      *
      * @param x position in x
      * @param y position y
-     * @param name name of the country
+     * @param name name of the territory
      */
-    public CountryLabel(int x, int y, String name) {
+    public TerritoryLabel(int x, int y, String name) {
         super("0");
         this.name = name;
         this.setBackground(Color.WHITE);
@@ -72,7 +72,7 @@ public class CountryLabel extends JLabel {
     }
 
     /**
-     * It increase or decrease the armies that a player has in a country
+     * It increase or decrease the armies that a player has in a territory
      *
      * @param numberOfArmies new number
      */
@@ -81,7 +81,7 @@ public class CountryLabel extends JLabel {
     }
 
     /**
-     * It gives a new location for the country in the map
+     * It gives a new location for the territory in the map
      *
      * @param x position in x
      * @param y position in y

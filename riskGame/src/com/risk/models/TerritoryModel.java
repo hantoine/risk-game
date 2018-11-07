@@ -10,22 +10,22 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * It represents a territory/country in the map
+ * It represents a territory in the map
  *
  * @author n_irahol
  */
 public class TerritoryModel {
 
     /**
-     * adj list of adjacent countries
+     * adj list of adjacent territories
      */
     private LinkedList<TerritoryModel> adj;
     /**
-     * positionX x coordinate of the location of the country
+     * positionX x coordinate of the location of the territory
      */
     private int positionX;
     /**
-     * positionY y coordinate of the location of the country
+     * positionY y coordinate of the location of the territory
      */
     private int positionY;
     /**
@@ -33,11 +33,11 @@ public class TerritoryModel {
      */
     private String continentName;
     /**
-     * numArmies the number of armies in the country
+     * numArmies the number of armies in the territory
      */
     private int numArmies;
     /**
-     * owner reference to the player that owns the country
+     * owner reference to the player that owns the territory
      */
     private PlayerModel owner;
     /**
@@ -48,7 +48,7 @@ public class TerritoryModel {
     /**
      * Constructor
      *
-     * @param name name of a country
+     * @param name name of a territory
      * @param positionX position in x in the image
      * @param positionY position in y in the image
      */
@@ -64,7 +64,7 @@ public class TerritoryModel {
     /**
      * Constructor
      *
-     * @param name name of a country
+     * @param name name of a territory
      */
     public TerritoryModel(String name) {
         this.name = name;
@@ -76,7 +76,7 @@ public class TerritoryModel {
     }
 
     /**
-     * Add an adjacent country
+     * Add an adjacent territory
      *
      * @param neighbour the neighbour which is gonna be added
      */
@@ -85,7 +85,7 @@ public class TerritoryModel {
     }
 
     /**
-     * Eliminates an adjacent country
+     * Eliminates an adjacent territory
      *
      * @param neighbour the neighbour which is gonna be deleted
      */
@@ -94,12 +94,12 @@ public class TerritoryModel {
     }
 
     /**
-     * Setter for the position of a country
+     * Setter for the position of a territory
      *
-     * @param positionX the position X of this country
-     * @param positionY the position Y of this country
+     * @param positionX the position X of this territory
+     * @param positionY the position Y of this territory
      */
-    void countrySetter(int positionX, int positionY) {
+    void territorySetter(int positionX, int positionY) {
 
         this.setPositionX(positionX);
         this.setPositionY(positionY);

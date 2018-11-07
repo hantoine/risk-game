@@ -94,7 +94,7 @@ public class AttackMove extends Observable {
     }
 
     /**
-     * Battle between countries in an attack move
+     * Battle between territories in an attack move
      *
      * @param diceAttack number of dices selected by the attacker
      * @param diceAttacked number of dices selected by the attacked
