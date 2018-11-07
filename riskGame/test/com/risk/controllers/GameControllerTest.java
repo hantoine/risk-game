@@ -20,15 +20,28 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * Test class for GameController
  *
  * @author hantoine
  */
 public class GameControllerTest {
 
+    /**
+     * Reference to the game controller
+     */
     private GameController instance;
+    /**
+     * Reference to the main risk model
+     */
     private RiskModel rm;
+    /**
+     * reference to the dummy view used to check that the view is notified
+     */
     private DummyRiskView drv;
 
+    /**
+     * Set up the tests
+     */
     @Before
     public void setUp() {
         rm = new RiskModel();
@@ -41,6 +54,9 @@ public class GameControllerTest {
         instance = new GameController(rm);
     }
 
+    /**
+     * Remove all player in the game
+     */
     private void removeAllPlayers() {
         Method method;
         try {
@@ -57,6 +73,11 @@ public class GameControllerTest {
         }
     }
 
+    /**
+     * Generate test map
+     *
+     * @return test map
+     */
     private static MapModel getTestMap() {
         MapModel map = new MapModel();
 
