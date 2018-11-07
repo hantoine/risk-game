@@ -74,22 +74,6 @@ public final class MapModel extends Observable {
     }
 
     /**
-     * It prints the territories and relationships between them
-     */
-    public void printBoard() {
-        if (this.getGraphTerritories().keySet().size() > 0) {
-            System.out.println("Number of territories: " + this.getGraphTerritories().keySet().size());
-            for (String territory : this.getGraphTerritories().keySet()) {
-                System.out.println(territory);
-                TerritoryModel auxterritory = this.getGraphTerritories().get(territory);
-                for (TerritoryModel c : auxterritory.getAdj()) {
-                    System.out.println(territory + "->" + c.getName());
-                }
-            }
-        }
-    }
-
-    /**
      * It calls dfsConnected to validate if the territories in the board with
      * the given continents represent a connected graph.
      *
@@ -399,6 +383,7 @@ public final class MapModel extends Observable {
     /**
      * Add a new continent to the model and notify the observers to change the
      * view
+     *
      * @param continentName the name of continent
      * @param continentBonus the bonus of the continent
      * @return the boolean if it's added or not
