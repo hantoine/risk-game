@@ -330,7 +330,7 @@ public class GameControllerTest {
         Method method;
         try {
             method = PlayerModel.class
-                    .getDeclaredMethod("addTerrOwned", TerritoryModel.class);
+                    .getDeclaredMethod("addTerritoryOwned", TerritoryModel.class);
             method.setAccessible(true);
             method.invoke(player, territory);
         } catch (SecurityException
