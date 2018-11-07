@@ -108,8 +108,8 @@ public class MenuListener extends MouseAdapter {
     }
 
     /**
-     *
-     * @param addPlayer
+     * This method is for minus the player
+     * @param addPlayer the player which is gonna be delete
      */
     public void minusButton(JButton addPlayer) {
 
@@ -136,7 +136,8 @@ public class MenuListener extends MouseAdapter {
     }
 
     /**
-     *
+     * This method is for add player
+     * @param addPlayer the new player which is added
      * @param addPlayer
      */
     public void playButton(JButton addPlayer) {
