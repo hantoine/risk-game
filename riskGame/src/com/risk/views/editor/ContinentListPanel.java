@@ -175,8 +175,8 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
     /**
      * Update method of the Observer pattern
      *
-     * @param object
-     * @param arg
+     * @param object Observable
+     * @param arg Object
      */
     @Override
     public void update(Observable object, Object arg) {
