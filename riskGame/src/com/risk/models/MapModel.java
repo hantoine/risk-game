@@ -400,10 +400,9 @@ public final class MapModel extends Observable {
     /**
      * Add a new continent to the model and notify the observers to change the
      * view
-     *
-     * @param continentName
-     * @param continentBonus
-     * @return
+     * @param continentName the name of continent
+     * @param continentBonus the bonus of the continent
+     * @return the boolean if it's added or not
      */
     public boolean addContinent(String continentName, int continentBonus) {
         ContinentModel newContinent = new ContinentModel(continentName, continentBonus);
@@ -420,8 +419,8 @@ public final class MapModel extends Observable {
      * this function looks at the neighbors of the given territory and pick a
      * random continent from them.
      *
-     * @param territory
-     * @return
+     * @param territory the territory which is gonna be checked
+     * @return current continent
      */
     public String getAvailableContinent(TerritoryModel territory) {
 
