@@ -24,20 +24,20 @@ import javax.swing.ScrollPaneConstants;
 public class PhaseView extends JPanel implements Observer {
 
     /**
-     * 
+     *
      */
     JLabel phaseName;
     /**
-     * 
+     *
      */
     JLabel playerName;
     /**
-     * 
+     *
      */
     JTextArea actions;
 
     /**
-     * 
+     *
      */
     public PhaseView() {
         phaseName = new JLabel();
@@ -73,8 +73,8 @@ public class PhaseView extends JPanel implements Observer {
     }
 
     /**
-     * 
-     * @param rm 
+     *
+     * @param rm
      */
     public void updateView(RiskModel rm) {
         setVisible(true);
@@ -90,12 +90,14 @@ public class PhaseView extends JPanel implements Observer {
         phaseName.setText("Current phase: " + rm.getPhase().toString());
         playerName.setText("Current player: "
                 + rm.getCurrentPlayer().getName());
+        playerName.setForeground(rm.getCurrentPlayer().getColor());
+        phaseName.setForeground(rm.getCurrentPlayer().getColor());
     }
 
     /**
-     * 
+     *
      * @param o
-     * @param o1 
+     * @param o1
      */
     @Override
     public void update(Observable o, Object o1) {
