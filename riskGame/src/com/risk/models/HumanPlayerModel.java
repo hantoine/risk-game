@@ -35,7 +35,7 @@ public class HumanPlayerModel extends PlayerModel {
         addNewLogEvent(String.format(
                 "%s starts its reinforcement phase",
                 getName()
-        ));
+        ), true);
         this.setHanded(false);
         this.assignNewArmies();
     }
@@ -48,7 +48,7 @@ public class HumanPlayerModel extends PlayerModel {
         addNewLogEvent(String.format(
                 "%s starts its fortification phase",
                 getName()
-        ));
+        ), true);
     }
 
     /**
@@ -59,11 +59,12 @@ public class HumanPlayerModel extends PlayerModel {
         addNewLogEvent(String.format(
                 "%s starts its attack phase",
                 getName()
-        ));
+        ), true);
     }
 
     /**
      * Exchange selected cards
+     *
      * @return true success; false error
      */
     @Override

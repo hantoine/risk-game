@@ -10,6 +10,7 @@ package com.risk.models;
  * @author hantoine
  */
 public class LogEvent {
+
     /**
      * The message
      */
@@ -18,35 +19,39 @@ public class LogEvent {
 
     /**
      * Constructor
-     * @param message 
+     *
+     * @param message
      */
     LogEvent(String message) {
         this.message = message;
     }
-    
+
     /**
      * Constructor
+     *
      * @param message
      * @param clear
      */
     LogEvent(String message, boolean clear) {
         this(message);
-        this.clear = true;
+        this.clear = clear;
     }
 
     /**
-    * Getter of message
-    * @return message
-    */
+     * Getter of message
+     *
+     * @return message
+     */
     @Override
     public String toString() {
         return message;
     }
 
     /**
-    * Getter of clear
-    * @return clear
-    */
+     * Getter of clear
+     *
+     * @return clear
+     */
     public boolean isClear() {
         return clear;
     }
