@@ -112,9 +112,9 @@ public class PhaseAuxiliar extends JPanel implements Observer {
     }
 
     /**
-     * 
-     * @param o
-     * @param o1 
+     * This method is for attach the observer
+     * @param o The Observable
+     * @param o1 The Object
      */
     @Override
     public void update(Observable o, Object o1) {
