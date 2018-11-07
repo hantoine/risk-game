@@ -133,7 +133,7 @@ public class PhaseAuxiliar extends JPanel implements Observer {
 
             if (currentAttack.getDest().getNumArmies() == 0) {
                 this.selectPanel(this.getArmiesLeft());
-                int diceAttack=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
+                int diceAttack=rm.getCurrentPlayer().getCurrentAttack().getNbDiceAttack();
                 this.armiesLeft.update(srcTerritory, destTerritory, nbArmies,diceAttack);
             } else {
                 this.selectPanel(this.getAttackPanel());

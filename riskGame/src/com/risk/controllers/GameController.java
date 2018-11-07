@@ -5,6 +5,7 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.AttackMove;
 import com.risk.models.GamePhase;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
@@ -31,7 +32,7 @@ public class GameController {
      */
     private CardExchangeView exchangeView;
     /**
-     * 
+     *
      */
     private CardExchangeListener cardExchangeListener;
 
@@ -105,22 +106,24 @@ public class GameController {
                 }
                 break;
             case ATTACK:
-                int result=rm.getCurrentPlayer().validateAttack(sourceTerritory,destTerritory);
-                if(result==0){               
+                int result = rm.getCurrentPlayer().validateAttack(sourceTerritory, destTerritory);
+                if (result == 0) {
                     this.rm.attackMove(sourceTerritory, destTerritory);
-                }else
+                } else {
                     exceptionManagerAttack(result);
+                }
                 break;
         }
 
     }
-    
+
     /**
      * Function that shows errors from an attack
+     *
      * @param e event to manage
      */
-    public void exceptionManagerAttack(int e){
-        switch(e){
+    public void exceptionManagerAttack(int e) {
+        switch (e) {
             case -1:
                 this.rm.addNewEvent("The country is not adjacent.");
                 break;
@@ -137,30 +140,31 @@ public class GameController {
                 break;
         }
     }
-    
+
     /**
      * Press one of the dices
      *
-     * @param dice the number of dices
+     * @param nbDice the number of dices
      */
-    public void clickAttack(int dice) {
-        if(rm.getCurrentPlayer().getCurrentAttack().getDiceAttack()!=-1 || dice==-1 || rm.getCurrentPlayer().getCurrentAttack().getDest().getNumArmies()==1){
-            
-            if(rm.getCurrentPlayer().getCurrentAttack().getDiceAttack()!=-1)
-                rm.getCurrentPlayer().getCurrentAttack().setDiceAttacked(dice);
-            else{
-                rm.getCurrentPlayer().getCurrentAttack().setDiceAttack(dice);
-                rm.getCurrentPlayer().getCurrentAttack().setDiceAttacked(1);
+    public void clickAttack(int nbDice) {
+        AttackMove attackMove = rm.getCurrentPlayer().getCurrentAttack();
+
+        if (attackMove.getNbDiceAttack() != -1
+                || nbDice == -1
+                || attackMove.getDest().getNumArmies() == 1) {
+
+            if (attackMove.getNbDiceAttack() != -1) {
+                attackMove.setNbDiceDefense(nbDice);
+            } else {
+                attackMove.setNbDiceAttack(nbDice);
+                attackMove.setNbDiceDefense(1);
             }
-            //System.out.println("atacante: "+rm.getCurrentPlayer().getCurrentAttack().getDiceAttack()+", atacado: "+rm.getCurrentPlayer().getCurrentAttack().getDiceAttacked());
             rm.performAttack(this.rm.getCurrentPlayer());
-        }else{
-            rm.getCurrentPlayer().getCurrentAttack().setDiceAttack(dice);
-            rm.getCurrentPlayer().getCurrentAttack().setAttackDefense(1);
+        } else {
+            attackMove.setNbDiceAttack(nbDice);
+            attackMove.setChoiceNbDefenseDiceNeeded(true);
         }
-            
-        
-        
+
     }
 
     /**
@@ -171,7 +175,7 @@ public class GameController {
      * territory
      */
     public void moveArmiesToConqueredTerritory(int armies) {
-         
+
         this.rm.moveArmiesToConqueredTerritory(armies);
     }
 
@@ -193,7 +197,7 @@ public class GameController {
         this.exchangeView.setVisible(false);
         this.exchangeView = null;
     }
-    
+
     /**
      * Shows and creates a card exchange view
      */
@@ -210,13 +214,13 @@ public class GameController {
         );
         exchangeView.setVisible(true);
     }
-    
+
     /**
-     * 
-     * @param attackView 
+     *
+     * @param attackView
      */
-    public void addObserverToAttack(AttackView attackView){
-        
+    public void addObserverToAttack(AttackView attackView) {
+
         rm.addObserverToAttack(attackView);
     }
 }

@@ -653,7 +653,7 @@ public abstract class PlayerModel extends Observable {
      * @return -1 error; 0 success
      */
     public int conquerCountry(int armies) {
-        if (armies < this.getCurrentAttack().getDiceAttack() || armies >= this.getCurrentAttack().getSource().getNumArmies()) {
+        if (armies < this.getCurrentAttack().getNbDiceAttack() || armies >= this.getCurrentAttack().getSource().getNumArmies()) {
             return -1;
         }
 
