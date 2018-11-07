@@ -126,7 +126,7 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
      * Set background color of territory button to its continent background
      * color
      *
-     * @param target
+     * @param target the target territory
      */
     public void setTerritoryColor(TerritoryModel target) {
         String continentName = target.getContinentName();
@@ -403,8 +403,8 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
     /**
      * Update method of the Observer pattern
      *
-     * @param object
-     * @param arg
+     * @param object Observable
+     * @param arg Object
      */
     @Override
     public void update(Observable object, Object arg) {
