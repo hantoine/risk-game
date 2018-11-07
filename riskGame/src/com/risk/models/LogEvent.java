@@ -20,7 +20,7 @@ public class LogEvent {
     /**
      * Constructor
      *
-     * @param message
+     * @param message the message which is shown
      */
     LogEvent(String message) {
         this.message = message;
@@ -29,8 +29,8 @@ public class LogEvent {
     /**
      * Constructor
      *
-     * @param message
-     * @param clear
+     * @param message the message
+     * @param clear the message which is shown
      */
     LogEvent(String message, boolean clear) {
         this(message);
