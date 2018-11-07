@@ -8,8 +8,7 @@ package com.risk.views.editor;
 import com.risk.controllers.MapEditorController;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
-import com.risk.observable.MapModelObserver;
-import com.risk.observable.UpdateTypes;
+import com.risk.models.MapUpdateTypes;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -34,7 +33,6 @@ import javax.swing.JPanel;
  * View on the map being edited. Part of the map editor.
  *
  * @author timot
- * @see MapModelObserver
  */
 public class MapView extends JPanel implements Observer {
 
@@ -392,12 +390,12 @@ public class MapView extends JPanel implements Observer {
      */
     @Override
     public void update(Observable object, Object arg) {
-        if (arg == null || !(arg instanceof UpdateTypes)) {
+        if (arg == null || !(arg instanceof MapUpdateTypes)) {
             return;
         }
 
         //get update type
-        UpdateTypes updateType = (UpdateTypes) arg;
+        MapUpdateTypes updateType = (MapUpdateTypes) arg;
 
         //get observable model
         MapModel mapModel = (MapModel) object;

@@ -10,7 +10,7 @@ import com.risk.models.MapConfig;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
-import com.risk.observable.UpdateTypes;
+import com.risk.models.MapUpdateTypes;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -408,11 +408,11 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
      */
     @Override
     public void update(Observable object, Object arg) {
-        if (arg == null || !(arg instanceof UpdateTypes)) {
+        if (arg == null || !(arg instanceof MapUpdateTypes)) {
             return;
         }
 
-        UpdateTypes updateType = (UpdateTypes) arg;
+        MapUpdateTypes updateType = (MapUpdateTypes) arg;
 
         switch (updateType) {
             case ADD_TERRITORY:

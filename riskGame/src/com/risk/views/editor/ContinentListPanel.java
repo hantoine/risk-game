@@ -8,8 +8,7 @@ package com.risk.views.editor;
 import com.risk.controllers.MapEditorController;
 import com.risk.models.ContinentModel;
 import com.risk.models.MapModel;
-import com.risk.observable.MapModelObserver;
-import com.risk.observable.UpdateTypes;
+import com.risk.models.MapUpdateTypes;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -30,7 +29,6 @@ import javax.swing.JOptionPane;
  * update the list.
  *
  * @author timot
- * @see MapModelObserver
  * @see CustomListPanel
  */
 public class ContinentListPanel extends CustomListPanel implements Observer {
@@ -180,12 +178,12 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
      */
     @Override
     public void update(Observable object, Object arg) {
-        if (arg == null || !(arg instanceof UpdateTypes)) {
+        if (arg == null || !(arg instanceof MapUpdateTypes)) {
             return;
         }
 
         //get update type
-        UpdateTypes updateType = (UpdateTypes) arg;
+        MapUpdateTypes updateType = (MapUpdateTypes) arg;
 
         //get model that has changed
         MapModel mapModel = (MapModel) object;

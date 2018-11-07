@@ -5,7 +5,6 @@ package com.risk.models;
  * To change this template file, choose Tools | Templates and open the template
  * in the editor.
  */
-import com.risk.observable.UpdateTypes;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -329,7 +328,7 @@ public final class MapModel extends Observable {
         //update view
         this.lastUpdatedElement = this.getTerritoryByName(territoryName);
         setChanged();
-        notifyObservers(UpdateTypes.ADD_LINK);
+        notifyObservers(MapUpdateTypes.ADD_LINK);
     }
 
     /**
@@ -350,7 +349,7 @@ public final class MapModel extends Observable {
         //remove from the view
         this.lastUpdatedElement = this.getTerritoryByName(territoryName);
         setChanged();
-        notifyObservers(UpdateTypes.REMOVE_LINK);
+        notifyObservers(MapUpdateTypes.REMOVE_LINK);
     }
 
     /**
@@ -410,7 +409,7 @@ public final class MapModel extends Observable {
 
         this.lastUpdatedElement = newContinent;
         setChanged();
-        notifyObservers(UpdateTypes.ADD_CONTINENT);
+        notifyObservers(MapUpdateTypes.ADD_CONTINENT);
         return true;
     }
 
@@ -486,7 +485,7 @@ public final class MapModel extends Observable {
         //remove the continent
         this.graphContinents.remove(continentName);
         setChanged();
-        notifyObservers(UpdateTypes.REMOVE_CONTINENT);
+        notifyObservers(MapUpdateTypes.REMOVE_CONTINENT);
         System.out.println("nb continents : " + Integer.toString(this.getContinentList().size()));
 
         //if there is no continent, add one by default
@@ -502,7 +501,7 @@ public final class MapModel extends Observable {
         });
 
         setChanged();
-        notifyObservers(UpdateTypes.REMOVE_CONTINENT);
+        notifyObservers(MapUpdateTypes.REMOVE_CONTINENT);
         return true;
     }
 
@@ -530,7 +529,7 @@ public final class MapModel extends Observable {
         //update views
         this.lastUpdatedElement = newTerritory;
         setChanged();
-        notifyObservers(UpdateTypes.ADD_TERRITORY);
+        notifyObservers(MapUpdateTypes.ADD_TERRITORY);
         return true;
     }
 
@@ -558,7 +557,7 @@ public final class MapModel extends Observable {
         //update views
         this.lastUpdatedElement = newTerritory;
         setChanged();
-        notifyObservers(UpdateTypes.ADD_TERRITORY);
+        notifyObservers(MapUpdateTypes.ADD_TERRITORY);
         return true;
     }
 
@@ -586,7 +585,7 @@ public final class MapModel extends Observable {
         this.getGraphTerritories().remove(territoryName);
 
         setChanged();
-        notifyObservers(UpdateTypes.REMOVE_TERRITORY);
+        notifyObservers(MapUpdateTypes.REMOVE_TERRITORY);
     }
 
     /**
@@ -619,7 +618,7 @@ public final class MapModel extends Observable {
         this.lastUpdatedElement = modifiedTerritory;
 
         setChanged();
-        notifyObservers(UpdateTypes.UPDATE_TERRITORY_NAME);
+        notifyObservers(MapUpdateTypes.UPDATE_TERRITORY_NAME);
     }
 
     /**
@@ -650,7 +649,7 @@ public final class MapModel extends Observable {
         this.lastUpdatedElement = this.getContinentByName(newName);
 
         setChanged();
-        notifyObservers(UpdateTypes.UPDATE_CONTINENT);
+        notifyObservers(MapUpdateTypes.UPDATE_CONTINENT);
     }
 
     /**
@@ -723,7 +722,7 @@ public final class MapModel extends Observable {
         }
 
         setChanged();
-        notifyObservers(UpdateTypes.UPDATE_BACKGROUND_IMAGE);
+        notifyObservers(MapUpdateTypes.UPDATE_BACKGROUND_IMAGE);
     }
 
     /**
