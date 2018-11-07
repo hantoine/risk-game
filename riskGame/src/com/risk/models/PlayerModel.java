@@ -68,9 +68,10 @@ public abstract class PlayerModel extends Observable {
     private boolean currentPlayer;
 
     /**
-     * 
+     *
      */
     private boolean conquered;
+
     /**
      * Constructor
      *
@@ -186,16 +187,16 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     RiskModel getGame() {
         return game;
     }
 
     /**
-     * 
-     * @param game 
+     *
+     * @param game
      */
     void setGame(RiskModel game) {
         this.game = game;
@@ -663,7 +664,7 @@ public abstract class PlayerModel extends Observable {
         addCountryOwned(this.getCurrentAttack().getDest());
         setConquered(true);
         this.setCurrentAttack(null);
-        if(game!=null){
+        if (game != null) {
             game.checkForDeadPlayers();
             game.attackEndValidations();
         }
@@ -731,8 +732,7 @@ public abstract class PlayerModel extends Observable {
      * @param logMessage message to add to the log
      */
     void addNewLogEvent(String logMessage) {
-        setChanged();
-        notifyObservers(new LogEvent(logMessage));
+        addNewLogEvent(logMessage, false);
     }
 
     /**
@@ -779,6 +779,15 @@ public abstract class PlayerModel extends Observable {
     public void setConquered(boolean conquered) {
         this.conquered = conquered;
     }
-    
-    
+
+    /**
+     * Notify observer of a new event that can be displayed in the logs
+     *
+     * @param logMessage Message describing this event
+     * @param clear true if this event should clear previous log messages
+     */
+    protected void addNewLogEvent(String logMessage, boolean clear) {
+        setChanged();
+        notifyObservers(new LogEvent(logMessage, clear));
+    }
 }

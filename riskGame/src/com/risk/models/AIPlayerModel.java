@@ -33,7 +33,7 @@ public class AIPlayerModel extends PlayerModel {
         addNewLogEvent(String.format(
                 "%s starts its reinforcement phase",
                 getName()
-        ));
+        ), true);
 
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -46,7 +46,7 @@ public class AIPlayerModel extends PlayerModel {
         addNewLogEvent(String.format(
                 "%s starts its fortification phase",
                 getName()
-        ));
+        ), true);
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -58,13 +58,13 @@ public class AIPlayerModel extends PlayerModel {
         addNewLogEvent(String.format(
                 "%s starts its attack phase",
                 getName()
-        ));
+        ), true);
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public boolean exchangeCardsToArmies() {
