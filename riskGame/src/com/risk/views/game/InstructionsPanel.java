@@ -64,13 +64,13 @@ public class InstructionsPanel extends JPanel implements Observer {
                 this.endPhase.setVisible(true);
                 this.endPhase.setText("Place armies for all players");
                 this.text.setText(String.format("<html>Startup phase: Click on one of your territory to place an army on it. <br />Remaining armies to be placed: %d</html>",
-                        currentPlayer.getNumArmiesAvailable()));
+                        currentPlayer.getNbArmiesAvailable()));
                 this.text.setVisible(true);
                 break;
             case REINFORCEMENT:
                 this.endPhase.setVisible(false);
                 this.text.setText(String.format("<html>Reinforcement phase: Click on one of your territory to place an army on it. <br />Remaining armies to be placed: %d</html>",
-                        currentPlayer.getNumArmiesAvailable()));
+                        currentPlayer.getNbArmiesAvailable()));
                 this.text.setVisible(true);
                 break;
             case ATTACK:

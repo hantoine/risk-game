@@ -5,9 +5,12 @@
  */
 package com.risk.models;
 
+import com.risk.models.RiskModel.ArmyPlacementImpossible;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +29,10 @@ public class RiskModelTest {
      * mapModel instance of the map model
      */
     MapModel mapModel;
+    /**
+     * Dummy Observer observing the risk model
+     */
+    DummyObserver dummyObserver;
 
     /**
      * Initialize mapModel to a valid MapModel that will be the base for all
@@ -103,6 +110,9 @@ public class RiskModelTest {
         mapModel.setGraphContinents(graphContinents);
 
         riskModel.setMap(mapModel);
+
+        dummyObserver = new DummyObserver();
+        riskModel.addObserver(dummyObserver);
     }
 
     /**
@@ -147,5 +157,120 @@ public class RiskModelTest {
 
         assertTrue(riskModel.getPlayerList().stream()
                 .anyMatch((p) -> (p.checkOwnContinent(continentC))));
+    }
+
+    /**
+     * Test for army placement: Valid case
+     *
+     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible
+     */
+    @Test
+    public void testPlaceArmy() throws RiskModel.ArmyPlacementImpossible {
+        PlayerModel player = this.riskModel.getCurrentPlayer();
+        TerritoryModel terr = this.mapModel.getTerritoryByName("TerritoryB");
+
+        player.setNumArmiesAvailable(1);
+        player.addCountryOwned(terr);
+        terr.setNumArmies(0);
+
+        riskModel.placeArmy(player, terr);
+
+        assertEquals(1, terr.getNumArmies());
+        assertEquals(1, player.getNbArmiesOwned());
+        assertEquals(0, player.getNbArmiesAvailable());
+        assertEquals(
+                "Player 1 place one army on territory TerritoryB",
+                dummyObserver.getMessage()
+        );
+
+    }
+
+    /**
+     * Test for army placement: Player does not have enough armies available
+     *
+     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible
+     */
+    @Test
+    public void testPlaceArmyNoArmyAvailable()
+            throws RiskModel.ArmyPlacementImpossible {
+        PlayerModel player = this.riskModel.getCurrentPlayer();
+        TerritoryModel terr = this.mapModel.getTerritoryByName("TerritoryB");
+        ArmyPlacementImpossible exception = null;
+
+        player.setNumArmiesAvailable(0);
+        player.addCountryOwned(terr);
+        terr.setNumArmies(0);
+
+        try {
+            riskModel.placeArmy(player, terr);
+        } catch (ArmyPlacementImpossible ex) {
+            exception = ex;
+        }
+
+        assertEquals(0, terr.getNumArmies());
+        assertEquals(0, player.getNbArmiesOwned());
+        assertEquals(0, player.getNbArmiesAvailable());
+        assertEquals(null, dummyObserver.getMessage());
+        assertNotEquals(null, exception);
+        if (exception != null) {
+            assertEquals(
+                    "You have no armies left to deploy !",
+                    exception.getReason()
+            );
+        }
+    }
+
+    /**
+     * Test for army placement: Player does not own the territory
+     *
+     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible
+     */
+    @Test
+    public void testPlaceTerritoryNotOwned()
+            throws RiskModel.ArmyPlacementImpossible {
+        PlayerModel player = this.riskModel.getCurrentPlayer();
+        TerritoryModel terr = this.mapModel.getTerritoryByName("TerritoryB");
+        ArmyPlacementImpossible exception = null;
+
+        player.setNumArmiesAvailable(1);
+        terr.setNumArmies(0);
+
+        try {
+            riskModel.placeArmy(player, terr);
+        } catch (ArmyPlacementImpossible ex) {
+            exception = ex;
+        }
+
+        assertEquals(0, terr.getNumArmies());
+        assertEquals(1, player.getNbArmiesOwned());
+        assertEquals(1, player.getNbArmiesAvailable());
+        assertEquals(null, dummyObserver.getMessage());
+        assertNotEquals(null, exception);
+        if (exception != null) {
+            assertEquals(
+                    "You don't own this country !",
+                    exception.getReason()
+            );
+        }
+    }
+
+    /**
+     * Class implementing Observer to test RiskModel is notifying observers
+     * correctly
+     */
+    class DummyObserver implements Observer {
+
+        String message;
+
+        @Override
+        public void update(Observable o, Object o1) {
+            if (o1 instanceof LogEvent) {
+                message = ((LogEvent) o1).toString();
+            }
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
 }

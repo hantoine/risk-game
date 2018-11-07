@@ -492,7 +492,7 @@ public final class RiskModel extends Observable {
             case STARTUP:
                 Random rand = new Random();
                 players.stream().forEach((pl) -> {
-                    while (pl.getNumArmiesAvailable() != 0) {
+                    while (pl.getNbArmiesAvailable() != 0) {
                         int randTerr = rand.nextInt(pl.getNbCountriesOwned());
                         try {
                             placeArmy(pl, pl.getContriesOwned().get(randTerr));
@@ -594,7 +594,7 @@ public final class RiskModel extends Observable {
      */
     public void placeArmy(PlayerModel player, TerritoryModel territory)
             throws ArmyPlacementImpossible {
-        if (player.getNumArmiesAvailable() <= 0) {
+        if (player.getNbArmiesAvailable() <= 0) {
             throw new ArmyPlacementImpossible(
                     "You have no armies left to deploy !");
         }

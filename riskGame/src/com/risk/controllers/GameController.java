@@ -61,7 +61,7 @@ public class GameController {
                 try {
                     this.rm.placeArmy(currentPlayer, territoryClicked);
                     this.rm.nextTurn();
-                    if (currentPlayer.getNumArmiesAvailable() == 0 && rm.getTurn() == 0) {
+                    if (currentPlayer.getNbArmiesAvailable() == 0 && rm.getTurn() == 0) {
                         this.rm.finishPhase();
                     }
                 } catch (RiskModel.ArmyPlacementImpossible ex) {
@@ -71,7 +71,7 @@ public class GameController {
             case REINFORCEMENT:
                 try {
                     this.rm.placeArmy(currentPlayer, territoryClicked);
-                    if (currentPlayer.getNumArmiesAvailable() == 0) {
+                    if (currentPlayer.getNbArmiesAvailable() == 0) {
                         this.rm.finishPhase();
                     }
                 } catch (RiskModel.ArmyPlacementImpossible ex) {
