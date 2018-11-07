@@ -7,7 +7,6 @@ package com.risk.views.attack;
 
 import com.risk.controllers.GameController;
 import com.risk.models.AttackMove;
-import com.risk.models.RiskModel;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JButton;
@@ -19,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author Nellybett
  */
-public class AttackView extends JPanel implements Observer{
+public class AttackView extends JPanel implements Observer {
 
     /**
      * Panel with the different buttons
@@ -34,15 +33,15 @@ public class AttackView extends JPanel implements Observer{
      */
     JLabel countriesInvolve;
     /**
-     * 
+     *
      */
     JLabel actionSubject;
-    
+
     /**
      * Constructor
      *
      */
-    public AttackView(){
+    public AttackView() {
 
         attackOptions = new JPanel();
         options = new JButton[4];
@@ -50,7 +49,7 @@ public class AttackView extends JPanel implements Observer{
         options[1] = new JButton("2");
         options[2] = new JButton("3");
         options[3] = new JButton("All");
-        actionSubject=new JLabel("Attacker");
+        actionSubject = new JLabel("Attacker");
         countriesInvolve = new JLabel("source vs destination");
 
         options[0].setSize(50, 70);
@@ -81,7 +80,7 @@ public class AttackView extends JPanel implements Observer{
         this.setVisible(true);
         this.actionSubject.setText("Attacker");
         countriesInvolve.setText(countrySource + " vs " + countryDest);
-       
+
         for (int i = 0; i < 4; i++) {
             options[i].setEnabled(i < armies - 1);
             options[i].setVisible(true);
@@ -94,8 +93,8 @@ public class AttackView extends JPanel implements Observer{
      * @param gc game controller
      */
     public void setListeners(GameController gc) {
-        
-        options[0].addActionListener(e -> {    
+
+        options[0].addActionListener(e -> {
             gc.addObserverToAttack(this);
             gc.clickAttack(1);
         });
@@ -103,36 +102,36 @@ public class AttackView extends JPanel implements Observer{
         options[1].addActionListener(e -> {
             gc.addObserverToAttack(this);
             gc.clickAttack(2);
-            
+
         });
 
         options[2].addActionListener(e -> {
             gc.addObserverToAttack(this);
             gc.clickAttack(3);
-            
+
         });
 
         options[3].addActionListener(e -> {
             gc.clickAttack(-1);
-          
+
         });
     }
-    
+
     /**
-     * 
+     *
      * @param o
-     * @param arg 
+     * @param arg
      */
     @Override
     public void update(Observable o, Object arg) {
-        AttackMove attack=(AttackMove) o;
-        if(attack.getAttackDefense()==1){
-            int armiesDest=attack.getDest().getNumArmies();
-            int attackDice=attack.getDiceAttack();
-        
+        AttackMove attack = (AttackMove) o;
+        if (attack.getChoiceNbDefenseDiceNeeded() == true) {
+            int armiesDest = attack.getDest().getNumArmies();
+            int attackDice = attack.getNbDiceAttack();
+
             options[3].setVisible(false);
             options[2].setVisible(false);
-            options[1].setEnabled(attackDice!=1 && armiesDest>2);
+            options[1].setEnabled(armiesDest > 1);
             actionSubject.setText("Attacked");
         }
     }

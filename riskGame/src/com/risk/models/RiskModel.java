@@ -720,7 +720,10 @@ public final class RiskModel extends Observable {
      * @param attacker attacking player
      */
     public void performAttack(PlayerModel attacker) {
-        attacker.performCurrentAttack(this.getCurrentPlayer().getCurrentAttack().getDiceAttack(), this.getCurrentPlayer().getCurrentAttack().getDiceAttacked());
+        attacker.performCurrentAttack(
+                this.getCurrentPlayer().getCurrentAttack().getNbDiceAttack(),
+                this.getCurrentPlayer().getCurrentAttack().getNbDiceDefense()
+        );
 
         setChanged();
         notifyObservers();
