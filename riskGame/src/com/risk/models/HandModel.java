@@ -235,15 +235,15 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @return 
+     * This method is to get the number of selected cards
+     * @return the cards size
      */
     public int getNbSelectedCards() {
         return this.selectedCards.size();
     }
 
     /**
-     * 
+     * This method is for unselect all cards
      */
     public void unselectAllCards() {
         this.selectedCards.clear();
@@ -253,25 +253,25 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @return 
+     * This method is for get the list of selected card
+     * @return  the list of selected card
      */
     public List<String> getSelectedCards() {
         return Collections.unmodifiableList(this.selectedCards);
     }
 
     /**
-     * 
-     * @param cardName
-     * @return 
+     * This method is for check the card is selected or not
+     * @param cardName the name of the card
+     * @return if the card  is selected
      */
     public boolean isCardSelected(String cardName) {
         return this.selectedCards.contains(cardName);
     }
 
     /**
-     * 
-     * @param cardName 
+     * This method is for unselect the card
+     * @param cardName the name of the card
      */
     public void unselectCard(String cardName) {
         this.selectedCards.remove(cardName);
@@ -281,8 +281,8 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @param cardName 
+     * This method is for select the card
+     * @param cardName the name of the card
      */
     public void selectCard(String cardName) {
         this.selectedCards.add(cardName);
