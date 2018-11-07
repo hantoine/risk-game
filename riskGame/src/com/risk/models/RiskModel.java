@@ -212,8 +212,8 @@ public final class RiskModel extends Observable {
         addNewLogEvent(String.format(
                 "%s attacks the territory %s from the territory %s",
                 currentPlayer.getName(),
-                src.getName(),
-                dest.getName()
+                dest.getName(),
+                src.getName()
         ));
     }
 
@@ -572,6 +572,7 @@ public final class RiskModel extends Observable {
                 .forEach((p) -> {
                     p.getHand().getCards().stream().forEach(c -> this.getCurrentPlayer().getHand().addCardToPlayerHand(c));
                     this.removePlayer(p);
+                    this.currentPlayer.stealCardsFrom(p);
                     addNewLogEvent(String.format(
                             "%s has no more territories, "
                             + "it is eliminated from the game",

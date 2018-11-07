@@ -790,4 +790,15 @@ public abstract class PlayerModel extends Observable {
         setChanged();
         notifyObservers(new LogEvent(logMessage, clear));
     }
+
+    /**
+     * Add the cards from the killed player to this player's cards
+     *
+     * @param killedPlayer Player who has been eliminated
+     */
+    void stealCardsFrom(PlayerModel killedPlayer) {
+        killedPlayer.getHand().getCards().forEach((c) -> {
+            this.getHand().addCardToPlayerHand(c);
+        });
+    }
 }
