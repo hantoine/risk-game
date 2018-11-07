@@ -35,7 +35,7 @@ public class AIPlayerModel extends PlayerModel {
                 getName()
         ), true);
 
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
@@ -47,7 +47,7 @@ public class AIPlayerModel extends PlayerModel {
                 "%s starts its fortification phase",
                 getName()
         ), true);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
@@ -59,7 +59,7 @@ public class AIPlayerModel extends PlayerModel {
                 "%s starts its attack phase",
                 getName()
         ), true);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**

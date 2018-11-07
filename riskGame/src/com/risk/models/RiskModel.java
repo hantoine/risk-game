@@ -547,7 +547,6 @@ public final class RiskModel extends Observable {
                 break;
             case REINFORCEMENT:
                 this.getCurrentPlayer().reinforcement(this);
-                //riskView.cardExchangeMenu(modelRisk, riskController);
                 break;
             case ATTACK:
                 this.getCurrentPlayer().attack(this);

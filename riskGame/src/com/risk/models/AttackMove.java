@@ -24,8 +24,8 @@ public class AttackMove extends Observable {
      * Destiny of the attack
      */
     private TerritoryModel dest;
-    /*
-    * Player performing the attack
+    /**
+     * Player performing the attack
      */
     private PlayerModel attacker;
     /**
