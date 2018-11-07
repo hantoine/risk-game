@@ -347,7 +347,7 @@ public abstract class PlayerModel extends Observable {
      *
      * @return the numArmies
      */
-    public int getNumArmiesAvailable() {
+    public int getNbArmiesAvailable() {
         return numArmiesAvailable;
     }
 
@@ -383,7 +383,7 @@ public abstract class PlayerModel extends Observable {
      * @param i the number of the armies
      */
     void addNumArmiesAvailable(int i) {
-        this.setNumArmiesAvailable(this.getNumArmiesAvailable() + i);
+        this.setNumArmiesAvailable(this.getNbArmiesAvailable() + i);
     }
 
     /**
@@ -475,7 +475,7 @@ public abstract class PlayerModel extends Observable {
         int numArmiesDeployed = this.contriesOwned.stream()
                 .mapToInt((country) -> country.getNumArmies()).sum();
 
-        return numArmiesDeployed + this.getNumArmiesAvailable();
+        return numArmiesDeployed + this.getNbArmiesAvailable();
     }
 
     /**
