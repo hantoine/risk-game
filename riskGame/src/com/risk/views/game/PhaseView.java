@@ -73,8 +73,8 @@ public class PhaseView extends JPanel implements Observer {
     }
 
     /**
-     *
-     * @param rm
+     * This method is for update the view of risk model
+     * @param rm the risk model which is gonna be updated the view
      */
     public void updateView(RiskModel rm) {
         setVisible(true);
@@ -95,9 +95,9 @@ public class PhaseView extends JPanel implements Observer {
     }
 
     /**
-     *
-     * @param o
-     * @param o1
+     * This method is to attach the observer
+     * @param o the observer
+     * @param o1 the object
      */
     @Override
     public void update(Observable o, Object o1) {
