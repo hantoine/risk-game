@@ -208,15 +208,9 @@ public final class RiskModel extends Observable {
     }
 
     /**
-<<<<<<< OURS
      * This method is to do implement the attack move
      * @param src the previous territory model
      * @param dest the next territory model
-=======
-     *
-     * @param src
-     * @param dest
->>>>>>> THEIRS
      */
     public void attackMove(TerritoryModel src, TerritoryModel dest) {
         this.getCurrentPlayer().startAttackMove(src, dest);
