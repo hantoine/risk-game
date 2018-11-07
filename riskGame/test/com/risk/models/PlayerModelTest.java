@@ -74,14 +74,14 @@ public class PlayerModelTest {
      * Test of armiesAssignation method, of class PlayerModel.
      */
     @Test
-    public void testArmiesAssignationWithMoreCountries() {
+    public void testArmiesAssignationWithMoreTerritories() {
         System.out.println("armiesAssignation");
 
-        player.addCountryOwned(new TerritoryModel("France"));
-        player.addCountryOwned(new TerritoryModel("Germany"));
-        player.addCountryOwned(new TerritoryModel("Italy"));
-        player.addCountryOwned(new TerritoryModel("UK"));
-        player.addCountryOwned(new TerritoryModel("Spain"));
+        player.addTerrOwned(new TerritoryModel("France"));
+        player.addTerrOwned(new TerritoryModel("Germany"));
+        player.addTerrOwned(new TerritoryModel("Italy"));
+        player.addTerrOwned(new TerritoryModel("UK"));
+        player.addTerrOwned(new TerritoryModel("Spain"));
 
         int expResult = 4;
         int result = player.armiesAssignation();
@@ -139,9 +139,9 @@ public class PlayerModelTest {
      * dice selected
      */
     @Test
-    public void testConquerCountry() {
+    public void testConquerTerritory() {
         player.getCurrentAttack().setNbDiceAttack(2);
-        int result = player.conquerCountry(1);
+        int result = player.conquerTerritory(1);
         assertEquals(-1, result);
     }
 
@@ -150,9 +150,9 @@ public class PlayerModelTest {
      * move
      */
     @Test
-    public void testConquerCountry1() {
+    public void testConquerTerritory1() {
         player.getCurrentAttack().setNbDiceAttack(2);
-        int result = player.conquerCountry(3);
+        int result = player.conquerTerritory(3);
         assertEquals(0, result);
     }
 
@@ -161,9 +161,9 @@ public class PlayerModelTest {
      * more or equal than source number of armies
      */
     @Test
-    public void testConquerCountry2() {
+    public void testConquerTerritory2() {
         player.getCurrentAttack().setNbDiceAttack(2);
-        int result = player.conquerCountry(7);
+        int result = player.conquerTerritory(7);
         assertEquals(-1, result);
     }
 
@@ -212,8 +212,8 @@ public class PlayerModelTest {
         player.setCurrentAttack(null);
         source.addAdjacentTerritory(dest);
 
-        player.addCountryOwned(source);
-        player.addCountryOwned(dest);
+        player.addTerrOwned(source);
+        player.addTerrOwned(dest);
 
         int result = player.validateAttack(source, dest);
         assertEquals(-3, result);
@@ -230,7 +230,7 @@ public class PlayerModelTest {
         aux.setNumArmies(1);
         TerritoryModel source = new TerritoryModel("Venezuel");
         player.setCurrentAttack(null);
-        player.addCountryOwned(source);
+        player.addTerrOwned(source);
         source.addAdjacentTerritory(aux);
         source.setNumArmies(1);
         int result = player.validateAttack(source, aux);

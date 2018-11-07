@@ -44,9 +44,9 @@ public class MapView extends JPanel implements Observer {
     protected Image backgroundImage;
 
     /**
-     * List of the buttons representing countries.
+     * List of the buttons representing territories.
      */
-    protected HashMap<String, CountryButton2> countriesButtons;
+    protected HashMap<String, TerritoryButton2> territoriesButtons;
 
     /**
      * Dimension of the buttons representing territories.
@@ -66,7 +66,7 @@ public class MapView extends JPanel implements Observer {
     protected Tools selectedTool;
 
     /**
-     * Links between countries to be rendered calling the repaint method.
+     * Links between territories to be rendered calling the repaint method.
      */
     protected HashMap<String, Line2D> links;
 
@@ -77,7 +77,7 @@ public class MapView extends JPanel implements Observer {
      */
     public MapView(MapEditorController editorController) {
         this.setBorder(BorderFactory.createLineBorder(Color.black));
-        this.countriesButtons = new HashMap<>();
+        this.territoriesButtons = new HashMap<>();
         this.links = new HashMap<>();
         this.setBackground(Color.white);
         this.setLayout(null);
@@ -134,18 +134,18 @@ public class MapView extends JPanel implements Observer {
     }
 
     /**
-     * Remove a country by name as each country as a unique name. Removing
+     * Remove a territory by name as each territory as a unique name. Removing
      * implies deleting the associated button.
      *
-     * @param countryName the name of the country
+     * @param terrName the name of the territory
      */
-    public void removeTerritory(String countryName) {
+    public void removeTerritory(String terrName) {
         //remove from the list
-        CountryButton2 buttonToDelete = countriesButtons.get(countryName);
+        TerritoryButton2 buttonToDelete = territoriesButtons.get(terrName);
 
         if (buttonToDelete != null) {
             this.remove(buttonToDelete);
-            this.countriesButtons.remove(countryName);
+            this.territoriesButtons.remove(terrName);
 
             //redraw the view
             revalidate();
@@ -171,13 +171,13 @@ public class MapView extends JPanel implements Observer {
      */
     protected void addTerritory(int posX, int posY, String newName) {
         //add to view
-        CountryButton2 newCountryButton = new CountryButton2(posX, posY, newName, buttonsDims);
-        this.add(newCountryButton);
-        newCountryButton.addMouseListener(controller.getCountryMouseListener());
-        newCountryButton.setVisible(true);
+        TerritoryButton2 newTerrButton = new TerritoryButton2(posX, posY, newName, buttonsDims);
+        this.add(newTerrButton);
+        newTerrButton.addMouseListener(controller.getTerritoryMouseListener());
+        newTerrButton.setVisible(true);
 
         //add to internal list
-        countriesButtons.put(newName, newCountryButton);
+        territoriesButtons.put(newName, newTerrButton);
 
         //draw the new button
         revalidate();
@@ -203,17 +203,17 @@ public class MapView extends JPanel implements Observer {
             }
         }
 
-        CountryButton2 territoryButton;
+        TerritoryButton2 territoryButton;
 
         if (formerName != null) {
             //pop territory button to update
-            territoryButton = this.countriesButtons.remove(formerName);
+            territoryButton = this.territoriesButtons.remove(formerName);
 
             //set new name
             territoryButton.setName(newName);
 
             //push the updated button back into the map
-            countriesButtons.put(newName, territoryButton);
+            territoriesButtons.put(newName, territoryButton);
 
             Set<String> linkNames = new HashSet<>(this.links.keySet());
             for (String linkName : linkNames) {
@@ -237,8 +237,8 @@ public class MapView extends JPanel implements Observer {
      */
     public void updateTerritoryPos(MapModel mapModel) {
         TerritoryModel updatedTerritory = (TerritoryModel) mapModel.getLastUpdate();
-        CountryButton2 territoryButtonToUpdate;
-        territoryButtonToUpdate = this.countriesButtons.get(updatedTerritory.getName());
+        TerritoryButton2 territoryButtonToUpdate;
+        territoryButtonToUpdate = this.territoriesButtons.get(updatedTerritory.getName());
         territoryButtonToUpdate.setPosition(updatedTerritory.getPositionX(), updatedTerritory.getPositionY());
     }
 
@@ -358,7 +358,7 @@ public class MapView extends JPanel implements Observer {
     }
 
     /**
-     * Add a new link between two country buttons
+     * Add a new link between two territory buttons
      *
      * @param territory1
      * @param territory2
@@ -366,9 +366,9 @@ public class MapView extends JPanel implements Observer {
     private void addLink(String territory1, String territory2) {
         String[] linkNames = {territory1, territory2};
 
-        //get the two buttons corresponding to the two countries
-        CountryButton2 firstItem = this.countriesButtons.get(linkNames[0]);
-        CountryButton2 secondItem = this.countriesButtons.get(linkNames[1]);
+        //get the two buttons corresponding to the two territories
+        TerritoryButton2 firstItem = this.territoriesButtons.get(linkNames[0]);
+        TerritoryButton2 secondItem = this.territoriesButtons.get(linkNames[1]);
 
         //create line to be drawn given the positions of the buttons
         Line2D newLink = new Line2D.Double();
@@ -404,7 +404,7 @@ public class MapView extends JPanel implements Observer {
 
         //get list of names of territories in the view
         LinkedList<String> territoriesInView = new LinkedList();
-        territoriesInView.addAll(this.countriesButtons.keySet());
+        territoriesInView.addAll(this.territoriesButtons.keySet());
 
         //get list of names of territories in the model
         List<String> territoriesInModel = (mapModel).getTerritoryList();
@@ -487,7 +487,7 @@ public class MapView extends JPanel implements Observer {
     public Map<String, String> modifyTerritory(List<String> continentsList, String territoryName, String continentName) {
         Map<String, String> data = new HashMap<>();
 
-        ModifyCountryPanel modifyPanel = new ModifyCountryPanel(continentsList, territoryName, continentName);
+        ModifyTerritoryPanel modifyPanel = new ModifyTerritoryPanel(continentsList, territoryName, continentName);
         String boxName = "Modifying " + territoryName;
         int result = JOptionPane.showConfirmDialog(null,
                 modifyPanel,
@@ -496,7 +496,7 @@ public class MapView extends JPanel implements Observer {
 
         if (result == JOptionPane.OK_OPTION) {
             //check if name not already used
-            if (!territoryName.equals(modifyPanel.getTerritoryName()) && this.countriesButtons.keySet().contains(modifyPanel.getTerritoryName())) {
+            if (!territoryName.equals(modifyPanel.getTerritoryName()) && this.territoriesButtons.keySet().contains(modifyPanel.getTerritoryName())) {
                 this.showError("This name is already used");
                 return data;
             }

@@ -33,7 +33,7 @@ public abstract class PlayerModel extends Observable {
     /**
      * cardsOwned cards owned by a player
      */
-    public List<TerritoryModel> contriesOwned;
+    public List<TerritoryModel> territoryOwned;
     /**
      * continents owned by a player
      */
@@ -83,7 +83,7 @@ public abstract class PlayerModel extends Observable {
     public PlayerModel(String name, Color color, boolean isHuman, RiskModel game) {
         this.name = name;
         this.color = color;
-        this.contriesOwned = new LinkedList<>();
+        this.territoryOwned = new LinkedList<>();
         this.continentsOwned = new LinkedList<>();
         this.hand = new HandModel();
         this.hand.setOwner(this);
@@ -218,51 +218,51 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     * Getter of the countriesOwned attribute
+     * Getter of the territoryOwned attribute
      *
      * @return the contriesOwned
      */
-    public List<TerritoryModel> getContriesOwned() {
-        return Collections.unmodifiableList(this.contriesOwned);
+    public List<TerritoryModel> getTerritoryOwned() {
+        return Collections.unmodifiableList(this.territoryOwned);
     }
 
     public boolean checkOwnTerritory(TerritoryModel territory) {
-        return contriesOwned.contains(territory);
+        return territoryOwned.contains(territory);
     }
 
     /**
-     * Return the number of countries owned by this player
+     * Return the number of territories owned by this player
      *
-     * @return the number of countries owned by this player
+     * @return the number of territories owned by this player
      */
-    public int getNbCountriesOwned() {
-        return contriesOwned.size();
+    public int getNbTerritoriesOwned() {
+        return territoryOwned.size();
     }
 
     /**
-     * Return the number of countries owned by this player
+     * Return the number of territories owned by this player
      *
-     * @return the number of countries owned by this player
+     * @return the number of territories owned by this player
      */
     public int getNbContinentsOwned() {
         return continentsOwned.size();
     }
 
     /**
-     * Setter of the countriesOwned attribute
+     * Setter of the territoriesOwned attribute
      *
      * @param contriesOwned the contriesOwned to set
      */
     void setContriesOwned(Collection<TerritoryModel> contriesOwned) {
 
-        this.contriesOwned.stream()
+        this.territoryOwned.stream()
                 .filter(c -> c.getOwner() != null)
                 .forEach((c) -> {
-                    c.getOwner().removeCountryOwned(c);
+                    c.getOwner().removeTerrOwned(c);
                 });
-        this.contriesOwned = new LinkedList(contriesOwned);
+        this.territoryOwned = new LinkedList(contriesOwned);
 
-        this.contriesOwned.stream().forEach((c) -> {
+        this.territoryOwned.stream().forEach((c) -> {
             c.setOwner(this);
         });
 
@@ -273,16 +273,16 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     * Add a country to the list of countries owned by this player
+     * Add a territory to the list of territories owned by this player
      *
-     * @param countryOwned the additional country owned by this player
+     * @param terrOwned the additional territory owned by this player
      */
-    void addCountryOwned(TerritoryModel countryOwned) {
-        if (countryOwned.getOwner() != null) {
-            countryOwned.getOwner().removeCountryOwned(countryOwned);
+    void addTerrOwned(TerritoryModel terrOwned) {
+        if (terrOwned.getOwner() != null) {
+            terrOwned.getOwner().removeTerrOwned(terrOwned);
         }
-        this.contriesOwned.add(countryOwned);
-        countryOwned.setOwner(this);
+        this.territoryOwned.add(terrOwned);
+        terrOwned.setOwner(this);
 
         updateContinentsOwned();
 
@@ -291,13 +291,13 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     * Remove a country from the list of countries owned by this player
+     * Remove a territory from the list of territories owned by this player
      *
-     * @param countryOwned the country no longer owned by this player
+     * @param territoryOwned the territory no longer owned by this player
      */
-    void removeCountryOwned(TerritoryModel countryOwned) {
-        this.contriesOwned.remove(countryOwned);
-        countryOwned.setOwner(this);
+    void removeTerrOwned(TerritoryModel territoryOwned) {
+        this.territoryOwned.remove(territoryOwned);
+        territoryOwned.setOwner(this);
 
         updateContinentsOwned();
 
@@ -472,8 +472,8 @@ public abstract class PlayerModel extends Observable {
      * @return Total number of armies owned by this player
      */
     public int getNbArmiesOwned() {
-        int numArmiesDeployed = this.contriesOwned.stream()
-                .mapToInt((country) -> country.getNumArmies()).sum();
+        int numArmiesDeployed = this.territoryOwned.stream()
+                .mapToInt((territory) -> territory.getNumArmies()).sum();
 
         return numArmiesDeployed + this.getNbArmiesAvailable();
     }
@@ -484,16 +484,16 @@ public abstract class PlayerModel extends Observable {
      * @return number of armies to deploy
      */
     int armiesAssignation() {
-        int extraCountries = (int) Math.floor(this.getNbCountriesOwned() / 3);
+        int extraTerritories = (int) Math.floor(this.getNbTerritoriesOwned() / 3);
         int extraContinent = 0;
         for (ContinentModel continent : this.getContinentsOwned()) {
             extraContinent += continent.getBonusScore();
         }
 
-        if (extraContinent + extraCountries < 3) {
+        if (extraContinent + extraTerritories < 3) {
             return 3;
         } else {
-            return extraContinent + extraCountries;
+            return extraContinent + extraTerritories;
         }
     }
 
@@ -647,12 +647,12 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     * Conquer a country after an attack
+     * Conquer a territory after an attack
      *
-     * @param armies number of armies to move to the new conquered country
+     * @param armies number of armies to move to the new conquered territory
      * @return -1 error; 0 success
      */
-    public int conquerCountry(int armies) {
+    public int conquerTerritory(int armies) {
         if (armies < this.getCurrentAttack().getNbDiceAttack() || armies >= this.getCurrentAttack().getSource().getNumArmies()) {
             return -1;
         }
@@ -661,7 +661,7 @@ public abstract class PlayerModel extends Observable {
         this.getCurrentAttack().getSource().setNumArmies(newArmies - armies);
         this.getCurrentAttack().getDest().setNumArmies(armies);
 
-        addCountryOwned(this.getCurrentAttack().getDest());
+        addTerrOwned(this.getCurrentAttack().getDest());
         setConquered(true);
         this.setCurrentAttack(null);
         if (game != null) {
@@ -685,8 +685,8 @@ public abstract class PlayerModel extends Observable {
         if (this.getCurrentAttack() != null) {
             return -2;
         }
-        if (!this.getContriesOwned().contains(sourceTerritory)
-                || this.getContriesOwned().contains(destTerritory)) {
+        if (!this.getTerritoryOwned().contains(sourceTerritory)
+                || this.getTerritoryOwned().contains(destTerritory)) {
             return -3;
         }
         if (sourceTerritory.getNumArmies() < 2) {
@@ -717,13 +717,13 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     * Calculates the % of countries owned
+     * Calculates the % of territories owned
      *
-     * @return % of countries owned
+     * @return % of territories owned
      */
     public int getPercentMapControlled() {
         int nbTerrInMap = this.getGame().getMap().getTerritories().size();
-        return (100 * this.getNbCountriesOwned()) / nbTerrInMap;
+        return (100 * this.getNbTerritoriesOwned()) / nbTerrInMap;
     }
 
     /**
@@ -738,8 +738,8 @@ public abstract class PlayerModel extends Observable {
     /**
      * Setter of the current attack
      *
-     * @param src source country
-     * @param dest country attacked
+     * @param src source territory
+     * @param dest territory attacked
      */
     void startAttackMove(TerritoryModel src, TerritoryModel dest) {
         AttackMove attack = new AttackMove(this, src, dest);
@@ -761,7 +761,7 @@ public abstract class PlayerModel extends Observable {
         List<ContinentModel> newContinentsOwned;
         newContinentsOwned = this.game.getMap().getContinents().stream()
                 .filter((c) -> c.getMembers().stream()
-                .allMatch((t) -> this.contriesOwned.contains(t)))
+                .allMatch((t) -> this.territoryOwned.contains(t)))
                 .collect(Collectors.toList());
         this.setContinentsOwned(newContinentsOwned);
     }

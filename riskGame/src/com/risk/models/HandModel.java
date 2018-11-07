@@ -158,10 +158,10 @@ public class HandModel extends Observable {
      */
     public void removeCards(List<String> selectedCards, List<CardModel> deck) {
         this.getCards().stream()
-                .filter(c -> selectedCards.contains(c.getCountryName()))
+                .filter(c -> selectedCards.contains(c.getTerritoryName()))
                 .forEach(cs -> deck.add(0, cs));
 
-        this.cards.removeIf(c -> selectedCards.contains(c.getCountryName()));
+        this.cards.removeIf(c -> selectedCards.contains(c.getTerritoryName()));
     }
 
     /**

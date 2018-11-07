@@ -174,8 +174,8 @@ public class MenuListener extends MouseAdapter {
         }
         this.getRiskModel().setPlayerList(listPlayers);
 
-        if (!this.getRiskModel().validateCountries()) {
-            JOptionPane.showMessageDialog(null, "No enough countries in this map for the number of players. Select another map.");
+        if (!this.getRiskModel().validateTerritories()) {
+            JOptionPane.showMessageDialog(null, "No enough territories in this map for the number of players. Select another map.");
             return;
         }
         this.getRiskView().closeMenu();

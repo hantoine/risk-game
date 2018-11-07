@@ -158,7 +158,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      */
     @Override
     public void setController(RiskController rc) {
-        this.getMapPanel().setListener(rc.getCountryListener());
+        this.getMapPanel().setListener(rc.getTerritoryListener());
 
         this.getStagePanel().getEndPhase().addActionListener(e -> {
             rc.getGameController().endPhaseButtonPressed();

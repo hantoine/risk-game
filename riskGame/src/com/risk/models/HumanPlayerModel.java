@@ -72,7 +72,7 @@ public class HumanPlayerModel extends PlayerModel {
         List<String> selectedCards = this.getHand().getSelectedCards();
         LinkedList<String> typeOfArmie = new LinkedList<>();
         this.getHand().getCards().stream()
-                .filter(c -> selectedCards.contains(c.getCountryName()))
+                .filter(c -> selectedCards.contains(c.getTerritoryName()))
                 .forEach(cs -> typeOfArmie.add(cs.getTypeOfArmie()));
 
         boolean areEqual = typeOfArmie.stream()

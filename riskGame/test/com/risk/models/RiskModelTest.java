@@ -170,7 +170,7 @@ public class RiskModelTest {
         TerritoryModel terr = this.mapModel.getTerritoryByName("TerritoryB");
 
         player.setNumArmiesAvailable(1);
-        player.addCountryOwned(terr);
+        player.addTerrOwned(terr);
         terr.setNumArmies(0);
 
         riskModel.placeArmy(player, terr);
@@ -198,7 +198,7 @@ public class RiskModelTest {
         ArmyPlacementImpossible exception = null;
 
         player.setNumArmiesAvailable(0);
-        player.addCountryOwned(terr);
+        player.addTerrOwned(terr);
         terr.setNumArmies(0);
 
         try {
@@ -248,7 +248,7 @@ public class RiskModelTest {
         assertNotEquals(null, exception);
         if (exception != null) {
             assertEquals(
-                    "You don't own this country !",
+                    "You don't own this territory !",
                     exception.getReason()
             );
         }
@@ -277,7 +277,7 @@ public class RiskModelTest {
         assertTrue(riskModel.getCurrentPlayer().isCurrentPlayer());
         riskModel.getPlayerList().forEach((p) -> {
             assertEquals(
-                    expectedNbArmies + p.getNbCountriesOwned(),
+                    expectedNbArmies + p.getNbTerritoriesOwned(),
                     p.getNbArmiesOwned()
             );
         }

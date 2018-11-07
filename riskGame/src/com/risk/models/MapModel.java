@@ -54,8 +54,8 @@ public final class MapModel extends Observable {
     private HashMap<String, TerritoryModel> graphTerritories;
 
     /**
-     * Last element that have been updated.
-     * Territory or Continent (includes adding a new element).
+     * Last element that have been updated. Territory or Continent (includes
+     * adding a new element).
      */
     public Object lastUpdatedElement;
 
@@ -70,29 +70,29 @@ public final class MapModel extends Observable {
         addDefaultContinent();
     }
 
-    public Object getLastUpdate(){
+    public Object getLastUpdate() {
         return lastUpdatedElement;
     }
-    
+
     /**
-     * It prints the countries and relationships between them
+     * It prints the territories and relationships between them
      */
     public void printBoard() {
         if (this.getGraphTerritories().keySet().size() > 0) {
-            System.out.println("Number of countries: " + this.getGraphTerritories().keySet().size());
-            for (String country : this.getGraphTerritories().keySet()) {
-                System.out.println(country);
-                TerritoryModel auxCountry = this.getGraphTerritories().get(country);
-                for (TerritoryModel c : auxCountry.getAdj()) {
-                    System.out.println(country + "->" + c.getName());
+            System.out.println("Number of territories: " + this.getGraphTerritories().keySet().size());
+            for (String territory : this.getGraphTerritories().keySet()) {
+                System.out.println(territory);
+                TerritoryModel auxterritory = this.getGraphTerritories().get(territory);
+                for (TerritoryModel c : auxterritory.getAdj()) {
+                    System.out.println(territory + "->" + c.getName());
                 }
             }
         }
     }
 
     /**
-     * It calls dfsConnected to validate if the countries in the board with the
-     * given continents represent a connected graph.
+     * It calls dfsConnected to validate if the territories in the board with
+     * the given continents represent a connected graph.
      *
      * @return true if it is a connected graph
      */
@@ -127,7 +127,7 @@ public final class MapModel extends Observable {
      * It uses deep first search algorithm to validate that every territory is
      * reachable
      *
-     * @param v a country or vertex in the graph
+     * @param v a territory or vertex in the graph
      * @param visited List of visited territories will be visited
      */
     private void dfsConnected(TerritoryModel v, List<String> visited) {
@@ -307,7 +307,6 @@ public final class MapModel extends Observable {
         }
     }
 
-    
     /**
      * Add an edge between two vertices (territories).
      *
@@ -326,7 +325,7 @@ public final class MapModel extends Observable {
         //add neighbours
         this.getGraphTerritories().get(territoryName).addNeighbour(neighbourModel);
         this.getGraphTerritories().get(neighbour).addNeighbour(territoryModel);
-        
+
         //update view
         this.lastUpdatedElement = this.getTerritoryByName(territoryName);
         setChanged();
@@ -384,10 +383,10 @@ public final class MapModel extends Observable {
     }
 
     /**
-     * Add a new continent to the model using addContinent.
-     * This time the continent is a default one as we must have 
-     * at least one continent. That is why there is a call to getNewName 
-     * and the default continentBonus is set to 1.
+     * Add a new continent to the model using addContinent. This time the
+     * continent is a default one as we must have at least one continent. That
+     * is why there is a call to getNewName and the default continentBonus is
+     * set to 1.
      *
      * @return whether the continent is added or not
      */
@@ -401,9 +400,10 @@ public final class MapModel extends Observable {
     /**
      * Add a new continent to the model and notify the observers to change the
      * view
+     *
      * @param continentName
      * @param continentBonus
-     * @return 
+     * @return
      */
     public boolean addContinent(String continentName, int continentBonus) {
         ContinentModel newContinent = new ContinentModel(continentName, continentBonus);
@@ -416,27 +416,30 @@ public final class MapModel extends Observable {
     }
 
     /**
-     * Find a continent that can be assigned to a given territory.
-     * To that aim, this function looks at the neighbors of the given 
-     * territory and pick a random continent from them.
-     * 
+     * Find a continent that can be assigned to a given territory. To that aim,
+     * this function looks at the neighbors of the given territory and pick a
+     * random continent from them.
+     *
      * @param territory
-     * @return 
+     * @return
      */
     public String getAvailableContinent(TerritoryModel territory) {
-        
+
         String currentContinent = territory.getContinentName();
-        
+
         List<TerritoryModel> neighbours = territory.getAdj();
-        for(TerritoryModel neighbor : neighbours){
-            if(!neighbor.getContinentName().equals(currentContinent))
+        for (TerritoryModel neighbor : neighbours) {
+            if (!neighbor.getContinentName().equals(currentContinent)) {
                 return neighbor.getContinentName();
+            }
         }
-        
-        for(ContinentModel continent: this.graphContinents.values())
-            if(!continent.getName().equals(currentContinent))
+
+        for (ContinentModel continent : this.graphContinents.values()) {
+            if (!continent.getName().equals(currentContinent)) {
                 return continent.getName();
-        
+            }
+        }
+
         return currentContinent;
     }
 
@@ -451,11 +454,11 @@ public final class MapModel extends Observable {
         for (String territoryName : territoryList) {
             this.removeTerritory(territoryName);
         }
-        
+
         for (String continentName : continentList) {
             this.removeContinent(continentName);
         }
-        
+
         //reset map configuration
         this.setScrollConfig("none");
         this.setWarnConfig(false);
@@ -471,13 +474,13 @@ public final class MapModel extends Observable {
      * @return return if the continent is removed or not
      */
     public boolean removeContinent(String continentName) {
-              
+
         //get continent to delete
         ContinentModel continentToDel = this.getGraphContinents().get(continentName);
         if (continentToDel == null) {
             return false;
         }
-        
+
         //get members of the continent
         LinkedList<TerritoryModel> members = continentToDel.getMembers();
 
@@ -488,17 +491,17 @@ public final class MapModel extends Observable {
         System.out.println("nb continents : " + Integer.toString(this.getContinentList().size()));
 
         //if there is no continent, add one by default
-        if(this.graphContinents.isEmpty()){
+        if (this.graphContinents.isEmpty()) {
             addDefaultContinent();
         }
-        
+
         //set members of the new continent
         members.forEach((member) -> {
             String newContinentName = getAvailableContinent(member);
             member.setContinentName(newContinentName);
             this.graphContinents.get(newContinentName).addMember(member);
         });
-        
+
         setChanged();
         notifyObservers(UpdateTypes.REMOVE_CONTINENT);
         return true;
@@ -599,7 +602,6 @@ public final class MapModel extends Observable {
         String formerContinent = data.get("formerContinent");
         String newContinent = data.get("continent");
 
-        
         //get territory to be modified
         TerritoryModel modifiedTerritory = this.getGraphTerritories().remove(formerName);
 
@@ -616,7 +618,7 @@ public final class MapModel extends Observable {
 
         this.graphTerritories.put(newName, modifiedTerritory);
         this.lastUpdatedElement = modifiedTerritory;
-        
+
         setChanged();
         notifyObservers(UpdateTypes.UPDATE_TERRITORY_NAME);
     }
@@ -645,9 +647,9 @@ public final class MapModel extends Observable {
                 member.setContinentName(newName);
             }
         }
-        
+
         this.lastUpdatedElement = this.getContinentByName(newName);
-        
+
         setChanged();
         notifyObservers(UpdateTypes.UPDATE_CONTINENT);
     }
@@ -716,7 +718,7 @@ public final class MapModel extends Observable {
      */
     public void setImage(BufferedImage image, Dimension buttonDims) {
         this.setImage(image);
-        
+
         if (image != null) {
             checkTerritoriesPositions(image.getWidth(), image.getHeight(), buttonDims);
         }
@@ -772,7 +774,6 @@ public final class MapModel extends Observable {
         return territoryArray;
     }
 
-    
     /**
      * Setter of the scroll configuration parameter of the map.
      *

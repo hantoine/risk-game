@@ -161,7 +161,7 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     * Assigns random countries to players
+     * Assigns random territories to players
      */
     public void assignTerritoriesToPlayers() {
         if (players == null) {
@@ -188,7 +188,7 @@ public final class RiskModel extends Observable {
             int playerIndex = rnd.nextInt(players.size());
             TerritoryModel territoryAdded = terrLeft.remove(0);
             territoryAdded.setNumArmies(1);
-            players.get(playerIndex).addCountryOwned(territoryAdded);
+            players.get(playerIndex).addTerrOwned(territoryAdded);
         }
 
         addNewLogEvent("Territories are assigned randomly to players");
@@ -256,7 +256,7 @@ public final class RiskModel extends Observable {
         if (!(currentPlayer.checkOwnTerritory(src)
                 && currentPlayer.checkOwnTerritory(dest))) {
             throw new FortificationMoveImpossible(
-                    "You don't own this country !");
+                    "You don't own this territory !");
         }
 
         FortificationMove attempted = new FortificationMove(src, dest);
@@ -268,7 +268,7 @@ public final class RiskModel extends Observable {
 
         if (src.getNumArmies() == 1) {
             throw new FortificationMoveImpossible(
-                    "There is only one army in the source country !");
+                    "There is only one army in the source territory !");
         }
     }
 
@@ -391,17 +391,17 @@ public final class RiskModel extends Observable {
     public void initializeDeck() {
         this.deck = new LinkedList();
         int i = 0;
-        for (String country : this.getMap().getTerritoryList()) {
+        for (String territory : this.getMap().getTerritoryList()) {
 
             switch (i) {
                 case 0:
-                    this.deck.add(new CardModel(country, "infantry"));
+                    this.deck.add(new CardModel(territory, "infantry"));
                     break;
                 case 1:
-                    this.deck.add(new CardModel(country, "cavalry"));
+                    this.deck.add(new CardModel(territory, "cavalry"));
                     break;
                 case 2:
-                    this.deck.add(new CardModel(country, "artillery"));
+                    this.deck.add(new CardModel(territory, "artillery"));
                     break;
             }
             i = (i + 1) % 3;
@@ -451,7 +451,7 @@ public final class RiskModel extends Observable {
      * @return true if there is as many territories as players; false if it is
      * not true
      */
-    public boolean validateCountries() {
+    public boolean validateTerritories() {
         return (map.getTerritories().size() >= players.size());
     }
 
@@ -493,9 +493,9 @@ public final class RiskModel extends Observable {
                 Random rand = new Random();
                 players.stream().forEach((pl) -> {
                     while (pl.getNbArmiesAvailable() != 0) {
-                        int randTerr = rand.nextInt(pl.getNbCountriesOwned());
+                        int randTerr = rand.nextInt(pl.getNbTerritoriesOwned());
                         try {
-                            placeArmy(pl, pl.getContriesOwned().get(randTerr));
+                            placeArmy(pl, pl.getTerritoryOwned().get(randTerr));
                         } catch (ArmyPlacementImpossible ex) {
                         }
                     }
@@ -526,12 +526,12 @@ public final class RiskModel extends Observable {
      *
      */
     public void attackEndValidations() {
-        if ((this.getCurrentPlayer().getContriesOwned().stream()
-                .filter(c -> c.getNumArmies() < 2)).count() == this.getCurrentPlayer().getContriesOwned().size()) {
+        if ((this.getCurrentPlayer().getTerritoryOwned().stream()
+                .filter(c -> c.getNumArmies() < 2)).count() == this.getCurrentPlayer().getTerritoryOwned().size()) {
             finishPhase();
         }
 
-        if (this.getCurrentPlayer().getContriesOwned().size() == this.getMap().getTerritories().size()) {
+        if (this.getCurrentPlayer().getTerritoryOwned().size() == this.getMap().getTerritories().size()) {
             this.setWinningPlayer(this.getCurrentPlayer());
             this.finishPhase();
         }
@@ -567,9 +567,8 @@ public final class RiskModel extends Observable {
     public void checkForDeadPlayers() {
         List<PlayerModel> previousPlayerList = new ArrayList<>(players);
         previousPlayerList.stream()
-                .filter(p -> p.getNbCountriesOwned() == 0)
+                .filter(p -> p.getNbTerritoriesOwned() == 0)
                 .forEach((p) -> {
-                    p.getHand().getCards().stream().forEach(c -> this.getCurrentPlayer().getHand().addCardToPlayerHand(c));
                     this.removePlayer(p);
                     this.currentPlayer.stealCardsFrom(p);
                     addNewLogEvent(String.format(
@@ -599,7 +598,7 @@ public final class RiskModel extends Observable {
                     "You have no armies left to deploy !");
         }
         if (player.checkOwnTerritory(territory) == false) {
-            throw new ArmyPlacementImpossible("You don't own this country !");
+            throw new ArmyPlacementImpossible("You don't own this territory !");
         }
 
         territory.incrementNumArmies();
@@ -686,13 +685,13 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     * If the destination country have 0 armies it is conquered
+     * If the destination territory have 0 armies it is conquered
      *
      * @param armies the number of armies to move
      */
     public void moveArmiesToConqueredTerritory(int armies) {
 
-        this.getCurrentPlayer().conquerCountry(armies);
+        this.getCurrentPlayer().conquerTerritory(armies);
 
         addNewLogEvent(String.format(
                 "%s move %d armies to the newly conquered territory",
@@ -715,7 +714,7 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     * Battle between countries in an attack move
+     * Battle between territories in an attack move
      *
      * @param attacker attacking player
      */
