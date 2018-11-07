@@ -12,10 +12,8 @@ import com.risk.observable.MapModelObserver;
 import com.risk.observable.UpdateTypes;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,7 +50,7 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
      * Button to add new continents.
      */
     private JButton addButton;
-    
+
     Random color = new Random();
 
     /**
@@ -84,13 +82,14 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
         addDummyLabel();
     }
 
-    public Color getColor(String continentName){
-        if(this.items.keySet().contains(continentName))
+    public Color getColor(String continentName) {
+        if (this.items.keySet().contains(continentName)) {
             return this.items.get(continentName).getBackground();
-        else
+        } else {
             return null;
+        }
     }
-    
+
     /**
      * Add a dummy label for having a good display of the elements using
      * GridBagConstraints.
@@ -120,7 +119,6 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
 
         //create element
         JButton newElement = (JButton) newComponent;
-       
 
         //add listeners
         newElement.addMouseListener(this.controller.getContinentMouseListener());
@@ -147,7 +145,6 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
     public void removeElement(String name) {
         this.remove(items.get(name));
         this.items.remove(name);
-        //gbc.gridy -= 1;
         revalidate();
         repaint();
     }
@@ -159,7 +156,7 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
      * @see CustomListPanel
      */
     public void addContinent(String continentName) {
-        
+
         JButton newContinent = new JButton(continentName);
         newContinent.setBackground(new Color(color.nextInt(255), color.nextInt(255), color.nextInt(255)));
         addElement(newContinent, continentName);
@@ -175,7 +172,6 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
         removeElement(continentName);
     }
 
-    
     /**
      * Update method of the Observer pattern
      *
@@ -184,66 +180,68 @@ public class ContinentListPanel extends CustomListPanel implements Observer {
      */
     @Override
     public void update(Observable object, Object arg) {
-        if(arg == null || !(arg instanceof UpdateTypes))
+        if (arg == null || !(arg instanceof UpdateTypes)) {
             return;
-        
+        }
+
         //get update type
-        UpdateTypes updateType = (UpdateTypes)arg;
-        
+        UpdateTypes updateType = (UpdateTypes) arg;
+
         //get model that has changed
-        MapModel mapModel = (MapModel)object;
-        
+        MapModel mapModel = (MapModel) object;
+
         //get the list of continents in the model
         List<String> continentsInModel = (mapModel).getContinentList();
-        
+
         //get the list of continents in the view
         LinkedList<String> continentsInView = new LinkedList();
         Set<String> continentsInViewSet = this.items.keySet();
         continentsInView.addAll(continentsInViewSet);
-        
+
         switch (updateType) {
             default:
                 break;
             case ADD_CONTINENT:
-                
+
                 //search for the continent which is in the model and not in the view
-                for(String name : continentsInModel){
-                    if(!continentsInView.contains(name)){
-                        
+                for (String name : continentsInModel) {
+                    if (!continentsInView.contains(name)) {
+
                         //add the missing continent to the view
                         this.addContinent(name);
                         break;
                     }
                 }
                 break;
-                
+
             case REMOVE_CONTINENT:
-                
+
                 //search for the continent which is in the view and not in the model
-                for(String name : continentsInView){
-                    if(!continentsInModel.contains(name)){
-                        
+                for (String name : continentsInView) {
+                    if (!continentsInModel.contains(name)) {
+
                         //remove the missing continent from the view
                         this.removeContinent(name);
                         break;
                     }
                 }
                 break;
-                
+
             case UPDATE_CONTINENT:
-                ContinentModel updatedContinent = (ContinentModel)mapModel.getLastUpdate();
+                ContinentModel updatedContinent = (ContinentModel) mapModel.getLastUpdate();
                 String newName = updatedContinent.getName();
-                String formerName=null;
-                
-                for(String name : continentsInView){
-                    if(!continentsInModel.contains(name)){
+                String formerName = null;
+
+                for (String name : continentsInView) {
+                    if (!continentsInModel.contains(name)) {
                         formerName = name;
                     }
                 }
-                
-                if(formerName == null)
+
+                if (formerName == null) {
                     return;
-                
+                }
+
                 JButton elementToModify = (JButton) this.items.get(formerName);
                 elementToModify.setText(newName);
                 elementToModify.setName(newName);
