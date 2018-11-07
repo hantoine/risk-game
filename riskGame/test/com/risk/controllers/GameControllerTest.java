@@ -32,15 +32,29 @@ public class GameControllerTest {
     @Before
     public void setUp() {
         rm = new RiskModel();
-        rm.removePlayer(0);
-        rm.removePlayer(0);
-        rm.removePlayer(0);
+        removeAllPlayers();
         rm.addPlayerToPlayerList("PlayerA", Color.yellow, true);
         rm.addPlayerToPlayerList("PlayerB", Color.red, true);
         rm.setMap(getTestMap());
         drv = new DummyRiskView();
         drv.observeModel(rm);
         instance = new GameController(rm);
+    }
+
+    private void removeAllPlayers() {
+        Method method;
+        try {
+            method = RiskModel.class
+                    .getDeclaredMethod("removePlayer", int.class);
+            method.setAccessible(true);
+            while (!rm.getPlayerList().isEmpty()) {
+                method.invoke(rm, 0);
+            }
+        } catch (SecurityException
+                | ReflectiveOperationException
+                | IllegalArgumentException ex) {
+            throw new AssumptionViolatedException("Cannot arrange");
+        }
     }
 
     private static MapModel getTestMap() {
@@ -286,6 +300,12 @@ public class GameControllerTest {
                 drv.getMessage());
     }
 
+    /**
+     * Wrapper for setNumArimes to make it accessible
+     *
+     * @param ter Territory for which to set the number of armies
+     * @param numArmies Number of armies to set
+     */
     private void setNumArmies(TerritoryModel ter, int numArmies) {
         Method method;
         try {
@@ -300,6 +320,12 @@ public class GameControllerTest {
         }
     }
 
+    /**
+     * Wrapper for addTerritoryOwned to make it accessible
+     *
+     * @param player Player for which to add owned territory
+     * @param territory Territory to add to the owned territories of the player
+     */
     private void addTerritoryOwned(PlayerModel player, TerritoryModel territory) {
         Method method;
         try {
@@ -314,6 +340,9 @@ public class GameControllerTest {
         }
     }
 
+    /**
+     * Dummy view used to test that the view is correctly notified
+     */
     private static class DummyRiskView implements RiskViewInterface {
 
         String message;
