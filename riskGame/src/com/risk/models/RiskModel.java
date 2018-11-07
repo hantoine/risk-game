@@ -5,7 +5,7 @@
  */
 package com.risk.models;
 
-import com.risk.views.attack.AttackView;
+import com.risk.views.game.AttackView;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
