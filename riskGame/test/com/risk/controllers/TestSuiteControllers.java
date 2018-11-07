@@ -17,5 +17,8 @@ import org.junit.runners.Suite;
     GameControllerTest.class
 })
 
+/**
+ * TestSuite class
+ */
 public class TestSuiteControllers {
 }

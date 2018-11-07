@@ -21,7 +21,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Panel enabling to select a file and display the name of the selected file in
- * a textfield. While you don't set a label there is no label displayed.
+ * a text field. While you don't set a label there is no label displayed.
  *
  * @author timot
  */

@@ -6,6 +6,7 @@
 package com.risk.models;
 
 /**
+ * Log event displayed in the phase view current action box
  *
  * @author hantoine
  */
