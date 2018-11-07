@@ -127,7 +127,7 @@ public class MapListener extends MouseAdapter {
     /**
      * Setter of the territorySource attribute
      *
-     * @param territorySource a label that represents a territory in the map
+     * @param terrSource a label that represents a territory in the map
      */
     private void setTerritorySource(TerritoryLabel terrSource) {
         this.territorySource = terrSource;
