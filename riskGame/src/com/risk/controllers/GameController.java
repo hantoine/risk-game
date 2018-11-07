@@ -10,8 +10,8 @@ import com.risk.models.GamePhase;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
-import com.risk.views.attack.AttackView;
-import com.risk.views.reinforcement.CardExchangeView;
+import com.risk.views.game.AttackView;
+import com.risk.views.game.CardExchangeView;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 

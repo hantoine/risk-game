@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.views.attack;
+package com.risk.views.game;
 
 import com.risk.controllers.GameController;
 import java.awt.Dimension;

@@ -8,8 +8,6 @@ package com.risk.views.game;
 import com.risk.controllers.GameController;
 import com.risk.models.AttackMove;
 import com.risk.models.RiskModel;
-import com.risk.views.attack.ArmiesLeft;
-import com.risk.views.attack.AttackView;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BoxLayout;
