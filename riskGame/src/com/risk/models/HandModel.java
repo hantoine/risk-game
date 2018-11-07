@@ -104,7 +104,7 @@ public class HandModel extends Observable {
 
     /**
      * This method is for set the current owner
-     * @param owner 
+     * @param owner the owner of the hand
      */
     void setOwner(PlayerModel owner) {
         this.owner = owner;
