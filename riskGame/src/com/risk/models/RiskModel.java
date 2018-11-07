@@ -708,6 +708,25 @@ public final class RiskModel extends Observable {
                 currentPlayer.getName(),
                 armies
         ));
+
+        if (!checkAttackpossible()) {
+            this.finishPhase();
+        }
+    }
+
+    /**
+     * Check if an attack move is possible for the current Player
+     *
+     * @return True if an attack move is possible for the current Player
+     */
+    private boolean checkAttackpossible() {
+        return this.getCurrentPlayer().getTerritoryOwned().stream()
+                .filter((c) -> c.getNumArmies() > 1)
+                .anyMatch(
+                        (c) -> c.getAdj().stream().anyMatch(
+                                (oc) -> oc.getOwner() != this.currentPlayer
+                        )
+                );
     }
 
     /**
@@ -736,6 +755,11 @@ public final class RiskModel extends Observable {
 
         setChanged();
         notifyObservers();
+
+        if (this.currentPlayer.getCurrentAttack() == null // attack finished
+                && !checkAttackpossible()) {
+            this.finishPhase();
+        }
     }
 
     /**
