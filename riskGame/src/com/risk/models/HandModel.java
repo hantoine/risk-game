@@ -185,9 +185,9 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @param typeOfArmie
-     * @param deck 
+     * This method is for removing card
+     * @param typeOfArmie the type of the armie
+     * @param deck the list of the card
      */
     public void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
         String[] typeOfArmieDum = {"infantry", "artillery", "cavalry"};
@@ -216,16 +216,16 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @return 
+     * This method is for get the status of card
+     * @return the status of the card
      */
     public boolean isHanded() {
         return handed;
     }
 
     /**
-     * 
-     * @param handed 
+     * This method is for set the handed boolean
+     * @param handed the status of the card
      */
     public void setHanded(boolean handed) {
         this.handed = handed;
