@@ -63,8 +63,8 @@ public class AIPlayerModel extends PlayerModel {
     }
 
     /**
-     *
-     * @return
+     * This method is to exchange cards to armies
+     * @return the boolean if it's exchanged or not
      */
     @Override
     public boolean exchangeCardsToArmies() {
