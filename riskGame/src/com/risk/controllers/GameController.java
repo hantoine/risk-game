@@ -216,8 +216,8 @@ public class GameController {
     }
 
     /**
-     *
-     * @param attackView
+     * This method is for add the observer
+     * @param attackView the view which is added to observer
      */
     public void addObserverToAttack(AttackView attackView) {
 
