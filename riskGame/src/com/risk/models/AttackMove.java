@@ -118,10 +118,10 @@ public class AttackMove extends Observable {
     }
 
     /**
-     *
+     * this method is to get battle log message
      * @param firstLooser
      * @param secondLooser
-     * @return
+     * @return the message
      */
     private String getBattleLogMsg(String firstLooser, String secondLooser) {
         String logMessage = String.format(
