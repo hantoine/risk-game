@@ -117,9 +117,9 @@ public class AttackView extends JPanel implements Observer {
     }
 
     /**
-     *
-     * @param o
-     * @param arg
+     * This method is for set the observer
+     * @param o Observable
+     * @param arg Object
      */
     @Override
     public void update(Observable o, Object arg) {
