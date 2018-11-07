@@ -95,15 +95,15 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @return 
+     * This method is for get the current owner
+     * @return the owner
      */
     public PlayerModel getOwner() {
         return owner;
     }
 
     /**
-     * 
+     * This method is for set the current owner
      * @param owner 
      */
     void setOwner(PlayerModel owner) {
@@ -174,8 +174,8 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @param current 
+     * This method is for set current attribute
+     * @param current the current status
      */
     void setCurrent(boolean current) {
         this.current = current;
