@@ -77,11 +77,11 @@ public class PlayerModelTest {
     public void testArmiesAssignationWithMoreTerritories() {
         System.out.println("armiesAssignation");
 
-        player.addTerrOwned(new TerritoryModel("France"));
-        player.addTerrOwned(new TerritoryModel("Germany"));
-        player.addTerrOwned(new TerritoryModel("Italy"));
-        player.addTerrOwned(new TerritoryModel("UK"));
-        player.addTerrOwned(new TerritoryModel("Spain"));
+        player.addTerritoryOwned(new TerritoryModel("France"));
+        player.addTerritoryOwned(new TerritoryModel("Germany"));
+        player.addTerritoryOwned(new TerritoryModel("Italy"));
+        player.addTerritoryOwned(new TerritoryModel("UK"));
+        player.addTerritoryOwned(new TerritoryModel("Spain"));
 
         int expResult = 4;
         int result = player.armiesAssignation();
@@ -212,8 +212,8 @@ public class PlayerModelTest {
         player.setCurrentAttack(null);
         source.addAdjacentTerritory(dest);
 
-        player.addTerrOwned(source);
-        player.addTerrOwned(dest);
+        player.addTerritoryOwned(source);
+        player.addTerritoryOwned(dest);
 
         int result = player.validateAttack(source, dest);
         assertEquals(-3, result);
@@ -230,7 +230,7 @@ public class PlayerModelTest {
         aux.setNumArmies(1);
         TerritoryModel source = new TerritoryModel("Venezuel");
         player.setCurrentAttack(null);
-        player.addTerrOwned(source);
+        player.addTerritoryOwned(source);
         source.addAdjacentTerritory(aux);
         source.setNumArmies(1);
         int result = player.validateAttack(source, aux);

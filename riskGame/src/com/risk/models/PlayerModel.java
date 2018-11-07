@@ -277,7 +277,7 @@ public abstract class PlayerModel extends Observable {
      *
      * @param terrOwned the additional territory owned by this player
      */
-    void addTerrOwned(TerritoryModel terrOwned) {
+    void addTerritoryOwned(TerritoryModel terrOwned) {
         if (terrOwned.getOwner() != null) {
             terrOwned.getOwner().removeTerrOwned(terrOwned);
         }
@@ -661,7 +661,7 @@ public abstract class PlayerModel extends Observable {
         this.getCurrentAttack().getSource().setNumArmies(newArmies - armies);
         this.getCurrentAttack().getDest().setNumArmies(armies);
 
-        addTerrOwned(this.getCurrentAttack().getDest());
+        addTerritoryOwned(this.getCurrentAttack().getDest());
         setConquered(true);
         this.setCurrentAttack(null);
         if (game != null) {
