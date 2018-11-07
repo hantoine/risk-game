@@ -187,16 +187,16 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     *
-     * @return
+     * This method is to get the current game
+     * @return the gaame
      */
     RiskModel getGame() {
         return game;
     }
 
     /**
-     *
-     * @param game
+     * This method is for set the game
+     * @param game the game which is gonna be setted
      */
     void setGame(RiskModel game) {
         this.game = game;
