@@ -102,9 +102,9 @@ public class InstructionsPanel extends JPanel implements Observer {
     }
 
     /**
-     * 
-     * @param o
-     * @param o1 
+     * This method is for updating the view
+     * @param o Observable
+     * @param o1 Object
      */
     @Override
     public void update(Observable o, Object o1) {
