@@ -229,17 +229,10 @@ public final class RiskModel extends Observable {
     }
 
     /**
-<<<<<<< OURS
      * This method is to do implement the fortification move
      * @param src the territory model which is gonna be checked
      * @param dest the territory model which is gonna be checked
      * @throws FortificationMoveImpossible com.risk.models.RiskModel.FortificationMoveImpossible 
-=======
-     *
-     * @param src
-     * @param dest
-     * @throws com.risk.models.RiskModel.FortificationMoveImpossible
->>>>>>> THEIRS
      */
     public void tryFortificationMove(TerritoryModel src, TerritoryModel dest)
             throws FortificationMoveImpossible {
