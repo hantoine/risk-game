@@ -208,54 +208,54 @@ public class MapFileManagementTest {
     }
 
     /**
-     * Test of countryCreator method, of class MapFileManagement.
+     * Test of territoryCreator method, of class MapFileManagement.
      */
     @Test
-    public void testCountryCreator() {
+    public void testTerritoryCreator() {
         board = new MapModel();
         String info = "Anisty Liberty,363,300,York,Tadcaster\n" + "Tadcaster,370,327,York,Anisty Liberty";
         int expResult = -1;
 
-        //Country with not existing continent
-        int result = MapFileManagement.countryCreator(info, board);
+        //territory with not existing continent
+        int result = MapFileManagement.territoryCreator(info, board);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of countryCreator method, of class MapFileManagement.
+     * Test of territoryCreator method, of class MapFileManagement.
      */
     @Test
-    public void testCountryCreator1() {
+    public void testTerritoryCreator1() {
 
-        //Country without adj
+        //territory without adj
         String info = "Anisty Liberty,363,300,York\n" + "Tadcaster,370,327,York,Anisty Liberty";
         int expResult = -1;
-        int result = MapFileManagement.countryCreator(info, board);
+        int result = MapFileManagement.territoryCreator(info, board);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of countryCreator method, of class MapFileManagement.
+     * Test of territoryCreator method, of class MapFileManagement.
      */
     @Test
-    public void testCountryCreator2() {
+    public void testTerritoryCreator2() {
 
-        //Country with no number position
+        //territory with no number position
         String info = "Anisty Liberty,363,a,York,Tadcaster\n" + "Tadcaster,370,327,York,Anisty Liberty";
         int expResult = -1;
-        int result = MapFileManagement.countryCreator(info, board);
+        int result = MapFileManagement.territoryCreator(info, board);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of countryCreator method, of class MapFileManagement.
+     * Test of territoryCreator method, of class MapFileManagement.
      */
     @Test
-    public void testCountryCreator3() {
+    public void testTerritoryCreator3() {
 
-        //Correct countries string
+        //Correct territories string
         String info = "Anisty Liberty,363,294,York,Tadcaster\n" + "Tadcaster,370,327,York,Anisty Liberty";
-        int result = MapFileManagement.countryCreator(info, board);
+        int result = MapFileManagement.territoryCreator(info, board);
         int expResult = 0;
         assertEquals(expResult, result);
 

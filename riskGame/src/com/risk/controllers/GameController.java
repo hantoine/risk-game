@@ -125,7 +125,7 @@ public class GameController {
     public void exceptionManagerAttack(int e) {
         switch (e) {
             case -1:
-                this.rm.addNewEvent("The country is not adjacent.");
+                this.rm.addNewEvent("The territory is not adjacent.");
                 break;
             case -2:
                 this.rm.addNewEvent("You are already attacking.");

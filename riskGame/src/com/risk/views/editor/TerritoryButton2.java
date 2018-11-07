@@ -15,7 +15,7 @@ import javax.swing.JLabel;
  *
  * @author timot
  */
-public class CountryButton2 extends JButton {
+public class TerritoryButton2 extends JButton {
 
     /**
      * Dimension of the button
@@ -42,10 +42,10 @@ public class CountryButton2 extends JButton {
      *
      * @param x position in x
      * @param y position y
-     * @param name name of the country
-     * @param dim the dimision of the country
+     * @param name name of the territory
+     * @param dim the dimension of the territory
      */
-    public CountryButton2(int x, int y, String name, Dimension dim) {
+    public TerritoryButton2(int x, int y, String name, Dimension dim) {
         super(name);
         this.name = name;
         this.setBackground(Color.WHITE);
@@ -83,7 +83,7 @@ public class CountryButton2 extends JButton {
     }
 
     /**
-     * It gives a new location for the country in the map
+     * It gives a new location for the territory in the map
      *
      * @param x position in x
      * @param y position in y

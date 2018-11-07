@@ -19,6 +19,6 @@ public enum UpdateTypes {
     REMOVE_CONTINENT,
     UPDATE_CONTINENT,
     UPDATE_BACKGROUND_IMAGE,
-    ADD_LINK, //add a link between two countries
-    REMOVE_LINK; //remove a link between two countries
+    ADD_LINK, //add a link between two territories
+    REMOVE_LINK; //remove a link between two territories
 }

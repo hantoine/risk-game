@@ -10,7 +10,7 @@ import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
 import com.risk.views.editor.ContinentListPanel;
-import com.risk.views.editor.CountryButton2;
+import com.risk.views.editor.TerritoryButton2;
 import com.risk.views.editor.MapEditorView;
 import com.risk.views.editor.MapView;
 import com.risk.views.editor.Tools;
@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
@@ -85,7 +84,7 @@ public class MapEditorController {
      *
      * @return the button listener used for the territories' buttons
      */
-    public ButtonMouseController getCountryMouseListener() {
+    public ButtonMouseController getTerritoryMouseListener() {
         return new ButtonMouseController(newMap);
     }
 
@@ -215,7 +214,7 @@ public class MapEditorController {
             Object sourceObj = e.getSource();
 
             //if JButton then process
-            if (!(sourceObj instanceof JButton)){
+            if (!(sourceObj instanceof JButton)) {
                 return;
             }
 
@@ -334,7 +333,7 @@ public class MapEditorController {
                 this.newMap.addLink(t.getName(), ta.getName());
             });
         });
-        
+
         if (!map.isValid()) {
             this.newMap.clearMap();
             view.showError(MapFileManagement.readingError(-7));
@@ -460,7 +459,7 @@ public class MapEditorController {
      * @param territoryName territory to be updated
      * @param targetButton button of the territory on the map view
      */
-    public void updateTerritory(String territoryName, CountryButton2 targetButton) {
+    public void updateTerritory(String territoryName, TerritoryButton2 targetButton) {
         List<String> continentList = newMap.getContinentList();
         TerritoryModel territoryModel = newMap.getTerritoryByName(territoryName);
         String formerContinent = territoryModel.getContinentName();
@@ -557,7 +556,7 @@ public class MapEditorController {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (SwingUtilities.isLeftMouseButton(e)) {
-                CountryButton2 targetButton = (CountryButton2) e.getSource();
+                TerritoryButton2 targetButton = (TerritoryButton2) e.getSource();
                 MapView clickedPanel = (MapView) targetButton.getParent();
                 Tools toolName = clickedPanel.getCurrentTool();
                 String territoryName = targetButton.getName();
@@ -577,12 +576,13 @@ public class MapEditorController {
                     case UNLINK:
                         unLinkTerritories(territoryName, clickedPanel);
                         break;
-                        
+
                     case REMOVE:
                         Object sourceObj = e.getSource();
                         String className = sourceObj.getClass().getName();
-                        String countryName = ((CountryButton2) sourceObj).getName();
-                        this.newMap.removeTerritory(countryName);
+                        String terrName
+                                = ((TerritoryButton2) sourceObj).getName();
+                        this.newMap.removeTerritory(terrName);
                         break;
                 }
             }
@@ -622,7 +622,7 @@ public class MapEditorController {
          */
         @Override
         public void mouseReleased(MouseEvent e) {
-            
+
         }
     }
 

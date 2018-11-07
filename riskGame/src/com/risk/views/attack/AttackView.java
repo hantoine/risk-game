@@ -29,9 +29,9 @@ public class AttackView extends JPanel implements Observer {
      */
     JButton[] options;
     /**
-     * Message with the name of the countries involve in an attack
+     * Message with the name of the territories involve in an attack
      */
-    JLabel countriesInvolve;
+    JLabel territoriesInvolve;
     /**
      *
      */
@@ -50,7 +50,7 @@ public class AttackView extends JPanel implements Observer {
         options[2] = new JButton("3");
         options[3] = new JButton("All");
         actionSubject = new JLabel("Attacker");
-        countriesInvolve = new JLabel("source vs destination");
+        territoriesInvolve = new JLabel("source vs destination");
 
         options[0].setSize(50, 70);
         options[1].setSize(50, 70);
@@ -58,7 +58,7 @@ public class AttackView extends JPanel implements Observer {
         options[3].setSize(50, 70);
 
         attackOptions.add(actionSubject);
-        attackOptions.add(countriesInvolve);
+        attackOptions.add(territoriesInvolve);
         attackOptions.add(options[0]);
         attackOptions.add(options[1]);
         attackOptions.add(options[2]);
@@ -71,15 +71,14 @@ public class AttackView extends JPanel implements Observer {
     /**
      * Updates the view for an attack
      *
-     * @param countrySource name of the country that have the armies that are
-     * attacking
-     * @param countryDest name of the country that receives the attack
+     * @param src name of the territory that have the armies that are attacking
+     * @param dest name of the territory that receives the attack
      * @param armies number of dice involve in the attack
      */
-    public void update(String countrySource, String countryDest, int armies) {
+    public void update(String src, String dest, int armies) {
         this.setVisible(true);
         this.actionSubject.setText("Attacker");
-        countriesInvolve.setText(countrySource + " vs " + countryDest);
+        territoriesInvolve.setText(src + " vs " + dest);
 
         for (int i = 0; i < 4; i++) {
             options[i].setEnabled(i < armies - 1);

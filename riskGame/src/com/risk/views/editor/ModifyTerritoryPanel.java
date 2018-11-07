@@ -18,7 +18,7 @@ import javax.swing.JTextField;
  *
  * @author timot
  */
-public class ModifyCountryPanel extends JPanel {
+public class ModifyTerritoryPanel extends JPanel {
 
     /**
      * Used to select a continent for the territory being edited
@@ -38,7 +38,7 @@ public class ModifyCountryPanel extends JPanel {
      * @param territoryName name of the territory being edited
      * @param territoryContinent continent of the territory being edited.
      */
-    public ModifyCountryPanel(List<String> continentList, String territoryName, String territoryContinent) {
+    public ModifyTerritoryPanel(List<String> continentList, String territoryName, String territoryContinent) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setSize(500, 500);
 
