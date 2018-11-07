@@ -37,9 +37,9 @@ public class PlayerModelTest {
         player = new HumanPlayerModel("Player 1", Color.yellow, null);
         LinkedList<TerritoryModel> territories = new LinkedList<>();
         LinkedList<ContinentModel> continents = new LinkedList<>();
-        TerritoryModel source=new TerritoryModel("Venezuela");
-        TerritoryModel dest=new TerritoryModel("France");
-                
+        TerritoryModel source = new TerritoryModel("Venezuela");
+        TerritoryModel dest = new TerritoryModel("France");
+
         territories.add(source);
         territories.add(dest);
         territories.add(new TerritoryModel("Peru"));
@@ -50,10 +50,10 @@ public class PlayerModelTest {
 
         player.setContinentsOwned(continents);
         player.setContriesOwned(territories);
-        
+
         source.setNumArmies(7);
         dest.setNumArmies(1);
-        AttackMove attack=new AttackMove(player,source, dest);
+        AttackMove attack = new AttackMove(player, source, dest);
         player.setCurrentAttack(attack);
 
     }
@@ -112,7 +112,7 @@ public class PlayerModelTest {
     public void testArmiesAssignationCards() {
         System.out.println("armiesAssignationCards");
 
-        //returned cards >18
+        //returned cards > 18
         player.setReturnedCards(27);
         int expResult = 35;
         int result = player.armiesAssignationCards();
@@ -133,107 +133,107 @@ public class PlayerModelTest {
         assertEquals(expResult, result);
 
     }
-    
+
     /**
-     * Test the movement of armies after the conquer
-     * Value that is less than the dice selected
+     * Test the movement of armies after the conquer Value that is less than the
+     * dice selected
      */
     @Test
     public void testConquerCountry() {
         player.getCurrentAttack().setNbDiceAttack(2);
-        int result=player.conquerCountry(1);
+        int result = player.conquerCountry(1);
         assertEquals(-1, result);
     }
 
     /**
-     * Test the movement of armies after the conquer
-     * Good value of armies to move
+     * Test the movement of armies after the conquer Good value of armies to
+     * move
      */
     @Test
     public void testConquerCountry1() {
         player.getCurrentAttack().setNbDiceAttack(2);
-        int result=player.conquerCountry(3);
+        int result = player.conquerCountry(3);
         assertEquals(0, result);
     }
-    
+
     /**
-     * Test the movement of armies after the conquer
-     * Number of armies to move more or equal than source number of armies
+     * Test the movement of armies after the conquer Number of armies to move
+     * more or equal than source number of armies
      */
     @Test
     public void testConquerCountry2() {
         player.getCurrentAttack().setNbDiceAttack(2);
-        int result=player.conquerCountry(7);
+        int result = player.conquerCountry(7);
         assertEquals(-1, result);
     }
-    
+
     /**
-     * Test the validity of an attack movement before performing it
-     * aux is not adj
+     * Test the validity of an attack movement before performing it aux is not
+     * adj
      */
     @Test
-    public void testValidateAttack(){
-        
-        TerritoryModel aux= new TerritoryModel("Germany");
+    public void testValidateAttack() {
+
+        TerritoryModel aux = new TerritoryModel("Germany");
         aux.setNumArmies(1);
-        
-        int result=player.validateAttack(player.getCurrentAttack().getSource(), aux);
-        assertEquals(-1,result);  
-        
-    }
-    
-    /**
-     * Test the validity of an attack movement before performing it
-     * Source is not owned by the attack player
-     */
-    @Test
-    public void testValidateAttack1(){
-        
-        TerritoryModel source= new TerritoryModel("Germany");
-        TerritoryModel dest=new TerritoryModel("Venezuela");
-        source.setNumArmies(3);
-        
-        player.setCurrentAttack(null);
-        source.addAdjacentTerritory(dest);
-        
-        int result=player.validateAttack(source, dest);
-        assertEquals(-3,result);  
+
+        int result = player.validateAttack(player.getCurrentAttack().getSource(), aux);
+        assertEquals(-1, result);
+
     }
 
     /**
-     * Test the validity of an attack movement before performing it
-     * Destiny is owned by the attack player
+     * Test the validity of an attack movement before performing it Source is
+     * not owned by the attack player
      */
     @Test
-    public void testValidateAttack2(){
-        TerritoryModel source= new TerritoryModel("Ecuador");
-        TerritoryModel dest=new TerritoryModel("Holanda");
-        
+    public void testValidateAttack1() {
+
+        TerritoryModel source = new TerritoryModel("Germany");
+        TerritoryModel dest = new TerritoryModel("Venezuela");
+        source.setNumArmies(3);
+
         player.setCurrentAttack(null);
         source.addAdjacentTerritory(dest);
-        
+
+        int result = player.validateAttack(source, dest);
+        assertEquals(-3, result);
+    }
+
+    /**
+     * Test the validity of an attack movement before performing it Destiny is
+     * owned by the attack player
+     */
+    @Test
+    public void testValidateAttack2() {
+        TerritoryModel source = new TerritoryModel("Ecuador");
+        TerritoryModel dest = new TerritoryModel("Holanda");
+
+        player.setCurrentAttack(null);
+        source.addAdjacentTerritory(dest);
+
         player.addCountryOwned(source);
         player.addCountryOwned(dest);
-        
-        int result=player.validateAttack(source, dest);
-        assertEquals(-3,result);  
+
+        int result = player.validateAttack(source, dest);
+        assertEquals(-3, result);
     }
 
     /**
-     * Test the validity of an attack movement before performing it
-     * Source armies are less than 2
+     * Test the validity of an attack movement before performing it Source
+     * armies are less than 2
      */
     @Test
-    public void testValidateAttack3(){
-        
-        TerritoryModel aux= new TerritoryModel("Germany");
+    public void testValidateAttack3() {
+
+        TerritoryModel aux = new TerritoryModel("Germany");
         aux.setNumArmies(1);
-        TerritoryModel source=new TerritoryModel("Venezuel");
+        TerritoryModel source = new TerritoryModel("Venezuel");
         player.setCurrentAttack(null);
         player.addCountryOwned(source);
         source.addAdjacentTerritory(aux);
         source.setNumArmies(1);
-        int result=player.validateAttack(source, aux);
-        assertEquals(-4,result);  
-    }    
+        int result = player.validateAttack(source, aux);
+        assertEquals(-4, result);
+    }
 }

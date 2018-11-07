@@ -8,6 +8,7 @@ package com.risk.main;
 import com.risk.controllers.GameControllerTest;
 import com.risk.models.AttackMoveTest;
 import com.risk.models.MapFileManagementTest;
+import com.risk.models.MapModelTest;
 import com.risk.models.PlayerModelTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -19,6 +20,12 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Nellybett
  */
 @RunWith(Suite.class)
-@SuiteClasses({MapFileManagementTest.class, PlayerModelTest.class, GameControllerTest.class,AttackMoveTest.class})
-public class JUnitTestSuite {
+@SuiteClasses({
+    MapFileManagementTest.class,
+    PlayerModelTest.class,
+    GameControllerTest.class,
+    AttackMoveTest.class,
+    MapModelTest.class
+})
+public class TestSuiteAll {
 }

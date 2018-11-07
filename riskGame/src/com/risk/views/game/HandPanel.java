@@ -37,7 +37,6 @@ public final class HandPanel extends JPanel implements Observer {
      */
     public HandPanel() {
         this.setLayout(new FlowLayout());
-        //BoxLayout(this, BoxLayout.X_AXIS));
     }
 
     /**
