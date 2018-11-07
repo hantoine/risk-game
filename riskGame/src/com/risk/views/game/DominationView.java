@@ -22,12 +22,12 @@ import javax.swing.JPanel;
 public class DominationView extends JPanel implements Observer {
 
     /**
-     * 
+     * the player game information panel
      */
     Map<String, PlayerGameInfoPanel> playerGameInfoPanels;
 
     /**
-     * 
+     * This method is for set the new layout
      */
     public DominationView() {
         playerGameInfoPanels = new HashMap<>();
@@ -35,8 +35,8 @@ public class DominationView extends JPanel implements Observer {
     }
 
     /**
-     * 
-     * @param rm 
+     * This method is for update the view
+     * @param rm  the risk model
      */
     public void updateView(RiskModel rm) {
         rm.getPlayerList().stream().forEach((pl) -> {
@@ -61,9 +61,9 @@ public class DominationView extends JPanel implements Observer {
     }
 
     /**
-     * 
-     * @param o
-     * @param o1 
+     * This method is for update the view
+     * @param o Observable
+     * @param o1 Object
      */
     @Override
     public void update(Observable o, Object o1) {
