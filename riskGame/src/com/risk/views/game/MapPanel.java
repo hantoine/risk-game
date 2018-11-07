@@ -160,9 +160,9 @@ public class MapPanel extends JPanel implements Observer {
     }
 
     /**
-     *
-     * @param o
-     * @param o1
+     * This method is to attach the observeer
+     * @param o the observable
+     * @param o1 the object
      */
     @Override
     public void update(Observable o, Object o1) {
