@@ -138,7 +138,6 @@ public class MenuListener extends MouseAdapter {
     /**
      * This method is for add player
      * @param addPlayer the new player which is added
-     * @param addPlayer
      */
     public void playButton(JButton addPlayer) {
         NewGamePanel newGamePanel = this.getRiskView().getNewGamePanel();
