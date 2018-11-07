@@ -195,14 +195,9 @@ public final class RiskModel extends Observable {
     }
 
     /**
-<<<<<<< OURS
      * This method is to add the observer
      * @param attackView the view which is gonna be added
-=======
-     *
-     * @param attackView
->>>>>>> THEIRS
-     */
+    */
     public void addObserverToAttack(AttackView attackView) {
         this.getCurrentPlayer().getCurrentAttack().addObserver(attackView);
     }
