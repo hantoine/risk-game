@@ -33,7 +33,7 @@ public class AttackView extends JPanel implements Observer {
      */
     JLabel territoriesInvolve;
     /**
-     *
+     * subject of the action
      */
     JLabel actionSubject;
 
@@ -118,6 +118,7 @@ public class AttackView extends JPanel implements Observer {
 
     /**
      * This method is for set the observer
+     *
      * @param o Observable
      * @param arg Object
      */

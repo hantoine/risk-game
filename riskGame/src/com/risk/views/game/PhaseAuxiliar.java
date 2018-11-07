@@ -14,6 +14,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 /**
+ * View storing aux information that need to be displayed depending on the game
+ * phase. Currently used for attack phase only
  *
  * @author Nellybett
  */
@@ -111,6 +113,7 @@ public class PhaseAuxiliar extends JPanel implements Observer {
 
     /**
      * This method is for attach the observer
+     *
      * @param o The Observable
      * @param o1 The Object
      */
@@ -118,7 +121,7 @@ public class PhaseAuxiliar extends JPanel implements Observer {
     public void update(Observable o, Object o1) {
         if (o instanceof RiskModel) {
             RiskModel rm = (RiskModel) o;
-            
+
             AttackMove currentAttack = rm.getCurrentPlayer().getCurrentAttack();
             if (currentAttack == null) {
                 this.selectPanel(null);
@@ -131,8 +134,8 @@ public class PhaseAuxiliar extends JPanel implements Observer {
 
             if (currentAttack.getDest().getNumArmies() == 0) {
                 this.selectPanel(this.getArmiesLeft());
-                int diceAttack=rm.getCurrentPlayer().getCurrentAttack().getNbDiceAttack();
-                this.armiesLeft.update(srcTerritory, destTerritory, nbArmies,diceAttack);
+                int diceAttack = rm.getCurrentPlayer().getCurrentAttack().getNbDiceAttack();
+                this.armiesLeft.update(srcTerritory, destTerritory, nbArmies, diceAttack);
             } else {
                 this.selectPanel(this.getAttackPanel());
                 this.attackPanel.update(srcTerritory, destTerritory, nbArmies);

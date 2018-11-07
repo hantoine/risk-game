@@ -20,5 +20,8 @@ import org.junit.runners.Suite;
     MapModelTest.class
 })
 
+/**
+ * TestSuite class
+ */
 public class TestSuiteModels {
 }

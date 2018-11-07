@@ -27,5 +27,9 @@ import org.junit.runners.Suite.SuiteClasses;
     AttackMoveTest.class,
     MapModelTest.class
 })
+
+/**
+ * TestSuite class
+ */
 public class TestSuiteAll {
 }
