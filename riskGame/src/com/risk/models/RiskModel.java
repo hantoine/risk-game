@@ -532,10 +532,6 @@ public final class RiskModel extends Observable {
      *
      */
     public void attackEndValidations() {
-        if ((this.getCurrentPlayer().getTerritoryOwned().stream()
-                .filter(c -> c.getNumArmies() < 2)).count() == this.getCurrentPlayer().getTerritoryOwned().size()) {
-            finishPhase();
-        }
 
         if (this.getCurrentPlayer().getTerritoryOwned().size() == this.getMap().getTerritories().size()) {
             this.setWinningPlayer(this.getCurrentPlayer());
