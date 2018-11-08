@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.observable;
+package com.risk.models;
 
 /**
  * Types of updates that are possible when map model notifies the observers.
  *
  * @author timot
  */
-public enum UpdateTypes {
+public enum MapUpdateTypes {
     ADD_TERRITORY,
     REMOVE_TERRITORY,
     UPDATE_TERRITORY_NAME,
@@ -19,6 +19,6 @@ public enum UpdateTypes {
     REMOVE_CONTINENT,
     UPDATE_CONTINENT,
     UPDATE_BACKGROUND_IMAGE,
-    ADD_LINK, //add a link between two countries
-    REMOVE_LINK; //remove a link between two countries
+    ADD_LINK, //add a link between two territories
+    REMOVE_LINK; //remove a link between two territories
 }

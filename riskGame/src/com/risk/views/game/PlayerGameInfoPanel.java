@@ -104,7 +104,5 @@ public final class PlayerGameInfoPanel extends JPanel {
         }
         this.continentsOwned.setListData(listContinentsOwned);
         this.repaint();
-
-        System.out.println(this.getHeight());
     }
 }

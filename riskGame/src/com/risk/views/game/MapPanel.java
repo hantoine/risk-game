@@ -29,9 +29,9 @@ public class MapPanel extends JPanel implements Observer {
      */
     HashMap<String, Line2D> adj = new HashMap<>();
     /**
-     * countriesButtons the countries in the map
+     * territoriesButtons the territories in the map
      */
-    private HashMap<String, CountryLabel> countriesButtons;
+    private HashMap<String, TerritoryLabel> territoriesButtons;
 
     /**
      * Constructor
@@ -52,27 +52,27 @@ public class MapPanel extends JPanel implements Observer {
         clearMap();
         this.image = mapModel.getImage();
         this.setSize(mapModel.getMapWidth(), mapModel.getMapHeight());
-        this.countriesButtons = new HashMap<>();
+        this.territoriesButtons = new HashMap<>();
 
-        mapModel.getTerritories().forEach((currentCountry) -> {
-            CountryLabel aux = new CountryLabel(
-                    currentCountry.getPositionX(),
-                    currentCountry.getPositionY(),
-                    currentCountry.getName()
+        mapModel.getTerritories().forEach((currentTerr) -> {
+            TerritoryLabel aux = new TerritoryLabel(
+                    currentTerr.getPositionX(),
+                    currentTerr.getPositionY(),
+                    currentTerr.getName()
             );
-            countriesButtons.put(currentCountry.getName(), aux);
+            territoriesButtons.put(currentTerr.getName(), aux);
             this.add(aux);
 
             if (mapModel.getImage() == null) {
-                for (TerritoryModel d : currentCountry.getAdj()) {
+                for (TerritoryModel d : currentTerr.getAdj()) {
                     Line2D adje = new Line2D.Double();
                     adje.setLine(
-                            Double.valueOf(currentCountry.getPositionX()),
-                            Double.valueOf(currentCountry.getPositionY()),
+                            Double.valueOf(currentTerr.getPositionX()),
+                            Double.valueOf(currentTerr.getPositionY()),
                             Double.valueOf(d.getPositionX()),
                             Double.valueOf(d.getPositionY())
                     );
-                    adj.put(currentCountry.getName() + "-" + d.getName(), adje);
+                    adj.put(currentTerr.getName() + "-" + d.getName(), adje);
                 }
             }
         });
@@ -81,10 +81,10 @@ public class MapPanel extends JPanel implements Observer {
     /**
      * Attach the listener to the map
      *
-     * @param countryListener the mousselistener of the country
+     * @param territoryListener the mousselistener of the territory
      */
-    public void setListener(MouseListener countryListener) {
-        this.addMouseListener(countryListener);
+    public void setListener(MouseListener territoryListener) {
+        this.addMouseListener(territoryListener);
     }
 
     /**
@@ -98,7 +98,7 @@ public class MapPanel extends JPanel implements Observer {
             this.createMap(map);
         }
 
-        this.countriesButtons.values()
+        this.territoriesButtons.values()
                 .forEach((cb) -> {
                     TerritoryModel terri = map.getTerritoryByName(cb.getName());
                     if (terri != null) {
@@ -128,23 +128,23 @@ public class MapPanel extends JPanel implements Observer {
     }
 
     /**
-     * Getter of the countriesButton attribute
+     * Getter of the territoriesButton attribute
      *
-     * @return the countriesButtons
+     * @return the territoriesButtons
      */
-    public HashMap<String, CountryLabel> getCountriesButtons() {
-        return countriesButtons;
+    public HashMap<String, TerritoryLabel> getTerritoriesButtons() {
+        return territoriesButtons;
     }
 
     /**
      * Clears the map to its initial state
      */
     private void clearMap() {
-        if (this.countriesButtons != null) {
-            this.countriesButtons.values().stream().forEach((cb) -> {
+        if (this.territoriesButtons != null) {
+            this.territoriesButtons.values().stream().forEach((cb) -> {
                 this.remove(cb);
             });
-            this.countriesButtons = null;
+            this.territoriesButtons = null;
         }
 
         this.adj = new HashMap<>();
@@ -160,9 +160,9 @@ public class MapPanel extends JPanel implements Observer {
     }
 
     /**
-     * 
-     * @param o
-     * @param o1 
+     * This method is to attach the observeer
+     * @param o the observable
+     * @param o1 the object
      */
     @Override
     public void update(Observable o, Object o1) {

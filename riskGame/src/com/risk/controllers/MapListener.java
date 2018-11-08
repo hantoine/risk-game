@@ -5,8 +5,8 @@
  */
 package com.risk.controllers;
 
-import com.risk.views.game.CountryLabel;
 import com.risk.views.game.MapPanel;
+import com.risk.views.game.TerritoryLabel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
@@ -27,10 +27,10 @@ import javax.swing.SwingUtilities;
 public class MapListener extends MouseAdapter {
 
     /**
-     * countrySource It represents the country where the drag and drop action
-     * starts
+     * territorySource It represents the territory where the drag and drop
+     * action starts
      */
-    private CountryLabel countrySource;
+    private TerritoryLabel territorySource;
     /**
      * riskController It is a reference to the principal controller of the game
      */
@@ -56,10 +56,10 @@ public class MapListener extends MouseAdapter {
         JComponent c = (JComponent) e.getSource();
         if (c instanceof MapPanel) {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux instanceof CountryLabel) {
-                CountryLabel source = (CountryLabel) cAux;
+            if (cAux instanceof TerritoryLabel) {
+                TerritoryLabel source = (TerritoryLabel) cAux;
                 source.setBackground(Color.gray);
-                this.setCountrySource(source);
+                this.setTerritorySource(source);
 
                 System.out.println(source.getName());
             }
@@ -78,9 +78,9 @@ public class MapListener extends MouseAdapter {
         JComponent c = (JComponent) e.getSource();
         if (c instanceof MapPanel) {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux instanceof CountryLabel) {
-                CountryLabel destiny = (CountryLabel) cAux;
-                CountryLabel source = this.getCountrySource();
+            if (cAux instanceof TerritoryLabel) {
+                TerritoryLabel destiny = (TerritoryLabel) cAux;
+                TerritoryLabel source = this.getTerritorySource();
                 if (source == null) {
                     return;
                 }
@@ -88,9 +88,9 @@ public class MapListener extends MouseAdapter {
                 this.riskController.getGameController().dragNDropTerritory(source.getName(), destiny.getName());
             }
         }
-        if (this.getCountrySource() != null) {
-            this.getCountrySource().setBackground(Color.white);
-            this.setCountrySource(null);
+        if (this.getTerritorySource() != null) {
+            this.getTerritorySource().setBackground(Color.white);
+            this.setTerritorySource(null);
         }
 
     }
@@ -105,30 +105,31 @@ public class MapListener extends MouseAdapter {
         JComponent c = (JComponent) e.getSource();
         if (c instanceof MapPanel) {
             Component cAux = SwingUtilities.getDeepestComponentAt(c, e.getX(), e.getY());
-            if (cAux instanceof CountryLabel) {
-                CountryLabel countryClicked = (CountryLabel) cAux;
-                countryClicked.setBackground(Color.white);
+            if (cAux instanceof TerritoryLabel) {
+                TerritoryLabel terrClicked = (TerritoryLabel) cAux;
+                terrClicked.setBackground(Color.white);
 
-                this.riskController.getGameController().clickOnTerritory(countryClicked.getName());
+                this.riskController.getGameController()
+                        .clickOnTerritory(terrClicked.getName());
             }
         }
     }
 
     /**
-     * Getter of the countrySource attribute
+     * Getter of the territorySource attribute
      *
-     * @return countrySource it is a label that represents a country
+     * @return territorySource it is a label that represents a territory
      */
-    private CountryLabel getCountrySource() {
-        return countrySource;
+    private TerritoryLabel getTerritorySource() {
+        return territorySource;
     }
 
     /**
-     * Setter of the countrySource attribute
+     * Setter of the territorySource attribute
      *
-     * @param countrySource a label that represents a country in the map
+     * @param terrSource a label that represents a territory in the map
      */
-    private void setCountrySource(CountryLabel countrySource) {
-        this.countrySource = countrySource;
+    private void setTerritorySource(TerritoryLabel terrSource) {
+        this.territorySource = terrSource;
     }
 }

@@ -12,6 +12,7 @@ import com.risk.views.menu.NewGamePanel;
 import java.util.Observer;
 
 /**
+ * Interface for RiskView, used to mock the RiskView interface in the tests
  *
  * @author hantoine
  */

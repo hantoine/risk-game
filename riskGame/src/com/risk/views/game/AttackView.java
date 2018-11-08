@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.views.attack;
+package com.risk.views.game;
 
 import com.risk.controllers.GameController;
 import com.risk.models.AttackMove;
-import com.risk.models.RiskModel;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JButton;
@@ -19,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author Nellybett
  */
-public class AttackView extends JPanel implements Observer{
+public class AttackView extends JPanel implements Observer {
 
     /**
      * Panel with the different buttons
@@ -30,19 +29,19 @@ public class AttackView extends JPanel implements Observer{
      */
     JButton[] options;
     /**
-     * Message with the name of the countries involve in an attack
+     * Message with the name of the territories involve in an attack
      */
-    JLabel countriesInvolve;
+    JLabel territoriesInvolve;
     /**
-     * 
+     * subject of the action
      */
     JLabel actionSubject;
-    
+
     /**
      * Constructor
      *
      */
-    public AttackView(){
+    public AttackView() {
 
         attackOptions = new JPanel();
         options = new JButton[4];
@@ -50,8 +49,8 @@ public class AttackView extends JPanel implements Observer{
         options[1] = new JButton("2");
         options[2] = new JButton("3");
         options[3] = new JButton("All");
-        actionSubject=new JLabel("Attacker");
-        countriesInvolve = new JLabel("source vs destination");
+        actionSubject = new JLabel("Attacker");
+        territoriesInvolve = new JLabel("source vs destination");
 
         options[0].setSize(50, 70);
         options[1].setSize(50, 70);
@@ -59,7 +58,7 @@ public class AttackView extends JPanel implements Observer{
         options[3].setSize(50, 70);
 
         attackOptions.add(actionSubject);
-        attackOptions.add(countriesInvolve);
+        attackOptions.add(territoriesInvolve);
         attackOptions.add(options[0]);
         attackOptions.add(options[1]);
         attackOptions.add(options[2]);
@@ -72,16 +71,15 @@ public class AttackView extends JPanel implements Observer{
     /**
      * Updates the view for an attack
      *
-     * @param countrySource name of the country that have the armies that are
-     * attacking
-     * @param countryDest name of the country that receives the attack
+     * @param src name of the territory that have the armies that are attacking
+     * @param dest name of the territory that receives the attack
      * @param armies number of dice involve in the attack
      */
-    public void update(String countrySource, String countryDest, int armies) {
+    public void update(String src, String dest, int armies) {
         this.setVisible(true);
         this.actionSubject.setText("Attacker");
-        countriesInvolve.setText(countrySource + " vs " + countryDest);
-       
+        territoriesInvolve.setText(src + " vs " + dest);
+
         for (int i = 0; i < 4; i++) {
             options[i].setEnabled(i < armies - 1);
             options[i].setVisible(true);
@@ -94,8 +92,8 @@ public class AttackView extends JPanel implements Observer{
      * @param gc game controller
      */
     public void setListeners(GameController gc) {
-        
-        options[0].addActionListener(e -> {    
+
+        options[0].addActionListener(e -> {
             gc.addObserverToAttack(this);
             gc.clickAttack(1);
         });
@@ -103,36 +101,37 @@ public class AttackView extends JPanel implements Observer{
         options[1].addActionListener(e -> {
             gc.addObserverToAttack(this);
             gc.clickAttack(2);
-            
+
         });
 
         options[2].addActionListener(e -> {
             gc.addObserverToAttack(this);
             gc.clickAttack(3);
-            
+
         });
 
         options[3].addActionListener(e -> {
             gc.clickAttack(-1);
-          
+
         });
     }
-    
+
     /**
-     * 
-     * @param o
-     * @param arg 
+     * This method is for set the observer
+     *
+     * @param o Observable
+     * @param arg Object
      */
     @Override
     public void update(Observable o, Object arg) {
-        AttackMove attack=(AttackMove) o;
-        if(attack.getAttackDefense()==1){
-            int armiesDest=attack.getDest().getNumArmies();
-            int attackDice=attack.getDiceAttack();
-        
+        AttackMove attack = (AttackMove) o;
+        if (attack.getChoiceNbDefenseDiceNeeded() == true) {
+            int armiesDest = attack.getDest().getNumArmies();
+            int attackDice = attack.getNbDiceAttack();
+
             options[3].setVisible(false);
             options[2].setVisible(false);
-            options[1].setEnabled(attackDice!=1 && armiesDest>2);
+            options[1].setEnabled(armiesDest > 1);
             actionSubject.setText("Attacked");
         }
     }

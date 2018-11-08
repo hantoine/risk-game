@@ -6,12 +6,11 @@
 package com.risk.views.editor;
 
 import com.risk.controllers.MapEditorController;
-import com.risk.models.ContinentModel;
 import com.risk.models.MapConfig;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
-import com.risk.observable.UpdateTypes;
+import com.risk.models.MapUpdateTypes;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -67,8 +66,8 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
     protected ContinentListPanel continentsPanel;
 
     /**
-     * Panel which contains the tools of the editor like adding country, editing
-     * country etc.
+     * Panel which contains the tools of the editor like adding territory,
+     * editing territory etc.
      */
     protected CustomListPanel toolsPanel;
 
@@ -124,15 +123,17 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
     }
 
     /**
-     * Set background color of territory button to its continent background color
-     * @param target 
+     * Set background color of territory button to its continent background
+     * color
+     *
+     * @param target the target territory
      */
-    public void setTerritoryColor(TerritoryModel target){
+    public void setTerritoryColor(TerritoryModel target) {
         String continentName = target.getContinentName();
         Color backgroundColor = this.continentsPanel.getColor(continentName);
-        this.mapPanel.countriesButtons.get(target.getName()).setBackground(backgroundColor);
+        this.mapPanel.territoriesButtons.get(target.getName()).setBackground(backgroundColor);
     }
-    
+
     /**
      * Initialize the view by setting its size and location.
      *
@@ -221,8 +222,8 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
                 editorController.loadMapFromFile(filepath, this.getMapView());
 
                 int nbLinks = this.mapPanel.links.size();
-                System.out.println("nb links loaded:"+ Integer.toString(nbLinks));
-                
+                System.out.println("nb links loaded:" + Integer.toString(nbLinks));
+
                 //update map configuration
                 this.mapConfigPanel.setView(editorController.getNewMap().getConfigurationInfo());
             }
@@ -281,21 +282,20 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
             if (v == JFileChooser.APPROVE_OPTION) {
                 //clear map
                 editorController.clearMapModel();
-                
+
                 int nbLinks = this.mapPanel.links.size();
-                System.out.println("nb links after clear:"+ Integer.toString(nbLinks));
-                if(nbLinks>0){
+                System.out.println("nb links after clear:" + Integer.toString(nbLinks));
+                if (nbLinks > 0) {
                     Set<String> keys = this.mapPanel.links.keySet();
                     Iterator keyIterator = keys.iterator();
                     String key;
                     System.out.println("links not deleted:");
-                    for(int i=0;i<keys.size();i++){
-                        key = (String)keyIterator.next();
+                    for (int i = 0; i < keys.size(); i++) {
+                        key = (String) keyIterator.next();
                         System.out.println(key);
                     }
                 }
-                
-                
+
                 MapConfig newConfig = editorController.getNewMap().getConfigurationInfo();
                 this.mapConfigPanel.setView(newConfig);
             }
@@ -339,7 +339,6 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
     public ToolButtonListener getToolButtonListener() {
         return new ToolButtonListener(this.mapPanel);
     }
-
 
     /**
      * Button listener to change the current mode of the "map panel" when the
@@ -404,36 +403,36 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
     /**
      * Update method of the Observer pattern
      *
-     * @param object
-     * @param arg
+     * @param object Observable
+     * @param arg Object
      */
     @Override
     public void update(Observable object, Object arg) {
-        if(arg == null || !(arg instanceof UpdateTypes))
+        if (arg == null || !(arg instanceof MapUpdateTypes)) {
             return;
-        
-        UpdateTypes updateType = (UpdateTypes)arg;
-        
-        
+        }
+
+        MapUpdateTypes updateType = (MapUpdateTypes) arg;
+
         switch (updateType) {
             case ADD_TERRITORY:
-                setTerritoryColor((TerritoryModel)((MapModel)object).getLastUpdate());
+                setTerritoryColor((TerritoryModel) ((MapModel) object).getLastUpdate());
                 break;
             case REMOVE_TERRITORY:
                 break;
             case UPDATE_TERRITORY_NAME:
-                setTerritoryColor((TerritoryModel)((MapModel)object).getLastUpdate());
+                setTerritoryColor((TerritoryModel) ((MapModel) object).getLastUpdate());
                 break;
             case UPDATE_TERRITORY_POS:
                 break;
             case UPDATE_BACKGROUND_IMAGE:
-                BufferedImage backgroundImage = (BufferedImage) ((MapModel)object).getImage();
+                BufferedImage backgroundImage = (BufferedImage) ((MapModel) object).getImage();
 
                 if (backgroundImage == null) {
                     this.mapPanel.setImage(null);
                     break;
                 }
-                
+
                 //get current sizes of map panel and its parent
                 int width = backgroundImage.getWidth();
                 int height = backgroundImage.getHeight();
@@ -449,13 +448,13 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
                 //set new size and set new background image
                 this.setSize(parentSize);
                 this.mapPanel.setImage(backgroundImage);
-                
+
                 //draw the new background
                 this.repaint();
 
                 break;
             case REMOVE_CONTINENT:
-                ((MapModel)object).getTerritories().stream().forEach((t)->{
+                ((MapModel) object).getTerritories().stream().forEach((t) -> {
                     this.setTerritoryColor(t);
                 });
                 break;

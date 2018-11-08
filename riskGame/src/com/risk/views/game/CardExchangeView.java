@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.views.reinforcement;
+package com.risk.views.game;
 
 import com.risk.controllers.CardExchangeListener;
 import com.risk.models.HandModel;
@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 /**
  * Implementation of the exchange view for reinforcement phase
@@ -68,6 +69,7 @@ public class CardExchangeView extends JDialog implements Observer {
         this.add(exchangeMessage, BorderLayout.NORTH);
         this.add(playerGameHandPanel, BorderLayout.CENTER);
         this.add(buttonPanel, BorderLayout.SOUTH);
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
     }
 

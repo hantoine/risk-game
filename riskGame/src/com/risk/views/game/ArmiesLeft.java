@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.risk.views.attack;
+package com.risk.views.game;
 
 import com.risk.controllers.GameController;
 import java.awt.Dimension;
@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * View to move the armies to the conquered country
+ * View to move the armies to the conquered territory
  *
  * @author Nellybett
  */
@@ -28,7 +28,7 @@ public class ArmiesLeft extends JPanel {
      */
     JButton move;
     /**
-     * Message with the countries involve in the attack
+     * Message with the territories involve in the attack
      */
     JLabel message;
     /**
@@ -36,7 +36,7 @@ public class ArmiesLeft extends JPanel {
      */
     JTextField armiesMoved;
     /**
-     * Number of armies in the source country (of the attack)
+     * Number of armies in the source territory (of the attack)
      */
     int max;
 
@@ -63,20 +63,20 @@ public class ArmiesLeft extends JPanel {
     /**
      * It updates the view
      *
-     * @param sourceCountry name of the country that have the armies that are
-     * attacking
-     * @param countryDest name of the country that receives the attack
+     * @param src name of the territory that have the armies that are attacking
+     * @param dest name of the territory that receives the attack
      * @param max max number of dices
      * @param min min number of armies
      */
-    public void update(String sourceCountry, String countryDest, int max, int min) {
+    public void update(String src, String dest, int max, int min) {
         this.max = max;
-        if(min==max-1)
+        if (min == max - 1) {
             more.setEnabled(false);
-        else
+        } else {
             more.setEnabled(true);
+        }
         armiesMoved.setText(Integer.toString(min));
-        message.setText(sourceCountry + " -> " + countryDest);
+        message.setText(src + " -> " + dest);
         this.setVisible(true);
     }
 
@@ -91,14 +91,14 @@ public class ArmiesLeft extends JPanel {
             if (i < max) {
                 armiesMoved.setText(Integer.toString(i));
             }
-            if(i==max-1){
+            if (i == max - 1) {
                 more.setEnabled(false);
             }
         });
 
         move.addActionListener(e -> {
             int armiesToTransfer = Integer.parseInt(armiesMoved.getText());
-           
+
             gc.moveArmiesToConqueredTerritory(armiesToTransfer);
         });
 

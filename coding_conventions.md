@@ -57,7 +57,7 @@
 - Naming conventions:
 
 	- class name:		should start with uppercase letter and be a noun e.g. String, Color, Button, System, Thread etc.
-	- interface name:	should start with uppercase letter and be an adjective e.g. Runnable, Remote, ActionListener etc.
+	- interface name:	should start with uppercase letter and be an adjective e.g. Runnable, Remote, ActionListener etc, or finish with Interface
 	- method name:		should start with lowercase letter and be a verb e.g. actionPerformed(), main(), print(), println() etc.
 	- variable name:	should start with lowercase letter e.g. firstName, orderNumber etc.
 	- package name:		should be in lowercase letter e.g. java, lang, sql, util etc.

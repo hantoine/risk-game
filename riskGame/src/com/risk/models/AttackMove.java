@@ -14,7 +14,7 @@ import java.util.Observable;
  *
  * @author Nellybett
  */
-public class AttackMove extends Observable{
+public class AttackMove extends Observable {
 
     /**
      * Source of the attack
@@ -24,22 +24,23 @@ public class AttackMove extends Observable{
      * Destiny of the attack
      */
     private TerritoryModel dest;
-    /*
-    * Player performing the attack
+    /**
+     * Player performing the attack
      */
     private PlayerModel attacker;
     /**
      * Number of dice selected by the attacker
      */
-    private int diceAttack;
+    private int nbDiceAttack;
     /**
      * Number of dice selected by the attacked
      */
-    private int diceAttacked;
+    private int nbDiceDefense;
     /**
-     * 
+     *
      */
-    private int attackDefense;
+    private boolean choiceNbDefenseDiceNeeded;
+
     /**
      * Constructor
      *
@@ -48,12 +49,12 @@ public class AttackMove extends Observable{
      * @param dest destiny of the attack
      */
     public AttackMove(PlayerModel attacker, TerritoryModel source, TerritoryModel dest) {
-        this.attackDefense=0;
+        this.choiceNbDefenseDiceNeeded = false;
         this.source = source;
         this.dest = dest;
         this.attacker = attacker;
-        this.diceAttack=-1;
-        this.diceAttacked=100;
+        this.nbDiceAttack = -1;
+        this.nbDiceDefense = 100;
     }
 
     /**
@@ -93,34 +94,39 @@ public class AttackMove extends Observable{
     }
 
     /**
-     * Battle between countries in an attack move
+     * Battle between territories in an attack move
      *
      * @param diceAttack number of dices selected by the attacker
      * @param diceAttacked number of dices selected by the attacked
      */
     private void battle(int diceAttack, int diceAttacked) {
-        String looser1, looser2 = null;
+        String looser1 = null, looser2 = null;
         int[] attack = createDice(diceAttack);
         int[] defense = createDice(diceAttacked);
 
         Arrays.sort(attack);
         Arrays.sort(defense);
 
-        if (diceAttacked == 1) {
-            looser1 = compareDice(attack, defense, attack.length - 1, 0);
-        } else {
-            looser1 = compareDice(attack, defense, attack.length - 1, 1);
-            looser2 = compareDice(attack, defense, attack.length - 2, 0);
+        if(diceAttack>= diceAttacked){
+            if (diceAttacked == 1) {
+                looser1 = compareDice(attack, defense, attack.length - 1, 0);
+            } else {
+                looser1 = compareDice(attack, defense, attack.length - 1, 1);
+                looser2 = compareDice(attack, defense, attack.length - 2, 0);
+            }
+        }
+        if(diceAttack<diceAttacked && diceAttacked!=100){
+            looser1 = compareDice(attack, defense, 0, 1);
         }
 
         this.attacker.addNewLogEvent(getBattleLogMsg(looser1, looser2));
     }
 
     /**
-     * 
-     * @param firstLooser
-     * @param secondLooser
-     * @return 
+     * this method is to get battle log message
+     * @param firstLooser the first looser
+     * @param secondLooser the second looser
+     * @return the message
      */
     private String getBattleLogMsg(String firstLooser, String secondLooser) {
         String logMessage = String.format(
@@ -152,9 +158,9 @@ public class AttackMove extends Observable{
     }
 
     /**
-     * Perform the attack of this player with the given number of diceAttack The value
- -1 correspond to the special mode in which battles are made until one of
- the territory has no more armies
+     * Perform the attack of this player with the given number of diceAttack The
+     * value -1 correspond to the special mode in which battles are made until
+     * one of the territory has no more armies
      *
      * @param diceAttack number of dices selected by attacker
      * @param diceAttacked number of dices selected by attacked
@@ -163,7 +169,7 @@ public class AttackMove extends Observable{
         if (diceAttack == -1) {
             battleAll();
         } else {
-            battle(diceAttack,diceAttacked);
+            battle(diceAttack, diceAttacked);
         }
     }
 
@@ -181,7 +187,7 @@ public class AttackMove extends Observable{
             this.getSource().setNumArmies(this.getSource().getNumArmies() - 1);
             return this.getSource().getName();
         } else {
-            if(this.getDest().getNumArmies()>0){
+            if (this.getDest().getNumArmies() > 0) {
                 this.getDest().setNumArmies(this.getDest().getNumArmies() - 1);
             }
             return this.getDest().getName();
@@ -192,27 +198,25 @@ public class AttackMove extends Observable{
      * Uses all the armies in an attack
      */
     private void battleAll() {
-       
+
         while (this.getDest().getNumArmies() != 0 && this.getSource().getNumArmies() > 1) {
             int nbArmiesInSrc = this.getSource().getNumArmies();
             int defenseArmies;
-            
+
             if (nbArmiesInSrc > 3) {
-                this.setDiceAttack(3);
-                defenseArmies = min(this.getDest().getNumArmies(), this.getDiceAttack());
+                this.setNbDiceAttack(3);
+                defenseArmies = min(this.getDest().getNumArmies(), this.getNbDiceAttack());
                 defenseArmies = min(defenseArmies, 2);
-                this.setDiceAttacked(defenseArmies);
-                //System.out.println("atacante: "+this.getDiceAttack()+", atacado: "+this.getDiceAttacked());
+                this.setNbDiceDefense(defenseArmies);
                 battle(3, defenseArmies);
             } else {
-                this.setDiceAttack(nbArmiesInSrc - 1);
-                defenseArmies = min(this.getDest().getNumArmies(), this.getDiceAttack());
+                this.setNbDiceAttack(nbArmiesInSrc - 1);
+                defenseArmies = min(this.getDest().getNumArmies(), this.getNbDiceAttack());
                 defenseArmies = min(defenseArmies, 2);
-                this.setDiceAttacked(defenseArmies);
-                //System.out.println("atacante: "+this.getDiceAttack()+", atacado: "+this.getDiceAttacked());
-                battle((nbArmiesInSrc - 1),defenseArmies);
+                this.setNbDiceDefense(defenseArmies);
+                battle((nbArmiesInSrc - 1), defenseArmies);
             }
-            
+
         }
     }
 
@@ -239,53 +243,53 @@ public class AttackMove extends Observable{
      * @return random value
      */
     int roolDice() {
-        int range = (6 - 1) + 1;
+        int range = 6;
         return (int) (Math.random() * range) + 1;
     }
 
     /**
      * @return the diceAttack
      */
-    public int getDiceAttack() {
-        return diceAttack;
+    public int getNbDiceAttack() {
+        return nbDiceAttack;
     }
 
     /**
      * @param diceAttack the diceAttack to set
      */
-    public void setDiceAttack(int diceAttack) {
-        this.diceAttack = diceAttack;
+    public void setNbDiceAttack(int diceAttack) {
+        this.nbDiceAttack = diceAttack;
     }
 
     /**
-     * @return the diceAttacked
+     * @return the number of defense dice
      */
-    public int getDiceAttacked() {
-        return diceAttacked;
+    public int getNbDiceDefense() {
+        return nbDiceDefense;
     }
 
     /**
-     * @param diceAttacked the diceAttacked to set
+     * @param nbDiceDefense the number of defense dice to set
      */
-    public void setDiceAttacked(int diceAttacked) {
-        this.diceAttacked = diceAttacked;
+    public void setNbDiceDefense(int nbDiceDefense) {
+        this.nbDiceDefense = nbDiceDefense;
     }
 
     /**
      * @return the attackDefense
      */
-    public int getAttackDefense() {
-        return attackDefense;
+    public boolean getChoiceNbDefenseDiceNeeded() {
+        return choiceNbDefenseDiceNeeded;
     }
 
     /**
      * @param attackDefense the attackDefense to set
      */
-    public void setAttackDefense(int attackDefense) {
-        this.attackDefense = attackDefense;
+    public void setChoiceNbDefenseDiceNeeded(boolean attackDefense) {
+        this.choiceNbDefenseDiceNeeded = attackDefense;
+
         setChanged();
         notifyObservers(this);
     }
-    
-    
+
 }
