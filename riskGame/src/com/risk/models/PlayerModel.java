@@ -6,6 +6,8 @@
 package com.risk.models;
 
 import java.awt.Color;
+import static java.lang.Math.floor;
+import static java.lang.Math.max;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -188,6 +190,7 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * This method is to get the current game
+     *
      * @return the gaame
      */
     RiskModel getGame() {
@@ -196,6 +199,7 @@ public abstract class PlayerModel extends Observable {
 
     /**
      * This method is for set the game
+     *
      * @param game the game which is gonna be setted
      */
     void setGame(RiskModel game) {
@@ -387,24 +391,28 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     * Get the number of initial armies players should get depending on the
+     * Initialize the number of initial armies of this player depending on the
      * number of players in the game
      *
      * @param nbPlayers number of players in the game
-     * @return number of initial armies
      */
-    static int getNbInitialArmies(int nbPlayers) {
+    public void initializeArmies(int nbPlayers) {
         switch (nbPlayers) {
             case 2:
-                return 40;
+                this.setNumArmiesAvailable(40);
+                break;
             case 3:
-                return 35;
+                this.setNumArmiesAvailable(35);
+                break;
             case 4:
-                return 30;
+                this.setNumArmiesAvailable(30);
+                break;
             case 5:
-                return 25;
+                this.setNumArmiesAvailable(25);
+                break;
             case 6:
-                return 20;
+                this.setNumArmiesAvailable(20);
+                break;
             default:
                 throw new IllegalArgumentException("Invalid number of players");
         }
@@ -484,17 +492,11 @@ public abstract class PlayerModel extends Observable {
      * @return number of armies to deploy
      */
     int armiesAssignation() {
-        int extraTerritories = (int) Math.floor(this.getNbTerritoriesOwned() / 3);
-        int extraContinent = 0;
-        for (ContinentModel continent : this.getContinentsOwned()) {
-            extraContinent += continent.getBonusScore();
-        }
+        int extraTerritories = (int) floor(this.getNbTerritoriesOwned() / 3);
+        int extraContinent = this.continentsOwned.stream()
+                .mapToInt((c) -> c.getBonusScore()).sum();
 
-        if (extraContinent + extraTerritories < 3) {
-            return 3;
-        } else {
-            return extraContinent + extraTerritories;
-        }
+        return max(3, extraContinent + extraTerritories);
     }
 
     /**
