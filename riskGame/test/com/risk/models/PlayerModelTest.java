@@ -237,4 +237,66 @@ public class PlayerModelTest {
         assertEquals(-4, result);
     }
 
+    /**
+     * Test getNbInitialArmies with 2 players
+     */
+    @Test
+    public void testGetNbInitialArmies2() {
+        assertEquals(
+                40,
+                PlayerModel.getNbInitialArmies(2)
+        );
+    }
+
+    /**
+     * Test getNbInitialArmies with 3 players
+     */
+    @Test
+    public void testGetNbInitialArmies3() {
+        assertEquals(
+                35,
+                PlayerModel.getNbInitialArmies(3)
+        );
+    }
+
+    /**
+     * Test getNbInitialArmies with 4 players
+     */
+    @Test
+    public void testGetNbInitialArmies4() {
+        assertEquals(
+                30,
+                PlayerModel.getNbInitialArmies(4)
+        );
+    }
+
+    /**
+     * Test getNbInitialArmies with 5 players
+     */
+    @Test
+    public void testGetNbInitialArmies5() {
+        assertEquals(
+                25,
+                PlayerModel.getNbInitialArmies(5)
+        );
+    }
+
+    /**
+     * Test getNbInitialArmies with 6 players
+     */
+    @Test
+    public void testGetNbInitialArmies6() {
+        assertEquals(
+                20,
+                PlayerModel.getNbInitialArmies(6)
+        );
+    }
+
+    /**
+     * Test getNbInitialArmies with 7 players
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetNbInitialArmies7() {
+        PlayerModel.getNbInitialArmies(7);
+    }
 }

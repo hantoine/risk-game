@@ -307,6 +307,34 @@ public class RiskModelTest {
     }
 
     /**
+     * Test the startGane
+     */
+    @Test
+    public void testStartGame() {
+        int expectedNbArmies
+                = PlayerModel.getNbInitialArmies(
+                        riskModel.getPlayerList().size()
+                );
+        this.riskModel.startGame();
+        assertEquals(null, riskModel.getWinningPlayer());
+        assertEquals(GamePhase.STARTUP, riskModel.getPhase());
+        assertTrue(
+                this.mapModel.getTerritories().stream().allMatch(
+                        (t) -> (t.getOwner() != null)
+                )
+        );
+        assertEquals("The game starts", dummyObserver.getMessage());
+        assertTrue(riskModel.getCurrentPlayer().isCurrentPlayer());
+        riskModel.getPlayerList().forEach((p) -> {
+            assertEquals(
+                    expectedNbArmies + p.getNbTerritoriesOwned(),
+                    p.getNbArmiesOwned()
+            );
+        }
+        );
+    }
+
+    /**
      * Test finish phase to check that the end of game is detected
      */
     public void testFinishPhaseEndOfGame() {
