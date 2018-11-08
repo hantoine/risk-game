@@ -37,7 +37,6 @@ public final class HandPanel extends JPanel implements Observer {
      */
     public HandPanel() {
         this.setLayout(new FlowLayout());
-        //BoxLayout(this, BoxLayout.X_AXIS));
     }
 
     /**
@@ -53,7 +52,7 @@ public final class HandPanel extends JPanel implements Observer {
         while (it.hasNext()) {
             JButton cb = it.next();
             boolean cardDeleted = hand.getCards().stream()
-                    .anyMatch(c -> c.getCountryName().equals(cb.getName()));
+                    .anyMatch(c -> c.getTerritoryName().equals(cb.getName()));
             if (!cardDeleted) {
                 it.remove();
                 this.remove(cb);
@@ -62,7 +61,7 @@ public final class HandPanel extends JPanel implements Observer {
 
         // Add cards that have been added
         hand.getCards().stream()
-                .filter((c) -> !this.cardButtons.containsKey(c.getCountryName()))
+                .filter((c) -> !this.cardButtons.containsKey(c.getTerritoryName()))
                 .forEach((c) -> {
                     this.addCard(c, Color.BLACK);
                 });
@@ -110,10 +109,10 @@ public final class HandPanel extends JPanel implements Observer {
         cardIcon = new ImageIcon(newImage);
         JButton aux = new JButton();
         aux.setIcon(cardIcon);
-        aux.setName(card.getCountryName());
+        aux.setName(card.getTerritoryName());
         aux.setText("");
         aux.setBackground(bgColor);
-        getCardButtons().put(card.getCountryName(), aux);
+        getCardButtons().put(card.getTerritoryName(), aux);
         this.add(aux);
     }
 

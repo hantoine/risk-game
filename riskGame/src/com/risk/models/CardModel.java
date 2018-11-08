@@ -13,9 +13,9 @@ package com.risk.models;
 public class CardModel {
 
     /**
-     * countryName There is as many cards as countries in the game
+     * territoryName There is as many cards as territories in the game
      */
-    private String countryName;
+    private String territoryName;
     /**
      * typeOfArmie Type of army in the card
      */
@@ -24,30 +24,30 @@ public class CardModel {
     /**
      * Constructor
      *
-     * @param countryName name of a country in the card
+     * @param territoryName name of a territory in the card
      * @param typeOfArmies name of a type of armies
      */
-    CardModel(String countryName, String typeOfArmies) {
-        this.countryName = countryName;
+    CardModel(String territoryName, String typeOfArmies) {
+        this.territoryName = territoryName;
         this.typeOfArmie = typeOfArmies;
     }
 
     /**
-     * Getter of the countryName attribute
+     * Getter of the territoryName attribute
      *
-     * @return the countryName
+     * @return the territoryName
      */
-    public String getCountryName() {
-        return countryName;
+    public String getTerritoryName() {
+        return territoryName;
     }
 
     /**
-     * Setter of the countryName attribute
+     * Setter of the territoryName attribute
      *
-     * @param countryName the countryName to set
+     * @param territoryName the territoryName to set
      */
-    void setCountryName(String countryName) {
-        this.countryName = countryName;
+    void setTerritoryName(String territoryName) {
+        this.territoryName = territoryName;
     }
 
     /**

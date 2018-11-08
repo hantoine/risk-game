@@ -8,14 +8,14 @@ package com.risk.views.game;
 import com.risk.controllers.GameController;
 import com.risk.models.AttackMove;
 import com.risk.models.RiskModel;
-import com.risk.views.attack.ArmiesLeft;
-import com.risk.views.attack.AttackView;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 /**
+ * View storing aux information that need to be displayed depending on the game
+ * phase. Currently used for attack phase only
  *
  * @author Nellybett
  */
@@ -112,15 +112,16 @@ public class PhaseAuxiliar extends JPanel implements Observer {
     }
 
     /**
-     * 
-     * @param o
-     * @param o1 
+     * This method is for attach the observer
+     *
+     * @param o The Observable
+     * @param o1 The Object
      */
     @Override
     public void update(Observable o, Object o1) {
         if (o instanceof RiskModel) {
             RiskModel rm = (RiskModel) o;
-            
+
             AttackMove currentAttack = rm.getCurrentPlayer().getCurrentAttack();
             if (currentAttack == null) {
                 this.selectPanel(null);
@@ -133,8 +134,8 @@ public class PhaseAuxiliar extends JPanel implements Observer {
 
             if (currentAttack.getDest().getNumArmies() == 0) {
                 this.selectPanel(this.getArmiesLeft());
-                int diceAttack=rm.getCurrentPlayer().getCurrentAttack().getDiceAttack();
-                this.armiesLeft.update(srcTerritory, destTerritory, nbArmies,diceAttack);
+                int diceAttack = rm.getCurrentPlayer().getCurrentAttack().getNbDiceAttack();
+                this.armiesLeft.update(srcTerritory, destTerritory, nbArmies, diceAttack);
             } else {
                 this.selectPanel(this.getAttackPanel());
                 this.attackPanel.update(srcTerritory, destTerritory, nbArmies);

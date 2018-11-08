@@ -18,26 +18,28 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 /**
+ * Phase view displaying the current game phase, the current player, and the
+ * actions happened during this phase
  *
  * @author hantoine
  */
 public class PhaseView extends JPanel implements Observer {
 
     /**
-     * 
+     * label displaying the current game phase
      */
     JLabel phaseName;
     /**
-     * 
+     * label displaying the current player
      */
     JLabel playerName;
     /**
-     * 
+     * TextArea listing the actions happened during the phase
      */
     JTextArea actions;
 
     /**
-     * 
+     * Constructor
      */
     public PhaseView() {
         phaseName = new JLabel();
@@ -73,8 +75,9 @@ public class PhaseView extends JPanel implements Observer {
     }
 
     /**
-     * 
-     * @param rm 
+     * This method is for update the view of risk model
+     *
+     * @param rm the risk model which is gonna be updated the view
      */
     public void updateView(RiskModel rm) {
         setVisible(true);
@@ -90,12 +93,15 @@ public class PhaseView extends JPanel implements Observer {
         phaseName.setText("Current phase: " + rm.getPhase().toString());
         playerName.setText("Current player: "
                 + rm.getCurrentPlayer().getName());
+        playerName.setForeground(rm.getCurrentPlayer().getColor());
+        phaseName.setForeground(rm.getCurrentPlayer().getColor());
     }
 
     /**
-     * 
-     * @param o
-     * @param o1 
+     * This method is to attach the observer
+     *
+     * @param o the observer
+     * @param o1 the object
      */
     @Override
     public void update(Observable o, Object o1) {

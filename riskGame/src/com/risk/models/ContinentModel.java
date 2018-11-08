@@ -17,7 +17,7 @@ import java.util.List;
 public class ContinentModel {
 
     /**
-     * members countries that are part of the continent
+     * members territories that are part of the continent
      */
     private LinkedList<TerritoryModel> members;
     /**
@@ -50,7 +50,7 @@ public class ContinentModel {
     void removeMember(TerritoryModel member) {
         System.out.println("continent : " + this.name + ", del member : " + member.getName());
         this.members.remove(member);
-        
+
         System.out.println("members:");
         this.members.iterator().forEachRemaining((t) -> {
             System.out.println(t.getName());
@@ -82,9 +82,9 @@ public class ContinentModel {
      */
     void addMember(TerritoryModel member) {
         System.out.println("continent : " + this.name + ", new member : " + member.getName());
-        
+
         this.members.add(member);
-        
+
         System.out.println("members:");
         this.members.iterator().forEachRemaining((t) -> {
             System.out.println(t.getName());
@@ -150,7 +150,7 @@ public class ContinentModel {
      * continent is reachable through territories of this continent
      *
      * @param v Territory currently visited
-     * @param visitedTerritories List of already visited countries
+     * @param visitedTerritories List of already visited territories
      */
     private void dfsConnected(TerritoryModel v, List<String> visitedTerritories) {
         visitedTerritories.add(v.getName());

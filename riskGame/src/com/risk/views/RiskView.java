@@ -101,8 +101,8 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     }
 
     /**
-     * 
-     * @param rm 
+     * This method is for add the observre
+     * @param rm the risk model which is gonna be added the observer
      */
     @Override
     public void observeModel(RiskModel rm) {
@@ -122,8 +122,8 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
 
     /**
      * 
-     * @param rm
-     * @param newMap 
+     * @param rm the model which is gonna be updated the view
+     * @param newMap the new map which is gonna be updated
      */
     private void updateView(RiskModel rm, boolean newMap) {
         this.stagePanel.updateView(rm);
@@ -158,7 +158,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      */
     @Override
     public void setController(RiskController rc) {
-        this.getMapPanel().setListener(rc.getCountryListener());
+        this.getMapPanel().setListener(rc.getTerritoryListener());
 
         this.getStagePanel().getEndPhase().addActionListener(e -> {
             rc.getGameController().endPhaseButtonPressed();
@@ -303,8 +303,8 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
 
     /**
      * 
-     * @param o
-     * @param o1 
+     * @param o the observer
+     * @param o1  the object
      */
     @Override
     public void update(Observable o, Object o1) {

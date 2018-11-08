@@ -67,6 +67,13 @@ public class HandModel extends Observable {
     }
 
     /**
+     * Adds a card to the player hand
+     * @param card the card to add
+     */
+    public void addCardToPlayerHand(CardModel card){
+        cards.add(card);
+    }
+    /**
      * Returns the number of cards in this hand
      *
      * @return the number of cards in this hand
@@ -88,16 +95,16 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @return 
+     * This method is for get the current owner
+     * @return the owner
      */
     public PlayerModel getOwner() {
         return owner;
     }
 
     /**
-     * 
-     * @param owner 
+     * This method is for set the current owner
+     * @param owner the owner of the hand
      */
     void setOwner(PlayerModel owner) {
         this.owner = owner;
@@ -151,10 +158,10 @@ public class HandModel extends Observable {
      */
     public void removeCards(List<String> selectedCards, List<CardModel> deck) {
         this.getCards().stream()
-                .filter(c -> selectedCards.contains(c.getCountryName()))
+                .filter(c -> selectedCards.contains(c.getTerritoryName()))
                 .forEach(cs -> deck.add(0, cs));
 
-        this.cards.removeIf(c -> selectedCards.contains(c.getCountryName()));
+        this.cards.removeIf(c -> selectedCards.contains(c.getTerritoryName()));
     }
 
     /**
@@ -167,8 +174,8 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @param current 
+     * This method is for set current attribute
+     * @param current the current status
      */
     void setCurrent(boolean current) {
         this.current = current;
@@ -178,9 +185,9 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @param typeOfArmie
-     * @param deck 
+     * This method is for removing card
+     * @param typeOfArmie the type of the armie
+     * @param deck the list of the card
      */
     public void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
         String[] typeOfArmieDum = {"infantry", "artillery", "cavalry"};
@@ -209,16 +216,16 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @return 
+     * This method is for get the status of card
+     * @return the status of the card
      */
     public boolean isHanded() {
         return handed;
     }
 
     /**
-     * 
-     * @param handed 
+     * This method is for set the handed boolean
+     * @param handed the status of the card
      */
     public void setHanded(boolean handed) {
         this.handed = handed;
@@ -228,15 +235,15 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @return 
+     * This method is to get the number of selected cards
+     * @return the cards size
      */
     public int getNbSelectedCards() {
         return this.selectedCards.size();
     }
 
     /**
-     * 
+     * This method is for unselect all cards
      */
     public void unselectAllCards() {
         this.selectedCards.clear();
@@ -246,25 +253,25 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @return 
+     * This method is for get the list of selected card
+     * @return  the list of selected card
      */
     public List<String> getSelectedCards() {
         return Collections.unmodifiableList(this.selectedCards);
     }
 
     /**
-     * 
-     * @param cardName
-     * @return 
+     * This method is for check the card is selected or not
+     * @param cardName the name of the card
+     * @return if the card  is selected
      */
     public boolean isCardSelected(String cardName) {
         return this.selectedCards.contains(cardName);
     }
 
     /**
-     * 
-     * @param cardName 
+     * This method is for unselect the card
+     * @param cardName the name of the card
      */
     public void unselectCard(String cardName) {
         this.selectedCards.remove(cardName);
@@ -274,8 +281,8 @@ public class HandModel extends Observable {
     }
 
     /**
-     * 
-     * @param cardName 
+     * This method is for select the card
+     * @param cardName the name of the card
      */
     public void selectCard(String cardName) {
         this.selectedCards.add(cardName);

@@ -5,14 +5,19 @@
  */
 package com.risk.models;
 
+import com.risk.models.RiskModel.ArmyPlacementImpossible;
+import java.awt.Color;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * TestCLass for RiskModel
  *
  * @author liyixuan
  */
@@ -26,6 +31,10 @@ public class RiskModelTest {
      * mapModel instance of the map model
      */
     MapModel mapModel;
+    /**
+     * Dummy Observer observing the risk model
+     */
+    DummyObserver dummyObserver;
 
     /**
      * Initialize mapModel to a valid MapModel that will be the base for all
@@ -103,10 +112,63 @@ public class RiskModelTest {
         mapModel.setGraphContinents(graphContinents);
 
         riskModel.setMap(mapModel);
+
+        dummyObserver = new DummyObserver();
+        riskModel.addObserver(dummyObserver);
     }
 
     /**
-     * Test of assignCoutriesToPlayers method, of class RiskModel.
+     * Test for InitializePlayersArmies with 3 players
+     */
+    @Test
+    public void testInitializePlayersArmies3() {
+        riskModel.initializePlayersArmies();
+
+        assertTrue(riskModel.getPlayerList().stream()
+                .allMatch((p) -> p.getNbArmiesAvailable() == 35));
+    }
+
+    /**
+     * Test for InitializePlayersArmies with 3 players
+     */
+    @Test
+    public void testInitializePlayersArmies4() {
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
+        riskModel.initializePlayersArmies();
+
+        assertTrue(riskModel.getPlayerList().stream()
+                .allMatch((p) -> p.getNbArmiesAvailable() == 30));
+    }
+
+    /**
+     * Test for InitializePlayersArmies with 3 players
+     */
+    @Test
+    public void testInitializePlayersArmies5() {
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
+        riskModel.addPlayerToPlayerList("player 5", Color.black, true);
+        riskModel.initializePlayersArmies();
+
+        assertTrue(riskModel.getPlayerList().stream()
+                .allMatch((p) -> p.getNbArmiesAvailable() == 25));
+    }
+
+    /**
+     * Test for InitializePlayersArmies with 3 players
+     */
+    @Test
+    public void testInitializePlayersArmies6() {
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
+        riskModel.addPlayerToPlayerList("player 5", Color.black, true);
+        riskModel.addPlayerToPlayerList("player 6", Color.ORANGE, true);
+        riskModel.initializePlayersArmies();
+
+        assertTrue(riskModel.getPlayerList().stream()
+                .allMatch((p) -> p.getNbArmiesAvailable() == 20));
+    }
+
+    /**
+     * Test for InitializePlayersArmies with 4 players
      */
     @Test
     public void testAssignCoutriesToPlayers() {
@@ -148,4 +210,200 @@ public class RiskModelTest {
         assertTrue(riskModel.getPlayerList().stream()
                 .anyMatch((p) -> (p.checkOwnContinent(continentC))));
     }
+
+    /**
+     * Test for army placement: Valid case
+     *
+     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible
+     */
+    @Test
+    public void testPlaceArmy() throws RiskModel.ArmyPlacementImpossible {
+        PlayerModel player = this.riskModel.getCurrentPlayer();
+        TerritoryModel terr = this.mapModel.getTerritoryByName("TerritoryB");
+
+        player.setNumArmiesAvailable(1);
+        player.addTerritoryOwned(terr);
+        terr.setNumArmies(0);
+
+        riskModel.placeArmy(player, terr);
+
+        assertEquals(1, terr.getNumArmies());
+        assertEquals(1, player.getNbArmiesOwned());
+        assertEquals(0, player.getNbArmiesAvailable());
+        assertEquals(
+                "Player 1 place one army on territory TerritoryB",
+                dummyObserver.getMessage()
+        );
+
+    }
+
+    /**
+     * Test for army placement: Player does not have enough armies available
+     *
+     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible
+     */
+    @Test
+    public void testPlaceArmyNoArmyAvailable()
+            throws RiskModel.ArmyPlacementImpossible {
+        PlayerModel player = this.riskModel.getCurrentPlayer();
+        TerritoryModel terr = this.mapModel.getTerritoryByName("TerritoryB");
+        ArmyPlacementImpossible exception = null;
+
+        player.setNumArmiesAvailable(0);
+        player.addTerritoryOwned(terr);
+        terr.setNumArmies(0);
+
+        try {
+            riskModel.placeArmy(player, terr);
+        } catch (ArmyPlacementImpossible ex) {
+            exception = ex;
+        }
+
+        assertEquals(0, terr.getNumArmies());
+        assertEquals(0, player.getNbArmiesOwned());
+        assertEquals(0, player.getNbArmiesAvailable());
+        assertEquals(null, dummyObserver.getMessage());
+        assertNotEquals(null, exception);
+        if (exception != null) {
+            assertEquals(
+                    "You have no armies left to deploy !",
+                    exception.getReason()
+            );
+        }
+    }
+
+    /**
+     * Test for army placement: Player does not own the territory
+     *
+     * @throws com.risk.models.RiskModel.ArmyPlacementImpossible
+     */
+    @Test
+    public void testPlaceTerritoryNotOwned()
+            throws RiskModel.ArmyPlacementImpossible {
+        PlayerModel player = this.riskModel.getCurrentPlayer();
+        TerritoryModel terr = this.mapModel.getTerritoryByName("TerritoryB");
+        ArmyPlacementImpossible exception = null;
+
+        player.setNumArmiesAvailable(1);
+        terr.setNumArmies(0);
+
+        try {
+            riskModel.placeArmy(player, terr);
+        } catch (ArmyPlacementImpossible ex) {
+            exception = ex;
+        }
+
+        assertEquals(0, terr.getNumArmies());
+        assertEquals(1, player.getNbArmiesOwned());
+        assertEquals(1, player.getNbArmiesAvailable());
+        assertEquals(null, dummyObserver.getMessage());
+        assertNotEquals(null, exception);
+        if (exception != null) {
+            assertEquals(
+                    "You don't own this territory !",
+                    exception.getReason()
+            );
+        }
+    }
+
+    /**
+     * Test the startGane
+     */
+    @Test
+    public void testStartGame() {
+        int expectedNbArmies
+                = PlayerModel.getNbInitialArmies(
+                        riskModel.getPlayerList().size()
+                );
+        this.riskModel.startGame();
+        assertEquals(null, riskModel.getWinningPlayer());
+        assertEquals(GamePhase.STARTUP, riskModel.getPhase());
+        assertTrue(
+                this.mapModel.getTerritories().stream().allMatch(
+                        (t) -> (t.getOwner() != null)
+                )
+        );
+        assertEquals("The game starts", dummyObserver.getMessage());
+        assertTrue(riskModel.getCurrentPlayer().isCurrentPlayer());
+        riskModel.getPlayerList().forEach((p) -> {
+            assertEquals(
+                    expectedNbArmies + p.getNbTerritoriesOwned(),
+                    p.getNbArmiesOwned()
+            );
+        }
+        );
+    }
+
+    /**
+     * Test finish phase to check that the end of game is detected
+     */
+    public void testFinishPhaseEndOfGame() {
+        riskModel.removePlayer(0);
+        riskModel.removePlayer(0);
+
+        boolean res = riskModel.finishPhase();
+
+        assertEquals(false, res);
+    }
+
+    /**
+     * Test of removePlayer: when only one player left the game is over
+     */
+    @Test
+    public void testRemovePlayerEndOfGameDetected() {
+        riskModel.removePlayer(riskModel.getPlayerList().get(0));
+        riskModel.removePlayer(riskModel.getPlayerList().get(0));
+
+        /*
+        only one player left in the game, it should hence be detected the
+        winning player detected
+         */
+        assertTrue(riskModel.getWinningPlayer() != null);
+        assertEquals("Player 3 win the game", this.dummyObserver.getMessage());
+
+    }
+
+    /**
+     * Test of checkForDeadPlayers
+     */
+    @Test
+    public void testCheckForDeadPlayers() {
+        this.riskModel.nextTurn();
+        this.riskModel.nextTurn();
+
+        PlayerModel currentPlayer = riskModel.getCurrentPlayer();
+        PlayerModel playerToKill = this.riskModel.getPlayerList().get(1);
+
+        this.riskModel.getPlayerList().get(0).addTerritoryOwned(
+                this.mapModel.getTerritoryByName("TerritoryA"));
+        this.riskModel.getPlayerList().get(2).addTerritoryOwned(
+                this.mapModel.getTerritoryByName("TerritoryB"));
+
+        riskModel.checkForDeadPlayers();
+
+        assertEquals(2, riskModel.getPlayerList().size());
+        assertFalse(riskModel.getPlayerList().contains(playerToKill));
+        assertSame(currentPlayer, riskModel.getCurrentPlayer());
+    }
+
+    /**
+     * Class implementing Observer to test RiskModel is notifying observers
+     * correctly
+     */
+    class DummyObserver implements Observer {
+
+        String message;
+
+        @Override
+        public void update(Observable o, Object o1) {
+            if (o1 instanceof LogEvent) {
+                message = ((LogEvent) o1).toString();
+            }
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
+
 }

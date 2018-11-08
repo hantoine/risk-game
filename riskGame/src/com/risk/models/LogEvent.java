@@ -6,10 +6,12 @@
 package com.risk.models;
 
 /**
+ * Log event displayed in the phase view current action box
  *
  * @author hantoine
  */
 public class LogEvent {
+
     /**
      * The message
      */
@@ -18,35 +20,39 @@ public class LogEvent {
 
     /**
      * Constructor
-     * @param message 
+     *
+     * @param message the message which is shown
      */
     LogEvent(String message) {
         this.message = message;
     }
-    
+
     /**
      * Constructor
-     * @param message
-     * @param clear
+     *
+     * @param message the message
+     * @param clear the message which is shown
      */
     LogEvent(String message, boolean clear) {
         this(message);
-        this.clear = true;
+        this.clear = clear;
     }
 
     /**
-    * Getter of message
-    * @return message
-    */
+     * Getter of message
+     *
+     * @return message
+     */
     @Override
     public String toString() {
         return message;
     }
 
     /**
-    * Getter of clear
-    * @return clear
-    */
+     * Getter of clear
+     *
+     * @return clear
+     */
     public boolean isClear() {
         return clear;
     }

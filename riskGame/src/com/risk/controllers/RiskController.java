@@ -30,9 +30,9 @@ public final class RiskController {
      */
     private RiskModel modelRisk;
     /**
-     * countryListener it is a reference to the listener of country events
+     * territoryListener it is a reference to the listener of territory events
      */
-    private MapListener countryListener;
+    private MapListener territoryListener;
     /**
      * playGame it is a reference to the controller of the game flow
      */
@@ -57,7 +57,7 @@ public final class RiskController {
         this.modelRisk = riskModel;
         this.viewRisk = riskView;
 
-        this.countryListener = new MapListener(this);
+        this.territoryListener = new MapListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
         this.gameController = new GameController(this.modelRisk);
         viewRisk.initialMenu(modelRisk, menuListener);
@@ -122,12 +122,12 @@ public final class RiskController {
     }
 
     /**
-     * Getter of the countryListener attribute
+     * Getter of the territoryListener attribute
      *
-     * @return the countryListener
+     * @return the territoryListener
      */
-    public MapListener getCountryListener() {
-        return countryListener;
+    public MapListener getTerritoryListener() {
+        return territoryListener;
     }
 
     /**

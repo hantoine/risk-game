@@ -108,80 +108,81 @@ public class MenuListener extends MouseAdapter {
     }
 
     /**
-     * 
-     * @param addPlayer 
+     * This method is for minus the player
+     * @param addPlayer the player which is gonna be delete
      */
-    public void minusButton(JButton addPlayer){
-        
-                if ((this.getPlayerList().getPlayersArray().size()) <= 3) {
-                    JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
-                } else {
-                    DeletableButton buttonToDelete = (DeletableButton) addPlayer;
-                    int IDtoDelete = buttonToDelete.getID();
+    public void minusButton(JButton addPlayer) {
 
-                    for (Iterator<PlayerPanel> it = this.getPlayerList().getPlayersArray().iterator(); it.hasNext();) {
-                        PlayerPanel panelToTest = it.next();
+        if ((this.getPlayerList().getPlayersArray().size()) <= 3) {
+            JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
+        } else {
+            DeletableButton buttonToDelete = (DeletableButton) addPlayer;
+            int IDtoDelete = buttonToDelete.getID();
 
-                        if (panelToTest.getDelButton().getID() == IDtoDelete) {
-                            Color colorToRemove = panelToTest.getColorButton().getBackground();
-                            this.getPlayerList().getColorUsed().remove(colorToRemove);
-                            this.getPlayerList().remove(panelToTest);
-                            this.getPlayerList().revalidate();
-                            this.getPlayerList().repaint();
-                            it.remove();
-                        }
-                    }
+            for (Iterator<PlayerPanel> it = this.getPlayerList().getPlayersArray().iterator(); it.hasNext();) {
+                PlayerPanel panelToTest = it.next();
 
+                if (panelToTest.getDelButton().getID() == IDtoDelete) {
+                    Color colorToRemove = panelToTest.getColorButton().getBackground();
+                    this.getPlayerList().getColorUsed().remove(colorToRemove);
+                    this.getPlayerList().remove(panelToTest);
+                    this.getPlayerList().revalidate();
+                    this.getPlayerList().repaint();
+                    it.remove();
                 }
+            }
+
+        }
     }
+
     /**
-     * 
-     * @param addPlayer 
+     * This method is for add player
+     * @param addPlayer the new player which is added
      */
-    public void playButton(JButton addPlayer){
+    public void playButton(JButton addPlayer) {
         NewGamePanel newGamePanel = this.getRiskView().getNewGamePanel();
-                String selectedPath = newGamePanel.getSelectFileTextField().getText();
+        String selectedPath = newGamePanel.getSelectFileTextField().getText();
 
-                if (selectedPath.equals("")) {
-                    JOptionPane.showMessageDialog(null, "You have not selected a map");
-                    return;
-                }
-                MapModel map = new MapModel();
-                int resultReadingValidation = MapFileManagement.createBoard(selectedPath, map);
-                if (resultReadingValidation != 0) {
-                    JOptionPane.showMessageDialog(null, MapFileManagement.readingError(resultReadingValidation));
-                    return;
-                }
-                getRiskModel().setMap(map);
+        if (selectedPath.equals("")) {
+            JOptionPane.showMessageDialog(null, "You have not selected a map");
+            return;
+        }
+        MapModel map = new MapModel();
+        int resultReadingValidation = MapFileManagement.createBoard(selectedPath, map);
+        if (resultReadingValidation != 0) {
+            JOptionPane.showMessageDialog(null, MapFileManagement.readingError(resultReadingValidation));
+            return;
+        }
+        getRiskModel().setMap(map);
 
-                if (!getRiskModel().getMap().isValid()) {
-                    JOptionPane.showMessageDialog(null, MapFileManagement.readingError(-7));
-                    return;
-                }
+        if (!getRiskModel().getMap().isValid()) {
+            JOptionPane.showMessageDialog(null, MapFileManagement.readingError(-7));
+            return;
+        }
 
-                LinkedList<PlayerPanel> listPlayerPanels = newGamePanel.getPlayersPanel().getPlayersArray();
-                LinkedList<PlayerModel> listPlayers = new LinkedList<>();
-                for (int i = 0; i < listPlayerPanels.size(); i++) {
-                    PlayerPanel player = listPlayerPanels.get(i);
-                    PlayerModel playerGame = new HumanPlayerModel(
-                            player.getPlayerNameTextField().getText(),
-                            player.getColorButton().getBackground(),
-                            this.getRiskModel()
-                    );
-                    //playerGame.addObserver(riskView.getPlayerHandPanel());
-                    listPlayers.add(playerGame);
+        LinkedList<PlayerPanel> listPlayerPanels = newGamePanel.getPlayersPanel().getPlayersArray();
+        LinkedList<PlayerModel> listPlayers = new LinkedList<>();
+        for (int i = 0; i < listPlayerPanels.size(); i++) {
+            PlayerPanel player = listPlayerPanels.get(i);
+            PlayerModel playerGame = new HumanPlayerModel(
+                    player.getPlayerNameTextField().getText(),
+                    player.getColorButton().getBackground(),
+                    this.getRiskModel()
+            );
+            listPlayers.add(playerGame);
 
-                }
-                this.getRiskModel().setPlayerList(listPlayers);
+        }
+        this.getRiskModel().setPlayerList(listPlayers);
 
-                if (!this.getRiskModel().validateCountries()) {
-                    JOptionPane.showMessageDialog(null, "No enough countries in this map for the number of players. Select another map.");
-                    return;
-                }
-                this.getRiskView().closeMenu();
-                this.getRiskController().playGame();
+        if (!this.getRiskModel().validateTerritories()) {
+            JOptionPane.showMessageDialog(null, "No enough territories in this map for the number of players. Select another map.");
+            return;
+        }
+        this.getRiskView().closeMenu();
+        this.getRiskController().playGame();
 
     }
+
     /**
      * Getter for the riskModel attribute
      *
