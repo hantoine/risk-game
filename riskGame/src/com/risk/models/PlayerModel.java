@@ -391,28 +391,24 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
-     * Initialize the number of initial armies of this player depending on the
+     * Get the number of initial armies players should get depending on the
      * number of players in the game
      *
      * @param nbPlayers number of players in the game
+     * @return number of initial armies
      */
-    public void initializeArmies(int nbPlayers) {
+    static int getNbInitialArmies(int nbPlayers) {
         switch (nbPlayers) {
             case 2:
-                this.setNumArmiesAvailable(40);
-                break;
+                return 40;
             case 3:
-                this.setNumArmiesAvailable(35);
-                break;
+                return 35;
             case 4:
-                this.setNumArmiesAvailable(30);
-                break;
+                return 30;
             case 5:
-                this.setNumArmiesAvailable(25);
-                break;
+                return 25;
             case 6:
-                this.setNumArmiesAvailable(20);
-                break;
+                return 20;
             default:
                 throw new IllegalArgumentException("Invalid number of players");
         }
