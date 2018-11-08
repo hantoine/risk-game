@@ -371,11 +371,15 @@ public final class RiskModel extends Observable {
      * Initialize the initial number of armies for each player
      */
     public void initializePlayersArmies() {
+        int nbArmies = PlayerModel.getNbInitialArmies(this.players.size());
         this.players.stream().forEach((player) -> {
-            player.initializeArmies(this.players.size());
+            player.setNumArmiesAvailable(nbArmies);
         });
 
-        addNewLogEvent("Players receive their initial armies");
+        addNewLogEvent(String.format(
+                "Players receive %d armies each",
+                nbArmies
+        ));
     }
 
     /**
