@@ -662,9 +662,9 @@ public abstract class PlayerModel extends Observable {
         addTerritoryOwned(this.getCurrentAttack().getDest());
         setConquered(true);
         this.setCurrentAttack(null);
+
         if (game != null) {
             game.checkForDeadPlayers();
-            game.attackEndValidations();
         }
         return 0;
     }

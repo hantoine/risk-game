@@ -106,9 +106,7 @@ public final class RiskModel extends Observable {
     public void removePlayer(PlayerModel player) {
         players.remove(player);
         if (players.size() == 1) {
-            this.winningPlayer = this.players.getFirst();
-            addNewEvent(this.getWinningPlayer().getName() + " win the game");
-            addNewLogEvent(this.getWinningPlayer().getName() + " win the game");
+            this.setWinningPlayer(this.players.getFirst());
             return;
         }
 
@@ -444,10 +442,19 @@ public final class RiskModel extends Observable {
      * @param winningPlayer the player who wins
      */
     public void setWinningPlayer(PlayerModel winningPlayer) {
-        this.winningPlayer = winningPlayer;
-
+        /* first make sure the map is updated to correctly display all
+            territory are owned */
         setChanged();
         notifyObservers();
+
+        this.winningPlayer = winningPlayer;
+        if (winningPlayer != null) {
+            addNewEvent(this.getWinningPlayer().getName() + " win the game");
+            addNewLogEvent(this.getWinningPlayer().getName() + " win the game");
+        } else {
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -526,18 +533,6 @@ public final class RiskModel extends Observable {
 
         setChanged();
         notifyObservers();
-    }
-
-    /**
-     *
-     */
-    public void attackEndValidations() {
-
-        if (this.getCurrentPlayer().getTerritoryOwned().size() == this.getMap().getTerritories().size()) {
-            this.setWinningPlayer(this.getCurrentPlayer());
-            this.finishPhase();
-        }
-
     }
 
     /**
