@@ -107,11 +107,15 @@ public class AttackMove extends Observable {
         Arrays.sort(attack);
         Arrays.sort(defense);
 
-        if (diceAttacked == 1) {
-            looser1 = compareDice(attack, defense, attack.length - 1, 0);
-        } else {
-            looser1 = compareDice(attack, defense, attack.length - 1, 1);
-            looser2 = compareDice(attack, defense, attack.length - 2, 0);
+        if(diceAttack> diceAttacked){
+            if (diceAttacked == 1) {
+                looser1 = compareDice(attack, defense, attack.length - 1, 0);
+            } else {
+                looser1 = compareDice(attack, defense, attack.length - 1, 1);
+                looser2 = compareDice(attack, defense, attack.length - 2, 0);
+            }
+        }else{
+            looser1 = compareDice(attack, defense, 0, 1);
         }
 
         this.attacker.addNewLogEvent(getBattleLogMsg(looser1, looser2));
