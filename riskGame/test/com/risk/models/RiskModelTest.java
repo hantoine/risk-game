@@ -6,6 +6,7 @@
 package com.risk.models;
 
 import com.risk.models.RiskModel.ArmyPlacementImpossible;
+import java.awt.Color;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -117,7 +118,57 @@ public class RiskModelTest {
     }
 
     /**
-     * Test of assignCoutriesToPlayers method, of class RiskModel.
+     * Test for InitializePlayersArmies with 3 players
+     */
+    @Test
+    public void testInitializePlayersArmies3() {
+        riskModel.initializePlayersArmies();
+
+        assertTrue(riskModel.getPlayerList().stream()
+                .allMatch((p) -> p.getNbArmiesAvailable() == 35));
+    }
+
+    /**
+     * Test for InitializePlayersArmies with 3 players
+     */
+    @Test
+    public void testInitializePlayersArmies4() {
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
+        riskModel.initializePlayersArmies();
+
+        assertTrue(riskModel.getPlayerList().stream()
+                .allMatch((p) -> p.getNbArmiesAvailable() == 30));
+    }
+
+    /**
+     * Test for InitializePlayersArmies with 3 players
+     */
+    @Test
+    public void testInitializePlayersArmies5() {
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
+        riskModel.addPlayerToPlayerList("player 5", Color.black, true);
+        riskModel.initializePlayersArmies();
+
+        assertTrue(riskModel.getPlayerList().stream()
+                .allMatch((p) -> p.getNbArmiesAvailable() == 25));
+    }
+
+    /**
+     * Test for InitializePlayersArmies with 3 players
+     */
+    @Test
+    public void testInitializePlayersArmies6() {
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
+        riskModel.addPlayerToPlayerList("player 5", Color.black, true);
+        riskModel.addPlayerToPlayerList("player 6", Color.ORANGE, true);
+        riskModel.initializePlayersArmies();
+
+        assertTrue(riskModel.getPlayerList().stream()
+                .allMatch((p) -> p.getNbArmiesAvailable() == 20));
+    }
+
+    /**
+     * Test for InitializePlayersArmies with 4 players
      */
     @Test
     public void testAssignCoutriesToPlayers() {
@@ -253,37 +304,6 @@ public class RiskModelTest {
                     exception.getReason()
             );
         }
-    }
-
-    /**
-     * Test the startGane
-     */
-    @Test
-    public void testStartGame() {
-        int expectedNbArmies
-                = PlayerModel.getNbInitialArmies(
-                        riskModel.getPlayerList().size()
-                );
-
-        this.riskModel.startGame();
-
-        assertEquals(null, riskModel.getWinningPlayer());
-        assertEquals(GamePhase.STARTUP, riskModel.getPhase());
-        assertTrue(
-                this.mapModel.getTerritories().stream().allMatch(
-                        (t) -> (t.getOwner() != null)
-                )
-        );
-        assertEquals("The game starts", dummyObserver.getMessage());
-        assertTrue(riskModel.getCurrentPlayer().isCurrentPlayer());
-        riskModel.getPlayerList().forEach((p) -> {
-            assertEquals(
-                    expectedNbArmies + p.getNbTerritoriesOwned(),
-                    p.getNbArmiesOwned()
-            );
-        }
-        );
-
     }
 
     /**
