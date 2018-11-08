@@ -100,21 +100,22 @@ public class AttackMove extends Observable {
      * @param diceAttacked number of dices selected by the attacked
      */
     private void battle(int diceAttack, int diceAttacked) {
-        String looser1, looser2 = null;
+        String looser1 = null, looser2 = null;
         int[] attack = createDice(diceAttack);
         int[] defense = createDice(diceAttacked);
 
         Arrays.sort(attack);
         Arrays.sort(defense);
 
-        if(diceAttack> diceAttacked){
+        if(diceAttack>= diceAttacked){
             if (diceAttacked == 1) {
                 looser1 = compareDice(attack, defense, attack.length - 1, 0);
             } else {
                 looser1 = compareDice(attack, defense, attack.length - 1, 1);
                 looser2 = compareDice(attack, defense, attack.length - 2, 0);
             }
-        }else{
+        }
+        if(diceAttack<diceAttacked && diceAttacked!=100){
             looser1 = compareDice(attack, defense, 0, 1);
         }
 
