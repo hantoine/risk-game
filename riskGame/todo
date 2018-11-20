@@ -1,1 +1,0 @@
-tests should be changed to ensure not only the exception is thrown but also the instance is not modified
