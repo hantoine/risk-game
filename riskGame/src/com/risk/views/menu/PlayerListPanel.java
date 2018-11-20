@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -207,6 +208,14 @@ public class PlayerListPanel extends JPanel {
         newPlayer.add(newPlayer.getDelButton());
         this.getPlayersArray().add(newPlayer);
 
+        //JComboBox
+        String[] listPlayersType= {"HUMAN","AGGRESSIVE","CHEATER","BENEVOLENT","RANDOM"};
+        JComboBox typePlayer=new JComboBox(listPlayersType);
+        typePlayer.setSelectedIndex(0);
+        typePlayer.addMouseListener(this.menuListener);
+        newPlayer.setPlayerType(typePlayer);
+        newPlayer.add(typePlayer);
+        
         this.add(newPlayer);
 
         revalidate();

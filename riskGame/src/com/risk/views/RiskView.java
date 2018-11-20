@@ -101,7 +101,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     }
 
     /**
-     * This method is for add the observre
+     * This method is for add the observer
      * @param rm the risk model which is gonna be added the observer
      */
     @Override
@@ -193,9 +193,9 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.setMenuPanel(menu);
         menu.add(start);
         menu.setVisible(true);
-        menu.setSize(300, 500);
+        menu.setSize(400, 500);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        menu.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
+        menu.setLocation(dimension.width / 2 - 400 / 2, dimension.height / 2 - 500 / 2);
     }
 
     /**
