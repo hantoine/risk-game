@@ -33,13 +33,17 @@ public class PhaseAuxiliar extends JPanel implements Observer {
      * Panel with moving armies in an attack
      */
     private ArmiesLeft armiesLeft;
-
+    /**
+     * 
+     */
+    private DefenseView defensePanel;
     /**
      * Constructor
      */
     public PhaseAuxiliar() {
         attackPanel = new AttackView();
         armiesLeft = new ArmiesLeft();
+        defensePanel=new DefenseView();
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     }
 
@@ -96,6 +100,8 @@ public class PhaseAuxiliar extends JPanel implements Observer {
     public void setListeners(GameController gc) {
         this.getAttackPanel().setListeners(gc);
         this.getArmiesLeft().setListener(gc);
+        this.getDefensePanel().setListeners(gc);
+        
     }
 
     /**
@@ -131,15 +137,35 @@ public class PhaseAuxiliar extends JPanel implements Observer {
             String srcTerritory = currentAttack.getSource().getName();
             String destTerritory = currentAttack.getDest().getName();
             int nbArmies = currentAttack.getSource().getNumArmies();
+            int nbArmiesDef=currentAttack.getDest().getNumArmies();
 
             if (currentAttack.getDest().getNumArmies() == 0) {
                 this.selectPanel(this.getArmiesLeft());
                 int diceAttack = rm.getCurrentPlayer().getCurrentAttack().getNbDiceAttack();
                 this.armiesLeft.update(srcTerritory, destTerritory, nbArmies, diceAttack);
             } else {
-                this.selectPanel(this.getAttackPanel());
-                this.attackPanel.update(srcTerritory, destTerritory, nbArmies);
+                if(rm.isAttackPhase()){
+                    this.selectPanel(this.getAttackPanel());
+                    this.attackPanel.update(srcTerritory, destTerritory, nbArmies);
+                }else{
+                    this.selectPanel(this.getDefensePanel());
+                    this.defensePanel.update(srcTerritory, destTerritory, nbArmiesDef);
+                }
             }
         }
+    }
+
+    /**
+     * @return the defensePanel
+     */
+    public DefenseView getDefensePanel() {
+        return defensePanel;
+    }
+
+    /**
+     * @param defensePanel the defensePanel to set
+     */
+    public void setDefensePanel(DefenseView defensePanel) {
+        this.defensePanel = defensePanel;
     }
 }

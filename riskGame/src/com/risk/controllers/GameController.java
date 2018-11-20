@@ -149,24 +149,26 @@ public class GameController {
     public void clickAttack(int nbDice) {
         AttackMove attackMove = rm.getCurrentPlayer().getCurrentAttack();
 
-        if (attackMove.getNbDiceAttack() != -1
-                || nbDice == -1
+        if (nbDice == -1 //battleAll
                 || attackMove.getDest().getNumArmies() == 1) {
 
-            if (attackMove.getNbDiceAttack() != -1) {
-                attackMove.setNbDiceDefense(nbDice);
-            } else {
-                attackMove.setNbDiceAttack(nbDice);
-                attackMove.setNbDiceDefense(1);
-            }
-            rm.performAttack(this.rm.getCurrentPlayer());
+                rm.getCurrentPlayer().setAttackValues(nbDice);
+                rm.getCurrentPlayer().setDefenseValues(1); 
+                rm.performAttack(this.rm.getCurrentPlayer());
+                
         } else {
-            attackMove.setNbDiceAttack(nbDice);
-            attackMove.setChoiceNbDefenseDiceNeeded(true);
+            rm.getCurrentPlayer().setAttackValues(nbDice);
+            rm.setAttackPhase(false);
         }
 
     }
 
+    public void clickDefense(int nbDice){
+        rm.getCurrentPlayer().setDefenseValues(nbDice);
+        rm.performAttack(this.rm.getCurrentPlayer());
+        rm.setAttackPhase(true);
+    }
+    
     /**
      * Move the given number of armies from the source Territory to the
      * destination territory of the attack move of the current player

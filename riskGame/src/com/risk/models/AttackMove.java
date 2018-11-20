@@ -29,17 +29,20 @@ public class AttackMove extends Observable {
      */
     private PlayerModel attacker;
     /**
+     * 
+     */
+    private PlayerModel defensePlayer;
+    /**
      * Number of dice selected by the attacker
      */
     private int nbDiceAttack;
+
     /**
      * Number of dice selected by the attacked
      */
     private int nbDiceDefense;
-    /**
-     *
-     */
-    private boolean choiceNbDefenseDiceNeeded;
+
+
 
     /**
      * Constructor
@@ -49,9 +52,10 @@ public class AttackMove extends Observable {
      * @param dest destiny of the attack
      */
     public AttackMove(PlayerModel attacker, TerritoryModel source, TerritoryModel dest) {
-        this.choiceNbDefenseDiceNeeded = false;
+        
         this.source = source;
         this.dest = dest;
+        this.defensePlayer=dest.getOwner();
         this.attacker = attacker;
         this.nbDiceAttack = -1;
         this.nbDiceDefense = 100;
@@ -101,12 +105,15 @@ public class AttackMove extends Observable {
      */
     private void battle(int diceAttack, int diceAttacked) {
         String looser1 = null, looser2 = null;
+        
         int[] attack = createDice(diceAttack);
         int[] defense = createDice(diceAttacked);
-
+        
         Arrays.sort(attack);
         Arrays.sort(defense);
 
+        
+        
         if(diceAttack>= diceAttacked){
             if (diceAttacked == 1) {
                 looser1 = compareDice(attack, defense, attack.length - 1, 0);
@@ -276,20 +283,19 @@ public class AttackMove extends Observable {
     }
 
     /**
-     * @return the attackDefense
+     * @return the defensePlayer
      */
-    public boolean getChoiceNbDefenseDiceNeeded() {
-        return choiceNbDefenseDiceNeeded;
+    public PlayerModel getDefensePlayer() {
+        return defensePlayer;
     }
 
     /**
-     * @param attackDefense the attackDefense to set
+     * @param defensePlayer the defensePlayer to set
      */
-    public void setChoiceNbDefenseDiceNeeded(boolean attackDefense) {
-        this.choiceNbDefenseDiceNeeded = attackDefense;
-
-        setChanged();
-        notifyObservers(this);
+    public void setDefensePlayer(PlayerModel defensePlayer) {
+        this.defensePlayer = defensePlayer;
     }
+
+    
 
 }
