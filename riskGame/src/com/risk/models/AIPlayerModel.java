@@ -83,4 +83,19 @@ public class AIPlayerModel extends PlayerModel {
         return true;
     }
 
+    @Override
+    public void setAttackValues(int diceAttack) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setDefenseValues(int diceAttacked) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void defense() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

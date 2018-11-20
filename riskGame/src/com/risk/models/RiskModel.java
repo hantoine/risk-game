@@ -53,6 +53,11 @@ public final class RiskModel extends Observable {
      * deck the deck of cards of the game
      */
     private LinkedList<CardModel> deck;
+    
+    /**
+     *
+     */
+    private boolean attackPhase;
 
     /**
      * Constructor of the model It includes son random players
@@ -61,6 +66,7 @@ public final class RiskModel extends Observable {
         this.players = new LinkedList<>();
         this.turn = 0;
         this.phase = GamePhase.STARTUP;
+        this.attackPhase = true;
         addPlayerToPlayerList("Player 1", Color.red, true);
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, true);
@@ -198,7 +204,7 @@ public final class RiskModel extends Observable {
      * @param attackView the view which is gonna be added
      */
     public void addObserverToAttack(AttackView attackView) {
-        this.getCurrentPlayer().getCurrentAttack().addObserver(attackView);
+       // this.getCurrentPlayer().getCurrentAttack().addObserver(attackView);
     }
 
     /**
@@ -275,7 +281,27 @@ public final class RiskModel extends Observable {
                     "There is only one army in the source territory !");
         }
     }
+    
+    /**
+     * @return the isAttackPhase
+    */
+    public boolean isAttackPhase() {
+        return attackPhase;
+    }
 
+    /**
+     * @param attackPhase
+     */
+    public void setAttackPhase(boolean attackPhase) {
+        this.attackPhase = attackPhase;
+        
+        if(!attackPhase && this.currentPlayer.getCurrentAttack()!=null)
+            this.currentPlayer.getCurrentAttack().getDefensePlayer().defense();
+        
+        setChanged();
+        notifyObservers(this);
+    }
+    
     /**
      * Getter of the maxNbOfPlayers attribute
      *

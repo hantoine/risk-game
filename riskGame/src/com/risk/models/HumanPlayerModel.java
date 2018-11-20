@@ -39,7 +39,17 @@ public class HumanPlayerModel extends PlayerModel {
         this.setHanded(false);
         this.assignNewArmies();
     }
-
+    
+    @Override
+    public void setAttackValues(int diceAttack){
+        this.getCurrentAttack().setNbDiceAttack(diceAttack);
+    }
+    
+    @Override
+    public void setDefenseValues(int diceAttacked){
+        this.getCurrentAttack().setNbDiceDefense(diceAttacked);
+    }
+    
     /**
      * Fortification phase for Human Player
      */
@@ -90,6 +100,11 @@ public class HumanPlayerModel extends PlayerModel {
             return false;
         }
 
+    }
+
+    @Override
+    public void defense() {
+        
     }
 
 }
