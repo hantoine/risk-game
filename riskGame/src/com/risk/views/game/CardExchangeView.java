@@ -8,7 +8,6 @@ package com.risk.views.game;
 import com.risk.controllers.CardExchangeListener;
 import com.risk.models.HandModel;
 import com.risk.models.RiskModel;
-import com.risk.views.game.HandPanel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.Observable;
@@ -114,6 +113,7 @@ public class CardExchangeView extends JDialog implements Observer {
 
     /**
      * Update size of the card exchange view
+     *
      * @param hand hand of the player
      */
     public void updateView(HandModel hand) {
@@ -140,6 +140,7 @@ public class CardExchangeView extends JDialog implements Observer {
 
     /**
      * Implementation of observer pattern
+     *
      * @param rm model of the game
      */
     public void observe(RiskModel rm) {
