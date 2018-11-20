@@ -14,6 +14,7 @@ import java.awt.Color;
  */
 public class AIPlayerModel extends PlayerModel {
 
+    private Strategy strategy;
     /**
      * Constructor from Player Model
      *
@@ -30,6 +31,7 @@ public class AIPlayerModel extends PlayerModel {
      */
     @Override
     public void reinforcement(RiskModel playGame) {
+        strategy.reinforcement(playGame);
         addNewLogEvent(String.format(
                 "%s starts its reinforcement phase",
                 getName()
@@ -43,6 +45,7 @@ public class AIPlayerModel extends PlayerModel {
      */
     @Override
     public void fortification(RiskModel playGame) {
+        strategy.fortification(playGame);
         addNewLogEvent(String.format(
                 "%s starts its fortification phase",
                 getName()
@@ -55,6 +58,7 @@ public class AIPlayerModel extends PlayerModel {
      */
     @Override
     public void attack(RiskModel playGame) {
+        strategy.attack(playGame);
         addNewLogEvent(String.format(
                 "%s starts its attack phase",
                 getName()
@@ -85,17 +89,31 @@ public class AIPlayerModel extends PlayerModel {
 
     @Override
     public void setAttackValues(int diceAttack) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void setDefenseValues(int diceAttacked) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void defense() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
+
+    /**
+     * @return the strategy
+     */
+    public Strategy getStrategy() {
+        return strategy;
+    }
+
+    /**
+     * @param strategy the strategy to set
+     */
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
+    }
+    
+    
 
 }
