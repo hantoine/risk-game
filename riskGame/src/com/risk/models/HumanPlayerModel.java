@@ -32,12 +32,15 @@ public class HumanPlayerModel extends PlayerModel {
      */
     @Override
     public void reinforcement(RiskModel playGame) {
+        System.out.println("HUMAN REINFORCEMENT");
+        this.setHanded(false);
+        this.assignNewArmies();
+        System.out.println("Batallones disponibles"+this.getNbArmiesAvailable());
         addNewLogEvent(String.format(
                 "%s starts its reinforcement phase",
                 getName()
         ), true);
-        this.setHanded(false);
-        this.assignNewArmies();
+        
     }
     
   
@@ -96,7 +99,11 @@ public class HumanPlayerModel extends PlayerModel {
 
     @Override
     public void defense() {
-        
+     
+    }
+
+    @Override
+    public void moveArmies() {
     }
 
 }

@@ -656,6 +656,7 @@ public abstract class PlayerModel extends Observable {
         }
     }
 
+    public abstract void moveArmies();
     /**
      * Conquer a territory after an attack
      *

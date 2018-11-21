@@ -70,14 +70,7 @@ public class GameController {
                 }
                 break;
             case REINFORCEMENT:
-                try {
-                    this.rm.placeArmy(currentPlayer, territoryClicked);
-                    if (currentPlayer.getNbArmiesAvailable() == 0) {
-                        this.rm.finishPhase();
-                    }
-                } catch (RiskModel.ArmyPlacementImpossible ex) {
-                    this.rm.addNewEvent(ex.getReason());
-                }
+                rm.reinforcementIntent(territoryClicked);
                 break;
         }
     }
@@ -98,21 +91,10 @@ public class GameController {
 
         switch (this.rm.getPhase()) {
             case FORTIFICATION:
-                try {
-                    this.rm.tryFortificationMove(sourceTerritory, destTerritory);
-                } catch (RiskModel.FortificationMoveImpossible ex) {
-                    if (ex.getReason() != null) {
-                        this.rm.addNewEvent(ex.getReason());
-                    }
-                }
+                rm.fortificationIntent(sourceTerritory, destTerritory);
                 break;
             case ATTACK:
-                int result = rm.getCurrentPlayer().validateAttack(sourceTerritory, destTerritory);
-                if (result == 0) {
-                    this.rm.attackMove(sourceTerritory, destTerritory);
-                } else {
-                    exceptionManagerAttack(result);
-                }
+                rm.attackIntent(sourceTerritory, destTerritory);
                 break;
         }
 
@@ -157,6 +139,10 @@ public class GameController {
                 rm.getCurrentPlayer().setDefenseValues(1); 
                 rm.performAttack(this.rm.getCurrentPlayer());
                 
+                rm.getCurrentPlayer().moveArmies();
+                rm.setAttackPhase(true);
+                if(rm.getPhase()==GamePhase.ATTACK)
+                    rm.executeBeginningOfPhaseSteps();
         } else {
             rm.getCurrentPlayer().setAttackValues(nbDice);
             rm.setAttackPhase(false);
@@ -167,7 +153,11 @@ public class GameController {
     public void clickDefense(int nbDice){
         rm.getCurrentPlayer().setDefenseValues(nbDice);
         rm.performAttack(this.rm.getCurrentPlayer());
+        
+        rm.getCurrentPlayer().moveArmies();
         rm.setAttackPhase(true);
+        if(rm.getPhase()==GamePhase.ATTACK)
+            rm.executeBeginningOfPhaseSteps();
     }
     
     /**

@@ -89,7 +89,9 @@ public class AIPlayerModel extends PlayerModel {
     public void defense() {
         this.game.getCurrentPlayer().setDefenseValues(2);
         this.game.performAttack(this.game.getCurrentPlayer());
+        this.game.getCurrentPlayer().moveArmies();
         this.game.setAttackPhase(true);
+        this.game.executeBeginningOfPhaseSteps();
     }
 
     /**
@@ -104,6 +106,18 @@ public class AIPlayerModel extends PlayerModel {
      */
     public void setStrategy(Strategy strategy) {
         this.strategy = strategy;
+    }
+
+    @Override
+    public void moveArmies() {
+        System.out.println("MOVER LOS BATALLONES"+this.getCurrentAttack());
+        if(this.getCurrentAttack()!=null){
+            if (this.getCurrentAttack().getDest().getNumArmies()==0) {
+                System.out.println("Numero de dados : "+this.getCurrentAttack().getNbDiceAttack());
+                int diceAttack = this.getCurrentAttack().getNbDiceAttack();
+                this.game.getGc().moveArmiesToConqueredTerritory(diceAttack);
+            }
+        }
     }
     
     

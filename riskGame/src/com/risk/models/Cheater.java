@@ -12,18 +12,20 @@ package com.risk.models;
 public class Cheater implements Strategy{
 
     @Override
-    public void reinforcement(RiskModel playGame) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void reinforcement(RiskModel rm) {
+        rm.getCurrentPlayer().getTerritoryOwned().stream()
+                .forEach(t -> t.setNumArmies(t.getNumArmies()*2));
+        rm.finishPhase();
     }
 
     @Override
-    public void attack(RiskModel playGame) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void attack(RiskModel rm) {
+        rm.finishPhase();
     }
 
     @Override
-    public void fortification(RiskModel playGame) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void fortification(RiskModel rm) {
+        rm.finishPhase();
     }
     
 }
