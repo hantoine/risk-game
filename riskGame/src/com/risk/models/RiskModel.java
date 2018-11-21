@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import com.risk.controllers.GameController;
 import com.risk.views.game.AttackView;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -53,7 +54,10 @@ public final class RiskModel extends Observable {
      * deck the deck of cards of the game
      */
     private LinkedList<CardModel> deck;
-    
+    /**
+     * 
+     */
+    private GameController gc;
     /**
      *
      */
@@ -569,6 +573,7 @@ public final class RiskModel extends Observable {
             case STARTUP:
                 break;
             case REINFORCEMENT:
+                System.out.println("tipo de jugador: "+this.getCurrentPlayer().getClass());
                 this.getCurrentPlayer().reinforcement(this);
                 break;
             case ATTACK:
@@ -809,4 +814,20 @@ public final class RiskModel extends Observable {
         setChanged();
         notifyObservers(new LogEvent(logMessage, clear));
     }
+
+    /**
+     * @return the gc
+     */
+    public GameController getGc() {
+        return gc;
+    }
+
+    /**
+     * @param gc the gc to set
+     */
+    public void setGc(GameController gc) {
+        this.gc = gc;
+    }
+    
+    
 }
