@@ -6,6 +6,7 @@
 package com.risk.models;
 
 import java.awt.Color;
+import static java.lang.Integer.min;
 
 /**
  * It represents an AI player (child of PlayerModel)
@@ -37,7 +38,6 @@ public class AIPlayerModel extends PlayerModel {
                 getName()
         ), true);
 
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
@@ -50,7 +50,6 @@ public class AIPlayerModel extends PlayerModel {
                 "%s starts its fortification phase",
                 getName()
         ), true);
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
@@ -63,7 +62,6 @@ public class AIPlayerModel extends PlayerModel {
                 "%s starts its attack phase",
                 getName()
         ), true);
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
@@ -73,7 +71,7 @@ public class AIPlayerModel extends PlayerModel {
     @Override
     public boolean exchangeCardsToArmies() {
         int[] cardDuplicates = this.getHand().getCardDuplicates();
-
+        
         if (cardDuplicates[0] >= 3) {
             this.getHand().removeCards("infantry", super.game.getDeck());
         } else if (cardDuplicates[1] >= 3) {
@@ -88,16 +86,10 @@ public class AIPlayerModel extends PlayerModel {
     }
 
     @Override
-    public void setAttackValues(int diceAttack) {
-    }
-
-    @Override
-    public void setDefenseValues(int diceAttacked) {
-    }
-
-    @Override
     public void defense() {
-        
+        this.game.getCurrentPlayer().setDefenseValues(2);
+        this.game.performAttack(this.game.getCurrentPlayer());
+        this.game.setAttackPhase(true);
     }
 
     /**

@@ -7,6 +7,7 @@ package com.risk.controllers;
 
 import com.risk.models.AttackMove;
 import com.risk.models.GamePhase;
+import com.risk.models.HandModel;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
@@ -195,9 +196,16 @@ public class GameController {
     /**
      * Destroy card exchange view
      */
-    void closeCardExchangeView() {
-        this.exchangeView.setVisible(false);
-        this.exchangeView = null;
+    public void closeCardExchangeView() {
+        HandModel hand = rm.getCurrentPlayer().getHand();
+        if(this.exchangeView!=null){
+            this.exchangeView.setVisible(false);
+            this.exchangeView = null;
+            hand.unselectAllCards();
+            rm.getCurrentPlayer().setHanded(false);
+        }
+        
+        
     }
 
     /**

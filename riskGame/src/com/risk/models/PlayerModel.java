@@ -613,10 +613,18 @@ public abstract class PlayerModel extends Observable {
         notifyObservers();
     }
 
-    public abstract void setAttackValues(int diceAttack);
     public abstract void defense();
     
-    public abstract void setDefenseValues(int diceAttacked);
+      
+    public void setAttackValues(int diceAttack){
+        this.getCurrentAttack().setNbDiceAttack(diceAttack);
+    }
+    
+    
+    public void setDefenseValues(int diceAttacked){
+        this.getCurrentAttack().setNbDiceDefense(diceAttacked);
+    }
+    
     /**
      * Perform the current attack of this player with the given number of dice
      * The value -1 correspond to the special mode in which battles are made

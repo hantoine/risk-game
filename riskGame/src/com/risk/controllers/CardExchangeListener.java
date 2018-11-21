@@ -76,10 +76,8 @@ public class CardExchangeListener extends MouseAdapter {
      * Default execution for exit button
      */
     public void exitButton(){
-        HandModel hand = rm.getCurrentPlayer().getHand();
         gc.closeCardExchangeView();
-                hand.unselectAllCards();
-                rm.getCurrentPlayer().setHanded(false);
+        
     }
     /**
      * Default execution for cards

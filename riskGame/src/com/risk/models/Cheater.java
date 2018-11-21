@@ -22,11 +22,6 @@ public class Cheater implements Strategy{
     }
 
     @Override
-    public void defense() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void fortification(RiskModel playGame) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
