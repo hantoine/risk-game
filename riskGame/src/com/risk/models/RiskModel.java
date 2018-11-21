@@ -299,7 +299,7 @@ public final class RiskModel extends Observable {
     public void setAttackPhase(boolean attackPhase) {
         this.attackPhase = attackPhase;
         
-        if(!attackPhase && this.currentPlayer.getCurrentAttack()!=null)
+        if(attackPhase==false && this.currentPlayer.getCurrentAttack()!=null)
             this.currentPlayer.getCurrentAttack().getDefensePlayer().defense();
         
         setChanged();
@@ -324,6 +324,51 @@ public final class RiskModel extends Observable {
         return Collections.unmodifiableList(this.players);
     }
 
+    /**
+     * 
+     */
+    public void aIReinforcement(){
+        getCurrentPlayer().setHanded(false);
+        getCurrentPlayer().assignNewArmies();
+        
+        while(getCurrentPlayer().getHand().cardHandingPossible())
+            getCurrentPlayer().exchangeCardsToArmies();
+        
+        getGc().closeCardExchangeView();
+    }
+    
+    public void reinforcementIntent(TerritoryModel selectedTerritory){
+        try {
+            placeArmy(currentPlayer, selectedTerritory);
+            if (currentPlayer.getNbArmiesAvailable() == 0) {
+                finishPhase();
+            }
+        } catch (RiskModel.ArmyPlacementImpossible ex) {
+            addNewEvent(ex.getReason());
+        }
+    }
+    
+    public void fortificationIntent(TerritoryModel source, TerritoryModel dest){
+        
+        try {               
+            tryFortificationMove(source, dest);
+            
+        } catch (RiskModel.FortificationMoveImpossible ex) {
+            if (ex.getReason() != null) {
+                addNewEvent(ex.getReason());
+            }
+        }
+    }
+    
+    public void attackIntent(TerritoryModel sourceTerritory, TerritoryModel destTerritory){
+        int result = getCurrentPlayer().validateAttack(sourceTerritory, destTerritory);
+        System.out.println("intento atacar: "+result);
+                if (result == 0) {
+                    attackMove(sourceTerritory, destTerritory);
+                } else {
+                    gc.exceptionManagerAttack(result);
+                }           
+    }
     /**
      * Assigns turn to a player from the list
      */
@@ -568,7 +613,8 @@ public final class RiskModel extends Observable {
     /**
      * Steps at the beginning of a phase
      */
-    private void executeBeginningOfPhaseSteps() {
+    public void executeBeginningOfPhaseSteps() {
+        System.out.println("tipo de phase: "+this.getPhase());
         switch (this.getPhase()) {
             case STARTUP:
                 break;
@@ -577,6 +623,7 @@ public final class RiskModel extends Observable {
                 this.getCurrentPlayer().reinforcement(this);
                 break;
             case ATTACK:
+                System.out.println("entro en ataque");
                 this.getCurrentPlayer().attack(this);
                 break;
             case FORTIFICATION:

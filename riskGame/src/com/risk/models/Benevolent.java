@@ -13,14 +13,8 @@ public class Benevolent implements Strategy {
 
     @Override
     public void reinforcement(RiskModel rm) {
-        
-        rm.getCurrentPlayer().setHanded(false);
-        rm.getCurrentPlayer().assignNewArmies();
-        
-        while(rm.getCurrentPlayer().getHand().cardHandingPossible())
-            rm.getCurrentPlayer().exchangeCardsToArmies();
-        
-        rm.getGc().closeCardExchangeView();
+        System.out.println("BENEVOLENTE REINFORCEMENT");
+        rm.aIReinforcement();
         
         int armiesReinforcement=rm.getCurrentPlayer().getNbArmiesAvailable();
         TerritoryModel selectedTerritory= rm.getCurrentPlayer().getTerritoryOwned().get(1);
@@ -31,27 +25,23 @@ public class Benevolent implements Strategy {
                     selectedTerritory=t;
             }
             
-            try {
-                rm.placeArmy(rm.getCurrentPlayer(), selectedTerritory);
-                armiesReinforcement=armiesReinforcement-1;
-                    
-            } catch (RiskModel.ArmyPlacementImpossible ex) {
-                rm.addNewEvent(ex.getReason());
-            }
+            rm.reinforcementIntent(selectedTerritory);
+            armiesReinforcement=armiesReinforcement-1;
         }
         
-        rm.finishPhase();
+        
     }
 
     @Override
     public void attack(RiskModel rm) {
+        System.out.println("BENEVOLENTE ATAQUE");
         rm.finishPhase();
     }
 
 
     @Override
     public void fortification(RiskModel rm) {
-        
+        System.out.println("BENEVOLENTE FORTIFICACION");
         TerritoryModel dest=null;
         for(TerritoryModel t: rm.getCurrentPlayer().getTerritoryOwned()){          
             if(((TerritoryModel)t).getAdj().stream()
@@ -69,16 +59,9 @@ public class Benevolent implements Strategy {
                             source=t;                
             }                 
         }
-                 
-        try {
-            if(source!=null && dest!=null ){                
-                rm.tryFortificationMove(source, dest);
-            }
-        } catch (RiskModel.FortificationMoveImpossible ex) {
-            if (ex.getReason() != null) {
-                rm.addNewEvent(ex.getReason());
-            }
-        }
+        
+        while(source!=null && source.getNumArmies()>1)         
+            rm.fortificationIntent(source, dest);
         
         rm.finishPhase();
     }
