@@ -47,30 +47,26 @@ public class MapFileManagementTest {
 
     /**
      * Test of createBoard method, of class MapFileManagement.Null board.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
      */
-    @Test
-    public void testCreateBoard() {
-
-        int expResult = -7;
+    @Test(expected = MapFileManagement.MapInvalidException.class)
+    public void testCreateBoard()
+            throws MapFileManagement.MapFileManagementException {
         board = null;
-        int result = MapFileManagement.createBoard(path, board);
-        //Good path with correct file but not initialize board
-
-        assertEquals(expResult, result);
-
+        MapFileManagement.createBoard(path, board);
     }
 
     /**
      * Test of createBoard method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
      */
     @Test
-    public void testCreateBoard1() {
-
+    public void testCreateBoard1()
+            throws MapFileManagement.MapFileManagementException {
         //Good path with correct file and board!=null
-        int result = MapFileManagement.createBoard(path, board);
-        int expResult = 0;
-        assertEquals(expResult, result);
-
+        MapFileManagement.createBoard(path, board);
     }
 
     /**

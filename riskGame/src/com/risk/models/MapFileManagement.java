@@ -32,20 +32,21 @@ public class MapFileManagement {
      *
      * @param path the path provided from the user
      * @param board the map in the model
-     * @return 0 for an execution without errors
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
      */
-    public static int createBoard(String path, MapModel board) {
+    public static void createBoard(String path, MapModel board)
+            throws MapFileManagementException {
 
         int errorConfigurationInfo;
         String fileRead;
 
         if (board == null) {
-            return -7;
+            throw new MapInvalidException();
         }
 
         fileRead = readFile(path);
         if (fileRead == null || fileRead.equals("-1") || fileRead.equals("")) {
-            return -1;
+            throw new MapFileReadingException();
         }
 
         String[] stringSplit = fileRead.split(Pattern.quote("[Continents]"), 2);
@@ -53,7 +54,7 @@ public class MapFileManagement {
         if (stringSplit.length == 2) {
             errorConfigurationInfo = configurationInf(stringSplit[0], path, board);
             if (errorConfigurationInfo != 0) {
-                return -2;
+                throw new MapFileConfigException();
             }
 
             String[] stringSplit1 = stringSplit[1].split(Pattern.quote("[Territories]"), 2);
@@ -61,24 +62,25 @@ public class MapFileManagement {
 
                 errorConfigurationInfo = continentCreator(stringSplit1[0], board);
                 if (errorConfigurationInfo != 0) {
-                    return -3;
+                    throw new MapFileContinentException();
                 }
                 errorConfigurationInfo = territoryCreator(stringSplit1[1], board);
                 if (errorConfigurationInfo != 0) {
-                    return -4;
+                    throw new MapFileTerritoryException();
                 }
 
                 System.out.println("Board Created");
 
             } else {
-                return -5;
+                throw new MapFileNoTerritoriesException();
             }
         } else {
-            return -6;
+            throw new MapFileNoContinentsException();
         }
 
-        return 0;
-
+        if (!board.isValid()) {
+            throw new MapInvalidException();
+        }
     }
 
     /**
@@ -348,20 +350,20 @@ public class MapFileManagement {
      * @param path the path provided by the user it includes the name of the
      * file
      * @param board the map to read
-     * @return 0 success or -1 error
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
      */
-    public static int generateBoardFile(String path, MapModel board) {
-        String fileContent = "";
+    public static void generateBoardFile(String path, MapModel board)
+            throws MapFileManagementException {
+        String fileContent;
         String configuration = "[Map]\n";
         String continents = "[Continents]\n";
         String territories = "[Territories]\n";
-        int result = 0;
 
         if (!board.isValid()) {
-            return -7;
+            throw new MapInvalidException();
         }
         if (board == null) {
-            return -1;
+            throw new MapFileReadingException();
         }
 
         MapConfig mapConfig = board.getConfigurationInfo();
@@ -378,23 +380,15 @@ public class MapFileManagement {
         for (String terrName : board.getTerritoryList()) {
             TerritoryModel aux = board.getTerritoryByName(terrName);
             String adj = getAdj(aux);
-
-            if (result == 0) {
-                territories += aux.getName() + "," + aux.getPositionX() + "," + aux.getPositionY() + "," + aux.getContinentName();
-                if (!adj.isEmpty()) {
-                    territories += "," + adj;
-                }
-                territories += "\n";
-            } else {
-                return -1;
+            territories += aux.getName() + "," + aux.getPositionX() + "," + aux.getPositionY() + "," + aux.getContinentName();
+            if (!adj.isEmpty()) {
+                territories += "," + adj;
             }
-
+            territories += "\n";
         }
 
         fileContent = configuration + "\n" + continents + "\n" + territories;
-        result = savingFile(path, fileContent);
-        return result;
-
+        savingFile(path, fileContent);
     }
 
     /**
@@ -424,7 +418,7 @@ public class MapFileManagement {
      * @param fileContent is the contents for a file
      * @return success 0, or error -1
      */
-    private static int savingFile(String path, String fileContent) {
+    private static int savingFile(String path, String fileContent) throws MapFileReadingException {
         BufferedWriter bufferedWriter = null;
         try {
 
@@ -438,47 +432,20 @@ public class MapFileManagement {
             bufferedWriter.write(fileContent);
             return 0;
         } catch (IOException e) {
-            return -1;
+            throw new MapFileReadingException();
         } finally {
             try {
                 if (bufferedWriter != null) {
                     bufferedWriter.close();
                 }
-            } catch (Exception ex) {
-                return -1;
+            } catch (IOException ex) {
+                throw new MapFileReadingException();
             }
         }
 
     }
 
-    /**
-     * It provides the message in case of error in reading the map from a file
-     *
-     * @param resultReadingValidation it has a value between -1 and -6, each
-     * value represent a different error
-     * @return A string with the error message
-     */
-    public static String readingError(int resultReadingValidation) {
-        switch (resultReadingValidation) {
-            case -1:
-                return "Error reading the file";
-            case -2:
-                return "Error in parameters to configurate the map.";
-            case -3:
-                return "Error in continent information.";
-            case -4:
-                return "Error in territory information.";
-            case -5:
-                return "No territories separator in file.";
-            case -6:
-                return "No continents separator in file.";
-            case -7:
-                return "The map is not valid.";
-        }
-        return "Error in file format";
-    }
-
-    private static class MapFileManagementException extends Exception {
+    public static class MapFileManagementException extends Exception {
 
         public MapFileManagementException(String message) {
             super(message);
@@ -489,7 +456,7 @@ public class MapFileManagement {
         }
     }
 
-    private static class MapFileReadingException
+    public static class MapFileReadingException
             extends MapFileManagementException {
 
         public MapFileReadingException() {
@@ -497,7 +464,7 @@ public class MapFileManagement {
         }
     }
 
-    private static class MapFileConfigException
+    public static class MapFileConfigException
             extends MapFileManagementException {
 
         public MapFileConfigException() {
@@ -505,7 +472,7 @@ public class MapFileManagement {
         }
     }
 
-    private static class MapFileContinentException
+    public static class MapFileContinentException
             extends MapFileManagementException {
 
         public MapFileContinentException() {
@@ -513,15 +480,15 @@ public class MapFileManagement {
         }
     }
 
-    private static class MapFileTerritoryException
+    public static class MapFileTerritoryException
             extends MapFileManagementException {
 
         public MapFileTerritoryException() {
-            super("Error in continent information.");
+            super("Error in territory information.");
         }
     }
 
-    private static class MapFileNoTerritoriesException
+    public static class MapFileNoTerritoriesException
             extends MapFileManagementException {
 
         public MapFileNoTerritoriesException() {
@@ -529,7 +496,7 @@ public class MapFileManagement {
         }
     }
 
-    private static class MapFileNoContinentsException
+    public static class MapFileNoContinentsException
             extends MapFileManagementException {
 
         public MapFileNoContinentsException() {
@@ -537,7 +504,7 @@ public class MapFileManagement {
         }
     }
 
-    private static class MapInvalidException
+    public static class MapInvalidException
             extends MapFileManagementException {
 
         public MapInvalidException() {
