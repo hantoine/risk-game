@@ -58,6 +58,17 @@ public class MenuListenerTest {
     }
 
     @Test
+    public void testPlayButtonMapFileInvalidErrorConfigInfo() {
+        rv.setMapPathForNewGame("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "errorInConfigInfos.map");
+
+        instance.playButton();
+
+        assertEquals("Error in parameters to configurate the map.", rv.getMessage());
+    }
+
+    @Test
     public void testPlayButtonMapFileInvalidErrorContinentInfo() {
         rv.setMapPathForNewGame("." + File.separator
                 + "maps" + File.separator + "testcases" + File.separator
