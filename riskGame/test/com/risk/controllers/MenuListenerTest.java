@@ -58,6 +58,17 @@ public class MenuListenerTest {
     }
 
     @Test
+    public void testPlayButtonMapFileInvalidNoContinentSeparator() {
+        rv.setMapPathForNewGame("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "noContinentTag.map");
+
+        instance.playButton();
+
+        assertEquals("No continents separator in file.", rv.getMessage());
+    }
+
+    @Test
     public void testPlayButtonMapFileInvalidErrorTerritoryInfo() {
         rv.setMapPathForNewGame("." + File.separator
                 + "maps" + File.separator + "testcases" + File.separator
