@@ -78,6 +78,16 @@ public class MapEditorControllerTest {
                 dmv.getMessage());
     }
 
+    @Test
+    public void testloadMapFromFileNoContinentSep() {
+        instance.loadMapFromFile("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "noContinentTag.map", dmv);
+
+        assertEquals("No continents separator in file.",
+                dmv.getMessage());
+    }
+
     /**
      * Dummy view used to test that the view is correctly notified
      */
