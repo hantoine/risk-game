@@ -132,7 +132,6 @@ public class MenuListener extends MouseAdapter {
                     it.remove();
                 }
             }
-
         }
     }
 
