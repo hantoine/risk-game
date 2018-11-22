@@ -48,6 +48,16 @@ public class MapEditorControllerTest {
                 dmv.getMessage());
     }
 
+    @Test
+    public void testloadMapFromFileErrorInContinents() {
+        instance.loadMapFromFile("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "errorInContinentInfos.map", dmv);
+
+        assertEquals("Error in continent information.",
+                dmv.getMessage());
+    }
+
     /**
      * Dummy view used to test that the view is correctly notified
      */
