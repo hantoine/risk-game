@@ -8,6 +8,7 @@ package com.risk.controllers;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskViewInterface;
 import com.risk.views.menu.PlayerPanel;
+import java.io.File;
 import java.util.LinkedList;
 import java.util.Observable;
 import static org.junit.Assert.assertEquals;
@@ -43,6 +44,16 @@ public class MenuListenerTest {
         instance.playButton();
 
         assertEquals("You have not selected a map", rv.getMessage());
+    }
+
+    @Test
+    public void testPlayButtonMapInvalid() {
+        rv.setMapPathForNewGame("." + File.separator
+                + "maps" + File.separator + "Twin Volcano.map");
+
+        instance.playButton();
+
+        assertEquals("The map is not valid.", rv.getMessage());
     }
 
     /**
