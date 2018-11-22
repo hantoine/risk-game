@@ -614,6 +614,7 @@ public final class RiskModel extends Observable {
      */
     public void executeBeginningOfPhaseSteps() {
         System.out.println("tipo de phase: "+this.getPhase());
+        addNewLogEvent("", true);
         switch (this.getPhase()) {
             case STARTUP:
                 break;
