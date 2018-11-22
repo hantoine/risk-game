@@ -59,4 +59,11 @@ public interface RiskViewInterface extends Observer {
      * @return the player list for the new game
      */
     public LinkedList<PlayerPanel> getPlayersForNewGame();
+
+    /**
+     * Open a Message Dialog to show message to user
+     *
+     * @param message Text to be displayed in the message dialog
+     */
+    public void showMessage(String message);
 }
