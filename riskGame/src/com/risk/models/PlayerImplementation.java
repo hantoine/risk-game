@@ -37,7 +37,7 @@ public class PlayerImplementation extends PlayerModel {
         addNewLogEvent(String.format(
                 "%s starts its reinforcement phase",
                 getName()
-        ), true);
+        ));
         
     }
     
@@ -51,7 +51,7 @@ public class PlayerImplementation extends PlayerModel {
         addNewLogEvent(String.format(
                 "%s starts its fortification phase",
                 getName()
-        ), true);
+        ));
     }
 
     /**
@@ -63,7 +63,7 @@ public class PlayerImplementation extends PlayerModel {
         addNewLogEvent(String.format(
                 "%s starts its attack phase",
                 getName()
-        ), true);
+        ));
     }
     
     /**
