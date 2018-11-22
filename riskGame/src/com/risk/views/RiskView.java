@@ -149,6 +149,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      *
      * @param message Text to be displayed in the message dialog
      */
+    @Override
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
     }

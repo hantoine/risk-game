@@ -412,5 +412,10 @@ public class GameControllerTest {
         public LinkedList<PlayerPanel> getPlayersForNewGame() {
             throw new UnsupportedOperationException("Not supported yet.");
         }
+
+        @Override
+        public void showMessage(String message) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
     }
 }
