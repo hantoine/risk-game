@@ -10,6 +10,7 @@ import com.risk.views.RiskViewInterface;
 import com.risk.views.menu.PlayerPanel;
 import java.util.LinkedList;
 import java.util.Observable;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,8 +37,12 @@ public class MenuListenerTest {
     }
 
     @Test
-    public void testPlayButton() {
+    public void testPlayButtonNoPathSelected() {
+        rv.setMapPathForNewGame("");
 
+        instance.playButton();
+
+        assertEquals("You have not selected a map", rv.getMessage());
     }
 
     /**
@@ -46,6 +51,7 @@ public class MenuListenerTest {
     private static class DummyRiskView implements RiskViewInterface {
 
         String message;
+        String mapPathForNewGame;
 
         public DummyRiskView() {
         }
@@ -76,14 +82,16 @@ public class MenuListenerTest {
 
         @Override
         public void update(Observable o, Object o1) {
-            if (o instanceof RiskModel && o1 instanceof String) {
-                this.message = (String) o1;
-            }
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
         public String getMapPathForNewGame() {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return mapPathForNewGame;
+        }
+
+        public void setMapPathForNewGame(String mapPathForNewGame) {
+            this.mapPathForNewGame = mapPathForNewGame;
         }
 
         @Override
@@ -93,7 +101,7 @@ public class MenuListenerTest {
 
         @Override
         public void showMessage(String message) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            this.message = message;
         }
     }
 
