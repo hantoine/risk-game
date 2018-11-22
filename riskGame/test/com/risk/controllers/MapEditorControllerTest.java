@@ -6,6 +6,8 @@
 package com.risk.controllers;
 
 import com.risk.views.editor.MapViewInterface;
+import java.io.File;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,10 +30,12 @@ public class MapEditorControllerTest {
     }
 
     @Test
-    public void testloadMapFromFile() {
-        instance.loadMapFromFile("", dmv);
+    public void testloadMapFromFileNoFile() {
+        instance.loadMapFromFile("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "nonexistentmapfile.map", dmv);
 
-        //assertEquals();
+        assertEquals("Error reading the file", dmv.getMessage());
     }
 
     /**
@@ -46,8 +50,8 @@ public class MapEditorControllerTest {
             message = errorMessage;
         }
 
-        public void setMessage(String message) {
-            this.message = message;
+        public String getMessage() {
+            return message;
         }
     }
 
