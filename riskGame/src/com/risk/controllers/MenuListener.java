@@ -12,7 +12,6 @@ import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import com.risk.views.menu.DeletableButton;
-import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.menu.PlayerPanel;
 import java.awt.Color;
@@ -141,8 +140,7 @@ public class MenuListener extends MouseAdapter {
      *
      */
     public void playButton() {
-        NewGamePanel newGamePanel = this.getRiskView().getNewGamePanel();
-        String selectedPath = newGamePanel.getSelectFileTextField().getText();
+        String selectedPath = this.getRiskView().getMapPathForNewGame();
 
         if (selectedPath.equals("")) {
             this.getRiskView().showMessage("You have not selected a map");
