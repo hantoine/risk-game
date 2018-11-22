@@ -14,6 +14,7 @@ import com.risk.views.game.MapPanel;
 import com.risk.views.game.PhaseAuxiliar;
 import com.risk.views.game.PhaseView;
 import com.risk.views.menu.MenuView;
+import com.risk.views.menu.PlayerPanel;
 import com.risk.views.menu.StartMenuView;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -23,6 +24,7 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 import java.util.Observable;
 import javax.swing.BoxLayout;
 import javax.swing.JMenu;
@@ -217,6 +219,17 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     public String getMapPathForNewGame() {
         return this.getMenuPanel().getStartMenu().getNewGamePanel()
                 .getSelectFileTextField().getText();
+    }
+
+    /**
+     * Getter of the player list for the new game
+     *
+     * @return the player list for the new game
+     */
+    @Override
+    public LinkedList<PlayerPanel> getPlayersForNewGame() {
+        return this.getMenuPanel().getStartMenu().getNewGamePanel()
+                .getPlayersPanel().getPlayersArray();
     }
 
     /**

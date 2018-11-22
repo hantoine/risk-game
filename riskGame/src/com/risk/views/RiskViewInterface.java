@@ -8,6 +8,8 @@ package com.risk.views;
 import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
 import com.risk.models.RiskModel;
+import com.risk.views.menu.PlayerPanel;
+import java.util.LinkedList;
 import java.util.Observer;
 
 /**
@@ -50,4 +52,11 @@ public interface RiskViewInterface extends Observer {
      * @return the map path for the new game panel
      */
     public String getMapPathForNewGame();
+
+    /**
+     * Getter of the player list for the new game
+     *
+     * @return the player list for the new game
+     */
+    public LinkedList<PlayerPanel> getPlayersForNewGame();
 }
