@@ -66,4 +66,19 @@ public class Benevolent implements Strategy {
         rm.finishPhase();
     }
 
+    @Override
+    public void moveArmies(RiskModel rm) {
+        rm.getCurrentPlayer().moveArmiesAI();
+    }
+
+    @Override
+    public boolean exchangeCardsToArmies(RiskModel rm) {
+        return rm.getCurrentPlayer().exchangeCardsToArmiesAI();
+    }
+
+    @Override
+    public void defense(RiskModel rm) {
+        rm.getCurrentPlayer().defenseAI();
+    }
+
 }

@@ -14,6 +14,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents the model of the game
@@ -86,12 +88,9 @@ public final class RiskModel extends Observable {
      * @param isHuman true if it is human
      */
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
-        if (isHuman) {
-            players.add(new HumanPlayerModel(name, color, this));
-        } else {
-            players.add(new AIPlayerModel(name, color, this));
-        }
-
+        
+        players.add(PlayerFactory.getPlayer("HUMAN",name, color, this));
+        
         setChanged();
         notifyObservers();
     }

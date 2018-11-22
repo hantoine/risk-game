@@ -6,16 +6,16 @@
 package com.risk.models;
 
 import java.awt.Color;
-import java.util.LinkedList;
-import java.util.List;
+
 
 /**
  * It represents an human player (child of PlayerModel)
  *
  * @author Nellybett
  */
-public class HumanPlayerModel extends PlayerModel {
+public class PlayerImplementation extends PlayerModel {
 
+    private Strategy strategy;
     /**
      * Constructor from Player Model
      *
@@ -23,7 +23,7 @@ public class HumanPlayerModel extends PlayerModel {
      * @param color color of the player
      * @param game Game in which this players belongs
      */
-    public HumanPlayerModel(String name, Color color, RiskModel game) {
+    public PlayerImplementation(String name, Color color, RiskModel game) {
         super(name, color, true, game);
     }
 
@@ -32,10 +32,8 @@ public class HumanPlayerModel extends PlayerModel {
      */
     @Override
     public void reinforcement(RiskModel playGame) {
-        System.out.println("HUMAN REINFORCEMENT");
-        this.setHanded(false);
-        this.assignNewArmies();
-        System.out.println("Batallones disponibles"+this.getNbArmiesAvailable());
+        strategy.reinforcement(playGame);
+   
         addNewLogEvent(String.format(
                 "%s starts its reinforcement phase",
                 getName()
@@ -43,13 +41,13 @@ public class HumanPlayerModel extends PlayerModel {
         
     }
     
-  
     
     /**
      * Fortification phase for Human Player
      */
     @Override
     public void fortification(RiskModel playGame) {
+        strategy.fortification(playGame);
         addNewLogEvent(String.format(
                 "%s starts its fortification phase",
                 getName()
@@ -61,49 +59,43 @@ public class HumanPlayerModel extends PlayerModel {
      */
     @Override
     public void attack(RiskModel playGame) {
+        strategy.attack(playGame);
         addNewLogEvent(String.format(
                 "%s starts its attack phase",
                 getName()
         ), true);
     }
+    
+    /**
+     * @return the strategy
+     */
+    public Strategy getStrategy() {
+        return strategy;
+    }
 
     /**
-     * Exchange selected cards
-     *
-     * @return true success; false error
+     * @param strategy the strategy to set
      */
-    @Override
-    public boolean exchangeCardsToArmies() {
-        List<String> selectedCards = this.getHand().getSelectedCards();
-        LinkedList<String> typeOfArmie = new LinkedList<>();
-        this.getHand().getCards().stream()
-                .filter(c -> selectedCards.contains(c.getTerritoryName()))
-                .forEach(cs -> typeOfArmie.add(cs.getTypeOfArmie()));
-
-        boolean areEqual = typeOfArmie.stream()
-                .allMatch(a -> a.equals(typeOfArmie.getFirst()));
-        boolean different = !(typeOfArmie.get(0).equals(typeOfArmie.get(1))) && !(typeOfArmie.get(0).equals(typeOfArmie.get(2))) && !(typeOfArmie.get(2).equals(typeOfArmie.get(1)));
-
-        if (areEqual || different) {
-            super.setHanded(true);
-            this.getHand().removeCards(selectedCards, super.game.getDeck());
-            armiesCardAssignation();
-            this.setChanged();
-            this.notifyObservers(super.game);
-            return true;
-        } else {
-            return false;
-        }
-
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
     }
 
+    
+    @Override
+    boolean exchangeCardsToArmies() {
+        return strategy.exchangeCardsToArmies(this.game);
+    }
+
+    
     @Override
     public void defense() {
-     
+        strategy.defense(this.game);
     }
 
+    
     @Override
     public void moveArmies() {
+        strategy.moveArmies(this.game);
     }
 
 }

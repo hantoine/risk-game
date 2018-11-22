@@ -22,5 +22,7 @@ public interface Strategy {
     public abstract void reinforcement(RiskModel playGame);
     public abstract void attack(RiskModel playGame);
     public abstract void fortification(RiskModel playGame);
-    
+    public abstract void moveArmies(RiskModel rm);
+    abstract boolean exchangeCardsToArmies(RiskModel rm);
+    public abstract void defense(RiskModel rm);
 }
