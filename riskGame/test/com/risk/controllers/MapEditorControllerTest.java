@@ -38,6 +38,16 @@ public class MapEditorControllerTest {
         assertEquals("Error reading the file", dmv.getMessage());
     }
 
+    @Test
+    public void testloadMapFromFileErrorInConfig() {
+        instance.loadMapFromFile("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "errorInConfigInfos.map", dmv);
+
+        assertEquals("Error in parameters to configurate the map.",
+                dmv.getMessage());
+    }
+
     /**
      * Dummy view used to test that the view is correctly notified
      */
