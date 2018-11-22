@@ -285,9 +285,11 @@ public class MapEditorController {
      */
     public void loadMapFromFile(String path, MapViewInterface view) {
         MapModel map = new MapModel();
-        int errorCode;
-        if ((errorCode = MapFileManagement.createBoard(path, map)) < 0) {
-            view.showError(MapFileManagement.readingError(errorCode));
+
+        try {
+            MapFileManagement.createBoard(path, map);
+        } catch (MapFileManagement.MapFileManagementException ex) {
+            view.showError(ex.getMessage());
             return;
         }
 
@@ -335,12 +337,6 @@ public class MapEditorController {
             });
         });
 
-        if (!map.isValid()) {
-            this.newMap.clearMap();
-            view.showError(MapFileManagement.readingError(-7));
-            return;
-        }
-
         updateConfigurationInfo(map);
     }
 
@@ -362,10 +358,11 @@ public class MapEditorController {
      * file
      *
      * @param path path to the new file
-     * @return the erroCode returned by the map saving method
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
      */
-    public int saveMapToFile(String path) {
-        return MapFileManagement.generateBoardFile(path, this.newMap);
+    public void saveMapToFile(String path)
+            throws MapFileManagement.MapFileManagementException {
+        MapFileManagement.generateBoardFile(path, this.newMap);
     }
 
     /**

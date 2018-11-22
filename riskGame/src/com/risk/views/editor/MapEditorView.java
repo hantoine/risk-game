@@ -9,8 +9,8 @@ import com.risk.controllers.MapEditorController;
 import com.risk.models.MapConfig;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
-import com.risk.models.TerritoryModel;
 import com.risk.models.MapUpdateTypes;
+import com.risk.models.TerritoryModel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -250,12 +250,10 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
             if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                 String filepath = fileChooser.getSelectedFile().getAbsolutePath();
 
-                //map saving
-                int errorCode = editorController.saveMapToFile(filepath);
-                System.out.println("error code: " + Integer.toString(errorCode));
-                if (errorCode != 0) {
-
-                    this.mapPanel.showError(MapFileManagement.readingError(errorCode));
+                try {
+                    editorController.saveMapToFile(filepath);
+                } catch (MapFileManagement.MapFileManagementException ex) {
+                    this.mapPanel.showError(ex.getMessage());
                 }
             }
         });

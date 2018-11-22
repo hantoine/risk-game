@@ -147,17 +147,15 @@ public class MenuListener extends MouseAdapter {
             return;
         }
         MapModel map = new MapModel();
-        int resultReadingValidation = MapFileManagement.createBoard(selectedPath, map);
-        if (resultReadingValidation != 0) {
-            this.getRiskView().showMessage(MapFileManagement.readingError(resultReadingValidation));
-            return;
-        }
-        getRiskModel().setMap(map);
 
-        if (!getRiskModel().getMap().isValid()) {
-            this.getRiskView().showMessage(MapFileManagement.readingError(-7));
+        try {
+            MapFileManagement.createBoard(selectedPath, map);
+        } catch (MapFileManagement.MapFileManagementException ex) {
+            this.getRiskView().showMessage(ex.getMessage());
             return;
         }
+
+        getRiskModel().setMap(map);
 
         LinkedList<PlayerPanel> listPlayerPanels = this.getRiskView()
                 .getPlayersForNewGame();
