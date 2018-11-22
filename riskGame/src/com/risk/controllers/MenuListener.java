@@ -11,6 +11,7 @@ import com.risk.models.MapModel;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
+import com.risk.views.RiskViewInterface;
 import com.risk.views.menu.DeletableButton;
 import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.menu.PlayerPanel;
@@ -38,7 +39,7 @@ public class MenuListener extends MouseAdapter {
     /**
      * riskView it is a reference to the main view in the game
      */
-    private RiskView riskView;
+    private RiskViewInterface riskView;
     /**
      * playerList it is a reference to the view that has a list of player panels
      * in the menu
@@ -56,7 +57,7 @@ public class MenuListener extends MouseAdapter {
      * @param riskView the view to show elements
      * @param riskController the principal controller to start the game
      */
-    public MenuListener(RiskModel riskModel, RiskView riskView, RiskController riskController) {
+    public MenuListener(RiskModel riskModel, RiskViewInterface riskView, RiskController riskController) {
         this.riskModel = riskModel;
         this.riskView = riskView;
         this.riskController = riskController;
@@ -181,7 +182,6 @@ public class MenuListener extends MouseAdapter {
         }
         this.getRiskView().closeMenu();
         this.getRiskController().playGame();
-
     }
 
     /**
@@ -207,7 +207,7 @@ public class MenuListener extends MouseAdapter {
      *
      * @return the riskView
      */
-    public RiskView getRiskView() {
+    public RiskViewInterface getRiskView() {
         return riskView;
     }
 
