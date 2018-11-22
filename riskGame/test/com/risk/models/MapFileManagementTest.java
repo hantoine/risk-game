@@ -205,6 +205,8 @@ public class MapFileManagementTest {
 
     /**
      * Test of territoryCreator method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileTerritoryException
      */
     @Test(expected = MapFileManagement.MapFileTerritoryException.class)
     public void testTerritoryCreator()
