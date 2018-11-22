@@ -477,4 +477,72 @@ public class MapFileManagement {
         }
         return "Error in file format";
     }
+
+    private static class MapFileManagementException extends Exception {
+
+        public MapFileManagementException(String message) {
+            super(message);
+        }
+
+        public MapFileManagementException() {
+            super("Error in file format");
+        }
+    }
+
+    private static class MapFileReadingException
+            extends MapFileManagementException {
+
+        public MapFileReadingException() {
+            super("Error reading the file");
+        }
+    }
+
+    private static class MapFileConfigException
+            extends MapFileManagementException {
+
+        public MapFileConfigException() {
+            super("Error in parameters to configurate the map.");
+        }
+    }
+
+    private static class MapFileContinentException
+            extends MapFileManagementException {
+
+        public MapFileContinentException() {
+            super("Error in continent information.");
+        }
+    }
+
+    private static class MapFileTerritoryException
+            extends MapFileManagementException {
+
+        public MapFileTerritoryException() {
+            super("Error in continent information.");
+        }
+    }
+
+    private static class MapFileNoTerritoriesException
+            extends MapFileManagementException {
+
+        public MapFileNoTerritoriesException() {
+            super("No territories separator in file.");
+        }
+    }
+
+    private static class MapFileNoContinentsException
+            extends MapFileManagementException {
+
+        public MapFileNoContinentsException() {
+            super("No continents separator in file.");
+        }
+    }
+
+    private static class MapInvalidException
+            extends MapFileManagementException {
+
+        public MapInvalidException() {
+            super("The map is not valid.");
+        }
+    }
+
 }
