@@ -10,9 +10,10 @@ import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
 import com.risk.models.TerritoryModel;
 import com.risk.views.editor.ContinentListPanel;
-import com.risk.views.editor.TerritoryButton2;
 import com.risk.views.editor.MapEditorView;
 import com.risk.views.editor.MapView;
+import com.risk.views.editor.MapViewInterface;
+import com.risk.views.editor.TerritoryButton2;
 import com.risk.views.editor.Tools;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -282,7 +283,7 @@ public class MapEditorController {
      * being loaded
      * @param view view of the map being edited
      */
-    public void loadMapFromFile(String path, MapView view) {
+    public void loadMapFromFile(String path, MapViewInterface view) {
         MapModel map = new MapModel();
         int errorCode;
         if ((errorCode = MapFileManagement.createBoard(path, map)) < 0) {
