@@ -50,33 +50,32 @@ public class MapFileManagement {
         }
 
         String[] stringSplit = fileRead.split(Pattern.quote("[Continents]"), 2);
-
-        if (stringSplit.length == 2) {
-            errorConfigurationInfo = configurationInf(stringSplit[0], path, board);
-            if (errorConfigurationInfo != 0) {
-                throw new MapFileConfigException();
-            }
-
-            String[] stringSplit1 = stringSplit[1].split(Pattern.quote("[Territories]"), 2);
-            if (stringSplit1.length == 2) {
-
-                errorConfigurationInfo = continentCreator(stringSplit1[0], board);
-                if (errorConfigurationInfo != 0) {
-                    throw new MapFileContinentException();
-                }
-                errorConfigurationInfo = territoryCreator(stringSplit1[1], board);
-                if (errorConfigurationInfo != 0) {
-                    throw new MapFileTerritoryException();
-                }
-
-                System.out.println("Board Created");
-
-            } else {
-                throw new MapFileNoTerritoriesException();
-            }
-        } else {
+        if (stringSplit.length != 2) {
             throw new MapFileNoContinentsException();
         }
+
+        errorConfigurationInfo = configurationInf(stringSplit[0], path, board);
+        if (errorConfigurationInfo != 0) {
+            throw new MapFileConfigException();
+        }
+
+        String[] stringSplit1 = stringSplit[1].split(
+                Pattern.quote("[Territories]"), 2);
+        if (stringSplit1.length != 2) {
+            throw new MapFileNoTerritoriesException();
+        }
+
+        errorConfigurationInfo = continentCreator(stringSplit1[0], board);
+        if (errorConfigurationInfo != 0) {
+            throw new MapFileContinentException();
+        }
+
+        errorConfigurationInfo = territoryCreator(stringSplit1[1], board);
+        if (errorConfigurationInfo != 0) {
+            throw new MapFileTerritoryException();
+        }
+
+        System.out.println("Board Created");
 
         if (!board.isValid()) {
             throw new MapInvalidException();
