@@ -5,7 +5,7 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.HumanPlayerModel;
+import com.risk.models.PlayerImplementation;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
 import com.risk.models.PlayerFactory;

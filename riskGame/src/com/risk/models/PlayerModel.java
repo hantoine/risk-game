@@ -536,7 +536,7 @@ public abstract class PlayerModel extends Observable {
      *
      * @return true if the cards are equal or different; false in other case
      */
-    abstract boolean exchangeCardsToArmies();
+    
 
     /**
      * Adds a card to the player's hand from the deck
@@ -612,8 +612,6 @@ public abstract class PlayerModel extends Observable {
         setChanged();
         notifyObservers();
     }
-
-    public abstract void defense();
     
       
     public void setAttackValues(int diceAttack){
@@ -656,7 +654,7 @@ public abstract class PlayerModel extends Observable {
         }
     }
 
-    public abstract void moveArmies();
+    
     /**
      * Conquer a territory after an attack
      *
@@ -812,4 +810,74 @@ public abstract class PlayerModel extends Observable {
             this.getHand().addCardToPlayerHand(c);
         });
     }
+    
+    
+    /**
+     * Exchange selected cards
+     *
+     * @return true success; false error
+     */
+    public boolean exchangeCardsToArmiesHuman() {
+        List<String> selectedCards = this.getHand().getSelectedCards();
+        LinkedList<String> typeOfArmie = new LinkedList<>();
+        this.getHand().getCards().stream()
+                .filter(c -> selectedCards.contains(c.getTerritoryName()))
+                .forEach(cs -> typeOfArmie.add(cs.getTypeOfArmie()));
+
+        boolean areEqual = typeOfArmie.stream()
+                .allMatch(a -> a.equals(typeOfArmie.getFirst()));
+        boolean different = !(typeOfArmie.get(0).equals(typeOfArmie.get(1))) && !(typeOfArmie.get(0).equals(typeOfArmie.get(2))) && !(typeOfArmie.get(2).equals(typeOfArmie.get(1)));
+
+        if (areEqual || different) {
+            this.setHanded(true);
+            this.getHand().removeCards(selectedCards, this.game.getDeck());
+            armiesCardAssignation();
+            this.setChanged();
+            this.notifyObservers(this.game);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    
+    public void moveArmiesAI() {
+        System.out.println("MOVER LOS BATALLONES"+this.getCurrentAttack());
+        if(this.getCurrentAttack()!=null){
+            if (this.getCurrentAttack().getDest().getNumArmies()==0) {
+                System.out.println("Numero de dados : "+this.getCurrentAttack().getNbDiceAttack());
+                int diceAttack = this.getCurrentAttack().getNbDiceAttack();
+                this.game.getGc().moveArmiesToConqueredTerritory(diceAttack);
+            }
+        }
+    }
+    
+    public void defenseAI() {
+        this.game.getCurrentPlayer().setDefenseValues(2);
+        this.game.performAttack(this.game.getCurrentPlayer());
+        this.game.getCurrentPlayer().moveArmies();
+        this.game.setAttackPhase(true);
+        this.game.executeBeginningOfPhaseSteps();
+    }
+
+    public boolean exchangeCardsToArmiesAI() {
+        int[] cardDuplicates = this.getHand().getCardDuplicates();
+        
+        if (cardDuplicates[0] >= 3) {
+            this.getHand().removeCards("infantry", this.game.getDeck());
+        } else if (cardDuplicates[1] >= 3) {
+            this.getHand().removeCards("cavalry", this.game.getDeck());
+        } else if (cardDuplicates[2] >= 3) {
+            this.getHand().removeCards("artillery", this.game.getDeck());
+        } else {
+            this.getHand().removeCards("different", this.game.getDeck());
+        }
+        armiesCardAssignation();
+        return true;
+    }
+    
+    public abstract void moveArmies();
+    abstract boolean exchangeCardsToArmies();
+    public abstract void defense();
 }
