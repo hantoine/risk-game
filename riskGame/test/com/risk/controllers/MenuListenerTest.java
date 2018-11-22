@@ -69,6 +69,17 @@ public class MenuListenerTest {
     }
 
     @Test
+    public void testPlayButtonNoMapFileInvalid() {
+        rv.setMapPathForNewGame("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "nonexistentmapfile.map");
+
+        instance.playButton();
+
+        assertEquals("Error reading the file", rv.getMessage());
+    }
+
+    @Test
     public void testPlayButtonMapInvalid() {
         rv.setMapPathForNewGame("." + File.separator
                 + "maps" + File.separator + "Twin Volcano.map");
