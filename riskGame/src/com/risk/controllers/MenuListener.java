@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 /**
  * It listens to Mouse events in the initial menu
@@ -114,7 +115,7 @@ public class MenuListener extends MouseAdapter {
     public void minusButton(JButton addPlayer) {
 
         if ((this.getPlayerList().getPlayersArray().size()) <= 3) {
-            this.getRiskView().showMessage("You need at least three players to play the game.");
+            JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
         } else {
             DeletableButton buttonToDelete = (DeletableButton) addPlayer;
             int IDtoDelete = buttonToDelete.getID();
@@ -138,9 +139,8 @@ public class MenuListener extends MouseAdapter {
     /**
      * This method is for add player
      *
-     * @param addPlayer the new player which is added
      */
-    public void playButton(JButton addPlayer) {
+    public void playButton() {
         NewGamePanel newGamePanel = this.getRiskView().getNewGamePanel();
         String selectedPath = newGamePanel.getSelectFileTextField().getText();
 
