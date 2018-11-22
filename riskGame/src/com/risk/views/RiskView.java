@@ -63,7 +63,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      */
     final private InstructionsPanel stagePanel;
     /**
-     * 
+     *
      */
     final private PhaseView phaseView;
 
@@ -102,6 +102,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
 
     /**
      * This method is for add the observre
+     *
      * @param rm the risk model which is gonna be added the observer
      */
     @Override
@@ -121,7 +122,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     }
 
     /**
-     * 
+     *
      * @param rm the model which is gonna be updated the view
      * @param newMap the new map which is gonna be updated
      */
@@ -147,7 +148,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      *
      * @param message Text to be displayed in the message dialog
      */
-    void showMessage(String message) {
+    public void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
 
@@ -302,9 +303,9 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     }
 
     /**
-     * 
+     *
      * @param o the observer
-     * @param o1  the object
+     * @param o1 the object
      */
     @Override
     public void update(Observable o, Object o1) {

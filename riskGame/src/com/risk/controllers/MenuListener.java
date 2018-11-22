@@ -23,7 +23,6 @@ import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 
 /**
  * It listens to Mouse events in the initial menu
@@ -91,7 +90,7 @@ public class MenuListener extends MouseAdapter {
             case "    ":
                 Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
                 if (this.getPlayerList().getColorUsed().contains(selectedColor)) {
-                    JOptionPane.showMessageDialog(null, "This color is already used");
+                    this.getRiskView().showMessage("This color is already used");
                 } else {
                     this.getPlayerList().getColorUsed().remove(addPlayer.getBackground());
                     this.getPlayerList().getColorUsed().add(selectedColor);
@@ -109,12 +108,13 @@ public class MenuListener extends MouseAdapter {
 
     /**
      * This method is for minus the player
+     *
      * @param addPlayer the player which is gonna be delete
      */
     public void minusButton(JButton addPlayer) {
 
         if ((this.getPlayerList().getPlayersArray().size()) <= 3) {
-            JOptionPane.showMessageDialog(null, "You need at least three players to play the game.");
+            this.getRiskView().showMessage("You need at least three players to play the game.");
         } else {
             DeletableButton buttonToDelete = (DeletableButton) addPlayer;
             int IDtoDelete = buttonToDelete.getID();
@@ -137,6 +137,7 @@ public class MenuListener extends MouseAdapter {
 
     /**
      * This method is for add player
+     *
      * @param addPlayer the new player which is added
      */
     public void playButton(JButton addPlayer) {
@@ -144,19 +145,19 @@ public class MenuListener extends MouseAdapter {
         String selectedPath = newGamePanel.getSelectFileTextField().getText();
 
         if (selectedPath.equals("")) {
-            JOptionPane.showMessageDialog(null, "You have not selected a map");
+            this.getRiskView().showMessage("You have not selected a map");
             return;
         }
         MapModel map = new MapModel();
         int resultReadingValidation = MapFileManagement.createBoard(selectedPath, map);
         if (resultReadingValidation != 0) {
-            JOptionPane.showMessageDialog(null, MapFileManagement.readingError(resultReadingValidation));
+            this.getRiskView().showMessage(MapFileManagement.readingError(resultReadingValidation));
             return;
         }
         getRiskModel().setMap(map);
 
         if (!getRiskModel().getMap().isValid()) {
-            JOptionPane.showMessageDialog(null, MapFileManagement.readingError(-7));
+            this.getRiskView().showMessage(MapFileManagement.readingError(-7));
             return;
         }
 
@@ -175,7 +176,7 @@ public class MenuListener extends MouseAdapter {
         this.getRiskModel().setPlayerList(listPlayers);
 
         if (!this.getRiskModel().validateTerritories()) {
-            JOptionPane.showMessageDialog(null, "No enough territories in this map for the number of players. Select another map.");
+            this.getRiskView().showMessage("No enough territories in this map for the number of players. Select another map.");
             return;
         }
         this.getRiskView().closeMenu();
