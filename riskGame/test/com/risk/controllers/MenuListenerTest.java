@@ -47,6 +47,17 @@ public class MenuListenerTest {
     }
 
     @Test
+    public void testPlayButtonMapFileInvalid() {
+        rv.setMapPathForNewGame("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "noterritoryTAG.map");
+
+        instance.playButton();
+
+        assertEquals("No territories separator in file.", rv.getMessage());
+    }
+
+    @Test
     public void testPlayButtonMapInvalid() {
         rv.setMapPathForNewGame("." + File.separator
                 + "maps" + File.separator + "Twin Volcano.map");
