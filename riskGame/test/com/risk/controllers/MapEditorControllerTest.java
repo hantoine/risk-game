@@ -68,6 +68,16 @@ public class MapEditorControllerTest {
                 dmv.getMessage());
     }
 
+    @Test
+    public void testloadMapFromFileNoTerritorySep() {
+        instance.loadMapFromFile("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "noterritoryTAG.map", dmv);
+
+        assertEquals("No territories separator in file.",
+                dmv.getMessage());
+    }
+
     /**
      * Dummy view used to test that the view is correctly notified
      */
