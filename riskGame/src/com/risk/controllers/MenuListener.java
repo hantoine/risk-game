@@ -99,7 +99,7 @@ public class MenuListener extends MouseAdapter {
                 }
                 break;
             case "PLAY":
-                playButton(addPlayer);
+                playButton();
                 break;
             default:
                 break;
@@ -159,7 +159,8 @@ public class MenuListener extends MouseAdapter {
             return;
         }
 
-        LinkedList<PlayerPanel> listPlayerPanels = newGamePanel.getPlayersPanel().getPlayersArray();
+        LinkedList<PlayerPanel> listPlayerPanels = this.getRiskView()
+                .getPlayersForNewGame();
         LinkedList<PlayerModel> listPlayers = new LinkedList<>();
         for (int i = 0; i < listPlayerPanels.size(); i++) {
             PlayerPanel player = listPlayerPanels.get(i);
@@ -174,7 +175,8 @@ public class MenuListener extends MouseAdapter {
         this.getRiskModel().setPlayerList(listPlayers);
 
         if (!this.getRiskModel().validateTerritories()) {
-            this.getRiskView().showMessage("No enough territories in this map for the number of players. Select another map.");
+            this.getRiskView().showMessage("No enough territories in this map "
+                    + "for the number of players. Select another map.");
             return;
         }
         this.getRiskView().closeMenu();
