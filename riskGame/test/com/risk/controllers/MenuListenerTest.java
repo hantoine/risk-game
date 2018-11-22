@@ -47,6 +47,39 @@ public class MenuListenerTest {
     }
 
     @Test
+    public void testPlayButtonNoMapFileInvalid() {
+        rv.setMapPathForNewGame("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "nonexistentmapfile.map");
+
+        instance.playButton();
+
+        assertEquals("Error reading the file", rv.getMessage());
+    }
+
+    @Test
+    public void testPlayButtonMapFileInvalidErrorContinentInfo() {
+        rv.setMapPathForNewGame("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "errorInContinentInfos.map");
+
+        instance.playButton();
+
+        assertEquals("Error in continent information.", rv.getMessage());
+    }
+
+    @Test
+    public void testPlayButtonMapFileInvalidErrorTerritoryInfo() {
+        rv.setMapPathForNewGame("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "continentmissing.map");
+
+        instance.playButton();
+
+        assertEquals("Error in territory information.", rv.getMessage());
+    }
+
+    @Test
     public void testPlayButtonMapFileInvalidNoTerritorySeparator() {
         rv.setMapPathForNewGame("." + File.separator
                 + "maps" + File.separator + "testcases" + File.separator
@@ -66,28 +99,6 @@ public class MenuListenerTest {
         instance.playButton();
 
         assertEquals("No continents separator in file.", rv.getMessage());
-    }
-
-    @Test
-    public void testPlayButtonMapFileInvalidErrorTerritoryInfo() {
-        rv.setMapPathForNewGame("." + File.separator
-                + "maps" + File.separator + "testcases" + File.separator
-                + "continentmissing.map");
-
-        instance.playButton();
-
-        assertEquals("Error in territory information.", rv.getMessage());
-    }
-
-    @Test
-    public void testPlayButtonNoMapFileInvalid() {
-        rv.setMapPathForNewGame("." + File.separator
-                + "maps" + File.separator + "testcases" + File.separator
-                + "nonexistentmapfile.map");
-
-        instance.playButton();
-
-        assertEquals("Error reading the file", rv.getMessage());
     }
 
     @Test
