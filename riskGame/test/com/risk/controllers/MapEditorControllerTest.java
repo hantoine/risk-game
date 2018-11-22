@@ -58,6 +58,16 @@ public class MapEditorControllerTest {
                 dmv.getMessage());
     }
 
+    @Test
+    public void testloadMapFromFileErrorInTerritory() {
+        instance.loadMapFromFile("." + File.separator
+                + "maps" + File.separator + "testcases" + File.separator
+                + "continentmissing.map", dmv);
+
+        assertEquals("Error in territory information.",
+                dmv.getMessage());
+    }
+
     /**
      * Dummy view used to test that the view is correctly notified
      */
