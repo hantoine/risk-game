@@ -44,11 +44,6 @@ public class NewGamePanel extends JPanel {
     private JButton play;
 
     /**
-     * Button to open the map editor.
-     */
-    private final JButton openMapEditor;
-
-    /**
      * Panel to either select or edit a new map.
      */
     JPanel mapSelectAndEdit;
@@ -99,7 +94,6 @@ public class NewGamePanel extends JPanel {
                 }
             }
         });
-        this.openMapEditor = new JButton("Open map editor");
         this.text = new JLabel(" ");
 
         this.mapSelector.setLayout(new FlowLayout());
@@ -110,7 +104,6 @@ public class NewGamePanel extends JPanel {
         this.mapSelectAndEdit = new JPanel();
         this.mapSelectAndEdit.setLayout(new BoxLayout(mapSelectAndEdit, BoxLayout.Y_AXIS));
         this.mapSelectAndEdit.add(this.mapSelector);
-        this.mapSelectAndEdit.add(this.openMapEditor);
         this.mapSelectAndEdit.add(this.text);
 
         //players panel
@@ -142,15 +135,6 @@ public class NewGamePanel extends JPanel {
      */
     public void setPlayersPanel(PlayerListPanel playersPanel) {
         this.playersPanel = playersPanel;
-    }
-
-    /**
-     * Getter of the button to open the map editor.
-     *
-     * @return return the map edistor
-     */
-    public JButton getOpenMapEditor() {
-        return this.openMapEditor;
     }
 
     /**

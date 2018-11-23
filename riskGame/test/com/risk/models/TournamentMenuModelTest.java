@@ -20,14 +20,14 @@ import org.junit.Test;
  */
 public class TournamentMenuModelTest {
 
-    TournamentMenuModel instance;
+    TournamentModel instance;
 
     public TournamentMenuModelTest() {
     }
 
     @Before
     public void setUp() {
-        instance = new TournamentMenuModel();
+        instance = new TournamentModel();
     }
 
     /**

@@ -5,9 +5,8 @@
  */
 package com.risk.main;
 
-import com.risk.controllers.RiskController;
-import com.risk.models.RiskModel;
-import com.risk.views.RiskView;
+import com.risk.controllers.MainMenuController;
+import com.risk.views.MainMenuView;
 
 /**
  * Main of the game
@@ -22,9 +21,8 @@ public class RiskMain {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        RiskModel riskModel = new RiskModel();
-        RiskView riskView = new RiskView();
-        RiskController riskController = new RiskController(riskModel, riskView);
-        riskView.setController(riskController);
+        MainMenuView mmv = new MainMenuView();
+        MainMenuController mmc = new MainMenuController(mmv);
+        mmv.setController(mmc);
     }
 }
