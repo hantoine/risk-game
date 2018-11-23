@@ -93,7 +93,7 @@ public class PlayerListPanel extends JPanel {
         this.setBackground(Color.white);
     }
 
-    void setMouseListener(MouseAdapter listener) {
+    public void setMouseListener(MouseAdapter listener) {
         addPlayerButton.addMouseListener(listener);
         this.menuListener = listener;
     }
@@ -112,7 +112,7 @@ public class PlayerListPanel extends JPanel {
         }
     }
 
-    void setMaxNbPlayers(int maxNbPlayers) {
+    public void setMaxNbPlayers(int maxNbPlayers) {
         this.maxNbPlayers = maxNbPlayers;
     }
 
