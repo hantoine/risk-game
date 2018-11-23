@@ -142,7 +142,7 @@ public class GameController {
                 rm.getCurrentPlayer().moveArmies();
                 rm.setAttackPhase(true);
                 if(rm.getPhase()==GamePhase.ATTACK)
-                    rm.executeBeginningOfPhaseSteps();
+                    rm.executeAttack();
         } else {
             rm.getCurrentPlayer().setAttackValues(nbDice);
             rm.setAttackPhase(false);
@@ -157,7 +157,7 @@ public class GameController {
         rm.getCurrentPlayer().moveArmies();
         rm.setAttackPhase(true);
         if(rm.getPhase()==GamePhase.ATTACK)
-            rm.executeBeginningOfPhaseSteps();
+            rm.executeAttack();
     }
     
     /**

@@ -51,7 +51,7 @@ public class Aggressive implements Strategy {
                         
             }else{
                 System.out.println("SE ACABO EL ATAQUE AGRESIVO");
-                rm.executeBeginningOfPhaseSteps();
+                rm.executeAttack();
             }
         }else{
             rm.finishPhase();

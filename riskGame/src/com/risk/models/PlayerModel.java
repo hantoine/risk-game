@@ -858,7 +858,7 @@ public abstract class PlayerModel extends Observable {
         this.game.performAttack(this.game.getCurrentPlayer());
         this.game.getCurrentPlayer().moveArmies();
         this.game.setAttackPhase(true);
-        this.game.executeBeginningOfPhaseSteps();
+        this.game.executeAttack();
     }
 
     public boolean exchangeCardsToArmiesAI() {
