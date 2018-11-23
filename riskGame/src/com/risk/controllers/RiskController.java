@@ -9,6 +9,9 @@ import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import com.risk.views.editor.MapEditorView;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 /**
  * It is the Game-driver
@@ -136,14 +139,19 @@ public final class RiskController {
     public GameController getGameController() {
         return gameController;
     }
-    
+
     /**
      * Method to save the state of the current game being played
      */
-    public void saveGame(){
-        //create the object which will to the saving in files
-        SaverLoader saver = new SaverLoader(this.modelRisk);
-        //actually save the game
-        saver.saveGame("test_save");
+    public void saveGame() {
+        try {
+            FileOutputStream fileOut = new FileOutputStream("game.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this.modelRisk);
+            out.close();
+            fileOut.close();
+
+        } catch (IOException i) {
+        }
     }
 }
