@@ -14,7 +14,7 @@ import java.util.Set;
  *
  * @author hantoine
  */
-public class TournamentMenuModel {
+public class TournamentModel {
 
     /**
      * Set of the paths of the map to use in the tournament
@@ -37,7 +37,7 @@ public class TournamentMenuModel {
     /**
      * Constructor
      */
-    public TournamentMenuModel() {
+    public TournamentModel() {
         mapsPaths = new LinkedHashSet<>();
         playerStategies = new LinkedHashSet<>();
         nbGamePerMap = 4;

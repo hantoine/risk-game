@@ -5,7 +5,6 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import com.risk.views.editor.MapEditorView;
@@ -62,19 +61,6 @@ public final class RiskController {
         this.gameController = new GameController(this.modelRisk);
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.setVisible(true);
-    }
-
-    /**
-     * Opens a new map editor view.
-     */
-    public void openMapEditor() {
-        MapModel newMap = new MapModel();
-        MapEditorController editorController = new MapEditorController(newMap);
-        this.mapEditor = new MapEditorView(1000, 600, editorController, newMap);
-        this.mapEditor.setVisible(true);
-        newMap.addObserver(mapEditor);
-        newMap.addObserver(mapEditor.getMapView());
-        newMap.addObserver(mapEditor.getContinentListPanel());
     }
 
     /**

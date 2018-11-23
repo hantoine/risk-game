@@ -74,7 +74,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         super("Risk Game");
 
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        this.setResizable(true);
+        this.setResizable(false);
 
         this.phaseAuxiliarPanel = new PhaseAuxiliar();
 
@@ -172,10 +172,6 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
                 rc.newGameMenuItemPressed();
             });
         }
-
-        this.getMenuPanel().getStartMenu().getNewGamePanel().getOpenMapEditor().addActionListener(e -> {
-            rc.openMapEditor();
-        });
 
         phaseAuxiliarPanel.setListeners(rc.getGameController());
     }
