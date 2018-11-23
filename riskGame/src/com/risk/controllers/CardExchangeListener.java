@@ -19,12 +19,13 @@ import javax.swing.JOptionPane;
  * @author rebecca
  */
 public class CardExchangeListener extends MouseAdapter {
+
     /**
      * Model of the game
      */
     RiskModel rm;
     /**
-     * 
+     *
      */
     GameController gc;
 
@@ -47,7 +48,6 @@ public class CardExchangeListener extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
         JComponent c = (JComponent) e.getSource();
-        
 
         if (!(c instanceof JButton)) {
             return;
@@ -71,49 +71,52 @@ public class CardExchangeListener extends MouseAdapter {
         }
 
     }
-    
+
     /**
      * Default execution for exit button
      */
-    public void exitButton(){
+    public void exitButton() {
+        rm.getCurrentPlayer().setCardExchangeOffered(true);
         gc.closeCardExchangeView();
-        
     }
+
     /**
      * Default execution for cards
+     *
      * @param buttonPressed a card
      */
-    public void defaultButton(JButton buttonPressed){
+    public void defaultButton(JButton buttonPressed) {
         HandModel hand = rm.getCurrentPlayer().getHand();
         String buttonName = buttonPressed.getName();
-                if (hand.isCardSelected(buttonName)) {
-                    hand.unselectCard(buttonName);
-                    return;
-                }
-                if (hand.getNbSelectedCards() == 3) {
-                    this.showMessage("You cannot select more than 3 cards.");
-                    return;
-                }
-                hand.selectCard(buttonName);
+        if (hand.isCardSelected(buttonName)) {
+            hand.unselectCard(buttonName);
+            return;
+        }
+        if (hand.getNbSelectedCards() == 3) {
+            this.showMessage("You cannot select more than 3 cards.");
+            return;
+        }
+        hand.selectCard(buttonName);
 
     }
 
     /**
      * Execution for pressing hand button
      */
-    public void handButton(){
+    public void handButton() {
         HandModel hand = rm.getCurrentPlayer().getHand();
         if (hand.getNbSelectedCards() < 3) {
-                    this.showMessage("You have to select 3 cards first.");
-                    return;
-                }
-                if (rm.exchangeCardsWithArmiesForCurrentPlayer()) {
-                    this.showMessage(
-                            "You can only hand 3 equal or 3 different cards");
-                    return;
-                }
-                hand.unselectAllCards();
+            this.showMessage("You have to select 3 cards first.");
+            return;
+        }
+        if (rm.exchangeCardsWithArmiesForCurrentPlayer()) {
+            this.showMessage(
+                    "You can only hand 3 equal or 3 different cards");
+            return;
+        }
+        hand.unselectAllCards();
     }
+
     /**
      * Error message
      *

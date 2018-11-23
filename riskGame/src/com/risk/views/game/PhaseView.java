@@ -9,8 +9,6 @@ import com.risk.models.LogEvent;
 import com.risk.models.RiskModel;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -115,7 +113,7 @@ public class PhaseView extends JPanel implements Observer {
             if (le.isClear()) {
                 actions.setText("");
             }
-            if(!le.toString().equals("")) {
+            if (!le.toString().equals("")) {
                 actions.append(le + "\n");
             }
         }

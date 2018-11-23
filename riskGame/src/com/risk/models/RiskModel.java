@@ -5,7 +5,6 @@
  */
 package com.risk.models;
 
-import com.risk.controllers.GameController;
 import com.risk.views.game.AttackView;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -14,8 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 
 /**
  * Represents the model of the game
@@ -57,10 +55,6 @@ public final class RiskModel extends Observable {
      */
     private LinkedList<CardModel> deck;
     /**
-     * 
-     */
-    private GameController gc;
-    /**
      *
      */
     private boolean attackPhase;
@@ -80,6 +74,16 @@ public final class RiskModel extends Observable {
 
     }
 
+    public void reset() {
+        this.players.clear();
+        addPlayerToPlayerList("Player 1", Color.red, true);
+        addPlayerToPlayerList("Player 2", Color.green, true);
+        addPlayerToPlayerList("Player 3", Color.blue, true);
+        this.currentPlayer = this.players.getFirst();
+        this.turn = 0;
+        this.phase = GamePhase.STARTUP;
+    }
+
     /**
      * It adds a human or AI player to the player list
      *
@@ -88,9 +92,9 @@ public final class RiskModel extends Observable {
      * @param isHuman true if it is human
      */
     public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
-        
-        players.add(PlayerFactory.getPlayer("HUMAN",name, color, this));
-        
+
+        players.add(PlayerFactory.getPlayer("HUMAN", name, color, this));
+
         setChanged();
         notifyObservers();
     }
@@ -207,7 +211,7 @@ public final class RiskModel extends Observable {
      * @param attackView the view which is gonna be added
      */
     public void addObserverToAttack(AttackView attackView) {
-       // this.getCurrentPlayer().getCurrentAttack().addObserver(attackView);
+        // this.getCurrentPlayer().getCurrentAttack().addObserver(attackView);
     }
 
     /**
@@ -284,10 +288,10 @@ public final class RiskModel extends Observable {
                     "There is only one army in the source territory !");
         }
     }
-    
+
     /**
      * @return the isAttackPhase
-    */
+     */
     public boolean isAttackPhase() {
         return attackPhase;
     }
@@ -297,14 +301,15 @@ public final class RiskModel extends Observable {
      */
     public void setAttackPhase(boolean attackPhase) {
         this.attackPhase = attackPhase;
-        
-        if(attackPhase==false && this.currentPlayer.getCurrentAttack()!=null)
+
+        if (attackPhase == false && this.currentPlayer.getCurrentAttack() != null) {
             this.currentPlayer.getCurrentAttack().getDefensePlayer().defense();
-        
+        }
+
         setChanged();
         notifyObservers(this);
     }
-    
+
     /**
      * Getter of the maxNbOfPlayers attribute
      *
@@ -324,19 +329,18 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     * 
+     *
      */
-    public void aIReinforcement(){
+    public void aIReinforcement() {
         getCurrentPlayer().setHanded(false);
         getCurrentPlayer().assignNewArmies();
-        
-        while(getCurrentPlayer().getHand().cardHandingPossible())
+
+        while (getCurrentPlayer().getHand().cardHandingPossible()) {
             getCurrentPlayer().exchangeCardsToArmies();
-        
-        getGc().closeCardExchangeView();
+        }
     }
-    
-    public void reinforcementIntent(TerritoryModel selectedTerritory){
+
+    public void reinforcementIntent(TerritoryModel selectedTerritory) {
         try {
             placeArmy(currentPlayer, selectedTerritory);
             if (currentPlayer.getNbArmiesAvailable() == 0) {
@@ -346,28 +350,44 @@ public final class RiskModel extends Observable {
             addNewEvent(ex.getReason());
         }
     }
-    
-    public void fortificationIntent(TerritoryModel source, TerritoryModel dest){
-        
-        try {               
+
+    public void fortificationIntent(TerritoryModel source, TerritoryModel dest) {
+
+        try {
             tryFortificationMove(source, dest);
-            
+
         } catch (RiskModel.FortificationMoveImpossible ex) {
             if (ex.getReason() != null) {
                 addNewEvent(ex.getReason());
             }
         }
     }
-    
-    public void attackIntent(TerritoryModel sourceTerritory, TerritoryModel destTerritory){
+
+    public void attackIntent(TerritoryModel sourceTerritory, TerritoryModel destTerritory) {
         int result = getCurrentPlayer().validateAttack(sourceTerritory, destTerritory);
-        System.out.println("intento atacar: "+result);
-                if (result == 0) {
-                    attackMove(sourceTerritory, destTerritory);
-                } else {
-                    gc.exceptionManagerAttack(result);
-                }           
+        System.out.println("intento atacar: " + result);
+        if (result == 0) {
+            attackMove(sourceTerritory, destTerritory);
+        } else {
+            switch (result) {
+                case -1:
+                    this.addNewEvent("The territory is not adjacent.");
+                    break;
+                case -2:
+                    this.addNewEvent("You are already attacking.");
+                    break;
+                case -3:
+                    this.addNewEvent("Invalid movement");
+                    break;
+                case -4:
+                    this.addNewEvent("You can't attack with only one armie");
+                    break;
+                default:
+                    break;
+            }
+        }
     }
+
     /**
      * Assigns turn to a player from the list
      */
@@ -546,19 +566,10 @@ public final class RiskModel extends Observable {
      * Finish the current stage of the game and initialize for the next stage of
      * the game
      *
-     * @return True if the game is not over
      */
-    public boolean finishPhase() {
+    public void finishPhase() {
         if (this.getWinningPlayer() != null) {
-            this.players.clear();
-            addPlayerToPlayerList("Player 1", Color.red, true);
-            addPlayerToPlayerList("Player 2", Color.green, true);
-            addPlayerToPlayerList("Player 3", Color.blue, true);
-            this.currentPlayer = this.players.getFirst();
-            this.turn = 0;
-            this.phase = GamePhase.STARTUP;
-
-            return false;
+            return;
         }
 
         executeEndOfPhaseSteps();
@@ -567,13 +578,12 @@ public final class RiskModel extends Observable {
 
         setChanged();
         notifyObservers();
-
-        return true;
     }
 
-    public void executeAttack(){
+    public void executeAttack() {
         this.currentPlayer.attack(this);
     }
+
     /**
      * Final steps after finishing a phase
      */
@@ -615,18 +625,49 @@ public final class RiskModel extends Observable {
     /**
      * Steps at the beginning of a phase
      */
-    public void executeBeginningOfPhaseSteps() {
-        System.out.println("tipo de phase: "+this.getPhase());
+    void executeBeginningOfPhaseSteps() {
+        if (this.getCurrentPlayer().getStrategy() instanceof HumanStrategy) {
+            this.executeBeginningOfPhaseStepsNow();
+        } else {
+            this.executeBeginningOfPhaseStepsLater();
+        }
+    }
+
+    void executeBeginningOfPhaseStepsLater() {
+        class ExecuteBeginningOfPhaseStepsLaterRunnable implements Runnable {
+
+            RiskModel rm;
+
+            ExecuteBeginningOfPhaseStepsLaterRunnable(RiskModel rm) {
+                this.rm = rm;
+            }
+
+            public void run() {
+                try {
+                    Thread.sleep(300);
+                    rm.executeBeginningOfPhaseStepsNow();
+                } catch (InterruptedException ex) {
+                }
+            }
+        }
+        ExecuteBeginningOfPhaseStepsLaterRunnable ebopslt
+                = new ExecuteBeginningOfPhaseStepsLaterRunnable(this);
+        SwingUtilities.invokeLater(ebopslt);
+    }
+
+    public void executeBeginningOfPhaseStepsNow() {
         addNewLogEvent("", true);
         switch (this.getPhase()) {
             case STARTUP:
                 break;
             case REINFORCEMENT:
-                System.out.println("tipo de jugador: "+this.getCurrentPlayer().getClass());
                 this.getCurrentPlayer().reinforcement(this);
                 break;
             case ATTACK:
-                System.out.println("entro en ataque");
+                addNewLogEvent(String.format(
+                        "%s starts its attack phase",
+                        this.getCurrentPlayer().getName()
+                ));
                 this.getCurrentPlayer().attack(this);
                 break;
             case FORTIFICATION:
@@ -866,18 +907,28 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     * @return the gc
+     * Continue the attack with the given number of dices
+     *
+     * @param nbDice the number of dices to use for the attack
      */
-    public GameController getGc() {
-        return gc;
-    }
+    public void continueAttack(int nbDice) {
+        AttackMove attackMove = this.getCurrentPlayer().getCurrentAttack();
 
-    /**
-     * @param gc the gc to set
-     */
-    public void setGc(GameController gc) {
-        this.gc = gc;
+        if (nbDice == -1 //battleAll
+                || attackMove.getDest().getNumArmies() == 1) {
+
+            this.getCurrentPlayer().setAttackValues(nbDice);
+            this.getCurrentPlayer().setDefenseValues(1);
+            this.performAttack(this.getCurrentPlayer());
+
+            this.getCurrentPlayer().moveArmies();
+            this.setAttackPhase(true);
+            if (this.getPhase() == GamePhase.ATTACK) {
+                this.executeAttack();
+            }
+        } else {
+            this.getCurrentPlayer().setAttackValues(nbDice);
+            this.setAttackPhase(false);
+        }
     }
-    
-    
 }

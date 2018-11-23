@@ -15,33 +15,32 @@ public class PlayerFactory {
 
     private PlayerFactory() {
     }
-    
-    static public PlayerModel getPlayer(String typeOfPlayer, String name, Color color, RiskModel rm){
+
+    static public PlayerModel getPlayer(String typeOfPlayer, String name, Color color, RiskModel rm) {
         PlayerModel currentPlayer;
-        currentPlayer=new PlayerImplementation(name,color,rm);
-     
-        Strategy strategy=null;
-        switch(typeOfPlayer){
+        currentPlayer = new PlayerModel(name, color, rm);
+
+        Strategy strategy = null;
+        switch (typeOfPlayer) {
             case "BENEVOLENT":
-                strategy=new Benevolent();
+                strategy = new BenevolentStrategy();
                 break;
             case "AGGRESSIVE":
-                strategy=new Aggressive();
+                strategy = new AggressiveStrategy();
                 break;
             case "CHEATER":
-                strategy=new Cheater();
+                strategy = new CheaterStrategy();
                 break;
             case "RANDOM":
-                strategy=new Random();
+                strategy = new RandomStrategy();
                 break;
             case "HUMAN":
-                strategy=new Human();
+                strategy = new HumanStrategy();
                 break;
         }
-            ((PlayerImplementation) currentPlayer).setStrategy(strategy);
-        
-     
+        currentPlayer.setStrategy(strategy);
+
         return currentPlayer;
     }
-    
+
 }

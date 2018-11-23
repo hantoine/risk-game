@@ -60,7 +60,6 @@ public final class RiskController {
         this.territoryListener = new MapListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
         this.gameController = new GameController(this.modelRisk);
-        this.modelRisk.setGc(gameController);
         viewRisk.initialMenu(modelRisk, menuListener);
         viewRisk.setVisible(true);
     }
@@ -83,6 +82,7 @@ public final class RiskController {
      *
      */
     public void newGameMenuItemPressed() {
+        this.modelRisk.reset();
         getViewRisk().initialMenu(getModelRisk(), getMenuListener());
     }
 

@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  *
  * @author n_irahol
  */
-public abstract class PlayerModel extends Observable {
+public class PlayerModel extends Observable {
 
     /**
      * name the name of the player color the color of the player contriesOwned
@@ -75,6 +75,15 @@ public abstract class PlayerModel extends Observable {
     private boolean conquered;
 
     /**
+     *
+     */
+    private Strategy strategy;
+    /**
+     *
+     */
+    private boolean cardExchangeOffered;
+
+    /**
      * Constructor
      *
      * @param name name of a player
@@ -82,7 +91,7 @@ public abstract class PlayerModel extends Observable {
      * @param isHuman true if the player is human
      * @param game Game in which this player belongs
      */
-    public PlayerModel(String name, Color color, boolean isHuman, RiskModel game) {
+    public PlayerModel(String name, Color color, RiskModel game) {
         this.name = name;
         this.color = color;
         this.territoryOwned = new LinkedList<>();
@@ -105,7 +114,16 @@ public abstract class PlayerModel extends Observable {
      * @param playGame GameController reference used to access game informations
      * and methods
      */
-    public abstract void reinforcement(RiskModel playGame);
+    public void reinforcement(RiskModel playGame) {
+        this.setCardExchangeOffered(false);
+        strategy.reinforcement(playGame);
+
+        addNewLogEvent(String.format(
+                "%s starts its reinforcement phase",
+                getName()
+        ));
+
+    }
 
     /**
      * Definition of the fortification phase. Called at the beginning of the
@@ -116,18 +134,56 @@ public abstract class PlayerModel extends Observable {
      * @param playGame GameController reference used to access game informations
      * and methods
      */
-    public abstract void fortification(RiskModel playGame);
+    public void fortification(RiskModel playGame) {
+        strategy.fortification(playGame);
+        addNewLogEvent(String.format(
+                "%s starts its fortification phase",
+                getName()
+        ));
+    }
 
     /**
-     * Definition of the attack phase. Called at the beginning of the phase.
-     * Depending on the type of player it will either initialize and update the
-     * UI for the human player to play or execute the action with the artificial
-     * intelligence
      *
      * @param playGame GameController reference used to access game informations
      * and methods
      */
-    public abstract void attack(RiskModel playGame);
+    public void attack(RiskModel playGame) {
+        strategy.attack(playGame);
+    }
+
+    /**
+     * @return the strategy
+     */
+    public Strategy getStrategy() {
+        return strategy;
+    }
+
+    public boolean isCardExchangeOffered() {
+        return cardExchangeOffered;
+    }
+
+    public void setCardExchangeOffered(boolean cardExchangeOffered) {
+        this.cardExchangeOffered = cardExchangeOffered;
+    }
+
+    /**
+     * @param strategy the strategy to set
+     */
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    boolean exchangeCardsToArmies() {
+        return strategy.exchangeCardsToArmies(this.game);
+    }
+
+    public void defense() {
+        strategy.defense(this.game);
+    }
+
+    public void moveArmies() {
+        strategy.moveArmies(this.game);
+    }
 
     /**
      * Getter of the name attribute
@@ -536,8 +592,6 @@ public abstract class PlayerModel extends Observable {
      *
      * @return true if the cards are equal or different; false in other case
      */
-    
-
     /**
      * Adds a card to the player's hand from the deck
      */
@@ -612,17 +666,15 @@ public abstract class PlayerModel extends Observable {
         setChanged();
         notifyObservers();
     }
-    
-      
-    public void setAttackValues(int diceAttack){
+
+    public void setAttackValues(int diceAttack) {
         this.getCurrentAttack().setNbDiceAttack(diceAttack);
     }
-    
-    
-    public void setDefenseValues(int diceAttacked){
+
+    public void setDefenseValues(int diceAttacked) {
         this.getCurrentAttack().setNbDiceDefense(diceAttacked);
     }
-    
+
     /**
      * Perform the current attack of this player with the given number of dice
      * The value -1 correspond to the special mode in which battles are made
@@ -635,7 +687,7 @@ public abstract class PlayerModel extends Observable {
         if (this.getCurrentAttack() == null) {
             return;
         }
-        
+
         this.getCurrentAttack().perform(diceAttack, diceAttacked);
 
         /*
@@ -654,7 +706,6 @@ public abstract class PlayerModel extends Observable {
         }
     }
 
-    
     /**
      * Conquer a territory after an attack
      *
@@ -810,8 +861,7 @@ public abstract class PlayerModel extends Observable {
             this.getHand().addCardToPlayerHand(c);
         });
     }
-    
-    
+
     /**
      * Exchange selected cards
      *
@@ -841,18 +891,17 @@ public abstract class PlayerModel extends Observable {
 
     }
 
-    
     public void moveArmiesAI() {
-        System.out.println("MOVER LOS BATALLONES"+this.getCurrentAttack());
-        if(this.getCurrentAttack()!=null){
-            if (this.getCurrentAttack().getDest().getNumArmies()==0) {
-                System.out.println("Numero de dados : "+this.getCurrentAttack().getNbDiceAttack());
+        System.out.println("MOVER LOS BATALLONES" + this.getCurrentAttack());
+        if (this.getCurrentAttack() != null) {
+            if (this.getCurrentAttack().getDest().getNumArmies() == 0) {
+                System.out.println("Numero de dados : " + this.getCurrentAttack().getNbDiceAttack());
                 int diceAttack = this.getCurrentAttack().getNbDiceAttack();
-                this.game.getGc().moveArmiesToConqueredTerritory(diceAttack);
+                this.game.moveArmiesToConqueredTerritory(diceAttack);
             }
         }
     }
-    
+
     public void defenseAI() {
         this.game.getCurrentPlayer().setDefenseValues(2);
         this.game.performAttack(this.game.getCurrentPlayer());
@@ -863,7 +912,7 @@ public abstract class PlayerModel extends Observable {
 
     public boolean exchangeCardsToArmiesAI() {
         int[] cardDuplicates = this.getHand().getCardDuplicates();
-        
+
         if (cardDuplicates[0] >= 3) {
             this.getHand().removeCards("infantry", this.game.getDeck());
         } else if (cardDuplicates[1] >= 3) {
@@ -876,8 +925,4 @@ public abstract class PlayerModel extends Observable {
         armiesCardAssignation();
         return true;
     }
-    
-    public abstract void moveArmies();
-    abstract boolean exchangeCardsToArmies();
-    public abstract void defense();
 }

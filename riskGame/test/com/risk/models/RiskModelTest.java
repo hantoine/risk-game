@@ -335,18 +335,6 @@ public class RiskModelTest {
     }
 
     /**
-     * Test finish phase to check that the end of game is detected
-     */
-    public void testFinishPhaseEndOfGame() {
-        riskModel.removePlayer(0);
-        riskModel.removePlayer(0);
-
-        boolean res = riskModel.finishPhase();
-
-        assertEquals(false, res);
-    }
-
-    /**
      * Test of removePlayer: when only one player left the game is over
      */
     @Test

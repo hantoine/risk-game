@@ -9,7 +9,7 @@ package com.risk.models;
  *
  * @author Nellybett
  */
-public class Random implements Strategy{
+public class RandomStrategy implements Strategy{
 
     @Override
     public void reinforcement(RiskModel playGame) {
