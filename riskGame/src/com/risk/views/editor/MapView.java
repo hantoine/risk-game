@@ -7,8 +7,8 @@ package com.risk.views.editor;
 
 import com.risk.controllers.MapEditorController;
 import com.risk.models.MapModel;
-import com.risk.models.TerritoryModel;
 import com.risk.models.MapUpdateTypes;
+import com.risk.models.TerritoryModel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -34,7 +34,7 @@ import javax.swing.JPanel;
  *
  * @author timot
  */
-public class MapView extends JPanel implements Observer {
+public class MapView extends JPanel implements Observer, MapViewInterface {
 
     /**
      * Background image of the map being edited.
@@ -572,6 +572,7 @@ public class MapView extends JPanel implements Observer {
      *
      * @param errorMessage message to be displayed into the dialog.
      */
+    @Override
     public void showError(String errorMessage) {
         JOptionPane.showMessageDialog(null,
                 errorMessage,

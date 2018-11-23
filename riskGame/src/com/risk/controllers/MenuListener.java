@@ -11,8 +11,8 @@ import com.risk.models.PlayerFactory;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
+import com.risk.views.RiskViewInterface;
 import com.risk.views.menu.DeletableButton;
-import com.risk.views.menu.NewGamePanel;
 import com.risk.views.menu.PlayerListPanel;
 import com.risk.views.menu.PlayerPanel;
 import java.awt.Color;
@@ -40,7 +40,7 @@ public class MenuListener extends MouseAdapter {
     /**
      * riskView it is a reference to the main view in the game
      */
-    private RiskView riskView;
+    private RiskViewInterface riskView;
     /**
      * playerList it is a reference to the view that has a list of player panels
      * in the menu
@@ -58,7 +58,7 @@ public class MenuListener extends MouseAdapter {
      * @param riskView the view to show elements
      * @param riskController the principal controller to start the game
      */
-    public MenuListener(RiskModel riskModel, RiskView riskView, RiskController riskController) {
+    public MenuListener(RiskModel riskModel, RiskViewInterface riskView, RiskController riskController) {
         this.riskModel = riskModel;
         this.riskView = riskView;
         this.riskController = riskController;
@@ -93,7 +93,7 @@ public class MenuListener extends MouseAdapter {
                 case "    ":
                     Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
                     if (this.getPlayerList().getColorUsed().contains(selectedColor)) {
-                        JOptionPane.showMessageDialog(null, "This color is already used");
+                    	this.getRiskView().showMessage("This color is already used");
                     } else {
                         this.getPlayerList().getColorUsed().remove(addPlayer.getBackground());
                         this.getPlayerList().getColorUsed().add(selectedColor);
@@ -102,7 +102,7 @@ public class MenuListener extends MouseAdapter {
                     }
                     break;
                 case "PLAY":
-                    playButton(addPlayer);
+                    playButton();
                     break;
                 default:
                     break;
@@ -111,7 +111,6 @@ public class MenuListener extends MouseAdapter {
             JComboBox typeOfPlayer = (JComboBox) c;
             String playerType = (String) typeOfPlayer.getSelectedItem();
             typeOfPlayer.setSelectedItem(playerType);
-
         }
     }
 
@@ -140,37 +139,33 @@ public class MenuListener extends MouseAdapter {
                     it.remove();
                 }
             }
-
         }
     }
 
     /**
      * This method is for add player
      *
-     * @param addPlayer the new player which is added
      */
-    public void playButton(JButton addPlayer) {
-        NewGamePanel newGamePanel = this.getRiskView().getNewGamePanel();
-        String selectedPath = newGamePanel.getSelectFileTextField().getText();
+    public void playButton() {
+        String selectedPath = this.getRiskView().getMapPathForNewGame();
 
         if (selectedPath.equals("")) {
-            JOptionPane.showMessageDialog(null, "You have not selected a map");
+            this.getRiskView().showMessage("You have not selected a map");
             return;
         }
         MapModel map = new MapModel();
-        int resultReadingValidation = MapFileManagement.createBoard(selectedPath, map);
-        if (resultReadingValidation != 0) {
-            JOptionPane.showMessageDialog(null, MapFileManagement.readingError(resultReadingValidation));
+
+        try {
+            MapFileManagement.createBoard(selectedPath, map);
+        } catch (MapFileManagement.MapFileManagementException ex) {
+            this.getRiskView().showMessage(ex.getMessage());
             return;
         }
+
         getRiskModel().setMap(map);
 
-        if (!getRiskModel().getMap().isValid()) {
-            JOptionPane.showMessageDialog(null, MapFileManagement.readingError(-7));
-            return;
-        }
-
-        LinkedList<PlayerPanel> listPlayerPanels = newGamePanel.getPlayersPanel().getPlayersArray();
+        LinkedList<PlayerPanel> listPlayerPanels = this.getRiskView()
+                .getPlayersForNewGame();
         LinkedList<PlayerModel> listPlayers = new LinkedList<>();
         for (int i = 0; i < listPlayerPanels.size(); i++) {
             PlayerPanel player = listPlayerPanels.get(i);
@@ -185,12 +180,12 @@ public class MenuListener extends MouseAdapter {
         this.getRiskModel().setPlayerList(listPlayers);
 
         if (!this.getRiskModel().validateTerritories()) {
-            JOptionPane.showMessageDialog(null, "No enough territories in this map for the number of players. Select another map.");
+            this.getRiskView().showMessage("No enough territories in this map "
+                    + "for the number of players. Select another map.");
             return;
         }
         this.getRiskView().closeMenu();
         this.getRiskController().playGame();
-
     }
 
     /**
@@ -216,7 +211,7 @@ public class MenuListener extends MouseAdapter {
      *
      * @return the riskView
      */
-    public RiskView getRiskView() {
+    public RiskViewInterface getRiskView() {
         return riskView;
     }
 
