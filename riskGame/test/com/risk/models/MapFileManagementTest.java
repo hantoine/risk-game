@@ -47,30 +47,26 @@ public class MapFileManagementTest {
 
     /**
      * Test of createBoard method, of class MapFileManagement.Null board.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
      */
-    @Test
-    public void testCreateBoard() {
-
-        int expResult = -7;
+    @Test(expected = MapFileManagement.MapInvalidException.class)
+    public void testCreateBoard()
+            throws MapFileManagement.MapFileManagementException {
         board = null;
-        int result = MapFileManagement.createBoard(path, board);
-        //Good path with correct file but not initialize board
-
-        assertEquals(expResult, result);
-
+        MapFileManagement.createBoard(path, board);
     }
 
     /**
      * Test of createBoard method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
      */
     @Test
-    public void testCreateBoard1() {
-
+    public void testCreateBoard1()
+            throws MapFileManagement.MapFileManagementException {
         //Good path with correct file and board!=null
-        int result = MapFileManagement.createBoard(path, board);
-        int expResult = 0;
-        assertEquals(expResult, result);
-
+        MapFileManagement.createBoard(path, board);
     }
 
     /**
@@ -116,148 +112,147 @@ public class MapFileManagementTest {
 
     /**
      * Test of configurationInf method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileConfigException
      */
     @Test
-    public void testConfigurationInf() {
+    public void testConfigurationInf()
+            throws MapFileManagement.MapFileConfigException {
         System.out.println("configurationInf");
         String info = "[Map]\n" + "author=Stewart Ainsworth\n" + "image=old yorkshire.bmp\n" + "wrap=no\n" + "scroll=horizontal";
-        int expResult = 0;
-
         //Test Case with all the parameters and a valid file path
-        int result = MapFileManagement.configurationInf(info, path, board);
-        assertEquals(expResult, result);
+        MapFileManagement.configurationInf(info, path, board);
     }
 
     /**
      * Test of configurationInf method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileConfigException
      */
     @Test
-    public void testConfigurationInf1() {
-
+    public void testConfigurationInf1()
+            throws MapFileManagement.MapFileConfigException {
         //Test Case only with image parameter and valid file path
-        int expResult = 0;
         String info = "[Map]\n" + "image=old yorkshire.bmp\n";
-        int result = MapFileManagement.configurationInf(info, path, board);
-        assertEquals(expResult, result);
+        MapFileManagement.configurationInf(info, path, board);
     }
 
     /**
      * Test of configurationInf method, of class MapFileManagement.
      */
-    @Test
-    public void testConfigurationInf2() {
-
+    @Test(expected = MapFileManagement.MapFileConfigException.class)
+    public void testConfigurationInf2()
+            throws MapFileManagement.MapFileConfigException {
         //Test Case only with image parameter and invalid file path
         String info = "[Map]\n" + "image=old yorkshire.bmp\n";
         path = "";
-        int expResult = -1;
-        int result = MapFileManagement.configurationInf(info, path, board);
-        assertEquals(expResult, result);
+        MapFileManagement.configurationInf(info, path, board);
     }
 
     /**
      * Test of configurationInf method, of class MapFileManagement. With a null
      * image parameter and valid file path
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileConfigException
      */
     @Test
-    public void testConfigurationInf3() {
+    public void testConfigurationInf3()
+            throws MapFileManagement.MapFileConfigException {
 
         //Test Case only with null image parameter and valid file path
         String info = "[Map]\n" + "author=Stewart Ainsworth\n" + "wrap=no\n" + "scroll=horizontal\n" + "image=null";
-        int expResult = 0;
-        int result = MapFileManagement.configurationInf(info, path, board);
-        assertEquals(expResult, result);
+        MapFileManagement.configurationInf(info, path, board);
     }
 
     /**
      * Test of continentCreator method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileContinentException
      */
     @Test
-    public void testContinentCreator() {
+    public void testContinentCreator()
+            throws MapFileManagement.MapFileContinentException {
         String info = "York=2\n" + "East Riding=6\n" + "North Riding=8\n" + "West Riding=11";
-        int expResult = 0;
-
         // String with continents information
-        int result = MapFileManagement.continentCreator(info, board);
-        assertEquals(expResult, result);
+        MapFileManagement.continentCreator(info, board);
     }
 
     /**
      * Test of continentCreator method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileContinentException
      */
-    @Test
-    public void testContinentCreator1() {
+    @Test(expected = MapFileManagement.MapFileContinentException.class)
+    public void testContinentCreator1()
+            throws MapFileManagement.MapFileContinentException {
         // It fails if the continent and bonus armies are not separated by =
         String info = "York=2\n" + "East Riding=6\n" + "North Riding=8\n" + "West Riding11";
-        int expResult = -1;
-        int result = MapFileManagement.continentCreator(info, board);
-        assertEquals(expResult, result);
+        MapFileManagement.continentCreator(info, board);
     }
 
     /**
      * Test of continentCreator method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileContinentException
      */
-    @Test
-    public void testContinentCreator2() {
-
+    @Test(expected = MapFileManagement.MapFileContinentException.class)
+    public void testContinentCreator2()
+            throws MapFileManagement.MapFileContinentException {
         // It fails if the bonus armies is not a number
         String info = "York=2\n" + "East Riding=6\n" + "North Riding=a\n" + "West Riding=11";
-        int expResult = -1;
-        int result = MapFileManagement.continentCreator(info, board);
-        assertEquals(expResult, result);
+        MapFileManagement.continentCreator(info, board);
     }
 
     /**
      * Test of territoryCreator method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileTerritoryException
      */
-    @Test
-    public void testTerritoryCreator() {
+    @Test(expected = MapFileManagement.MapFileTerritoryException.class)
+    public void testTerritoryCreator()
+            throws MapFileManagement.MapFileTerritoryException {
         board = new MapModel();
         String info = "Anisty Liberty,363,300,York,Tadcaster\n" + "Tadcaster,370,327,York,Anisty Liberty";
-        int expResult = -1;
 
         //territory with not existing continent
-        int result = MapFileManagement.territoryCreator(info, board);
-        assertEquals(expResult, result);
+        MapFileManagement.territoryCreator(info, board);
     }
 
     /**
      * Test of territoryCreator method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileTerritoryException
      */
-    @Test
-    public void testTerritoryCreator1() {
-
+    @Test(expected = MapFileManagement.MapFileTerritoryException.class)
+    public void testTerritoryCreator1()
+            throws MapFileManagement.MapFileTerritoryException {
         //territory without adj
         String info = "Anisty Liberty,363,300,York\n" + "Tadcaster,370,327,York,Anisty Liberty";
-        int expResult = -1;
-        int result = MapFileManagement.territoryCreator(info, board);
-        assertEquals(expResult, result);
+        MapFileManagement.territoryCreator(info, board);
     }
 
     /**
      * Test of territoryCreator method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileTerritoryException
      */
-    @Test
-    public void testTerritoryCreator2() {
+    @Test(expected = MapFileManagement.MapFileTerritoryException.class)
+    public void testTerritoryCreator2() throws MapFileManagement.MapFileTerritoryException {
 
         //territory with no number position
         String info = "Anisty Liberty,363,a,York,Tadcaster\n" + "Tadcaster,370,327,York,Anisty Liberty";
-        int expResult = -1;
-        int result = MapFileManagement.territoryCreator(info, board);
-        assertEquals(expResult, result);
+        MapFileManagement.territoryCreator(info, board);
     }
 
     /**
      * Test of territoryCreator method, of class MapFileManagement.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileTerritoryException
      */
     @Test
-    public void testTerritoryCreator3() {
-
+    public void testTerritoryCreator3() throws MapFileManagement.MapFileTerritoryException {
         //Correct territories string
         String info = "Anisty Liberty,363,294,York,Tadcaster\n" + "Tadcaster,370,327,York,Anisty Liberty";
-        int result = MapFileManagement.territoryCreator(info, board);
-        int expResult = 0;
-        assertEquals(expResult, result);
-
+        MapFileManagement.territoryCreator(info, board);
     }
 }
