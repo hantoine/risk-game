@@ -49,17 +49,16 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      */
     final private MapPanel mapPanel;
     /**
-     * playerPanel reference to the view that manages the player information
+     * 
      */
     final private DominationView dominationView;
     /**
-     * playerHandPanel reference to the view that has the cards of the plater
+     * 
      */
     final private PhaseAuxiliar phaseAuxiliarPanel;
 
     /**
-     * stagePanel reference to the view that manages the information of the
-     * current stage
+     * 
      */
     final private InstructionsPanel stagePanel;
     /**

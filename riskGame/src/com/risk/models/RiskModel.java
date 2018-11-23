@@ -7,6 +7,7 @@ package com.risk.models;
 
 import com.risk.views.game.AttackView;
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -19,16 +20,16 @@ import java.util.Random;
  *
  * @author Nellybett
  */
-public final class RiskModel extends Observable {
+public final class RiskModel extends Observable implements Serializable {
 
     /**
      * map a reference to the map of the game
      */
-    private MapModel map;
+    transient private MapModel map;
     /**
      * players the list of players of the game
      */
-    private LinkedList<PlayerModel> players;
+    transient private LinkedList<PlayerModel> players;
     /**
      * turn reference with the player current turn
      */
@@ -36,11 +37,11 @@ public final class RiskModel extends Observable {
     /**
      * winningPlayer a reference to the player who won
      */
-    private PlayerModel winningPlayer;
+    transient private PlayerModel winningPlayer;
     /**
      * phase the current phase of the game
      */
-    private GamePhase phase;
+    transient private GamePhase phase;
     /**
      * maxNbOfPlayers max number of players
      */
@@ -48,7 +49,7 @@ public final class RiskModel extends Observable {
     /**
      * currentPlayer the player with the turn
      */
-    private PlayerModel currentPlayer;
+    transient private PlayerModel currentPlayer;
     /**
      * deck the deck of cards of the game
      */

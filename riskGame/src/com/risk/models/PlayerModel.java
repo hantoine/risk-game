@@ -6,6 +6,7 @@
 package com.risk.models;
 
 import java.awt.Color;
+import java.io.Serializable;
 import static java.lang.Math.floor;
 import static java.lang.Math.max;
 import java.util.Collection;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
  *
  * @author n_irahol
  */
-public abstract class PlayerModel extends Observable {
+public abstract class PlayerModel extends Observable implements Serializable {
 
     /**
      * name the name of the player color the color of the player contriesOwned
@@ -35,15 +36,15 @@ public abstract class PlayerModel extends Observable {
     /**
      * cardsOwned cards owned by a player
      */
-    public List<TerritoryModel> territoryOwned;
+    transient public List<TerritoryModel> territoryOwned;
     /**
      * continents owned by a player
      */
-    public List<ContinentModel> continentsOwned;
+    transient public List<ContinentModel> continentsOwned;
     /**
      * hand of the player
      */
-    private HandModel hand;
+    transient private HandModel hand;
     /**
      * The number of armies available to place returnedCards
      */
@@ -55,15 +56,15 @@ public abstract class PlayerModel extends Observable {
     /**
      * the model of the game
      */
-    protected RiskModel game;
+    transient protected RiskModel game;
     /**
      * the current movement in the fortification phase
      */
-    private FortificationMove currentFortificationMove;
+    transient private FortificationMove currentFortificationMove;
     /**
      * The current attack in the attack phase
      */
-    private AttackMove currentAttack;
+    transient private AttackMove currentAttack;
     /**
      * the current player
      */

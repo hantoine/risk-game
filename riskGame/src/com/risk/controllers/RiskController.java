@@ -136,4 +136,14 @@ public final class RiskController {
     public GameController getGameController() {
         return gameController;
     }
+    
+    /**
+     * Method to save the state of the current game being played
+     */
+    public void saveGame(){
+        //create the object which will to the saving in files
+        SaverLoader saver = new SaverLoader(this.modelRisk);
+        //actually save the game
+        saver.saveGame("test_save");
+    }
 }
