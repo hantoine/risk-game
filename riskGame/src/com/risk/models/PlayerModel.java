@@ -115,14 +115,12 @@ public class PlayerModel extends Observable {
      * and methods
      */
     public void reinforcement(RiskModel playGame) {
-        this.setCardExchangeOffered(false);
-        strategy.reinforcement(playGame);
-
         addNewLogEvent(String.format(
                 "%s starts its reinforcement phase",
                 getName()
         ));
-
+        this.setCardExchangeOffered(false);
+        strategy.reinforcement(playGame);
     }
 
     /**
@@ -135,11 +133,11 @@ public class PlayerModel extends Observable {
      * and methods
      */
     public void fortification(RiskModel playGame) {
-        strategy.fortification(playGame);
         addNewLogEvent(String.format(
                 "%s starts its fortification phase",
                 getName()
         ));
+        strategy.fortification(playGame);
     }
 
     /**
@@ -228,7 +226,7 @@ public class PlayerModel extends Observable {
             addNewLogEvent(String.format(
                     "%s starts its turn",
                     getName()
-            ));
+            ), true);
         } else {
             setChanged();
             notifyObservers();
@@ -847,8 +845,7 @@ public class PlayerModel extends Observable {
      * @param clear true if this event should clear previous log messages
      */
     protected void addNewLogEvent(String logMessage, boolean clear) {
-        setChanged();
-        notifyObservers(new LogEvent(logMessage, clear));
+        this.getGame().addNewLogEvent(logMessage, clear);
     }
 
     /**
