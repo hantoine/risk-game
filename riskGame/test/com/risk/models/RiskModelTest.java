@@ -323,7 +323,7 @@ public class RiskModelTest {
                         (t) -> (t.getOwner() != null)
                 )
         );
-        assertEquals("The game starts", dummyObserver.getMessage());
+        assertEquals("Player 1 starts its turn", dummyObserver.getMessage());
         assertTrue(riskModel.getCurrentPlayer().isCurrentPlayer());
         riskModel.getPlayerList().forEach((p) -> {
             assertEquals(
@@ -384,8 +384,9 @@ public class RiskModelTest {
 
         @Override
         public void update(Observable o, Object o1) {
-            if (o1 instanceof LogEvent) {
-                message = ((LogEvent) o1).toString();
+            if (o instanceof RiskModel) {
+                RiskModel rm = (RiskModel) o;
+                message = rm.getLogContent();
             }
         }
 
