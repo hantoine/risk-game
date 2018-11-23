@@ -9,6 +9,7 @@ import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
 import com.risk.views.MainMenuView;
 import com.risk.views.RiskView;
+import com.risk.views.TournamentMenuView;
 import com.risk.views.editor.MapEditorView;
 
 /**
@@ -33,6 +34,10 @@ public class MainMenuController {
     }
 
     public void startTournamentMode() {
+        TournamentMenuView tmv = new TournamentMenuView();
+        TournamentController tc = new TournamentController(tmv);
+        tmv.setController(tc);
+
         this.mmv.close();
     }
 

@@ -107,7 +107,11 @@ public class NewGamePanel extends JPanel {
         this.mapSelectAndEdit.add(this.text);
 
         //players panel
-        playersPanel = new PlayerListPanel(riskModel, menuAction);
+        playersPanel = new PlayerListPanel();
+        playersPanel.setMaxNbPlayers(riskModel.getMaxNumberOfPlayers());
+        playersPanel.setMouseListener(menuAction);
+        playersPanel.initializePlayers(riskModel.getPlayerList());
+        menuAction.setPlayerList(playersPanel);
 
         //start game button
         this.play = new JButton("PLAY");
