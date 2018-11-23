@@ -25,31 +25,38 @@ public final class RiskModel extends Observable implements Serializable {
     /**
      * map a reference to the map of the game
      */
-    transient private MapModel map;
+     private MapModel map;
+     
     /**
      * players the list of players of the game
      */
-    transient private LinkedList<PlayerModel> players;
+     private LinkedList<PlayerModel> players;
+     
     /**
      * turn reference with the player current turn
      */
     private int turn;
+    
     /**
      * winningPlayer a reference to the player who won
      */
-    transient private PlayerModel winningPlayer;
+     private PlayerModel winningPlayer;
+     
     /**
      * phase the current phase of the game
      */
-    transient private GamePhase phase;
+     private GamePhase phase;
+     
     /**
      * maxNbOfPlayers max number of players
      */
     static Integer maxNbOfPlayers = 6;
+    
     /**
      * currentPlayer the player with the turn
      */
-    transient private PlayerModel currentPlayer;
+     private PlayerModel currentPlayer;
+     
     /**
      * deck the deck of cards of the game
      */

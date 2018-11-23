@@ -170,6 +170,14 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
                 rc.newGameMenuItemPressed();
             });
         }
+        
+        c = this.getJMenuBar().getMenu(0).getMenuComponent(1);
+        if (c instanceof JMenuItem) {
+            JMenuItem j = (JMenuItem) c;
+            j.addActionListener(e -> {
+                rc.saveGame();
+            });
+        }
 
         this.getMenuPanel().getStartMenu().getNewGamePanel().getOpenMapEditor().addActionListener(e -> {
             rc.openMapEditor();
@@ -250,7 +258,13 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Show New Game");
         menuFile.add(menuItem);
-
+        
+        menuFile.setLayout(new BoxLayout(menuFile, BoxLayout.Y_AXIS));
+        JMenuItem menuItemSaver = new JMenuItem("Save Game");
+        menuItemSaver.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
+        menuItemSaver.getAccessibleContext().setAccessibleDescription("Save current game");
+        menuFile.add(menuItemSaver);
+        
         //Build 2do menu
         menuOption = new JMenu("Options");
         menuOption.setMnemonic(KeyEvent.VK_A);

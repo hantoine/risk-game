@@ -7,6 +7,7 @@ package com.risk.models;
  */
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,7 +26,7 @@ import java.util.stream.Stream;
  *
  * @author timot
  */
-public final class MapModel extends Observable {
+public final class MapModel extends Observable implements Serializable {
 
     /**
      * mapConfig configurations of the map like author, wrap, image, and others

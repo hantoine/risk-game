@@ -36,15 +36,15 @@ public abstract class PlayerModel extends Observable implements Serializable {
     /**
      * cardsOwned cards owned by a player
      */
-    transient public List<TerritoryModel> territoryOwned;
+     public List<TerritoryModel> territoryOwned;
     /**
      * continents owned by a player
      */
-    transient public List<ContinentModel> continentsOwned;
+     public List<ContinentModel> continentsOwned;
     /**
      * hand of the player
      */
-    transient private HandModel hand;
+     private HandModel hand;
     /**
      * The number of armies available to place returnedCards
      */
@@ -56,15 +56,15 @@ public abstract class PlayerModel extends Observable implements Serializable {
     /**
      * the model of the game
      */
-    transient protected RiskModel game;
+     protected RiskModel game;
     /**
      * the current movement in the fortification phase
      */
-    transient private FortificationMove currentFortificationMove;
+     private FortificationMove currentFortificationMove;
     /**
      * The current attack in the attack phase
      */
-    transient private AttackMove currentAttack;
+     private AttackMove currentAttack;
     /**
      * the current player
      */
