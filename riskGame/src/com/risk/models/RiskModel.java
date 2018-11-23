@@ -58,6 +58,10 @@ public final class RiskModel extends Observable {
      *
      */
     private boolean attackPhase;
+    /**
+     *
+     */
+    private LogModel log;
 
     /**
      * Constructor of the model It includes son random players
@@ -71,6 +75,7 @@ public final class RiskModel extends Observable {
         addPlayerToPlayerList("Player 2", Color.green, true);
         addPlayerToPlayerList("Player 3", Color.blue, true);
         this.currentPlayer = this.players.getFirst();
+        this.log = new LogModel();
 
     }
 
@@ -901,9 +906,13 @@ public final class RiskModel extends Observable {
      * @param logMessage Message describing this event
      * @param clear true if this event should clear previous log messages
      */
-    private void addNewLogEvent(String logMessage, boolean clear) {
+    void addNewLogEvent(String logMessage, boolean clear) {
+        if (clear) {
+            log.clear();
+        }
+        log.addLogEntry(logMessage);
         setChanged();
-        notifyObservers(new LogEvent(logMessage, clear));
+        notifyObservers();
     }
 
     /**
@@ -930,5 +939,9 @@ public final class RiskModel extends Observable {
             this.getCurrentPlayer().setAttackValues(nbDice);
             this.setAttackPhase(false);
         }
+    }
+
+    public String getLogContent() {
+        return this.log.getContent();
     }
 }
