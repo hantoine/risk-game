@@ -571,6 +571,9 @@ public final class RiskModel extends Observable {
         return true;
     }
 
+    public void executeAttack(){
+        this.currentPlayer.attack(this);
+    }
     /**
      * Final steps after finishing a phase
      */
