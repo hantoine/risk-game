@@ -9,7 +9,7 @@ package com.risk.models;
  *
  * @author Nellybett
  */
-public class Human implements Strategy{
+public class HumanStrategy implements Strategy{
 
     @Override
     public void reinforcement(RiskModel rm) {

@@ -11,45 +11,47 @@ import java.util.LinkedList;
  *
  * @author Nellybett
  */
-public class Cheater implements Strategy{
+public class CheaterStrategy implements Strategy {
 
     @Override
     public void reinforcement(RiskModel rm) {
-        
-        for(TerritoryModel t:rm.getCurrentPlayer().getTerritoryOwned()){
-            t.setNumArmies(t.getNumArmies()*2);
+
+        for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
+            t.setNumArmies(t.getNumArmies() * 2);
         }
         rm.finishPhase();
     }
 
     @Override
     public void attack(RiskModel rm) {
-        
-        LinkedList<TerritoryModel> auxiliar=new LinkedList<>();
-        for(TerritoryModel t:rm.getCurrentPlayer().getTerritoryOwned()){
+
+        LinkedList<TerritoryModel> auxiliar = new LinkedList<>();
+        for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
             t.getAdj().stream()
-                    .filter(ta -> ta.getOwner()!=rm.getCurrentPlayer())
-                    .forEach(ad -> { 
-                            auxiliar.add(ad);
+                    .filter(ta -> ta.getOwner() != rm.getCurrentPlayer())
+                    .forEach(ad -> {
+                        auxiliar.add(ad);
                     });
         }
         auxiliar.stream()
-                    .forEach(terr -> rm.getCurrentPlayer().addTerritoryOwned(terr));
-        
+                .forEach(terr -> rm.getCurrentPlayer().addTerritoryOwned(terr));
+
+        rm.checkForDeadPlayers();
         rm.finishPhase();
     }
 
     @Override
     public void fortification(RiskModel rm) {
-        for(TerritoryModel t:rm.getCurrentPlayer().getTerritoryOwned()){
-            if(t.getAdj().stream()
-               .anyMatch(ta->!(rm.getCurrentPlayer().getTerritoryOwned().contains(ta))))
-                       t.setNumArmies(t.getNumArmies()*2);
+        for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
+            if (t.getAdj().stream()
+                    .anyMatch(ta -> !(rm.getCurrentPlayer().getTerritoryOwned().contains(ta)))) {
+                t.setNumArmies(t.getNumArmies() * 2);
+            }
         }
         rm.finishPhase();
     }
-    
-      @Override
+
+    @Override
     public void moveArmies(RiskModel rm) {
         rm.getCurrentPlayer().moveArmiesAI();
     }
@@ -63,5 +65,5 @@ public class Cheater implements Strategy{
     public void defense(RiskModel rm) {
         rm.getCurrentPlayer().defenseAI();
     }
-    
+
 }

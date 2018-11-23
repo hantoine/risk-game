@@ -55,7 +55,8 @@ public class InstructionsPanel extends JPanel implements Observer {
 
         if (rm.getWinningPlayer() != null) {
             this.endPhase.setVisible(false);
-            this.text.setVisible(false);
+            this.text.setText("<html> The player " + rm.getWinningPlayer() + " won the game. <br /> It conquered all the territories.</html>");
+            this.text.setVisible(true);
             return;
         }
 
@@ -76,7 +77,7 @@ public class InstructionsPanel extends JPanel implements Observer {
             case ATTACK:
                 this.endPhase.setVisible(true);
                 this.endPhase.setText("End Phase");
-                this.text.setText("Attack phase:");
+                this.text.setText("<html>Attack phase: You can drag'n'drop between a territory you own <br /> and a territory you do not own.</html>");
                 this.text.setVisible(true);
                 break;
             case FORTIFICATION:
@@ -103,6 +104,7 @@ public class InstructionsPanel extends JPanel implements Observer {
 
     /**
      * This method is for updating the view
+     *
      * @param o Observable
      * @param o1 Object
      */

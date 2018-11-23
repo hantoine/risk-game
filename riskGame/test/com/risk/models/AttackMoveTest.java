@@ -32,7 +32,7 @@ public class AttackMoveTest {
         TerritoryModel dest = new TerritoryModel("France");
         source.setNumArmies(7);
         dest.setNumArmies(1);
-        attack = new AttackMove(new PlayerImplementation("Player 1", Color.yellow, null), source, dest);
+        attack = new AttackMove(new PlayerModel("Player 1", Color.yellow, null), source, dest);
     }
 
     /**

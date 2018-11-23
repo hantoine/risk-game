@@ -5,7 +5,6 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.PlayerImplementation;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
 import com.risk.models.PlayerFactory;
@@ -82,7 +81,7 @@ public class MenuListener extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         JComponent c = (JComponent) e.getSource();
-        if(c instanceof JButton){
+        if (c instanceof JButton) {
             JButton addPlayer = (JButton) c;
             switch (addPlayer.getText()) {
                 case "+":
@@ -108,16 +107,17 @@ public class MenuListener extends MouseAdapter {
                 default:
                     break;
             }
-        }else{
-            JComboBox typeOfPlayer = (JComboBox)c;
-            String playerType = (String)typeOfPlayer.getSelectedItem();
+        } else {
+            JComboBox typeOfPlayer = (JComboBox) c;
+            String playerType = (String) typeOfPlayer.getSelectedItem();
             typeOfPlayer.setSelectedItem(playerType);
-        
+
         }
     }
 
     /**
      * This method is for minus the player
+     *
      * @param addPlayer the player which is gonna be delete
      */
     public void minusButton(JButton addPlayer) {
@@ -146,6 +146,7 @@ public class MenuListener extends MouseAdapter {
 
     /**
      * This method is for add player
+     *
      * @param addPlayer the new player which is added
      */
     public void playButton(JButton addPlayer) {
