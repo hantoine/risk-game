@@ -5,18 +5,33 @@
  */
 package com.risk.controllers;
 
-import com.risk.views.TournamentMenuView;
+import com.risk.models.Strategy;
+import com.risk.models.TournamentModel;
+import com.risk.views.menu.StrategyListPanel.StrategyListPanelListener;
+import com.risk.views.menu.TournamentMenuView;
 
 /**
  *
  * @author hantoine
  */
-public class TournamentController {
+public class TournamentController implements StrategyListPanelListener {
 
     TournamentMenuView tmv;
+    TournamentModel tm;
 
-    public TournamentController(TournamentMenuView tmv) {
+    public TournamentController(TournamentModel tm, TournamentMenuView tmv) {
+        this.tm = tm;
         this.tmv = tmv;
+    }
+
+    @Override
+    public void strategyAdded(Strategy.Type strategyType) {
+        tm.addPlayerStategies(strategyType);
+    }
+
+    @Override
+    public void strategyRemoved(Strategy.Type strategyType) {
+        tm.removePlayerStategies(strategyType);
     }
 
 }

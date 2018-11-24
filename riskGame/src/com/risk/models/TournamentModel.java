@@ -7,6 +7,7 @@ package com.risk.models;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.Observable;
 import java.util.Set;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Set;
  *
  * @author hantoine
  */
-public class TournamentModel {
+public class TournamentModel extends Observable {
 
     /**
      * Set of the paths of the map to use in the tournament
@@ -50,10 +51,16 @@ public class TournamentModel {
 
     public void addMapsPath(String mapPath) {
         this.mapsPaths.add(mapPath);
+
+        setChanged();
+        notifyObservers();
     }
 
     public void removeMapsPath(String mapPath) {
         this.mapsPaths.remove(mapPath);
+
+        setChanged();
+        notifyObservers();
     }
 
     public Set<Strategy.Type> getPlayerStategies() {
@@ -62,10 +69,16 @@ public class TournamentModel {
 
     public void addPlayerStategies(Strategy.Type playerStategy) {
         this.playerStategies.add(playerStategy);
+
+        setChanged();
+        notifyObservers();
     }
 
     public void removePlayerStategies(Strategy.Type playerStategy) {
         this.playerStategies.remove(playerStategy);
+
+        setChanged();
+        notifyObservers();
     }
 
     public int getNbGamePerMap() {
@@ -74,6 +87,9 @@ public class TournamentModel {
 
     public void setNbGamePerMap(int nbGamePerMap) {
         this.nbGamePerMap = nbGamePerMap;
+
+        setChanged();
+        notifyObservers();
     }
 
     public int getMaximumTurnPerGame() {
@@ -82,5 +98,8 @@ public class TournamentModel {
 
     public void setMaximumTurnPerGame(int maximumTurnPerGame) {
         this.maximumTurnPerGame = maximumTurnPerGame;
+
+        setChanged();
+        notifyObservers();
     }
 }
