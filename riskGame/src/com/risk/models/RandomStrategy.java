@@ -39,7 +39,7 @@ public class RandomStrategy implements Strategy{
     
    @Override
     public void moveArmies(RiskModel rm) {
-    
+        rm.getCurrentPlayer().moveArmiesAI();
     }
 
     @Override
