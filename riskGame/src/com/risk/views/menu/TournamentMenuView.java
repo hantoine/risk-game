@@ -106,6 +106,9 @@ public class TournamentMenuView extends JFrame implements Observer {
     public void setController(TournamentController ctrl) {
         strategyListPanel.setListener(ctrl);
         mapPathListPanel.setListener(ctrl);
+        this.playButton.addActionListener((al) -> {
+            ctrl.playTournament();
+        });
     }
 
     @Override
@@ -114,7 +117,6 @@ public class TournamentMenuView extends JFrame implements Observer {
             TournamentModel tm = (TournamentModel) o;
             this.strategyListPanel.updateView(tm);
             this.mapPathListPanel.updateView(tm);
-            System.out.println(this.getPreferredSize());
         }
     }
 
