@@ -6,6 +6,7 @@
 package com.risk.models;
 
 import static java.lang.Integer.min;
+import java.util.LinkedList;
 
 /**
  *
@@ -132,7 +133,21 @@ public class AggressiveStrategy implements Strategy {
 
     @Override
     public void startup(RiskModel rm) {
+       TerritoryModel territoryClicked=null;
        
+        for(TerritoryModel t: rm.getCurrentPlayer().getTerritoryOwned()){
+            territoryClicked=t.getAdj().stream()
+                .filter(ta -> ta.getOwner()==null)
+                .findFirst()
+                .orElse(null);
+        }       
+              
+        if(territoryClicked==null){
+            territoryClicked=rm.randomTerritory((LinkedList < TerritoryModel >)rm.getMap().getTerritories().stream()
+                                                                                                            .filter(t -> t.getOwner()==null));
+        }
+        
+       rm.startupMove(territoryClicked);
     }
 
 }

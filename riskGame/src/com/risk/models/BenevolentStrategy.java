@@ -5,6 +5,8 @@
  */
 package com.risk.models;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author Nellybett
@@ -83,8 +85,11 @@ public class BenevolentStrategy implements Strategy {
     }
 
     @Override
-    public void startup(RiskModel playGame) {
-        
+    public void startup(RiskModel rm) {
+       
+        TerritoryModel territoryClicked=rm.randomTerritory((LinkedList < TerritoryModel >)rm.getMap().getTerritories().stream()
+                                                                                                            .filter(t -> t.getOwner()==null));
+        rm.startupMove(territoryClicked);
     }
 
 }
