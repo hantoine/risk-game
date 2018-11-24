@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * @author Nellybett
  */
 public class RandomStrategy implements Strategy{
+    int random=0;
 
     @Override
     public void reinforcement(RiskModel rm) {
@@ -81,5 +82,11 @@ public class RandomStrategy implements Strategy{
                                                                                                             .collect(Collectors.toCollection(LinkedList::new)));
         rm.startupMove(territoryClicked);
     }
+    
+    private void setRandom(int range){
+        random=((int) (Math.random() * range +1));
+    }
+    
+    
     
 }
