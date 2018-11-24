@@ -26,7 +26,7 @@ public class AggressiveStrategy implements Strategy {
             if (t.getAdj().stream()
                     .anyMatch(ta -> !(rm.getCurrentPlayer().getTerritoryOwned().contains(ta)))) {
                 
-                if(selectedTerritory!=null && selectedTerritory.getNumArmies()<t.getNumArmies())
+                if(selectedTerritory==null || selectedTerritory.getNumArmies()<t.getNumArmies())
                     selectedTerritory = t;
             }
         }
