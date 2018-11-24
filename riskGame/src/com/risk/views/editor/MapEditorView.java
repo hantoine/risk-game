@@ -120,6 +120,8 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
         //add elements
         addPanes();
         addMenuBar(editorController);
+
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
 
     /**
