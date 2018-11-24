@@ -131,7 +131,7 @@ public class AggressiveStrategy implements Strategy {
     }
 
     @Override
-    public void startup(RiskModel playGame) {
+    public void startup(RiskModel rm) {
        
     }
 
