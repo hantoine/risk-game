@@ -46,4 +46,8 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
         tm.removeMapsPath(mapPath);
     }
 
+    public void playTournament() {
+
+    }
+
 }
