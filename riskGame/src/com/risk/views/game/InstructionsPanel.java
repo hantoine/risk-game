@@ -56,7 +56,7 @@ public class InstructionsPanel extends JPanel implements Observer {
 
         if (rm.getWinningPlayer() != null) {
             this.endPhase.setVisible(false);
-            this.text.setText("<html> The player " + rm.getWinningPlayer() + " won the game. <br /> It conquered all the territories.</html>");
+            this.text.setText("<html> The player " + rm.getWinningPlayer().getName() + " won the game. <br /> It conquered all the territories.</html>");
             this.text.setVisible(true);
             return;
         }
