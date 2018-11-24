@@ -9,11 +9,13 @@ import com.risk.models.Strategy;
 import com.risk.models.TournamentModel;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
 
 /**
  * Panel that contains multiple panels with players information
@@ -68,6 +70,11 @@ public class StrategyListPanel extends JPanel {
                 )
                 .addComponent(strategiesList)
         );
+
+        this.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+                "Strategies"
+        ));
     }
 
     public void updateView(TournamentModel tm) {
