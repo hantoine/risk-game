@@ -41,5 +41,10 @@ public class HumanStrategy implements Strategy{
     public void defense(RiskModel rm) {
         
     }
+
+    @Override
+    public void startup(RiskModel playGame) {
+        
+    }
     
 }

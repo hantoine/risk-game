@@ -122,6 +122,14 @@ public class PlayerModel extends Observable {
         this.setCardExchangeOffered(false);
         strategy.reinforcement(playGame);
     }
+    
+    public void startup(RiskModel playGame) {
+        addNewLogEvent(String.format(
+                "%s startup move",
+                getName()
+        ));
+        strategy.startup(playGame);
+    }
 
     /**
      * Definition of the fortification phase. Called at the beginning of the
