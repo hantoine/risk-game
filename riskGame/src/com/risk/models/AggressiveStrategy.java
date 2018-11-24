@@ -20,14 +20,27 @@ public class AggressiveStrategy implements Strategy {
         System.out.println("AGRESIVO REINFORCEMENT");
         rm.aIReinforcement();
         int armiesReinforcement = rm.getCurrentPlayer().getNbArmiesAvailable();
-        TerritoryModel selectedTerritory = rm.getCurrentPlayer().getTerritoryOwned().get(0);
-
+        TerritoryModel selectedTerritory = null;
+        
         for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
-            if (t.getNumArmies() > selectedTerritory.getNumArmies()) {
-                selectedTerritory = t;
+            if (t.getAdj().stream()
+                    .anyMatch(ta -> !(rm.getCurrentPlayer().getTerritoryOwned().contains(ta)))) {
+                
+                if(selectedTerritory!=null && selectedTerritory.getNumArmies()<t.getNumArmies())
+                    selectedTerritory = t;
             }
         }
+        
+        if(selectedTerritory==null){
+            selectedTerritory=rm.getCurrentPlayer().getTerritoryOwned().get(0);
 
+            for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
+                if (t.getNumArmies() > selectedTerritory.getNumArmies()) {
+                    selectedTerritory = t;
+                }
+            }
+        }
+        
         while (armiesReinforcement > 0) {
             rm.reinforcementIntent(selectedTerritory);
             armiesReinforcement = armiesReinforcement - 1;

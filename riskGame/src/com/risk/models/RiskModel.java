@@ -589,6 +589,10 @@ public final class RiskModel extends Observable {
         this.currentPlayer.attack(this);
     }
 
+    public TerritoryModel randomTerritory(LinkedList<TerritoryModel> listTerritories){
+        int range = listTerritories.size();
+        return listTerritories.get((int) (Math.random() * range) + 1);
+    }
     /**
      * Final steps after finishing a phase
      */
