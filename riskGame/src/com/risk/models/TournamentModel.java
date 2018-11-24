@@ -20,7 +20,7 @@ public class TournamentModel extends Observable {
     /**
      * Set of the paths of the map to use in the tournament
      */
-    Set<String> mapsPaths;
+    Set<MapPath> mapsPaths;
     /**
      * Set of the player strategies to play in the tournament
      */
@@ -45,18 +45,18 @@ public class TournamentModel extends Observable {
         maximumTurnPerGame = 40;
     }
 
-    public Set<String> getMapsPaths() {
+    public Set<MapPath> getMapsPaths() {
         return Collections.unmodifiableSet(mapsPaths);
     }
 
-    public void addMapsPath(String mapPath) {
+    public void addMapsPath(MapPath mapPath) {
         this.mapsPaths.add(mapPath);
 
         setChanged();
         notifyObservers();
     }
 
-    public void removeMapsPath(String mapPath) {
+    public void removeMapsPath(MapPath mapPath) {
         this.mapsPaths.remove(mapPath);
 
         setChanged();

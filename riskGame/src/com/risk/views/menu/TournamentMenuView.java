@@ -22,26 +22,30 @@ import javax.swing.JFrame;
 public class TournamentMenuView extends JFrame implements Observer {
 
     StrategyListPanel strategyListPanel;
+    MapPathListPanel mapPathListPanel;
 
     public TournamentMenuView() throws HeadlessException {
-        this.setSize(200, 150);
+        this.setSize(580, 324);
         //this.setResizable(false);
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.centerWindow();
         this.setVisible(true);
 
         strategyListPanel = new StrategyListPanel();
+        mapPathListPanel = new MapPathListPanel();
 
         GroupLayout gl = new GroupLayout(this.getContentPane());
         this.getContentPane().setLayout(gl);
         gl.setAutoCreateGaps(true);
         gl.setAutoCreateContainerGaps(true);
 
-        gl.setVerticalGroup(gl.createSequentialGroup()
+        gl.setVerticalGroup(gl.createParallelGroup()
                 .addComponent(strategyListPanel)
+                .addComponent(mapPathListPanel)
         );
-        gl.setHorizontalGroup(gl.createParallelGroup()
+        gl.setHorizontalGroup(gl.createSequentialGroup()
                 .addComponent(strategyListPanel)
+                .addComponent(mapPathListPanel)
         );
     }
 
@@ -52,6 +56,7 @@ public class TournamentMenuView extends JFrame implements Observer {
 
     public void setController(TournamentController ctrl) {
         strategyListPanel.setListener(ctrl);
+        mapPathListPanel.setListener(ctrl);
     }
 
     @Override
@@ -59,6 +64,7 @@ public class TournamentMenuView extends JFrame implements Observer {
         if (o instanceof TournamentModel) {
             TournamentModel tm = (TournamentModel) o;
             this.strategyListPanel.updateView(tm);
+            this.mapPathListPanel.updateView(tm);
         }
     }
 
