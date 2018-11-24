@@ -130,4 +130,9 @@ public class AggressiveStrategy implements Strategy {
         rm.getCurrentPlayer().defenseAI();
     }
 
+    @Override
+    public void startup(RiskModel playGame) {
+       
+    }
+
 }

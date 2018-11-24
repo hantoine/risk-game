@@ -82,4 +82,9 @@ public class BenevolentStrategy implements Strategy {
         rm.getCurrentPlayer().defenseAI();
     }
 
+    @Override
+    public void startup(RiskModel playGame) {
+        
+    }
+
 }

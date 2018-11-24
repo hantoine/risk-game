@@ -668,6 +668,7 @@ public final class RiskModel extends Observable {
         addNewLogEvent("", true);
         switch (this.getPhase()) {
             case STARTUP:
+                this.getCurrentPlayer().startup(this);
                 break;
             case REINFORCEMENT:
                 this.getCurrentPlayer().reinforcement(this);

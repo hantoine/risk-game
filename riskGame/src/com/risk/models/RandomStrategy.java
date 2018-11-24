@@ -26,7 +26,7 @@ public class RandomStrategy implements Strategy{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-      @Override
+   @Override
     public void moveArmies(RiskModel rm) {
         rm.getCurrentPlayer().moveArmiesAI();
     }
@@ -39,6 +39,11 @@ public class RandomStrategy implements Strategy{
     @Override
     public void defense(RiskModel rm) {
         rm.getCurrentPlayer().defenseAI();
+    }
+
+    @Override
+    public void startup(RiskModel playGame) {
+        
     }
     
 }

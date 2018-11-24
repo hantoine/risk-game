@@ -66,4 +66,9 @@ public class CheaterStrategy implements Strategy {
         rm.getCurrentPlayer().defenseAI();
     }
 
+    @Override
+    public void startup(RiskModel playGame) {
+        
+    }
+
 }
