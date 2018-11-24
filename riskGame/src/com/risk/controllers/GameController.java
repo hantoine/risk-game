@@ -62,15 +62,7 @@ public class GameController implements Observer {
 
         switch (this.rm.getPhase()) {
             case STARTUP:
-                try {
-                    this.rm.placeArmy(currentPlayer, territoryClicked);
-                    this.rm.nextTurn();
-                    if (currentPlayer.getNbArmiesAvailable() == 0 && rm.getTurn() == 0) {
-                        this.rm.finishPhase();
-                    }
-                } catch (RiskModel.ArmyPlacementImpossible ex) {
-                    this.rm.addNewEvent(ex.getReason());
-                }
+                rm.startupMove(territoryClicked);
                 break;
             case REINFORCEMENT:
                 rm.reinforcementIntent(territoryClicked);

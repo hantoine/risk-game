@@ -356,6 +356,18 @@ public final class RiskModel extends Observable {
         }
     }
 
+    public void startupMove(TerritoryModel territoryClicked){
+        try{
+            placeArmy(this.currentPlayer, territoryClicked);
+            nextTurn();
+            if (this.currentPlayer.getNbArmiesAvailable() == 0 && getTurn() == 0) {
+                finishPhase();
+            }
+        } catch (RiskModel.ArmyPlacementImpossible ex) {
+            addNewEvent(ex.getReason());
+        }
+    }
+    
     public void fortificationIntent(TerritoryModel source, TerritoryModel dest) {
 
         try {
