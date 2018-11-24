@@ -9,11 +9,13 @@ import com.risk.models.MapPath;
 import com.risk.models.TournamentModel;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -24,15 +26,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class MapPathListPanel extends JPanel {
 
     JButton addButton;
-    JPanel strategiesList;
+    JPanel mapPathList;
     MapPathListPanelListener listener;
 
     public MapPathListPanel() {
 
         addButton = new JButton("Add Map");
-        strategiesList = new JPanel();
-        this.strategiesList.setLayout(
-                new BoxLayout(strategiesList, BoxLayout.Y_AXIS));
+        mapPathList = new JPanel();
+        this.mapPathList.setLayout(new BoxLayout(mapPathList, BoxLayout.Y_AXIS));
 
         GroupLayout gl = new GroupLayout(this);
         this.setLayout(gl);
@@ -41,16 +42,21 @@ public class MapPathListPanel extends JPanel {
 
         gl.setVerticalGroup(gl.createSequentialGroup()
                 .addComponent(addButton)
-                .addComponent(strategiesList)
+                .addComponent(mapPathList)
         );
-        gl.setHorizontalGroup(gl.createParallelGroup(GroupLayout.Alignment.CENTER)
+        gl.setHorizontalGroup(gl.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(addButton)
-                .addComponent(strategiesList)
+                .addComponent(mapPathList)
         );
+
+        this.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+                "Maps"
+        ));
     }
 
     public void updateView(TournamentModel tm) {
-        this.strategiesList.removeAll();
+        this.mapPathList.removeAll();
 
         tm.getMapsPaths().forEach((s) -> {
             RemovableItemPanel<MapPath> newStrategy
@@ -58,7 +64,7 @@ public class MapPathListPanel extends JPanel {
             newStrategy.setListener(() -> {
                 listener.mapRemoved(s);
             });
-            this.strategiesList.add(newStrategy);
+            this.mapPathList.add(newStrategy);
         });
 
         this.addButton.setEnabled(tm.getMapsPaths().size() != 5);

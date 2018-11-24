@@ -5,6 +5,7 @@
  */
 package com.risk.views.menu;
 
+import java.awt.Component;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -35,9 +36,10 @@ public class RemovableItemPanel<T> extends JPanel {
                 .addComponent(removeButton)
         );
         gl.setHorizontalGroup(gl.createSequentialGroup()
-                .addComponent(name)
                 .addComponent(removeButton)
+                .addComponent(name)
         );
+        this.setAlignmentX(Component.LEFT_ALIGNMENT);
     }
 
     public T getItem() {
