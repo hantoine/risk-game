@@ -360,6 +360,7 @@ public final class RiskModel extends Observable {
         try{
             placeArmy(this.currentPlayer, territoryClicked);
             nextTurn();
+            executeBeginningOfPhaseSteps();
             if (this.currentPlayer.getNbArmiesAvailable() == 0 && getTurn() == 0) {
                 finishPhase();
             }
@@ -602,8 +603,8 @@ public final class RiskModel extends Observable {
     }
 
     public TerritoryModel randomTerritory(LinkedList<TerritoryModel> listTerritories){
-        int range = listTerritories.size();
-        return listTerritories.get((int) (Math.random() * range) + 1);
+        int range = listTerritories.size()-1;
+        return listTerritories.get((int) (Math.random() * range));
     }
     /**
      * Final steps after finishing a phase
@@ -875,6 +876,7 @@ public final class RiskModel extends Observable {
 
         addNewLogEvent("The game starts", true);
         this.currentPlayer.setCurrentPlayer(true);
+        this.executeBeginningOfPhaseStepsNow();
     }
 
     /**
