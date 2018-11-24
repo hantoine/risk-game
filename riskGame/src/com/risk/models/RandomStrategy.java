@@ -15,23 +15,31 @@ import java.util.stream.Collectors;
 public class RandomStrategy implements Strategy{
 
     @Override
-    public void reinforcement(RiskModel playGame) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void reinforcement(RiskModel rm) {
+        rm.aIReinforcement();
+        int armiesReinforcement = rm.getCurrentPlayer().getNbArmiesAvailable();
+        
+        while (armiesReinforcement > 0) {
+            TerritoryModel territorySelected=rm.randomTerritory((LinkedList < TerritoryModel >)rm.getCurrentPlayer().getTerritoryOwned());
+            rm.reinforcementIntent(territorySelected);
+            armiesReinforcement = armiesReinforcement - 1;
+        }
+        
     }
 
     @Override
     public void attack(RiskModel playGame) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void fortification(RiskModel playGame) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
     }
     
    @Override
     public void moveArmies(RiskModel rm) {
-        rm.getCurrentPlayer().moveArmiesAI();
+    
     }
 
     @Override
