@@ -5,8 +5,10 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.MapPath;
 import com.risk.models.Strategy;
 import com.risk.models.TournamentModel;
+import com.risk.views.menu.MapPathListPanel.MapPathListPanelListener;
 import com.risk.views.menu.StrategyListPanel.StrategyListPanelListener;
 import com.risk.views.menu.TournamentMenuView;
 
@@ -14,7 +16,7 @@ import com.risk.views.menu.TournamentMenuView;
  *
  * @author hantoine
  */
-public class TournamentController implements StrategyListPanelListener {
+public class TournamentController implements StrategyListPanelListener, MapPathListPanelListener {
 
     TournamentMenuView tmv;
     TournamentModel tm;
@@ -32,6 +34,16 @@ public class TournamentController implements StrategyListPanelListener {
     @Override
     public void strategyRemoved(Strategy.Type strategyType) {
         tm.removePlayerStategies(strategyType);
+    }
+
+    @Override
+    public void mapAdded(MapPath mapPath) {
+        tm.addMapsPath(mapPath);
+    }
+
+    @Override
+    public void mapRemoved(MapPath mapPath) {
+        tm.removeMapsPath(mapPath);
     }
 
 }
