@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import static java.lang.Integer.min;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
@@ -28,8 +29,29 @@ public class RandomStrategy implements Strategy{
     }
 
     @Override
-    public void attack(RiskModel playGame) {
+    public void attack(RiskModel rm) {
+        TerritoryModel selectedTerritoryAttack= rm.randomTerritory((LinkedList < TerritoryModel >)rm.getCurrentPlayer().getTerritoryOwned().stream()
+                                                                                                            .filter(t -> t.getAdj().stream()
+                                                                                                            .anyMatch(ta -> ta.getOwner()!=rm.getCurrentPlayer()))
+                                                                                                            .collect(Collectors.toCollection(LinkedList::new)));
         
+        if (selectedTerritoryAttack != null) {
+            TerritoryModel dest = selectedTerritoryAttack.getAdj().stream()
+                    .filter(ad -> !(rm.getCurrentPlayer().getTerritoryOwned().contains(ad)))
+                    .findFirst()
+                    .orElse(null);
+
+            if (selectedTerritoryAttack.getNumArmies() > 1 && dest != null) {
+                int numDice = min(selectedTerritoryAttack.getNumArmies() - 1, 3);
+                rm.attackIntent(selectedTerritoryAttack, dest);
+                rm.continueAttack(numDice);
+
+            } else {
+                rm.executeAttack();
+            }
+        } else {
+            rm.finishPhase();
+        }
     }
 
     @Override
