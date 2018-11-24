@@ -7,6 +7,7 @@ package com.risk.models;
 
 import static java.lang.Integer.min;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -144,7 +145,8 @@ public class AggressiveStrategy implements Strategy {
               
         if(territoryClicked==null){
             territoryClicked=rm.randomTerritory((LinkedList < TerritoryModel >)rm.getMap().getTerritories().stream()
-                                                                                                            .filter(t -> t.getOwner()==null));
+                                                                                                            .filter(t -> t.getOwner()==null || t.getOwner()==rm.getCurrentPlayer())
+                                                                                                            .collect(Collectors.toCollection(LinkedList::new)));
         }
         
        rm.startupMove(territoryClicked);
