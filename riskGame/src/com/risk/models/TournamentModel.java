@@ -148,6 +148,7 @@ public class TournamentModel extends Observable implements TableModel {
 
         rm.setMap(map);
         rm.setPlayerList(preparePlayers());
+        rm.setInterPhaseTime(0);
         rm.startGame();
         rm.finishPhase(); //skip startup phase
 

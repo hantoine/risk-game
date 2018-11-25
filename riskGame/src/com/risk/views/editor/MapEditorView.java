@@ -224,7 +224,6 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
                 editorController.loadMapFromFile(filepath, this.getMapView());
 
                 int nbLinks = this.mapPanel.links.size();
-                System.out.println("nb links loaded:" + Integer.toString(nbLinks));
 
                 //update map configuration
                 this.mapConfigPanel.setView(editorController.getNewMap().getConfigurationInfo());

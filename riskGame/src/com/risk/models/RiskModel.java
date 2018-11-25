@@ -59,9 +59,14 @@ public final class RiskModel extends Observable {
      */
     private boolean attackPhase;
     /**
-     *
+     * Contains the log message for events that happened in this event
      */
     private LogModel log;
+
+    /**
+     * Waiting time between computer played phases
+     */
+    private int interPhaseTime;
 
     /**
      * Constructor of the model It includes son random players
@@ -76,6 +81,7 @@ public final class RiskModel extends Observable {
         addPlayerToPlayerList("Player 3", Color.blue);
         this.currentPlayer = this.players.getFirst();
         this.log = new LogModel();
+        this.interPhaseTime = 300;
 
     }
 
@@ -126,6 +132,7 @@ public final class RiskModel extends Observable {
         players.remove(player);
         if (players.size() == 1) {
             this.setWinningPlayer(this.players.getFirst());
+            System.out.println("game finished");
             return;
         }
 
@@ -375,7 +382,6 @@ public final class RiskModel extends Observable {
 
     public void attackIntent(TerritoryModel sourceTerritory, TerritoryModel destTerritory) {
         int result = getCurrentPlayer().validateAttack(sourceTerritory, destTerritory);
-        System.out.println("intento atacar: " + result);
         if (result == 0) {
             attackMove(sourceTerritory, destTerritory);
         } else {
@@ -654,7 +660,7 @@ public final class RiskModel extends Observable {
 
             public void run() {
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(rm.interPhaseTime);
                     rm.executeBeginningOfPhaseStepsNow();
                 } catch (InterruptedException ex) {
                 }
@@ -687,6 +693,10 @@ public final class RiskModel extends Observable {
 
         setChanged();
         notifyObservers();
+    }
+
+    public void setInterPhaseTime(int interPhaseTime) {
+        this.interPhaseTime = interPhaseTime;
     }
 
     /**

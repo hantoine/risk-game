@@ -82,7 +82,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
             }//*/
 
             //Timer timer = new Timer(3000, new CheckTournamentFinished(this));
-            Timer timer = new Timer(300, (ActionEvent ae) -> {
+            Timer timer = new Timer(3000, (ActionEvent ae) -> {
                 this.checkTournamentFinished();
             });
             timer.setRepeats(false); // Only execute once

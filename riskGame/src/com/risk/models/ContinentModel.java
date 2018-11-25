@@ -48,13 +48,7 @@ public class ContinentModel {
      * @param member the member which is removed
      */
     void removeMember(TerritoryModel member) {
-        System.out.println("continent : " + this.name + ", del member : " + member.getName());
         this.members.remove(member);
-
-        System.out.println("members:");
-        this.members.iterator().forEachRemaining((t) -> {
-            System.out.println(t.getName());
-        });
     }
 
     /**
@@ -81,14 +75,7 @@ public class ContinentModel {
      * @param member the member to add to members list
      */
     void addMember(TerritoryModel member) {
-        System.out.println("continent : " + this.name + ", new member : " + member.getName());
-
         this.members.add(member);
-
-        System.out.println("members:");
-        this.members.iterator().forEachRemaining((t) -> {
-            System.out.println(t.getName());
-        });
     }
 
     /**
@@ -135,8 +122,6 @@ public class ContinentModel {
      */
     public boolean check() {
         if (members.isEmpty()) {
-            System.out.println("name of fail continent:" + this.name);
-            System.out.println(this.members);
             return false;
         }
 

@@ -13,7 +13,6 @@ public class BenevolentStrategy implements Strategy {
 
     @Override
     public void reinforcement(RiskModel rm) {
-        System.out.println("BENEVOLENTE REINFORCEMENT");
         rm.aIReinforcement();
 
         int armiesReinforcement = rm.getCurrentPlayer().getNbArmiesAvailable();
@@ -34,13 +33,11 @@ public class BenevolentStrategy implements Strategy {
 
     @Override
     public void attack(RiskModel rm) {
-        System.out.println("BENEVOLENTE ATAQUE");
         rm.finishPhase();
     }
 
     @Override
     public void fortification(RiskModel rm) {
-        System.out.println("BENEVOLENTE FORTIFICACION");
         TerritoryModel dest = null;
         for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
             if (((TerritoryModel) t).getAdj().stream()

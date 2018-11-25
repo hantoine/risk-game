@@ -35,7 +35,6 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testGetMapsPaths() {
-        System.out.println("getMapsPath");
         Set<String> expResult = new HashSet<>();
 
         Set<String> result = instance.getMapsPaths();
@@ -48,7 +47,6 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testAddMapsPath() {
-        System.out.println("addMapsPath");
         String mapPath = Paths.get("maps", "Europe.map").toString();
 
         instance.addMapsPath(mapPath);
@@ -100,7 +98,6 @@ public class TournamentMenuModelTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testAddMapsPathMapFileNotExist() {
-        System.out.println("addMapsPath");
         String mapPath = Paths.get("maps", "TestCaseNonExistantMapFile.map")
                 .toString();
 
@@ -113,7 +110,6 @@ public class TournamentMenuModelTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testAddMapsPathMapFileInvalid() {
-        System.out.println("addMapsPath");
         String mapPath = Paths.get("maps", "presentation", "noterritoryTAG.map")
                 .toString();
 
@@ -125,7 +121,6 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testRemoveMapsPath() {
-        System.out.println("removeMapsPath");
         String mapPath = Paths.get("maps", "Europe.map").toString();
         instance.addMapsPath(mapPath);
 
@@ -139,7 +134,6 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testGetPlayerStategies() {
-        System.out.println("getPlayerStategies");
         Set<Strategy.Type> expResult = new HashSet<>();
 
         Set<Strategy.Type> result = instance.getPlayerStategies();
@@ -152,7 +146,6 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testAddPlayerStategies() {
-        System.out.println("addPlayerStategies");
         Strategy.Type playerStategy = Strategy.Type.CHEATER;
         instance.addPlayerStategies(playerStategy);
         assertTrue(instance.getPlayerStategies()
@@ -165,7 +158,6 @@ public class TournamentMenuModelTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testAddPlayerStategiesHuman() {
-        System.out.println("addPlayerStategies");
         Strategy.Type playerStategy = Strategy.Type.HUMAN;
         instance.addPlayerStategies(playerStategy);
     }
@@ -176,7 +168,6 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testAddPlayerStategiesOnce() {
-        System.out.println("addPlayerStategies");
         Strategy.Type playerStategy = Strategy.Type.CHEATER;
 
         instance.addPlayerStategies(playerStategy);
@@ -192,7 +183,6 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testRemovePlayerStategies() {
-        System.out.println("removePlayerStategies");
         Strategy.Type playerStategy = Strategy.Type.CHEATER;
         instance.addPlayerStategies(playerStategy);
 
@@ -207,7 +197,6 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testGetNbGamePerMap() {
-        System.out.println("getNbGamePerMap");
         int expResult = 4;
 
         int result = instance.getNbGamePerMap();
@@ -220,7 +209,6 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testSetNbGamePerMap() {
-        System.out.println("setNbGamePerMap");
         int nbGamePerMap = 3;
         instance.setNbGamePerMap(nbGamePerMap);
 
@@ -233,7 +221,6 @@ public class TournamentMenuModelTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testSetNbGamePerMapMax() {
-        System.out.println("setNbGamePerMap");
         int nbGamePerMap = 6;
         instance.setNbGamePerMap(nbGamePerMap);
     }
@@ -243,7 +230,6 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testGetMaximumTurnPerGame() {
-        System.out.println("getMaximumTurnPerGame");
         int expResult = 40;
 
         int result = instance.getMaximumTurnPerGame();
