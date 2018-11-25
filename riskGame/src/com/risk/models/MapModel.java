@@ -35,7 +35,7 @@ public final class MapModel extends Observable implements Serializable {
     /**
      * image the image of the map
      */
-    private BufferedImage image;
+    transient private BufferedImage image;
     /**
      * mapHeight the height of the map
      */

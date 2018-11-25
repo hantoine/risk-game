@@ -100,7 +100,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     }
 
     /**
-     * This method is for add the observre
+     * This method is for add the observer
      * @param rm the risk model which is gonna be added the observer
      */
     @Override
@@ -124,7 +124,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      * @param rm the model which is gonna be updated the view
      * @param newMap the new map which is gonna be updated
      */
-    private void updateView(RiskModel rm, boolean newMap) {
+    public void updateView(RiskModel rm, boolean newMap) {
         this.stagePanel.updateView(rm);
         this.mapPanel.updateView(rm.getMap(), newMap);
         this.dominationView.updateView(rm);
@@ -178,10 +178,19 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
                 rc.saveGame();
             });
         }
+        
+        c = this.getJMenuBar().getMenu(0).getMenuComponent(2);
+        if (c instanceof JMenuItem) {
+            JMenuItem j = (JMenuItem) c;
+            j.addActionListener(e -> {
+                rc.loadGame();
+            });
+        }
 
-        this.getMenuPanel().getStartMenu().getNewGamePanel().getOpenMapEditor().addActionListener(e -> {
-            rc.openMapEditor();
-        });
+        if(this.menuPanel != null)
+            this.getMenuPanel().getStartMenu().getNewGamePanel().getOpenMapEditor().addActionListener(e -> {
+                rc.openMapEditor();
+            });
 
         phaseAuxiliarPanel.setListeners(rc.getGameController());
     }
@@ -265,6 +274,12 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         menuItemSaver.getAccessibleContext().setAccessibleDescription("Save current game");
         menuFile.add(menuItemSaver);
         
+        menuFile.setLayout(new BoxLayout(menuFile, BoxLayout.Y_AXIS));
+        JMenuItem menuItemLoader = new JMenuItem("Load Game");
+        menuItemLoader.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
+        menuItemLoader.getAccessibleContext().setAccessibleDescription("Load saved game");
+        menuFile.add(menuItemLoader);
+        
         //Build 2do menu
         menuOption = new JMenu("Options");
         menuOption.setMnemonic(KeyEvent.VK_A);
@@ -280,7 +295,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      *
      * @return the menuPanel
      */
-    MenuView getMenuPanel() {
+    public MenuView getMenuPanel() {
         return menuPanel;
     }
 
@@ -289,7 +304,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      *
      * @param menuPanel the menuPanel to set
      */
-    void setMenuPanel(MenuView menuPanel) {
+    public void setMenuPanel(MenuView menuPanel) {
         this.menuPanel = menuPanel;
     }
 
