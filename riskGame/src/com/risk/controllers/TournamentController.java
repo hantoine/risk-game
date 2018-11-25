@@ -64,30 +64,26 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
     }
 
     private void checkTournamentFinished() {
+        /*
+        tm.getGames().values().forEach((lg) -> {
+            lg.stream().forEach((g) -> {
+                if (g.getWinningPlayer() != null) {
+                    return;
+                }
+                RiskView rv = new RiskView();
+                rv.updateView(g, true);
+                rv.setVisible(true);
+            });
+        });  */
+
         if (tm.isTournamentFinished()) {
             trv = new TournamentResultsView(tm);
         } else {
-            /*
-            class CheckTournamentFinished implements ActionListener {
-
-                TournamentController tc;
-
-                CheckTournamentFinished(TournamentController tc) {
-                    this.tc = tc;
-                }
-
-                public void run() {
-                    tc.checkTournamentFinished();
-                }
-            }//*/
-
-            //Timer timer = new Timer(3000, new CheckTournamentFinished(this));
             Timer timer = new Timer(3000, (ActionEvent ae) -> {
                 this.checkTournamentFinished();
             });
             timer.setRepeats(false); // Only execute once
             timer.start();
-
         }
     }
 

@@ -149,6 +149,7 @@ public class TournamentModel extends Observable implements TableModel {
         rm.setMap(map);
         rm.setPlayerList(preparePlayers());
         rm.setInterPhaseTime(0);
+        rm.setNbTurnBeforeDraw(this.maximumTurnPerGame);
         rm.startGame();
         rm.finishPhase(); //skip startup phase
 
@@ -224,7 +225,7 @@ public class TournamentModel extends Observable implements TableModel {
     public boolean isTournamentFinished() {
         return this.games.values().stream().allMatch(
                 (lg) -> lg.stream().allMatch(
-                        (g) -> g.getWinningPlayer() != null
+                        (g) -> (g.getWinningPlayer() != null || g.isDraw())
                 )
         );
     }

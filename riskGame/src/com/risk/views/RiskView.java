@@ -74,7 +74,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     public RiskView() {
         super("Risk Game");
 
-        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
 
         this.phaseAuxiliarPanel = new PhaseAuxiliar();
@@ -127,7 +127,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      * @param rm the model which is gonna be updated the view
      * @param newMap the new map which is gonna be updated
      */
-    private void updateView(RiskModel rm, boolean newMap) {
+    public void updateView(RiskModel rm, boolean newMap) {
         this.stagePanel.updateView(rm);
         this.mapPanel.updateView(rm.getMap(), newMap);
         this.dominationView.updateView(rm);
