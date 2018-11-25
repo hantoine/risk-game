@@ -395,6 +395,7 @@ public final class RiskModel extends Observable {
                     this.addNewEvent("You are already attacking.");
                     break;
                 case -3:
+                    System.out.println("LA CAGO ESTE GUEVON"+getCurrentPlayer().getName()+"FUENTE"+sourceTerritory.getOwner().getName()+"destino"+destTerritory.getOwner().getName());
                     this.addNewEvent("Invalid movement");
                     break;
                 case -4:
@@ -602,9 +603,11 @@ public final class RiskModel extends Observable {
         this.currentPlayer.attack(this);
     }
 
-    public TerritoryModel randomTerritory(LinkedList<TerritoryModel> listTerritories){
-        int range = listTerritories.size()-1;
+    public TerritoryModel randomTerritory(List<TerritoryModel> listTerritories){
+        
+        int range = listTerritories.size();
         return listTerritories.get((int) (Math.random() * range));
+        
     }
     /**
      * Final steps after finishing a phase
