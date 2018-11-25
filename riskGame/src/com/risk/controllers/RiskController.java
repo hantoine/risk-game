@@ -152,6 +152,8 @@ public final class RiskController {
      * @param filePath
      */
     public void saveGame(String filePath) {
+        this.modelRisk.setSavedLogs(this.viewRisk.getLogs());
+        
         try (FileOutputStream fileOut = new FileOutputStream(filePath); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(this.modelRisk);
         } catch (IOException e) {
@@ -194,5 +196,6 @@ public final class RiskController {
         //setup observers + update the view
         this.viewRisk.observeModel(modelRisk);
         viewRisk.setController(this);
+        viewRisk.setLogs(this.modelRisk.getLogs());
     }
 }
