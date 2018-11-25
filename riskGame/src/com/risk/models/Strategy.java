@@ -19,6 +19,7 @@ public interface Strategy {
         CHEATER
     }
     
+    public abstract void startup(RiskModel playGame);
     public abstract void reinforcement(RiskModel playGame);
     public abstract void attack(RiskModel playGame);
     public abstract void fortification(RiskModel playGame);

@@ -5,6 +5,10 @@
  */
 package com.risk.models;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  *
  * @author Nellybett
@@ -77,6 +81,15 @@ public class BenevolentStrategy implements Strategy {
     @Override
     public void defense(RiskModel rm) {
         rm.getCurrentPlayer().defenseAI();
+    }
+
+    @Override
+    public void startup(RiskModel rm) {
+       
+        TerritoryModel territoryClicked=rm.randomTerritory((List < TerritoryModel >)rm.getMap().getTerritories().stream()
+                                                                                                            .filter(t -> t.getOwner()==null || t.getOwner()==rm.getCurrentPlayer())
+                                                                                                            .collect(Collectors.toCollection(LinkedList::new)));
+        rm.startupMove(territoryClicked);
     }
 
 }

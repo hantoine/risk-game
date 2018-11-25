@@ -385,6 +385,19 @@ public final class RiskModel extends Observable {
         }
     }
 
+    public void startupMove(TerritoryModel territoryClicked){
+        try{
+            placeArmy(this.currentPlayer, territoryClicked);
+            nextTurn();
+            executeBeginningOfPhaseSteps();
+            if (this.currentPlayer.getNbArmiesAvailable() == 0 && getTurn() == 0) {
+                finishPhase();
+            }
+        } catch (RiskModel.ArmyPlacementImpossible ex) {
+            addNewEvent(ex.getReason());
+        }
+    }
+    
     public void fortificationIntent(TerritoryModel source, TerritoryModel dest) {
 
         try {
@@ -410,6 +423,7 @@ public final class RiskModel extends Observable {
                     this.addNewEvent("You are already attacking.");
                     break;
                 case -3:
+                    System.out.println("LA CAGO ESTE GUEVON"+getCurrentPlayer().getName()+"FUENTE"+sourceTerritory.getOwner().getName()+"destino"+destTerritory.getOwner().getName());
                     this.addNewEvent("Invalid movement");
                     break;
                 case -4:
@@ -625,6 +639,12 @@ public final class RiskModel extends Observable {
         this.currentPlayer.attack(this);
     }
 
+    public TerritoryModel randomTerritory(List<TerritoryModel> listTerritories){
+        
+        int range = listTerritories.size();
+        return listTerritories.get((int) (Math.random() * range));
+        
+    }
     /**
      * Final steps after finishing a phase
      */
@@ -700,6 +720,7 @@ public final class RiskModel extends Observable {
         addNewLogEvent("", true);
         switch (this.getPhase()) {
             case STARTUP:
+                this.getCurrentPlayer().startup(this);
                 break;
             case REINFORCEMENT:
                 this.getCurrentPlayer().reinforcement(this);
@@ -898,6 +919,7 @@ public final class RiskModel extends Observable {
 
         addNewLogEvent("The game starts", true);
         this.currentPlayer.setCurrentPlayer(true);
+        this.executeBeginningOfPhaseStepsNow();
     }
 
     /**
