@@ -17,7 +17,6 @@ public class AggressiveStrategy implements Strategy {
 
     @Override
     public void reinforcement(RiskModel rm) {
-        System.out.println("AGRESIVO REINFORCEMENT");
         rm.aIReinforcement();
         int armiesReinforcement = rm.getCurrentPlayer().getNbArmiesAvailable();
         TerritoryModel selectedTerritory = rm.getCurrentPlayer().getTerritoryOwned().get(0);
@@ -37,7 +36,6 @@ public class AggressiveStrategy implements Strategy {
 
     @Override
     public void attack(RiskModel rm) {
-        System.out.println("AGRESIVO ATAQUE");
         selectTerritory(rm);
         if (selectedTerritoryAttack != null) {
             TerritoryModel dest = selectedTerritoryAttack.getAdj().stream()
@@ -51,7 +49,6 @@ public class AggressiveStrategy implements Strategy {
                 rm.continueAttack(numDice);
 
             } else {
-                System.out.println("SE ACABO EL ATAQUE AGRESIVO");
                 rm.executeAttack();
             }
         } else {
@@ -61,7 +58,6 @@ public class AggressiveStrategy implements Strategy {
 
     @Override
     public void fortification(RiskModel rm) {
-        System.out.println("AGRESIVO FORTI");
 
         TerritoryModel dest = null;
         for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {

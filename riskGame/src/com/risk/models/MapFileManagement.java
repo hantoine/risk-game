@@ -63,8 +63,6 @@ public class MapFileManagement {
         continentCreator(stringSplit1[0], board);
         territoryCreator(stringSplit1[1], board);
 
-        System.out.println("Board Created");
-
         if (!board.isValid()) {
             throw new MapInvalidException();
         }

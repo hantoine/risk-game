@@ -52,10 +52,6 @@ public class ModifyTerritoryPanel extends JPanel {
         listPanel.setLayout(new FlowLayout());
         listPanel.add(new JLabel("Belongs to:"));
 
-        System.out.println("continentList:" + continentList);
-        System.out.println("territoryName:" + territoryName);
-        System.out.println("territoryContinent:" + territoryContinent);
-
         continentListBox = new JComboBox(continentList.toArray());
         if (!territoryContinent.equals("")) {
             continentListBox.setSelectedItem(territoryContinent);

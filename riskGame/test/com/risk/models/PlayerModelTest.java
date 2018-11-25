@@ -63,7 +63,6 @@ public class PlayerModelTest {
      */
     @Test
     public void testArmiesAssignationMinimum() {
-        System.out.println("armiesAssignation");
 
         int expResult = 3;
         int result = player.armiesAssignation();
@@ -75,7 +74,6 @@ public class PlayerModelTest {
      */
     @Test
     public void testArmiesAssignationWithMoreTerritories() {
-        System.out.println("armiesAssignation");
 
         player.addTerritoryOwned(new TerritoryModel("France"));
         player.addTerritoryOwned(new TerritoryModel("Germany"));
@@ -93,7 +91,6 @@ public class PlayerModelTest {
      */
     @Test
     public void testArmiesAssignationWithContinents() {
-        System.out.println("armiesAssignation");
 
         LinkedList<ContinentModel> continents = new LinkedList<>();
         continents.add(new ContinentModel("South America", 4));
@@ -110,7 +107,6 @@ public class PlayerModelTest {
      */
     @Test
     public void testArmiesAssignationCards() {
-        System.out.println("armiesAssignationCards");
 
         //returned cards > 18
         player.setReturnedCards(27);

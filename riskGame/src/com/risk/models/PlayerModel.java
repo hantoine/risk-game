@@ -887,10 +887,8 @@ public class PlayerModel extends Observable {
     }
 
     public void moveArmiesAI() {
-        System.out.println("MOVER LOS BATALLONES" + this.getCurrentAttack());
         if (this.getCurrentAttack() != null) {
             if (this.getCurrentAttack().getDest().getNumArmies() == 0) {
-                System.out.println("Numero de dados : " + this.getCurrentAttack().getNbDiceAttack());
                 int diceAttack = this.getCurrentAttack().getNbDiceAttack();
                 this.game.moveArmiesToConqueredTerritory(diceAttack);
             }
