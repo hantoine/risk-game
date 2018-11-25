@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileFilter;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Observable;
 import javax.swing.BoxLayout;
@@ -211,6 +212,13 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         c = this.getJMenuBar().getMenu(0).getMenuComponent(1);
         if (c instanceof JMenuItem) {
             JMenuItem j = (JMenuItem) c;
+            
+            //remove old listeners
+            Arrays.stream(j.getActionListeners()).forEach((a)->{
+                j.removeActionListener(a);
+            });
+            
+            //add new one
             j.addActionListener(e -> {
                 JFileChooser fileChooser;
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("saved risk model", "ser");
@@ -229,6 +237,13 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         c = this.getJMenuBar().getMenu(0).getMenuComponent(2);
         if (c instanceof JMenuItem) {
             JMenuItem j = (JMenuItem) c;
+            
+            //remove old listeners
+            Arrays.stream(j.getActionListeners()).forEach((a)->{
+                j.removeActionListener(a);
+            });
+            
+            //add new one
             j.addActionListener(e -> {
                 //create a new file chooser
                 JFileChooser fileChooser;
