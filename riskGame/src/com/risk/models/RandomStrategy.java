@@ -31,6 +31,10 @@ public class RandomStrategy implements Strategy{
 
     @Override
     public void attack(RiskModel rm) {
+        
+        if(random==0)
+            setRandom(getTotalAttacks(rm));
+        
         TerritoryModel selectedTerritoryAttack= rm.randomTerritory((LinkedList < TerritoryModel >)rm.getCurrentPlayer().getTerritoryOwned().stream()
                                                                                                             .filter(t -> t.getAdj().stream()
                                                                                                             .anyMatch(ta -> ta.getOwner()!=rm.getCurrentPlayer()))
@@ -87,6 +91,18 @@ public class RandomStrategy implements Strategy{
         random=((int) (Math.random() * range +1));
     }
     
+    private int getTotalAttacks(RiskModel rm){
+        int numberAttacks=0;
+        LinkedList<TerritoryModel> possibleAttackers=rm.getCurrentPlayer().getTerritoryOwned().stream()
+                                                                                            .filter(t -> t.getAdj().stream()
+                                                                                                .anyMatch(ta -> ta.getOwner()!=rm.getCurrentPlayer()))
+                                                                                                .collect(Collectors.toCollection(LinkedList::new));
+        
+        for(TerritoryModel t:possibleAttackers){
+            numberAttacks= numberAttacks+t.getNumArmies()-1;
+        }
     
+        return numberAttacks;
+    }
     
 }
