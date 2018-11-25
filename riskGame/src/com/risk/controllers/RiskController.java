@@ -9,9 +9,17 @@ import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import com.risk.views.editor.MapEditorView;
+import com.risk.views.menu.MenuView;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  * It is the Game-driver
@@ -144,14 +152,43 @@ public final class RiskController {
      * Method to save the state of the current game being played
      */
     public void saveGame() {
-        try {
-            FileOutputStream fileOut = new FileOutputStream("game.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        try (FileOutputStream fileOut = new FileOutputStream("game.ser"); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(this.modelRisk);
-            out.close();
-            fileOut.close();
 
         } catch (IOException i) {
         }
+    }
+
+    /**
+     * Load a new game from backup file
+     */
+    public void loadGame() {
+        //load the saved model
+        try (FileInputStream fileIn = new FileInputStream("game.ser"); ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            this.modelRisk = (RiskModel) in.readObject();
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e);
+            return;
+        }
+        
+        //set buffered image as it is not serializable
+        String imagePath = modelRisk.getMap().getConfigurationInfo().getImagePath();
+        System.out.println(imagePath);
+        try {
+            BufferedImage image = ImageIO.read(new File("maps/" + imagePath));
+            this.modelRisk.getMap().setImage(image);
+        } catch (IOException ex) {
+            Logger.getLogger(RiskController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //setup listeners
+        this.territoryListener = new MapListener(this);
+        this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
+        this.gameController = new GameController(this.modelRisk);
+        
+        //setup observers + update the view
+        this.viewRisk.observeModel(modelRisk);
+        viewRisk.setController(this);
     }
 }
