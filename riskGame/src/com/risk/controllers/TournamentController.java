@@ -64,18 +64,6 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
     }
 
     private void checkTournamentFinished() {
-        /*
-        tm.getGames().values().forEach((lg) -> {
-            lg.stream().forEach((g) -> {
-                if (g.getWinningPlayer() != null) {
-                    return;
-                }
-                RiskView rv = new RiskView();
-                rv.updateView(g, true);
-                rv.setVisible(true);
-            });
-        });  */
-
         if (tm.isTournamentFinished()) {
             trv = new TournamentResultsView(tm);
         } else {
