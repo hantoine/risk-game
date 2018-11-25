@@ -5,12 +5,16 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.MapFileManagement;
 import com.risk.models.MapPath;
 import com.risk.models.Strategy;
 import com.risk.models.TournamentModel;
+import com.risk.views.TournamentResultsView;
 import com.risk.views.menu.MapPathListPanel.MapPathListPanelListener;
 import com.risk.views.menu.StrategyListPanel.StrategyListPanelListener;
 import com.risk.views.menu.TournamentMenuView;
+import java.awt.event.ActionEvent;
+import javax.swing.Timer;
 
 /**
  *
@@ -20,6 +24,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
 
     TournamentMenuView tmv;
     TournamentModel tm;
+    TournamentResultsView trv;
 
     public TournamentController(TournamentModel tm, TournamentMenuView tmv) {
         this.tm = tm;
@@ -47,11 +52,43 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
     }
 
     public void playTournament() {
-        tm.playTournament();
-        tmv.setVisible(false);
-        tmv.dispose();
+        try {
+            tm.playTournament();
+            tmv.setVisible(false);
+            tmv.dispose();
+            checkTournamentFinished();
 
-        //open result view
+        } catch (MapFileManagement.MapFileManagementException ex) {
+            tmv.showError(ex.getMessage());
+        }
+    }
+
+    private void checkTournamentFinished() {
+        if (tm.isTournamentFinished()) {
+            trv = new TournamentResultsView(tm);
+        } else {
+            /*
+            class CheckTournamentFinished implements ActionListener {
+
+                TournamentController tc;
+
+                CheckTournamentFinished(TournamentController tc) {
+                    this.tc = tc;
+                }
+
+                public void run() {
+                    tc.checkTournamentFinished();
+                }
+            }//*/
+
+            //Timer timer = new Timer(3000, new CheckTournamentFinished(this));
+            Timer timer = new Timer(300, (ActionEvent ae) -> {
+                this.checkTournamentFinished();
+            });
+            timer.setRepeats(false); // Only execute once
+            timer.start();
+
+        }
     }
 
 }

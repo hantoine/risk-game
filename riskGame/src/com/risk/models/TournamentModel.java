@@ -15,13 +15,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 
 /**
  * Model for the tournament mode menu
  *
  * @author hantoine
  */
-public class TournamentModel extends Observable {
+public class TournamentModel extends Observable implements TableModel {
 
     /**
      * Set of the paths of the map to use in the tournament
@@ -147,6 +149,7 @@ public class TournamentModel extends Observable {
         rm.setMap(map);
         rm.setPlayerList(preparePlayers());
         rm.startGame();
+        rm.finishPhase(); //skip startup phase
 
         return rm;
     }
@@ -166,4 +169,63 @@ public class TournamentModel extends Observable {
 
         return players;
     }
+
+    public Map<MapPath, List<RiskModel>> getGames() {
+        return Collections.unmodifiableMap(games);
+    }
+
+    @Override
+    public int getRowCount() {
+        return this.mapsPaths.size();
+    }
+
+    @Override
+    public int getColumnCount() {
+        return this.nbGamePerMap;
+    }
+
+    @Override
+    public String getColumnName(int i) {
+        return String.format("Game %d", i);
+    }
+
+    @Override
+    public Class<?> getColumnClass(int i) {
+        return String.class;
+    }
+
+    @Override
+    public boolean isCellEditable(int i, int j) {
+        return false;
+    }
+
+    @Override
+    public Object getValueAt(int i, int j) {
+        MapPath ithMapPath = this.mapsPaths.stream().skip(i).findFirst().get();
+        PlayerModel winner = this.games.get(ithMapPath).get(j).getWinningPlayer();
+
+        return winner != null ? winner.getName() : "Draw";
+    }
+
+    @Override
+
+    public void setValueAt(Object o, int i, int j) {
+    }
+
+    @Override
+    public void addTableModelListener(TableModelListener tl) {
+    }
+
+    @Override
+    public void removeTableModelListener(TableModelListener tl) {
+    }
+
+    public boolean isTournamentFinished() {
+        return this.games.values().stream().allMatch(
+                (lg) -> lg.stream().allMatch(
+                        (g) -> g.getWinningPlayer() != null
+                )
+        );
+    }
+
 }

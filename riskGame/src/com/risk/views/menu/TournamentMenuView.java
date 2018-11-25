@@ -16,6 +16,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
@@ -118,6 +119,15 @@ public class TournamentMenuView extends JFrame implements Observer {
             this.strategyListPanel.updateView(tm);
             this.mapPathListPanel.updateView(tm);
         }
+    }
+
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(
+                null,
+                message,
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
     }
 
 }
