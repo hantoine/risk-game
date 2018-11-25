@@ -5,8 +5,14 @@
  */
 package com.risk.models;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
 
@@ -34,6 +40,11 @@ public class TournamentModel extends Observable {
      * stops with a draw
      */
     int maximumTurnPerGame;
+
+    /**
+     *
+     */
+    Map<MapPath, List<RiskModel>> games;
 
     /**
      * Constructor
@@ -101,5 +112,58 @@ public class TournamentModel extends Observable {
 
         setChanged();
         notifyObservers();
+    }
+
+    public void playTournament()
+            throws MapFileManagement.MapFileManagementException {
+        games = new HashMap<>();
+
+        for (MapPath mapPath : this.mapsPaths) {
+            this.games.put(mapPath, this.playGamesOnMap(mapPath));
+        }
+
+        setChanged();
+        notifyObservers();
+    }
+
+    private List<RiskModel> playGamesOnMap(MapPath mapPath)
+            throws MapFileManagement.MapFileManagementException {
+        List<RiskModel> gamesOnMap = new ArrayList<>(this.nbGamePerMap);
+
+        while (gamesOnMap.size() < this.nbGamePerMap) {
+            gamesOnMap.add(this.playGame(mapPath));
+        }
+
+        return gamesOnMap;
+    }
+
+    private RiskModel playGame(MapPath mapPath)
+            throws MapFileManagement.MapFileManagementException {
+        RiskModel rm = new RiskModel();
+
+        MapModel map = new MapModel();
+        MapFileManagement.createBoard(mapPath.getPath(), map);
+
+        rm.setMap(map);
+        rm.setPlayerList(preparePlayers());
+        rm.startGame();
+
+        return rm;
+    }
+
+    private LinkedList<PlayerModel> preparePlayers() {
+        LinkedList<PlayerModel> players = new LinkedList<>();
+
+        for (Strategy.Type strategy : this.playerStategies) {
+            players.add(
+                    PlayerFactory.getPlayer(
+                            strategy.toString(),
+                            strategy.toString(),
+                            Color.black
+                    )
+            );
+        }
+
+        return players;
     }
 }

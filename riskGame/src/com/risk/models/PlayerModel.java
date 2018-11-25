@@ -88,10 +88,9 @@ public class PlayerModel extends Observable {
      *
      * @param name name of a player
      * @param color color of a player
-     * @param isHuman true if the player is human
-     * @param game Game in which this player belongs
+     *
      */
-    public PlayerModel(String name, Color color, RiskModel game) {
+    public PlayerModel(String name, Color color) {
         this.name = name;
         this.color = color;
         this.territoryOwned = new LinkedList<>();
@@ -100,7 +99,6 @@ public class PlayerModel extends Observable {
         this.hand.setOwner(this);
         this.numArmiesAvailable = 0;
         this.returnedCards = 0;
-        this.game = game;
         this.currentAttack = null;
         this.currentPlayer = false;
     }

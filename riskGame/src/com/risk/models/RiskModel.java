@@ -71,9 +71,9 @@ public final class RiskModel extends Observable {
         this.turn = 0;
         this.phase = GamePhase.STARTUP;
         this.attackPhase = true;
-        addPlayerToPlayerList("Player 1", Color.red, true);
-        addPlayerToPlayerList("Player 2", Color.green, true);
-        addPlayerToPlayerList("Player 3", Color.blue, true);
+        addPlayerToPlayerList("Player 1", Color.red);
+        addPlayerToPlayerList("Player 2", Color.green);
+        addPlayerToPlayerList("Player 3", Color.blue);
         this.currentPlayer = this.players.getFirst();
         this.log = new LogModel();
 
@@ -81,9 +81,9 @@ public final class RiskModel extends Observable {
 
     public void reset() {
         this.players.clear();
-        addPlayerToPlayerList("Player 1", Color.red, true);
-        addPlayerToPlayerList("Player 2", Color.green, true);
-        addPlayerToPlayerList("Player 3", Color.blue, true);
+        addPlayerToPlayerList("Player 1", Color.red);
+        addPlayerToPlayerList("Player 2", Color.green);
+        addPlayerToPlayerList("Player 3", Color.blue);
         this.currentPlayer = this.players.getFirst();
         this.turn = 0;
         this.phase = GamePhase.STARTUP;
@@ -94,11 +94,12 @@ public final class RiskModel extends Observable {
      *
      * @param name the name of the player
      * @param color color of the player
-     * @param isHuman true if it is human
      */
-    public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
+    public void addPlayerToPlayerList(String name, Color color) {
 
-        players.add(PlayerFactory.getPlayer("HUMAN", name, color, this));
+        PlayerModel pl = PlayerFactory.getPlayer("HUMAN", name, color);
+        pl.setGame(this);
+        players.add(pl);
 
         setChanged();
         notifyObservers();
@@ -140,6 +141,10 @@ public final class RiskModel extends Observable {
     public void setPlayerList(LinkedList<PlayerModel> playerList) {
         this.players = playerList;
         this.currentPlayer = playerList.getFirst();
+
+        this.players.forEach(p -> {
+            p.setGame(this);
+        });
 
         setChanged();
         notifyObservers();

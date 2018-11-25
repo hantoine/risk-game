@@ -93,7 +93,7 @@ public class MenuListener extends MouseAdapter {
                 case "    ":
                     Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
                     if (this.getPlayerList().getColorUsed().contains(selectedColor)) {
-                    	this.getRiskView().showMessage("This color is already used");
+                        this.getRiskView().showMessage("This color is already used");
                     } else {
                         this.getPlayerList().getColorUsed().remove(addPlayer.getBackground());
                         this.getPlayerList().getColorUsed().add(selectedColor);
@@ -171,8 +171,7 @@ public class MenuListener extends MouseAdapter {
             PlayerPanel player = listPlayerPanels.get(i);
             PlayerModel playerGame = PlayerFactory.getPlayer((String) player.getPlayerType().getSelectedItem(),
                     player.getPlayerNameTextField().getText(),
-                    player.getColorButton().getBackground(),
-                    this.getRiskModel()
+                    player.getColorButton().getBackground()
             );
             listPlayers.add(playerGame);
 
