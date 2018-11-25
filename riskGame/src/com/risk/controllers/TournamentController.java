@@ -87,4 +87,12 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
         }
     }
 
+    public void nbMaximumTurnPerGameChanged(int value) {
+        tm.setMaximumTurnPerGame(value);
+    }
+
+    public void nbGamePerMapChanged(int value) {
+        tm.setNbGamePerMap(value);
+    }
+
 }

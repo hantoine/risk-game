@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
 
 /**
  *
@@ -109,6 +110,13 @@ public class TournamentMenuView extends JFrame implements Observer {
         mapPathListPanel.setListener(ctrl);
         this.playButton.addActionListener((al) -> {
             ctrl.playTournament();
+        });
+        this.nbMaximumTurnPerGame.addChangeListener((ChangeEvent ce) -> {
+            ctrl.nbMaximumTurnPerGameChanged((int) ((JSpinner) ce.getSource()).getValue());
+        });
+
+        this.nbGamePerMap.addChangeListener((ChangeEvent ce) -> {
+            ctrl.nbGamePerMapChanged((int) ((JSpinner) ce.getSource()).getValue());
         });
     }
 
