@@ -25,7 +25,7 @@ import java.util.stream.Stream;
  *
  * @author timot
  */
-public final class MapModel extends Observable {
+public final class MapModel extends Observable implements Cloneable {
 
     /**
      * mapConfig configurations of the map like author, wrap, image, and others

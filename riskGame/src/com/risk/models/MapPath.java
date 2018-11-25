@@ -24,4 +24,7 @@ public class MapPath {
         return Paths.get(path).getFileName().toString();
     }
 
+    public String getPath() {
+        return path;
+    }
 }

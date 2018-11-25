@@ -11,7 +11,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -76,22 +75,19 @@ public class NewGamePanel extends JPanel {
         this.selectFileTextField.setPreferredSize(d);
         JButton selectFileButton = new JButton("Select a Map");
 
-        selectFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser;
-                FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                        "Conquest Map file", "map");
-                fileChooser = new JFileChooser();
-                fileChooser.setFileFilter(filter);
-                fileChooser.setCurrentDirectory(new File("." + File.separator + "maps"));
+        selectFileButton.addActionListener((ActionEvent e) -> {
+            JFileChooser fileChooser;
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Conquest Map file", "map");
+            fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(filter);
+            fileChooser.setCurrentDirectory(new File("." + File.separator + "maps"));
 
-                if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    String fileName = fileChooser.getSelectedFile().getAbsolutePath();
-                    getSelectFileTextField().setText(fileName);
-                } else {
-                    getSelectFileTextField().setText("");
-                }
+            if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getAbsolutePath();
+                getSelectFileTextField().setText(fileName);
+            } else {
+                getSelectFileTextField().setText("");
             }
         });
         this.text = new JLabel(" ");

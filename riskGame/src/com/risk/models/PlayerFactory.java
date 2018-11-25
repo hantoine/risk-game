@@ -16,9 +16,9 @@ public class PlayerFactory {
     private PlayerFactory() {
     }
 
-    static public PlayerModel getPlayer(String typeOfPlayer, String name, Color color, RiskModel rm) {
+    static public PlayerModel getPlayer(String typeOfPlayer, String name, Color color) {
         PlayerModel currentPlayer;
-        currentPlayer = new PlayerModel(name, color, rm);
+        currentPlayer = new PlayerModel(name, color);
 
         Strategy strategy = null;
         switch (typeOfPlayer) {

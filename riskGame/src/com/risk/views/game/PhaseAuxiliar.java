@@ -32,7 +32,7 @@ public class PhaseAuxiliar extends JPanel implements Observer {
     /**
      * Panel with moving armies in an attack
      */
-    private ArmiesLeft armiesLeft;
+    private ArmiesLeftPanel armiesLeft;
     /**
      * 
      */
@@ -42,7 +42,7 @@ public class PhaseAuxiliar extends JPanel implements Observer {
      */
     public PhaseAuxiliar() {
         attackPanel = new AttackView();
-        armiesLeft = new ArmiesLeft();
+        armiesLeft = new ArmiesLeftPanel();
         defensePanel=new DefenseView();
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     }
@@ -93,7 +93,7 @@ public class PhaseAuxiliar extends JPanel implements Observer {
      *
      * @return the armiesLeft
      */
-    ArmiesLeft getArmiesLeft() {
+    ArmiesLeftPanel getArmiesLeft() {
         return armiesLeft;
     }
 
