@@ -7,6 +7,7 @@ package com.risk.views;
 
 import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
+import com.risk.models.MapFileManagement;
 import com.risk.models.RiskModel;
 import com.risk.views.game.DominationView;
 import com.risk.views.game.InstructionsPanel;
@@ -24,14 +25,18 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileFilter;
 import java.util.Observable;
 import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Main View of the game
@@ -49,20 +54,20 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      */
     final private MapPanel mapPanel;
     /**
-     * 
+     *
      */
     final private DominationView dominationView;
     /**
-     * 
+     *
      */
     final private PhaseAuxiliar phaseAuxiliarPanel;
 
     /**
-     * 
+     *
      */
     final private InstructionsPanel stagePanel;
     /**
-     * 
+     *
      */
     final private PhaseView phaseView;
 
@@ -101,6 +106,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
 
     /**
      * This method is for add the observer
+     *
      * @param rm the risk model which is gonna be added the observer
      */
     @Override
@@ -120,11 +126,11 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     }
 
     /**
-     * 
+     *
      * @param rm the model which is gonna be updated the view
      * @param newMap the new map which is gonna be updated
      */
-    public void updateView(RiskModel rm, boolean newMap) {
+    void updateView(RiskModel rm, boolean newMap) {
         this.stagePanel.updateView(rm);
         this.mapPanel.updateView(rm.getMap(), newMap);
         this.dominationView.updateView(rm);
@@ -139,6 +145,18 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         );
 
         this.centerWindow();
+    }
+
+    /**
+     * Show a pop-up error to the user to inform of an error
+     *
+     * @param errorMessage message to be displayed into the dialog.
+     */
+    public void showError(String errorMessage) {
+        JOptionPane.showMessageDialog(null,
+                errorMessage,
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -163,6 +181,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
             rc.getGameController().endPhaseButtonPressed();
         });
 
+        //action for new game selection in the menu bar
         Component c = this.getJMenuBar().getMenu(0).getMenuComponent(0);
         if (c instanceof JMenuItem) {
             JMenuItem j = (JMenuItem) c;
@@ -170,27 +189,49 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
                 rc.newGameMenuItemPressed();
             });
         }
-        
+
+        //action for save game selection in the menu bar
         c = this.getJMenuBar().getMenu(0).getMenuComponent(1);
         if (c instanceof JMenuItem) {
             JMenuItem j = (JMenuItem) c;
             j.addActionListener(e -> {
-                rc.saveGame();
+                JFileChooser fileChooser;
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("saved risk model", "ser");
+                fileChooser = new JFileChooser();
+                fileChooser.setFileFilter(filter);
+                fileChooser.setCurrentDirectory(new File("." + File.separator));
+
+                //open dialog
+                if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                    rc.saveGame(fileChooser.getSelectedFile().getAbsolutePath());
+                }
             });
         }
-        
+
+        //action for load game selection in the menu bar
         c = this.getJMenuBar().getMenu(0).getMenuComponent(2);
         if (c instanceof JMenuItem) {
             JMenuItem j = (JMenuItem) c;
             j.addActionListener(e -> {
-                rc.loadGame();
+                //create a new file chooser
+                JFileChooser fileChooser;
+                fileChooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("saved risk model", "ser");
+                fileChooser.setFileFilter(filter);
+                fileChooser.setCurrentDirectory(new File("." + File.separator));
+
+                //handle selection on file chooser
+                if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                    rc.loadGame(fileChooser.getSelectedFile().getAbsolutePath());
+                }
             });
         }
 
-        if(this.menuPanel != null)
+        if (this.menuPanel != null) {
             this.getMenuPanel().getStartMenu().getNewGamePanel().getOpenMapEditor().addActionListener(e -> {
                 rc.openMapEditor();
             });
+        }
 
         phaseAuxiliarPanel.setListeners(rc.getGameController());
     }
@@ -267,19 +308,19 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Show New Game");
         menuFile.add(menuItem);
-        
+
         menuFile.setLayout(new BoxLayout(menuFile, BoxLayout.Y_AXIS));
         JMenuItem menuItemSaver = new JMenuItem("Save Game");
         menuItemSaver.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
         menuItemSaver.getAccessibleContext().setAccessibleDescription("Save current game");
         menuFile.add(menuItemSaver);
-        
+
         menuFile.setLayout(new BoxLayout(menuFile, BoxLayout.Y_AXIS));
         JMenuItem menuItemLoader = new JMenuItem("Load Game");
         menuItemLoader.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
         menuItemLoader.getAccessibleContext().setAccessibleDescription("Load saved game");
         menuFile.add(menuItemLoader);
-        
+
         //Build 2do menu
         menuOption = new JMenu("Options");
         menuOption.setMnemonic(KeyEvent.VK_A);
@@ -330,9 +371,9 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     }
 
     /**
-     * 
+     *
      * @param o the observer
-     * @param o1  the object
+     * @param o1 the object
      */
     @Override
     public void update(Observable o, Object o1) {
