@@ -56,14 +56,14 @@ public class InstructionsPanel extends JPanel implements Observer {
 
         if (rm.getWinningPlayer() != null) {
             this.endPhase.setVisible(false);
-            this.text.setText("<html> The player " + rm.getWinningPlayer() + " won the game. <br /> It conquered all the territories.</html>");
+            this.text.setText("<html> The player " + rm.getWinningPlayer().getName() + " won the game. <br /> It conquered all the territories.</html>");
             this.text.setVisible(true);
             return;
         }
 
         switch (rm.getPhase()) {
             case STARTUP:
-                this.endPhase.setVisible(true); //rm.getCurrentPlayer().getStrategy() instanceof HumanStrategy
+                this.endPhase.setVisible(rm.getCurrentPlayer().getStrategy() instanceof HumanStrategy);
                 this.endPhase.setText("Place armies for all players");
                 this.text.setText(String.format("<html>Startup phase: Click on one of your territory to place an army on it. <br />Remaining armies to be placed: %d</html>",
                         currentPlayer.getNbArmiesAvailable()));
