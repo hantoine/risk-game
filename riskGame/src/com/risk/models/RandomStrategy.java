@@ -39,8 +39,7 @@ public class RandomStrategy implements Strategy{
                                                                                                             .filter(t -> t.getAdj().stream()
                                                                                                             .anyMatch(ta -> ta.getOwner()!=rm.getCurrentPlayer()))
                                                                                                             .collect(Collectors.toCollection(LinkedList::new)));
-        
-        if (selectedTerritoryAttack != null) {
+        if (selectedTerritoryAttack != null && random!=0) {
             TerritoryModel dest = selectedTerritoryAttack.getAdj().stream()
                     .filter(ad -> !(rm.getCurrentPlayer().getTerritoryOwned().contains(ad)))
                     .findFirst()
@@ -53,8 +52,10 @@ public class RandomStrategy implements Strategy{
 
             } else {
                 rm.executeAttack();
+                random=random-1;
             }
         } else {
+            random=0;
             rm.finishPhase();
         }
     }
