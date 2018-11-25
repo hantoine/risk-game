@@ -30,7 +30,6 @@ public class MainMenuView extends JFrame {
         mapEditor = new JButton("Map Editor");
         backgroundWindow = new JFrame();
         backgroundWindow.setSize(1000, 563);
-        backgroundWindow.setVisible(true);
 
         this.setSize(200, 150);
         this.setResizable(false);
@@ -58,6 +57,8 @@ public class MainMenuView extends JFrame {
         );
 
         this.centerWindow();
+
+        backgroundWindow.setVisible(true);
     }
 
     public void setController(MainMenuController ctrl) {

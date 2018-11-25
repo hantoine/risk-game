@@ -21,7 +21,8 @@ public class MapPath {
 
     @Override
     public String toString() {
-        return Paths.get(path).getFileName().toString();
+        return Paths.get(path).getFileName()
+                .toString().replaceFirst("[.][^.]+$", "");
     }
 
     public String getPath() {

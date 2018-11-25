@@ -178,17 +178,17 @@ public class TournamentModel extends Observable implements TableModel {
 
     @Override
     public int getRowCount() {
-        return this.mapsPaths.size();
+        return this.mapsPaths.size() + 1;
     }
 
     @Override
     public int getColumnCount() {
-        return this.nbGamePerMap;
+        return this.nbGamePerMap + 1;
     }
 
     @Override
     public String getColumnName(int i) {
-        return String.format("Game %d", i);
+        return String.format("Game %d", i + 1);
     }
 
     @Override
@@ -203,8 +203,19 @@ public class TournamentModel extends Observable implements TableModel {
 
     @Override
     public Object getValueAt(int i, int j) {
-        MapPath ithMapPath = this.mapsPaths.stream().skip(i).findFirst().get();
-        PlayerModel winner = this.games.get(ithMapPath).get(j).getWinningPlayer();
+        if (i == 0 && j == 0) {
+            return "";
+        }
+        if (i == 0) {
+            return this.getColumnName(j - 1);
+        }
+        if (j == 0) {
+            return this.mapsPaths.stream().skip(i - 1).findFirst()
+                    .get().toString();
+        }
+
+        MapPath ithMapPath = this.mapsPaths.stream().skip(i - 1).findFirst().get();
+        PlayerModel winner = this.games.get(ithMapPath).get(j - 1).getWinningPlayer();
 
         return winner != null ? winner.getName() : "Draw";
     }

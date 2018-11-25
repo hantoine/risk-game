@@ -36,11 +36,10 @@ public class TournamentMenuView extends JFrame implements Observer {
     JButton playButton;
 
     public TournamentMenuView() throws HeadlessException {
-        this.setSize(600, 409);
+        this.setSize(604, 432);
         this.setResizable(false);
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.centerWindow();
-        this.setVisible(true);
 
         strategyListPanel = new StrategyListPanel();
         mapPathListPanel = new MapPathListPanel();
@@ -98,6 +97,8 @@ public class TournamentMenuView extends JFrame implements Observer {
                 .addComponent(playButton,
                         0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        this.setVisible(true);
     }
 
     private void centerWindow() {
