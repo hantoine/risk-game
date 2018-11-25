@@ -48,19 +48,6 @@ public class MapConfig {
     }
 
     /**
-     * Copy constructor
-     *
-     * @param o Other MapConfig instance to deep copy
-     */
-    public MapConfig(MapConfig o) {
-        this.author = o.author;
-        this.scroll = o.scroll;
-        this.warn = o.warn;
-        this.wrap = o.wrap;
-        this.imagePath = o.imagePath;
-    }
-
-    /**
      * Getter on the wrap parameter.
      *
      * @return the wrap parameter.
