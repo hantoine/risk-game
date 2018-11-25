@@ -54,8 +54,6 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
     public void playTournament() {
         try {
             tm.playTournament();
-            tmv.setVisible(false);
-            tmv.dispose();
             checkTournamentFinished();
 
         } catch (MapFileManagement.MapFileManagementException ex) {
@@ -66,8 +64,10 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
     private void checkTournamentFinished() {
         if (tm.isTournamentFinished()) {
             trv = new TournamentResultsView(tm);
+            tmv.setVisible(false);
+            tmv.dispose();
         } else {
-            Timer timer = new Timer(3000, (ActionEvent ae) -> {
+            Timer timer = new Timer(300, (ActionEvent ae) -> {
                 this.checkTournamentFinished();
             });
             timer.setRepeats(false); // Only execute once
