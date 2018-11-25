@@ -6,6 +6,7 @@
 package com.risk.models;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -88,7 +89,7 @@ public class BenevolentStrategy implements Strategy {
     @Override
     public void startup(RiskModel rm) {
        
-        TerritoryModel territoryClicked=rm.randomTerritory((LinkedList < TerritoryModel >)rm.getMap().getTerritories().stream()
+        TerritoryModel territoryClicked=rm.randomTerritory((List < TerritoryModel >)rm.getMap().getTerritories().stream()
                                                                                                             .filter(t -> t.getOwner()==null || t.getOwner()==rm.getCurrentPlayer())
                                                                                                             .collect(Collectors.toCollection(LinkedList::new)));
         rm.startupMove(territoryClicked);
