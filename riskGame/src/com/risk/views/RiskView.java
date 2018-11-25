@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileFilter;
+import java.util.LinkedList;
 import java.util.Observable;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
@@ -104,6 +105,22 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.centerWindow();
     }
 
+    /**
+     * Interface with phase view to get the logs being displayed
+     * @return linked list of logs being currently displayed
+     */
+    public LinkedList<String> getLogs(){
+        return this.phaseView.getLogs();
+    }
+    
+    /**
+     * Interface with phase view to set the logs being displayed
+     * @param logs 
+     */
+    public void setLogs(LinkedList<String> logs){
+        this.phaseView.setLogs(logs);
+    }
+    
     /**
      * This method is for add the observer
      *
@@ -223,6 +240,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
                 //handle selection on file chooser
                 if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     rc.loadGame(fileChooser.getSelectedFile().getAbsolutePath());
+                    
                 }
             });
         }

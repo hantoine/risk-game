@@ -91,6 +91,14 @@ public final class RiskModel extends Observable implements Serializable {
     }
     
     /**
+     * Get saved logs of a game being loaded
+     * @return 
+     */
+    public LinkedList<String> getLogs(){
+        return this.logsBackup;
+    }
+    
+    /**
      * It adds a human or AI player to the player list
      *
      * @param name the name of the player
