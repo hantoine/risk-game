@@ -69,6 +69,11 @@ public final class RiskModel extends Observable {
     private int interPhaseTime;
 
     /**
+     * Number of turn left before draw;
+     */
+    int nbTurnBeforeDraw;
+
+    /**
      * Constructor of the model It includes son random players
      */
     public RiskModel() {
@@ -82,6 +87,7 @@ public final class RiskModel extends Observable {
         this.currentPlayer = this.players.getFirst();
         this.log = new LogModel();
         this.interPhaseTime = 300;
+        this.nbTurnBeforeDraw = -1;
 
     }
 
@@ -93,6 +99,10 @@ public final class RiskModel extends Observable {
         this.currentPlayer = this.players.getFirst();
         this.turn = 0;
         this.phase = GamePhase.STARTUP;
+    }
+
+    public void setNbTurnBeforeDraw(int nbTurnBeforeDraw) {
+        this.nbTurnBeforeDraw = nbTurnBeforeDraw;
     }
 
     /**
@@ -186,6 +196,13 @@ public final class RiskModel extends Observable {
      */
     public MapModel getMap() {
         return map;
+    }
+
+    /**
+     * Return true if the game finished with a draw
+     */
+    public boolean isDraw() {
+        return this.nbTurnBeforeDraw == 0;
     }
 
     /**
@@ -410,6 +427,10 @@ public final class RiskModel extends Observable {
     public void nextTurn() {
         this.setTurn((this.getTurn() + 1) % this.getPlayerList().size());
         this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
+
+        if (this.nbTurnBeforeDraw != -1) { // -1 means no limit
+            this.nbTurnBeforeDraw--;
+        }
     }
 
     /**
@@ -590,6 +611,11 @@ public final class RiskModel extends Observable {
 
         executeEndOfPhaseSteps();
         this.nextPhase();
+
+        if (this.nbTurnBeforeDraw == 0) {
+            return;
+        }
+
         executeBeginningOfPhaseSteps();
 
         setChanged();
