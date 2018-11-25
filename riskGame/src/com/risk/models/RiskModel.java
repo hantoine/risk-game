@@ -63,9 +63,15 @@ public final class RiskModel extends Observable implements Serializable {
     private LinkedList<CardModel> deck;
 
     /**
+     * To restore logs when loading a game from file
+     */
+    private LinkedList<String> logsBackup;
+    
+    /**
      * Constructor of the model It includes son random players
      */
     public RiskModel() {
+        logsBackup = new LinkedList<>();
         this.players = new LinkedList<>();
         this.turn = 0;
         this.phase = GamePhase.STARTUP;
@@ -76,6 +82,14 @@ public final class RiskModel extends Observable implements Serializable {
 
     }
 
+    /**
+     * Set logs to be saved into the model before serializing the model
+     * @param logsBackup 
+     */
+    public void setSavedLogs(LinkedList<String> logsBackup){
+        this.logsBackup = logsBackup;
+    }
+    
     /**
      * It adds a human or AI player to the player list
      *

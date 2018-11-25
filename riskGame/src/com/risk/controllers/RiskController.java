@@ -9,7 +9,6 @@ import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import com.risk.views.editor.MapEditorView;
-import com.risk.views.menu.MenuView;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -150,43 +149,48 @@ public final class RiskController {
 
     /**
      * Method to save the state of the current game being played
+     * @param filePath
      */
-    public void saveGame() {
-        try (FileOutputStream fileOut = new FileOutputStream("game.ser"); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+    public void saveGame(String filePath) {
+        try (FileOutputStream fileOut = new FileOutputStream(filePath); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(this.modelRisk);
-
-        } catch (IOException i) {
+        } catch (IOException e) {
+            this.viewRisk.showError("An error occured while attempting to save the game.");
+            System.out.println(e);
         }
     }
 
     /**
      * Load a new game from backup file
+     * @param filePath path to the file containing a saved game to load
      */
-    public void loadGame() {
+    public void loadGame(String filePath) {
         //load the saved model
-        try (FileInputStream fileIn = new FileInputStream("game.ser"); ObjectInputStream in = new ObjectInputStream(fileIn)) {
-            this.modelRisk = (RiskModel) in.readObject();
+        RiskModel newModel;
+        BufferedImage image;
+        try (FileInputStream fileIn = new FileInputStream(filePath); ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            newModel = (RiskModel) in.readObject();
 
+            //load buffered image as it is not serializable
+            String imagePath = newModel.getMap().getConfigurationInfo().getImagePath();
+            System.out.println(imagePath);
+            image = ImageIO.read(new File("maps/" + imagePath));
+            
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e);
+            this.viewRisk.showError("An error occured while attempting to load the game.");
             return;
         }
-        
-        //set buffered image as it is not serializable
-        String imagePath = modelRisk.getMap().getConfigurationInfo().getImagePath();
-        System.out.println(imagePath);
-        try {
-            BufferedImage image = ImageIO.read(new File("maps/" + imagePath));
-            this.modelRisk.getMap().setImage(image);
-        } catch (IOException ex) {
-            Logger.getLogger(RiskController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+
+        //if all went well, update model
+        this.modelRisk = newModel;
+        this.modelRisk.getMap().setImage(image);
+
         //setup listeners
         this.territoryListener = new MapListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
         this.gameController = new GameController(this.modelRisk);
-        
+
         //setup observers + update the view
         this.viewRisk.observeModel(modelRisk);
         viewRisk.setController(this);
