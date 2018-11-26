@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Observable;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -56,20 +57,23 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      */
     final private MapPanel mapPanel;
     /**
-     *
+     * Reference to the domination view which displays the information about the players.
+     * This panel is located on the right of the window.
      */
     final private DominationView dominationView;
+    
     /**
-     *
+     * Displays the attack process interface (dices...) 
      */
     final private PhaseAuxiliar phaseAuxiliarPanel;
 
     /**
-     *
+     *  Displays the instructions about the current phase to the user on the top of the window.
      */
     final private InstructionsPanel stagePanel;
+    
     /**
-     *
+     *  Displays the log messages for the current phase (on the bottom of the window).  
      */
     final private PhaseView phaseView;
 
@@ -195,6 +199,11 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     public void setController(RiskController rc) {
         this.getMapPanel().setListener(rc.getTerritoryListener());
 
+        Arrays.stream(this.getStagePanel().getEndPhase().getActionListeners())
+                .forEach((a)->{
+            this.getStagePanel().getEndPhase().removeActionListener(a);
+        });
+        
         this.getStagePanel().getEndPhase().addActionListener(e -> {
             rc.getGameController().endPhaseButtonPressed();
         });
@@ -203,6 +212,11 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         Component c = this.getJMenuBar().getMenu(0).getMenuComponent(0);
         if (c instanceof JMenuItem) {
             JMenuItem j = (JMenuItem) c;
+            //remove old listeners
+            Arrays.stream(j.getActionListeners()).forEach((a)->{
+                j.removeActionListener(a);
+            });
+            
             j.addActionListener(e -> {
                 rc.newGameMenuItemPressed();
             });
@@ -261,7 +275,15 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         }
 
         if (this.menuPanel != null) {
-            this.getMenuPanel().getStartMenu().getNewGamePanel().getOpenMapEditor().addActionListener(e -> {
+            JButton b = this.getMenuPanel().getStartMenu().getNewGamePanel()
+                    .getOpenMapEditor();
+
+            //remove old listeners
+            Arrays.stream(b.getActionListeners()).forEach((a)->{
+                b.removeActionListener(a);
+            });
+            
+            b.addActionListener(e -> {
                 rc.openMapEditor();
             });
         }

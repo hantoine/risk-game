@@ -16,8 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -152,6 +150,10 @@ public final class RiskController {
      * @param filePath
      */
     public void saveGame(String filePath) {
+        if(this.modelRisk.getCurrentPlayer().getCurrentAttack() != null) {
+            this.viewRisk.showError("Cannot save while a battle is in progress");
+            return;
+        }
         this.modelRisk.setSavedLogs(this.viewRisk.getLogs());
         
         try (FileOutputStream fileOut = new FileOutputStream(filePath); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
@@ -191,11 +193,11 @@ public final class RiskController {
         //setup listeners
         this.territoryListener = new MapListener(this);
         this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
-        this.gameController = new GameController(this.modelRisk);
+        this.gameController = new GameController(getModelRisk());
 
         //setup observers + update the view
-        this.viewRisk.observeModel(modelRisk);
+        this.viewRisk.observeModel(getModelRisk());
         viewRisk.setController(this);
-        viewRisk.setLogs(this.modelRisk.getLogs());
+        viewRisk.setLogs(getModelRisk().getLogs());
     }
 }
