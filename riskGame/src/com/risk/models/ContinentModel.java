@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  *
  * @author n_irahol
  */
-public class ContinentModel {
+public class ContinentModel implements Serializable  {
 
     /**
      * members territories that are part of the continent

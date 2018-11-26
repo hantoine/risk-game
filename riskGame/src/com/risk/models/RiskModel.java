@@ -7,6 +7,7 @@ package com.risk.models;
 
 import com.risk.views.game.AttackView;
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -20,36 +21,43 @@ import javax.swing.SwingUtilities;
  *
  * @author Nellybett
  */
-public final class RiskModel extends Observable {
+public final class RiskModel extends Observable implements Serializable {
 
     /**
      * map a reference to the map of the game
      */
-    private MapModel map;
+     private MapModel map;
+     
     /**
      * players the list of players of the game
      */
-    private LinkedList<PlayerModel> players;
+     private LinkedList<PlayerModel> players;
+     
     /**
      * turn reference with the player current turn
      */
     private int turn;
+    
     /**
      * winningPlayer a reference to the player who won
      */
-    private PlayerModel winningPlayer;
+     private PlayerModel winningPlayer;
+     
     /**
      * phase the current phase of the game
      */
-    private GamePhase phase;
+     private GamePhase phase;
+     
     /**
      * maxNbOfPlayers max number of players
      */
     static Integer maxNbOfPlayers = 6;
+    
     /**
      * currentPlayer the player with the turn
      */
-    private PlayerModel currentPlayer;
+     private PlayerModel currentPlayer;
+     
     /**
      * deck the deck of cards of the game
      */
@@ -74,9 +82,15 @@ public final class RiskModel extends Observable {
     int nbTurnBeforeDraw;
 
     /**
+     * To restore logs when loading a game from file
+     */
+    private LinkedList<String> logsBackup;
+    
+    /**
      * Constructor of the model It includes son random players
      */
     public RiskModel() {
+        logsBackup = new LinkedList<>();
         this.players = new LinkedList<>();
         this.turn = 0;
         this.phase = GamePhase.STARTUP;
@@ -105,6 +119,22 @@ public final class RiskModel extends Observable {
         this.nbTurnBeforeDraw = nbTurnBeforeDraw;
     }
 
+    /**
+     * Set logs to be saved into the model before serializing the model
+     * @param logsBackup 
+     */
+    public void setSavedLogs(LinkedList<String> logsBackup){
+        this.logsBackup = logsBackup;
+    }
+    
+    /**
+     * Get saved logs of a game being loaded
+     * @return 
+     */
+    public LinkedList<String> getLogs(){
+        return this.logsBackup;
+    }
+    
     /**
      * It adds a human or AI player to the player list
      *

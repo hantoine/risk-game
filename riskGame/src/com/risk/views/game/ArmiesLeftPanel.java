@@ -7,6 +7,7 @@ package com.risk.views.game;
 
 import com.risk.controllers.GameController;
 import java.awt.Dimension;
+import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -86,6 +87,11 @@ public class ArmiesLeftPanel extends JPanel {
      * @param gc game controller
      */
     public void setListener(GameController gc) {
+        //remove old listeners
+        Arrays.stream(more.getActionListeners()).forEach((a)->{
+            more.removeActionListener(a);
+        });
+        
         more.addActionListener(e -> {
             int i = Integer.parseInt(armiesMoved.getText()) + 1;
             if (i < max) {
@@ -96,6 +102,11 @@ public class ArmiesLeftPanel extends JPanel {
             }
         });
 
+        
+        //remove old listeners
+        Arrays.stream(move.getActionListeners()).forEach((a)->{
+            move.removeActionListener(a);
+        });
         move.addActionListener(e -> {
             int armiesToTransfer = Integer.parseInt(armiesMoved.getText());
 
