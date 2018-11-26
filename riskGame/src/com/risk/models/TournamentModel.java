@@ -101,6 +101,11 @@ public class TournamentModel extends Observable implements TableModel {
     }
 
     public void addPlayerStategies(Strategy.Type playerStategy) {
+        if (playerStategy == Strategy.Type.HUMAN) {
+            throw new IllegalStateException("The tournament mode does not "
+                    + "support the human strategy.");
+        }
+
         this.playerStategies.add(playerStategy);
 
         setChanged();
