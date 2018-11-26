@@ -178,7 +178,6 @@ public final class RiskModel extends Observable implements Serializable {
         players.remove(player);
         if (players.size() == 1) {
             this.setWinningPlayer(this.players.getFirst());
-            System.out.println("game finished");
             return;
         }
 
@@ -706,9 +705,12 @@ public final class RiskModel extends Observable implements Serializable {
      * @return a territory from the list
      */
     public TerritoryModel randomTerritory(List<TerritoryModel> listTerritories) {
+        if (listTerritories.isEmpty()) {
+            return null;
+        }
+
         int range = listTerritories.size();
         return listTerritories.get((int) (Math.random() * range));
-
     }
 
     /**
