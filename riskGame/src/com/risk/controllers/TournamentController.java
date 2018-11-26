@@ -38,6 +38,11 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
 
     @Override
     public void strategyAdded(Strategy.Type strategyType) {
+        if (strategyType == Strategy.Type.HUMAN) {
+            throw new IllegalStateException("The tournament mode does not "
+                    + "support the human strategy.");
+        }
+
         tm.addPlayerStategies(strategyType);
     }
 
