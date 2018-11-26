@@ -5,12 +5,14 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
+
 /**
  * Class that contains all the configuration parameters for the map.
  *
  * @author timot
  */
-public class MapConfig {
+public class MapConfig  implements Serializable  {
 
     /**
      * Wrap parameter of the map.

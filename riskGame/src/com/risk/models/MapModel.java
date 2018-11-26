@@ -7,6 +7,7 @@ package com.risk.models;
  */
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,7 +26,7 @@ import java.util.stream.Stream;
  *
  * @author timot
  */
-public final class MapModel extends Observable {
+public final class MapModel extends Observable implements Serializable {
 
     /**
      * mapConfig configurations of the map like author, wrap, image, and others
@@ -34,7 +35,7 @@ public final class MapModel extends Observable {
     /**
      * image the image of the map
      */
-    private BufferedImage image;
+    transient private BufferedImage image;
     /**
      * mapHeight the height of the map
      */
@@ -471,7 +472,6 @@ public final class MapModel extends Observable {
         this.graphContinents.remove(continentName);
         setChanged();
         notifyObservers(MapUpdateTypes.REMOVE_CONTINENT);
-        System.out.println("nb continents : " + Integer.toString(this.getContinentList().size()));
 
         //if there is no continent, add one by default
         if (this.graphContinents.isEmpty()) {

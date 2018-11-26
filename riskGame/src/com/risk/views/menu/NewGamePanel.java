@@ -11,7 +11,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -42,11 +41,6 @@ public class NewGamePanel extends JPanel {
      * Button to launch the game.
      */
     private JButton play;
-
-    /**
-     * Button to open the map editor.
-     */
-    private final JButton openMapEditor;
 
     /**
      * Panel to either select or edit a new map.
@@ -81,25 +75,21 @@ public class NewGamePanel extends JPanel {
         this.selectFileTextField.setPreferredSize(d);
         JButton selectFileButton = new JButton("Select a Map");
 
-        selectFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser;
-                FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                        "Conquest Map file", "map");
-                fileChooser = new JFileChooser();
-                fileChooser.setFileFilter(filter);
-                fileChooser.setCurrentDirectory(new File("." + File.separator + "maps"));
+        selectFileButton.addActionListener((ActionEvent e) -> {
+            JFileChooser fileChooser;
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Conquest Map file", "map");
+            fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(filter);
+            fileChooser.setCurrentDirectory(new File("." + File.separator + "maps"));
 
-                if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    String fileName = fileChooser.getSelectedFile().getAbsolutePath();
-                    getSelectFileTextField().setText(fileName);
-                } else {
-                    getSelectFileTextField().setText("");
-                }
+            if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getAbsolutePath();
+                getSelectFileTextField().setText(fileName);
+            } else {
+                getSelectFileTextField().setText("");
             }
         });
-        this.openMapEditor = new JButton("Open map editor");
         this.text = new JLabel(" ");
 
         this.mapSelector.setLayout(new FlowLayout());
@@ -110,11 +100,14 @@ public class NewGamePanel extends JPanel {
         this.mapSelectAndEdit = new JPanel();
         this.mapSelectAndEdit.setLayout(new BoxLayout(mapSelectAndEdit, BoxLayout.Y_AXIS));
         this.mapSelectAndEdit.add(this.mapSelector);
-        this.mapSelectAndEdit.add(this.openMapEditor);
         this.mapSelectAndEdit.add(this.text);
 
         //players panel
-        playersPanel = new PlayerListPanel(riskModel, menuAction);
+        playersPanel = new PlayerListPanel();
+        playersPanel.setMaxNbPlayers(riskModel.getMaxNumberOfPlayers());
+        playersPanel.setMouseListener(menuAction);
+        playersPanel.initializePlayers(riskModel.getPlayerList());
+        menuAction.setPlayerList(playersPanel);
 
         //start game button
         this.play = new JButton("PLAY");
@@ -142,15 +135,6 @@ public class NewGamePanel extends JPanel {
      */
     public void setPlayersPanel(PlayerListPanel playersPanel) {
         this.playersPanel = playersPanel;
-    }
-
-    /**
-     * Getter of the button to open the map editor.
-     *
-     * @return return the map edistor
-     */
-    public JButton getOpenMapEditor() {
-        return this.openMapEditor;
     }
 
     /**

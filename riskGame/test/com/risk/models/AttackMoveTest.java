@@ -32,7 +32,7 @@ public class AttackMoveTest {
         TerritoryModel dest = new TerritoryModel("France");
         source.setNumArmies(7);
         dest.setNumArmies(1);
-        attack = new AttackMove(new PlayerModel("Player 1", Color.yellow, null), source, dest);
+        attack = new AttackMove(new PlayerModel("Player 1", Color.yellow), source, dest);
     }
 
     /**
@@ -40,7 +40,6 @@ public class AttackMoveTest {
      */
     @Test
     public void testCompareDice() {
-        System.out.println("compareDice");
         int[] attacker = {3, 6};
         int[] defense = {1, 2};
         attack.setNbDiceAttack(2);
@@ -56,7 +55,6 @@ public class AttackMoveTest {
      */
     @Test
     public void testCompareDice1() {
-        System.out.println("compareDice1");
         int[] attacker = {3, 6};
         int[] defense = {1, 2};
         attack.setNbDiceAttack(2);
@@ -72,7 +70,6 @@ public class AttackMoveTest {
      */
     @Test
     public void testCompareDice2() {
-        System.out.println("compareDice2");
         int[] attacker = {3, 2};
         int[] defense = {1, 4};
         attack.setNbDiceAttack(2);
@@ -88,7 +85,6 @@ public class AttackMoveTest {
      */
     @Test
     public void testCreateDice() {
-        System.out.println("createDice");
         int dice = 1;
         int[] result = attack.createDice(dice);
         assertTrue((result[0] <= 6 && result[0] > 0) && result.length == 1);
@@ -100,7 +96,6 @@ public class AttackMoveTest {
      */
     @Test
     public void testRoolDice() {
-        System.out.println("roolDice");
         int result = attack.roolDice();
         assertTrue((result <= 6 && result > 0));
 

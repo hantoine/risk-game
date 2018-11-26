@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -17,7 +18,7 @@ import java.util.Observable;
  *
  * @author l_yixu
  */
-public class HandModel extends Observable {
+public class HandModel extends Observable implements Serializable {
 
     /**
      * cards it is the group of cards of the hand

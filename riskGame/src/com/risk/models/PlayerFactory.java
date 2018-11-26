@@ -24,12 +24,11 @@ public class PlayerFactory {
      * @param typeOfPlayer type of player
      * @param name name of player
      * @param color color of player
-     * @param rm risk model
      * @return player
      */
-    static public PlayerModel getPlayer(String typeOfPlayer, String name, Color color, RiskModel rm) {
+    static public PlayerModel getPlayer(String typeOfPlayer, String name, Color color) {
         PlayerModel currentPlayer;
-        currentPlayer = new PlayerModel(name, color, rm);
+        currentPlayer = new PlayerModel(name, color);
 
         Strategy strategy = null;
         switch (typeOfPlayer) {

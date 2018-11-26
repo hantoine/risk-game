@@ -54,7 +54,6 @@ public class BenevolentStrategy implements Strategy {
      */
     @Override
     public void fortification(RiskModel rm) {
-        System.out.println("BENEVOLENTE FORTIFICACION");
         TerritoryModel dest = null;
         for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
             if (((TerritoryModel) t).getAdj().stream()
