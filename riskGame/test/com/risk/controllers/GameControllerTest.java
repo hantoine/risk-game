@@ -47,8 +47,8 @@ public class GameControllerTest {
     public void setUp() {
         rm = new RiskModel();
         removeAllPlayers();
-        rm.addPlayerToPlayerList("PlayerA", Color.yellow, true);
-        rm.addPlayerToPlayerList("PlayerB", Color.red, true);
+        rm.addPlayerToPlayerList("PlayerA", Color.yellow);
+        rm.addPlayerToPlayerList("PlayerB", Color.red);
         rm.setMap(getTestMap());
         drv = new DummyRiskView();
         drv.observeModel(rm);

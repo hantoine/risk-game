@@ -174,7 +174,7 @@ public class MapFileManagementTest {
             throws MapFileManagement.MapFileContinentException {
         String info = "York=2\n" + "East Riding=6\n" + "North Riding=8\n" + "West Riding=11";
         // String with continents information
-        MapFileManagement.continentCreator(info, board);
+        MapFileManagement.continentCreator(info, board, "");
     }
 
     /**
@@ -187,7 +187,7 @@ public class MapFileManagementTest {
             throws MapFileManagement.MapFileContinentException {
         // It fails if the continent and bonus armies are not separated by =
         String info = "York=2\n" + "East Riding=6\n" + "North Riding=8\n" + "West Riding11";
-        MapFileManagement.continentCreator(info, board);
+        MapFileManagement.continentCreator(info, board, "");
     }
 
     /**
@@ -200,7 +200,7 @@ public class MapFileManagementTest {
             throws MapFileManagement.MapFileContinentException {
         // It fails if the bonus armies is not a number
         String info = "York=2\n" + "East Riding=6\n" + "North Riding=a\n" + "West Riding=11";
-        MapFileManagement.continentCreator(info, board);
+        MapFileManagement.continentCreator(info, board, "");
     }
 
     /**
@@ -215,7 +215,7 @@ public class MapFileManagementTest {
         String info = "Anisty Liberty,363,300,York,Tadcaster\n" + "Tadcaster,370,327,York,Anisty Liberty";
 
         //territory with not existing continent
-        MapFileManagement.territoryCreator(info, board);
+        MapFileManagement.territoryCreator(info, board, "");
     }
 
     /**
@@ -228,7 +228,7 @@ public class MapFileManagementTest {
             throws MapFileManagement.MapFileTerritoryException {
         //territory without adj
         String info = "Anisty Liberty,363,300,York\n" + "Tadcaster,370,327,York,Anisty Liberty";
-        MapFileManagement.territoryCreator(info, board);
+        MapFileManagement.territoryCreator(info, board, "");
     }
 
     /**
@@ -241,7 +241,7 @@ public class MapFileManagementTest {
 
         //territory with no number position
         String info = "Anisty Liberty,363,a,York,Tadcaster\n" + "Tadcaster,370,327,York,Anisty Liberty";
-        MapFileManagement.territoryCreator(info, board);
+        MapFileManagement.territoryCreator(info, board, "");
     }
 
     /**
@@ -253,6 +253,6 @@ public class MapFileManagementTest {
     public void testTerritoryCreator3() throws MapFileManagement.MapFileTerritoryException {
         //Correct territories string
         String info = "Anisty Liberty,363,294,York,Tadcaster\n" + "Tadcaster,370,327,York,Anisty Liberty";
-        MapFileManagement.territoryCreator(info, board);
+        MapFileManagement.territoryCreator(info, board, "");
     }
 }
