@@ -6,7 +6,7 @@
 package com.risk.models;
 
 /**
- *
+ * Interface for strategy implementation
  * @author hantoine
  */
 public interface Strategy {
@@ -19,11 +19,40 @@ public interface Strategy {
         CHEATER
     }
     
+    /**
+     * Placement of armies
+     * @param playGame risk model
+     */
     public abstract void startup(RiskModel playGame);
+    /**
+     * Reinforcement movement
+     * @param playGame risk model
+     */
     public abstract void reinforcement(RiskModel playGame);
+    /**
+     * Attack movement
+     * @param playGame risk model
+     */
     public abstract void attack(RiskModel playGame);
+    /**
+     * Fortification movement
+     * @param playGame risk model
+     */
     public abstract void fortification(RiskModel playGame);
+    /**
+     * Move armies after conquering a territory
+     * @param rm risk model
+     */
     public abstract void moveArmies(RiskModel rm);
+    /**
+     * Card exchange
+     * @param rm risk model
+     * @return 
+     */
     abstract boolean exchangeCardsToArmies(RiskModel rm);
+    /**
+     * Defense
+     * @param rm risk model 
+     */
     public abstract void defense(RiskModel rm);
 }

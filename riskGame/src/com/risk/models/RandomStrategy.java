@@ -10,13 +10,23 @@ import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 /**
- *
+ * Random Strategy
  * @author Nellybett
  */
 public class RandomStrategy implements Strategy{
+    /**
+     * random number of attacks
+     */
     private int randomNumber;
+    /**
+     * It is the first attack or not
+     */
     private boolean firstAttack=true;
 
+    /**
+     * Reinforces a random territory
+     * @param rm risk model
+     */
     @Override
     public void reinforcement(RiskModel rm) {
         rm.aIReinforcement();
@@ -30,6 +40,10 @@ public class RandomStrategy implements Strategy{
         
     }
 
+    /**
+     * Attacks a random number of times a random territory
+     * @param rm risk model
+     */
     @Override
     public void attack(RiskModel rm) {
         
@@ -79,6 +93,10 @@ public class RandomStrategy implements Strategy{
         
     }
 
+    /**
+     * Fortifies a random territory
+     * @param rm risk model
+     */
     @Override
     public void fortification(RiskModel rm) {
         
@@ -102,22 +120,38 @@ public class RandomStrategy implements Strategy{
 
         rm.finishPhase();
     }
-    
+    /**
+     * Move armies after conquering a territory
+     * @param rm risk model 
+     */
    @Override
     public void moveArmies(RiskModel rm) {
         rm.getCurrentPlayer().moveArmiesAI();
     }
 
+    /**
+     * Exchange card for computer players
+     * @param rm risk model
+     * @return true if it is successful
+     */
     @Override
     public boolean exchangeCardsToArmies(RiskModel rm) {
         return rm.getCurrentPlayer().exchangeCardsToArmiesAI();
     }
 
+     /**
+     * Defense for computer player
+     * @param rm risk model 
+     */
     @Override
     public void defense(RiskModel rm) {
         rm.getCurrentPlayer().defenseAI();
     }
 
+    /**
+     * Startup placement
+     * @param rm risk model 
+     */
     @Override
     public void startup(RiskModel rm) {
         TerritoryModel territoryClicked=rm.randomTerritory(rm.getMap().getTerritories().stream()
@@ -126,6 +160,10 @@ public class RandomStrategy implements Strategy{
         rm.startupMove(territoryClicked);
     }
     
+    /**
+     * Sets the random number of attacks
+     * @param range the possible number of attacks
+     */
     private void setRandom(int range){
         if(isFirstAttack()){
             this.setRandomNumber((int) (Math.random() * range +1));
@@ -133,6 +171,11 @@ public class RandomStrategy implements Strategy{
         }
     }
     
+    /**
+     * Returns the possible number of attacks
+     * @param rm risk model
+     * @return numberAttacks number of attacks
+     */
     private int getTotalAttacks(RiskModel rm){
         int numberAttacks=0;
         LinkedList<TerritoryModel> possibleAttackers=rm.getCurrentPlayer().getTerritoryOwned().stream()

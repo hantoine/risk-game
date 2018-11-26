@@ -358,7 +358,7 @@ public class MapEditorController {
      * file
      *
      * @param path path to the new file
-     * @throws com.risk.models.MapFileManagement.MapFileManagementException
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException exception for the method
      */
     public void saveMapToFile(String path)
             throws MapFileManagement.MapFileManagementException {

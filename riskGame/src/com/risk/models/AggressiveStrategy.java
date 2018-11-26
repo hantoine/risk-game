@@ -11,13 +11,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
+ * Aggressive strategy implementation
  * @author Nellybett
  */
 public class AggressiveStrategy implements Strategy {
 
+    /**
+     * Territory selected to attack
+     */
     TerritoryModel selectedTerritoryAttack;
 
+    /**
+     * Reinforces the territory with more armies that can attack 
+     * @param rm risk model
+     */
     @Override
     public void reinforcement(RiskModel rm) {
         rm.aIReinforcement();
@@ -50,6 +57,10 @@ public class AggressiveStrategy implements Strategy {
 
     }
 
+    /**
+     * Attack as as many times as possible
+     * @param rm risk model
+     */
     @Override
     public void attack(RiskModel rm) {
         selectTerritory(rm);
@@ -72,6 +83,10 @@ public class AggressiveStrategy implements Strategy {
         }
     }
 
+    /**
+     * Fortifies the strongest territory
+     * @param rm risk model
+     */
     @Override
     public void fortification(RiskModel rm) {
 
@@ -101,6 +116,10 @@ public class AggressiveStrategy implements Strategy {
         rm.finishPhase();
     }
 
+    /**
+     * Select the territory for the attack
+     * @param rm risk model
+     */
     public void selectTerritory(RiskModel rm) {
 
         selectedTerritoryAttack = null;
@@ -114,21 +133,38 @@ public class AggressiveStrategy implements Strategy {
         }
     }
 
+    /**
+     * Move armies after conquering a territory
+     * @param rm risk model 
+     */
     @Override
     public void moveArmies(RiskModel rm) {
         rm.getCurrentPlayer().moveArmiesAI();
     }
 
+    /**
+     * Exchange card for computer players
+     * @param rm risk model
+     * @return true if it is successful
+     */
     @Override
     public boolean exchangeCardsToArmies(RiskModel rm) {
         return rm.getCurrentPlayer().exchangeCardsToArmiesAI();
     }
 
+    /**
+     * Defense for computer player
+     * @param rm risk model 
+     */
     @Override
     public void defense(RiskModel rm) {
         rm.getCurrentPlayer().defenseAI();
     }
 
+    /**
+     * Startup placement
+     * @param rm risk model 
+     */
     @Override
     public void startup(RiskModel rm) {
        TerritoryModel territoryClicked=null;

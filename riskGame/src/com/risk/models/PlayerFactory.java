@@ -8,14 +8,24 @@ package com.risk.models;
 import java.awt.Color;
 
 /**
- *
+ * Class for the creation of players
  * @author Nellybett
  */
 public class PlayerFactory {
 
+    /**
+     * No constructor only static method
+     */
     private PlayerFactory() {
     }
-
+    
+    /**
+     * Creation of player with different strategies
+     * @param typeOfPlayer type of player
+     * @param name name of player
+     * @param color color of player
+     * @return player
+     */
     static public PlayerModel getPlayer(String typeOfPlayer, String name, Color color) {
         PlayerModel currentPlayer;
         currentPlayer = new PlayerModel(name, color);
