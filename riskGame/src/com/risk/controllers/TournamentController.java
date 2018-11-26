@@ -90,6 +90,10 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
     }
 
     public void nbGamePerMapChanged(int value) {
+        if (value > 5) {
+            throw new IllegalStateException("The number of games per map "
+                    + "cannot exceed 5.");
+        }
         tm.setNbGamePerMap(value);
     }
 
