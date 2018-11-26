@@ -75,6 +75,14 @@ public class TournamentModel extends Observable implements TableModel {
                     + "number of map for a tournament is already reached");
         }
 
+        MapModel testMap = new MapModel();
+        try {
+            MapFileManagement.createBoard(mapPath.getPath(), testMap);
+        } catch (MapFileManagement.MapFileManagementException ex) {
+            throw new IllegalStateException("The map file" + mapPath.toString()
+                    + " is not valid");
+        }
+
         this.mapsPaths.add(mapPath);
 
         setChanged();
