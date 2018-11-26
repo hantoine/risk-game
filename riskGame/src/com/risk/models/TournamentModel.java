@@ -124,6 +124,10 @@ public class TournamentModel extends Observable implements TableModel {
     }
 
     public void setNbGamePerMap(int nbGamePerMap) {
+        if (nbGamePerMap > 5) {
+            throw new IllegalStateException("The number of games per map "
+                    + "cannot exceed 5.");
+        }
         this.nbGamePerMap = nbGamePerMap;
 
         setChanged();

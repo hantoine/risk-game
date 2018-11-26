@@ -38,11 +38,6 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
 
     @Override
     public void strategyAdded(Strategy.Type strategyType) {
-        if (strategyType == Strategy.Type.HUMAN) {
-            throw new IllegalStateException("The tournament mode does not "
-                    + "support the human strategy.");
-        }
-
         tm.addPlayerStategies(strategyType);
     }
 
@@ -95,10 +90,6 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
     }
 
     public void nbGamePerMapChanged(int value) {
-        if (value > 5) {
-            throw new IllegalStateException("The number of games per map "
-                    + "cannot exceed 5.");
-        }
         tm.setNbGamePerMap(value);
     }
 
