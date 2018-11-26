@@ -217,7 +217,7 @@ public class TournamentModel extends Observable implements TableModel {
         MapPath ithMapPath = this.mapsPaths.stream().skip(i - 1).findFirst().get();
         PlayerModel winner = this.games.get(ithMapPath).get(j - 1).getWinningPlayer();
 
-        return winner != null ? winner.getName() : "Draw";
+        return winner != null ? winner.getName() : "DRAW";
     }
 
     @Override
