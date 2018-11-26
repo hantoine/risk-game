@@ -70,6 +70,11 @@ public class TournamentModel extends Observable implements TableModel {
     }
 
     public void addMapsPath(MapPath mapPath) {
+        if (this.mapsPaths.size() >= 5) {
+            throw new IllegalStateException("Cannot add map, the maximum "
+                    + "number of map for a tournament is already reached");
+        }
+
         this.mapsPaths.add(mapPath);
 
         setChanged();
