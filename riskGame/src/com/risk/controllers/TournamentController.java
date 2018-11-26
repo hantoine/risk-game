@@ -71,6 +71,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
             trv = new TournamentResultsView(tm);
             tmv.setVisible(false);
             tmv.dispose();
+            trv.setController(this);
         } else {
             Timer timer = new Timer(300, (ActionEvent ae) -> {
                 this.checkTournamentFinished();
@@ -97,7 +98,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
         List<String> logs;
         try {
             logs = Files.readAllLines(
-                    Paths.get("logs", tm.getLogFile(i, j))
+                    Paths.get("logs", tm.getLogFile(j - 1, i - 1))
             );
             LogViewer lv = new LogViewer(logs);
         } catch (IOException ex) {

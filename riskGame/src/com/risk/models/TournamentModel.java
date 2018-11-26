@@ -158,7 +158,7 @@ public class TournamentModel extends Observable implements TableModel {
         rm.setInterPhaseTime(0);
         rm.setNbTurnBeforeDraw(this.maximumTurnPerGame);
 
-        LogWriter newLogWriter = new LogWriter(String.format("%s-%s-%d",
+        LogWriter newLogWriter = new LogWriter(String.format("%s-%s-%d.log",
                 logFileIdentifier, mapPath.toString(), index));
         rm.setLogWriter(newLogWriter);
         newLogWriter.openFile();
@@ -172,7 +172,7 @@ public class TournamentModel extends Observable implements TableModel {
     public String getLogFile(int i, int j) {
         String mapName = this.mapsPaths.stream().skip(i).findFirst().get()
                 .toString();
-        return String.format("%s-%s-%d", logFileIdentifier, mapName, j);
+        return String.format("%s-%s-%d.log", logFileIdentifier, mapName, j);
     }
 
     private LinkedList<PlayerModel> preparePlayers() {

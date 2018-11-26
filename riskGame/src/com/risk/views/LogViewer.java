@@ -8,6 +8,8 @@ package com.risk.views;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -23,19 +25,30 @@ public class LogViewer extends JFrame {
 
     public LogViewer(List<String> logs) {
         this.setResizable(false);
-        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         logTextArea = new JTextArea();
         logTextArea.setEditable(false);
         logTextArea.setColumns(120);
         logTextArea.setRows(10);
+        logTextArea.setText(logs.stream().collect(Collectors.joining("\n")));
 
         JScrollPane scrollableActions = new JScrollPane(logTextArea);
         scrollableActions.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollableActions.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        this.getContentPane().add(logTextArea);
-        this.setSize(this.getPreferredSize());
+        GroupLayout gl = new GroupLayout(this.getContentPane());
+        this.getContentPane().setLayout(gl);
+        gl.setAutoCreateGaps(true);
+        gl.setAutoCreateContainerGaps(true);
+
+        gl.setVerticalGroup(gl.createSequentialGroup()
+                .addComponent(scrollableActions)
+        );
+        gl.setHorizontalGroup(gl.createParallelGroup()
+                .addComponent(scrollableActions)
+        );
+
+        this.setSize(this.getPreferredSize().width, 600);
         this.centerWindow();
         this.setTitle("Tournament Logs");
         this.setVisible(true);
