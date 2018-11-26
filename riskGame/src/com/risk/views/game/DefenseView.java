@@ -6,25 +6,19 @@
 package com.risk.views.game;
 
 import com.risk.controllers.GameController;
-import com.risk.models.AttackMove;
-import java.util.Arrays;
-import java.util.Observable;
-import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * It contains the number of dices in an attack
  *
  * @author Nellybett
  */
-public class AttackView extends JPanel {
-
+public class DefenseView  extends JPanel {
     /**
      * Panel with the different buttons
      */
-    JPanel attackOptions;
+    JPanel defenseOptions;
     /**
      * An array of buttons with the number of dices
      */
@@ -42,30 +36,27 @@ public class AttackView extends JPanel {
      * Constructor
      *
      */
-    public AttackView() {
+    public DefenseView() {
 
-        attackOptions = new JPanel();
-        options = new JButton[4];
+        defenseOptions = new JPanel();
+        options = new JButton[2];
         options[0] = new JButton("1");
         options[1] = new JButton("2");
-        options[2] = new JButton("3");
-        options[3] = new JButton("All");
-        actionSubject = new JLabel("Attacker");
-        territoriesInvolve = new JLabel("source vs destination");
+   
+        actionSubject = new JLabel("Attacked");
+        territoriesInvolve = new JLabel("");
 
         options[0].setSize(50, 70);
         options[1].setSize(50, 70);
-        options[2].setSize(50, 70);
-        options[3].setSize(50, 70);
 
-        attackOptions.add(actionSubject);
-        attackOptions.add(territoriesInvolve);
-        attackOptions.add(options[0]);
-        attackOptions.add(options[1]);
-        attackOptions.add(options[2]);
-        attackOptions.add(options[3]);
 
-        this.add(attackOptions);
+        defenseOptions.add(actionSubject);
+        defenseOptions.add(territoriesInvolve);
+        defenseOptions.add(options[0]);
+        defenseOptions.add(options[1]);
+     
+
+        this.add(defenseOptions);
         this.setVisible(false);
     }
 
@@ -78,11 +69,10 @@ public class AttackView extends JPanel {
      */
     public void update(String src, String dest, int armies) {
         this.setVisible(true);
-        this.actionSubject.setText("Attacker");
         territoriesInvolve.setText(src + " vs " + dest);
 
-        for (int i = 0; i < 4; i++) {
-            options[i].setEnabled(i < armies - 1);
+        for (int i = 0; i < 2; i++) {
+            options[i].setEnabled(armies>i+1);
             options[i].setVisible(true);
         }
     }
@@ -94,32 +84,14 @@ public class AttackView extends JPanel {
      */
     public void setListeners(GameController gc) {
 
-        
-        //remove old listeners      
-        Arrays.stream(options).forEach((o) -> {
-            Arrays.stream(o.getActionListeners()).forEach((a)->{
-                o.removeActionListener(a);
-            });
-        });
-
-        
         options[0].addActionListener(e -> {
-            gc.clickAttack(1);
+            gc.clickDefense(1);
         });
 
         options[1].addActionListener(e -> {
-            gc.clickAttack(2);
+            gc.clickDefense(2);
 
         });
 
-        options[2].addActionListener(e -> {
-            gc.clickAttack(3);
-
-        });
-
-        options[3].addActionListener(e -> {
-            gc.clickAttack(-1);
-        });
     }
-
 }

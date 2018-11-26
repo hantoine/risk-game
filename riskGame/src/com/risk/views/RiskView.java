@@ -7,7 +7,6 @@ package com.risk.views;
 
 import com.risk.controllers.MenuListener;
 import com.risk.controllers.RiskController;
-import com.risk.models.MapFileManagement;
 import com.risk.models.RiskModel;
 import com.risk.views.game.DominationView;
 import com.risk.views.game.InstructionsPanel;
@@ -26,12 +25,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileFilter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Observable;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -57,23 +54,25 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      */
     final private MapPanel mapPanel;
     /**
-     * Reference to the domination view which displays the information about the players.
-     * This panel is located on the right of the window.
+     * Reference to the domination view which displays the information about the
+     * players. This panel is located on the right of the window.
      */
     final private DominationView dominationView;
-    
+
     /**
-     * Displays the attack process interface (dices...) 
+     * Displays the attack process interface (dices...)
      */
     final private PhaseAuxiliar phaseAuxiliarPanel;
 
     /**
-     *  Displays the instructions about the current phase to the user on the top of the window.
+     * Displays the instructions about the current phase to the user on the top
+     * of the window.
      */
     final private InstructionsPanel stagePanel;
-    
+
     /**
-     *  Displays the log messages for the current phase (on the bottom of the window).  
+     * Displays the log messages for the current phase (on the bottom of the
+     * window).
      */
     final private PhaseView phaseView;
 
@@ -84,7 +83,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         super("Risk Game");
 
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        this.setResizable(true);
+        this.setResizable(false);
 
         this.phaseAuxiliarPanel = new PhaseAuxiliar();
 
@@ -112,20 +111,22 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
 
     /**
      * Interface with phase view to get the logs being displayed
+     *
      * @return linked list of logs being currently displayed
      */
-    public LinkedList<String> getLogs(){
+    public LinkedList<String> getLogs() {
         return this.phaseView.getLogs();
     }
-    
+
     /**
      * Interface with phase view to set the logs being displayed
-     * @param logs 
+     *
+     * @param logs
      */
-    public void setLogs(LinkedList<String> logs){
+    public void setLogs(LinkedList<String> logs) {
         this.phaseView.setLogs(logs);
     }
-    
+
     /**
      * This method is for add the observer
      *
@@ -134,6 +135,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     @Override
     public void observeModel(RiskModel rm) {
         updateView(rm, true);
+        rm.addObserver(this.phaseView);
         rm.getPlayerList().forEach((pl) -> {
             pl.addObserver(this.phaseView);
         });
@@ -144,7 +146,6 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         rm.addObserver(this.phaseAuxiliarPanel);
         rm.addObserver(this.dominationView);
         this.phaseView.updateView(rm);
-        rm.addObserver(this.phaseView);
     }
 
     /**
@@ -152,7 +153,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      * @param rm the model which is gonna be updated the view
      * @param newMap the new map which is gonna be updated
      */
-    void updateView(RiskModel rm, boolean newMap) {
+    public void updateView(RiskModel rm, boolean newMap) {
         this.stagePanel.updateView(rm);
         this.mapPanel.updateView(rm.getMap(), newMap);
         this.dominationView.updateView(rm);
@@ -201,10 +202,10 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.getMapPanel().setListener(rc.getTerritoryListener());
 
         Arrays.stream(this.getStagePanel().getEndPhase().getActionListeners())
-                .forEach((a)->{
-            this.getStagePanel().getEndPhase().removeActionListener(a);
-        });
-        
+                .forEach((a) -> {
+                    this.getStagePanel().getEndPhase().removeActionListener(a);
+                });
+
         this.getStagePanel().getEndPhase().addActionListener(e -> {
             rc.getGameController().endPhaseButtonPressed();
         });
@@ -214,10 +215,10 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         if (c instanceof JMenuItem) {
             JMenuItem j = (JMenuItem) c;
             //remove old listeners
-            Arrays.stream(j.getActionListeners()).forEach((a)->{
+            Arrays.stream(j.getActionListeners()).forEach((a) -> {
                 j.removeActionListener(a);
             });
-            
+
             j.addActionListener(e -> {
                 rc.newGameMenuItemPressed();
             });
@@ -227,12 +228,12 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         c = this.getJMenuBar().getMenu(0).getMenuComponent(1);
         if (c instanceof JMenuItem) {
             JMenuItem j = (JMenuItem) c;
-            
+
             //remove old listeners
-            Arrays.stream(j.getActionListeners()).forEach((a)->{
+            Arrays.stream(j.getActionListeners()).forEach((a) -> {
                 j.removeActionListener(a);
             });
-            
+
             //add new one
             j.addActionListener(e -> {
                 JFileChooser fileChooser;
@@ -252,12 +253,12 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         c = this.getJMenuBar().getMenu(0).getMenuComponent(2);
         if (c instanceof JMenuItem) {
             JMenuItem j = (JMenuItem) c;
-            
+
             //remove old listeners
-            Arrays.stream(j.getActionListeners()).forEach((a)->{
+            Arrays.stream(j.getActionListeners()).forEach((a) -> {
                 j.removeActionListener(a);
             });
-            
+
             //add new one
             j.addActionListener(e -> {
                 //create a new file chooser
@@ -270,22 +271,8 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
                 //handle selection on file chooser
                 if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     rc.loadGame(fileChooser.getSelectedFile().getAbsolutePath());
-                    
+
                 }
-            });
-        }
-
-        if (this.menuPanel != null) {
-            JButton b = this.getMenuPanel().getStartMenu().getNewGamePanel()
-                    .getOpenMapEditor();
-
-            //remove old listeners
-            Arrays.stream(b.getActionListeners()).forEach((a)->{
-                b.removeActionListener(a);
-            });
-            
-            b.addActionListener(e -> {
-                rc.openMapEditor();
             });
         }
 
@@ -306,9 +293,9 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         this.setMenuPanel(menu);
         menu.add(start);
         menu.setVisible(true);
-        menu.setSize(300, 500);
+        menu.setSize(400, 500);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        menu.setLocation(dimension.width / 2 - 300 / 2, dimension.height / 2 - 500 / 2);
+        menu.setLocation(dimension.width / 2 - 400 / 2, dimension.height / 2 - 500 / 2);
     }
 
     /**

@@ -69,11 +69,13 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * Adds a card to the player hand
+     *
      * @param card the card to add
      */
-    public void addCardToPlayerHand(CardModel card){
+    public void addCardToPlayerHand(CardModel card) {
         cards.add(card);
     }
+
     /**
      * Returns the number of cards in this hand
      *
@@ -97,6 +99,7 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * This method is for get the current owner
+     *
      * @return the owner
      */
     public PlayerModel getOwner() {
@@ -105,6 +108,7 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * This method is for set the current owner
+     *
      * @param owner the owner of the hand
      */
     void setOwner(PlayerModel owner) {
@@ -176,6 +180,7 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * This method is for set current attribute
+     *
      * @param current the current status
      */
     void setCurrent(boolean current) {
@@ -187,7 +192,8 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * This method is for removing card
-     * @param typeOfArmie the type of the armie
+     *
+     * @param typeOfArmie the type of the armies
      * @param deck the list of the card
      */
     public void removeCards(String typeOfArmie, LinkedList<CardModel> deck) {
@@ -202,11 +208,11 @@ public class HandModel extends Observable implements Serializable {
                         .get();
 
                 deck.addFirst(card);
-                this.getCards().remove(card);
+                this.cards.remove(card);
             });
 
         } else {
-            for (Iterator<CardModel> iterator = this.getCards().iterator(); iterator.hasNext();) {
+            for (Iterator<CardModel> iterator = this.cards.iterator(); iterator.hasNext();) {
                 CardModel card = iterator.next();
                 if (card.getTypeOfArmie().equals(typeOfArmie)) {
                     deck.addFirst(card);
@@ -218,6 +224,7 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * This method is for get the status of card
+     *
      * @return the status of the card
      */
     public boolean isHanded() {
@@ -226,6 +233,7 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * This method is for set the handed boolean
+     *
      * @param handed the status of the card
      */
     public void setHanded(boolean handed) {
@@ -237,6 +245,7 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * This method is to get the number of selected cards
+     *
      * @return the cards size
      */
     public int getNbSelectedCards() {
@@ -255,7 +264,8 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * This method is for get the list of selected card
-     * @return  the list of selected card
+     *
+     * @return the list of selected card
      */
     public List<String> getSelectedCards() {
         return Collections.unmodifiableList(this.selectedCards);
@@ -263,8 +273,9 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * This method is for check the card is selected or not
+     *
      * @param cardName the name of the card
-     * @return if the card  is selected
+     * @return if the card is selected
      */
     public boolean isCardSelected(String cardName) {
         return this.selectedCards.contains(cardName);
@@ -272,6 +283,7 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * This method is for unselect the card
+     *
      * @param cardName the name of the card
      */
     public void unselectCard(String cardName) {
@@ -283,6 +295,7 @@ public class HandModel extends Observable implements Serializable {
 
     /**
      * This method is for select the card
+     *
      * @param cardName the name of the card
      */
     public void selectCard(String cardName) {

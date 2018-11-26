@@ -18,7 +18,7 @@ import javax.swing.JTextField;
  *
  * @author Nellybett
  */
-public class ArmiesLeft extends JPanel {
+public class ArmiesLeftPanel extends JPanel {
 
     /**
      * Button to increase the number of armies to move
@@ -44,7 +44,7 @@ public class ArmiesLeft extends JPanel {
     /**
      * Constructor
      */
-    public ArmiesLeft() {
+    public ArmiesLeftPanel() {
         more = new JButton("+");
         armiesMoved = new JTextField("1");
         move = new JButton("Move");

@@ -60,8 +60,6 @@ public class MapListener extends MouseAdapter {
                 TerritoryLabel source = (TerritoryLabel) cAux;
                 source.setBackground(Color.gray);
                 this.setTerritorySource(source);
-
-                System.out.println(source.getName());
             }
 
         }
@@ -84,7 +82,6 @@ public class MapListener extends MouseAdapter {
                 if (source == null) {
                     return;
                 }
-                System.out.println(source.getName() + "--->" + destiny.getName());
                 this.riskController.getGameController().dragNDropTerritory(source.getName(), destiny.getName());
             }
         }

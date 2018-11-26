@@ -5,7 +5,8 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.MapModel;
+import com.risk.models.HumanStrategy;
+import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import com.risk.views.editor.MapEditorView;
@@ -73,23 +74,11 @@ public final class RiskController {
     }
 
     /**
-     * Opens a new map editor view.
-     */
-    public void openMapEditor() {
-        MapModel newMap = new MapModel();
-        MapEditorController editorController = new MapEditorController(newMap);
-        this.mapEditor = new MapEditorView(1000, 600, editorController, newMap);
-        this.mapEditor.setVisible(true);
-        newMap.addObserver(mapEditor);
-        newMap.addObserver(mapEditor.getMapView());
-        newMap.addObserver(mapEditor.getContinentListPanel());
-    }
-
-    /**
      * Display the NewGame Menu Called when user press on New Game MenuItem.
      *
      */
     public void newGameMenuItemPressed() {
+        this.modelRisk.reset();
         getViewRisk().initialMenu(getModelRisk(), getMenuListener());
     }
 
@@ -147,15 +136,19 @@ public final class RiskController {
 
     /**
      * Method to save the state of the current game being played
+     *
      * @param filePath
      */
     public void saveGame(String filePath) {
-        if(this.modelRisk.getCurrentPlayer().getCurrentAttack() != null) {
-            this.viewRisk.showError("Cannot save while a battle is in progress");
+        PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
+        if (currentPlayer.getCurrentAttack() != null
+                || !(currentPlayer.getStrategy() instanceof HumanStrategy)) {
+            this.viewRisk.showError("Cannot save while a battle is in progress "
+                    + "or while the computer is playing");
             return;
         }
         this.modelRisk.setSavedLogs(this.viewRisk.getLogs());
-        
+
         try (FileOutputStream fileOut = new FileOutputStream(filePath); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(this.modelRisk);
         } catch (IOException e) {
@@ -166,6 +159,7 @@ public final class RiskController {
 
     /**
      * Load a new game from backup file
+     *
      * @param filePath path to the file containing a saved game to load
      */
     public void loadGame(String filePath) {
@@ -179,7 +173,7 @@ public final class RiskController {
             String imagePath = newModel.getMap().getConfigurationInfo().getImagePath();
             System.out.println(imagePath);
             image = ImageIO.read(new File("maps/" + imagePath));
-            
+
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e);
             this.viewRisk.showError("An error occured while attempting to load the game.");
