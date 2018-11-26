@@ -10,14 +10,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
+ * Benevolent Strategy
  * @author Nellybett
  */
 public class BenevolentStrategy implements Strategy {
 
+    /**
+     * Reinforces the weakest territory
+     * @param rm risk model
+     */
     @Override
     public void reinforcement(RiskModel rm) {
-        System.out.println("BENEVOLENTE REINFORCEMENT");
         rm.aIReinforcement();
 
         int armiesReinforcement = rm.getCurrentPlayer().getNbArmiesAvailable();
@@ -36,12 +39,19 @@ public class BenevolentStrategy implements Strategy {
 
     }
 
+    /**
+     * No attack move
+     * @param rm risk model
+     */
     @Override
     public void attack(RiskModel rm) {
-        System.out.println("BENEVOLENTE ATAQUE");
         rm.finishPhase();
     }
 
+    /**
+     * Fortifies the weakest territory
+     * @param rm risk model
+     */
     @Override
     public void fortification(RiskModel rm) {
         System.out.println("BENEVOLENTE FORTIFICACION");
@@ -71,21 +81,38 @@ public class BenevolentStrategy implements Strategy {
         rm.finishPhase();
     }
 
+    /**
+     * Move armies after conquering a territory
+     * @param rm risk model 
+     */
     @Override
     public void moveArmies(RiskModel rm) {
         rm.getCurrentPlayer().moveArmiesAI();
     }
 
+    /**
+     * Exchange card for computer players
+     * @param rm risk model
+     * @return true if it is successful
+     */
     @Override
     public boolean exchangeCardsToArmies(RiskModel rm) {
         return rm.getCurrentPlayer().exchangeCardsToArmiesAI();
     }
 
+    /**
+     * Defense for computer player
+     * @param rm risk model 
+     */
     @Override
     public void defense(RiskModel rm) {
         rm.getCurrentPlayer().defenseAI();
     }
 
+    /**
+     * Startup movement
+     * @param rm risk model 
+     */
     @Override
     public void startup(RiskModel rm) {
        

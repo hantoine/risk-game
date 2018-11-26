@@ -35,7 +35,7 @@ public class GameController implements Observer {
      */
     private CardExchangeView exchangeView;
     /**
-     *
+     * Card exchange listener
      */
     private CardExchangeListener cardExchangeListener;
 
@@ -104,6 +104,10 @@ public class GameController implements Observer {
         this.rm.continueAttack(nbDice);
     }
 
+    /**
+     * Defense movement
+     * @param nbDice number of dice selected
+     */
     public void clickDefense(int nbDice) {
         rm.getCurrentPlayer().setDefenseValues(nbDice);
         rm.performAttack(this.rm.getCurrentPlayer());
@@ -177,7 +181,11 @@ public class GameController implements Observer {
 
         rm.addObserverToAttack(attackView);
     }
-
+    /**
+    * Observe the risk model 
+    * @param o observable
+    * @param o1 parameters
+    */
     @Override
     public void update(Observable o, Object o1) {
         PlayerModel currentPlayer = this.rm.getCurrentPlayer();

@@ -55,11 +55,11 @@ public final class RiskModel extends Observable {
      */
     private LinkedList<CardModel> deck;
     /**
-     *
+     * It is attack or defense of the attack phase
      */
     private boolean attackPhase;
     /**
-     *
+     * log of messages
      */
     private LogModel log;
 
@@ -79,6 +79,9 @@ public final class RiskModel extends Observable {
 
     }
 
+    /**
+     * Before new game changes
+     */
     public void reset() {
         this.players.clear();
         addPlayerToPlayerList("Player 1", Color.red, true);
@@ -302,7 +305,7 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     * @param attackPhase
+     * @param attackPhase attack phase initialize indicator
      */
     public void setAttackPhase(boolean attackPhase) {
         this.attackPhase = attackPhase;
@@ -334,7 +337,7 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     *
+     * Reinforcement for computer players
      */
     public void aIReinforcement() {
         getCurrentPlayer().setHanded(false);
@@ -345,6 +348,10 @@ public final class RiskModel extends Observable {
         }
     }
 
+    /**
+     * Intent of reinforcement
+     * @param selectedTerritory the territory to place an army 
+     */
     public void reinforcementIntent(TerritoryModel selectedTerritory) {
         try {
             placeArmy(currentPlayer, selectedTerritory);
@@ -356,6 +363,10 @@ public final class RiskModel extends Observable {
         }
     }
 
+    /**
+     * Intent of startup move
+     * @param territoryClicked the territory to place an army 
+     */
     public void startupMove(TerritoryModel territoryClicked){
         try{
             placeArmy(this.currentPlayer, territoryClicked);
@@ -369,6 +380,11 @@ public final class RiskModel extends Observable {
         }
     }
     
+    /**
+     * Intent of fortification
+     * @param source source territory
+     * @param dest destination territory
+     */
     public void fortificationIntent(TerritoryModel source, TerritoryModel dest) {
 
         try {
@@ -381,9 +397,14 @@ public final class RiskModel extends Observable {
         }
     }
 
+    /**
+     * Intent of attack
+     * @param sourceTerritory source of the attack
+     * @param destTerritory destiny of the attack
+     */
     public void attackIntent(TerritoryModel sourceTerritory, TerritoryModel destTerritory) {
         int result = getCurrentPlayer().validateAttack(sourceTerritory, destTerritory);
-        System.out.println("intento atacar: " + result);
+        
         if (result == 0) {
             attackMove(sourceTerritory, destTerritory);
         } else {
@@ -599,10 +620,18 @@ public final class RiskModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * Execute an attack for IA
+     */
     public void executeAttack() {
         this.currentPlayer.attack(this);
     }
 
+    /**
+     * Select a random territory from a list 
+     * @param listTerritories the list of territories
+     * @return a territory from the list
+     */
     public TerritoryModel randomTerritory(List<TerritoryModel> listTerritories){
         
         int range = listTerritories.size();
@@ -658,6 +687,9 @@ public final class RiskModel extends Observable {
         }
     }
 
+    /**
+     * Beginning of phase with delay
+     */
     void executeBeginningOfPhaseStepsLater() {
         class ExecuteBeginningOfPhaseStepsLaterRunnable implements Runnable {
 
@@ -680,6 +712,9 @@ public final class RiskModel extends Observable {
         SwingUtilities.invokeLater(ebopslt);
     }
 
+    /**
+     * Beginning of game without delay
+     */
     public void executeBeginningOfPhaseStepsNow() {
         addNewLogEvent("", true);
         switch (this.getPhase()) {
@@ -761,12 +796,12 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     *
+     * Exception for fortification movement 
      */
     public static class FortificationMoveImpossible extends Exception {
 
         /**
-         *
+         * Reason why the fortification is not possible
          */
         private final String reason;
 
@@ -790,12 +825,12 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     *
+     * Exception for army placement
      */
     public static class ArmyPlacementImpossible extends Exception {
 
         /**
-         *
+         *Reason why an army placement is not possible
          */
         private final String reason;
 
@@ -869,7 +904,7 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     *
+     * Beginning of the game
      */
     public void startGame() {
         this.setWinningPlayer(null);
@@ -962,7 +997,10 @@ public final class RiskModel extends Observable {
             this.setAttackPhase(false);
         }
     }
-
+    /**
+    * Getter of the log 
+    * @return log 
+    */
     public String getLogContent() {
         return this.log.getContent();
     }

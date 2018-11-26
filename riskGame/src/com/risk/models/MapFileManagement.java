@@ -32,7 +32,7 @@ public class MapFileManagement {
      *
      * @param path the path provided from the user
      * @param board the map in the model
-     * @throws com.risk.models.MapFileManagement.MapFileManagementException
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException exception for the class
      */
     public static void createBoard(String path, MapModel board)
             throws MapFileManagementException {
@@ -108,7 +108,7 @@ public class MapFileManagement {
      * @param info the string with the information
      * @param path the path were the file was so it can look for the image
      * @param map the map from the model
-     * @throws com.risk.models.MapFileManagement.MapFileConfigException
+     * @throws com.risk.models.MapFileManagement.MapFileConfigException exception for the class
      */
     public static void configurationInf(String info, String path, MapModel map)
             throws MapFileConfigException {
@@ -179,7 +179,7 @@ public class MapFileManagement {
      *
      * @param info the string with the continents information
      * @param board the map to be modified from the model
-     * @throws com.risk.models.MapFileManagement.MapFileContinentException
+     * @throws com.risk.models.MapFileManagement.MapFileContinentException exception for the class
      */
     public static void continentCreator(String info, MapModel board)
             throws MapFileContinentException {
@@ -223,6 +223,7 @@ public class MapFileManagement {
      *
      * @param info the string with the territories
      * @param board the map from the model
+     * @throws com.risk.models.MapFileManagement.MapFileTerritoryException exception for the class
      */
     public static void territoryCreator(String info, MapModel board)
             throws MapFileTerritoryException {
@@ -337,7 +338,7 @@ public class MapFileManagement {
      * @param path the path provided by the user it includes the name of the
      * file
      * @param board the map to read
-     * @throws com.risk.models.MapFileManagement.MapFileManagementException
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException exception for the class
      */
     public static void generateBoardFile(String path, MapModel board)
             throws MapFileManagementException {
@@ -404,6 +405,7 @@ public class MapFileManagement {
      * @param path is the place to save the string
      * @param fileContent is the contents for a file
      * @return success 0, or error -1
+     * @throws MapFileReadingException exception for the method
      */
     private static int savingFile(String path, String fileContent) throws MapFileReadingException {
         BufferedWriter bufferedWriter = null;

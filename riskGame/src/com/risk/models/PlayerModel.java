@@ -70,16 +70,16 @@ public class PlayerModel extends Observable {
     private boolean currentPlayer;
 
     /**
-     *
+     *If a player conquer a territory
      */
     private boolean conquered;
 
     /**
-     *
+     * Strategy of the player
      */
     private Strategy strategy;
     /**
-     *
+     *If a card exchange is offered
      */
     private boolean cardExchangeOffered;
 
@@ -88,7 +88,6 @@ public class PlayerModel extends Observable {
      *
      * @param name name of a player
      * @param color color of a player
-     * @param isHuman true if the player is human
      * @param game Game in which this player belongs
      */
     public PlayerModel(String name, Color color, RiskModel game) {
@@ -123,6 +122,10 @@ public class PlayerModel extends Observable {
         strategy.reinforcement(playGame);
     }
     
+    /**
+     * Startup movement
+     * @param playGame risk model 
+     */
     public void startup(RiskModel playGame) {
         addNewLogEvent(String.format(
                 "%s startup move",
@@ -149,7 +152,6 @@ public class PlayerModel extends Observable {
     }
 
     /**
-     *
      * @param playGame GameController reference used to access game informations
      * and methods
      */
@@ -164,29 +166,48 @@ public class PlayerModel extends Observable {
         return strategy;
     }
 
+    /**
+     * Getter of the cardExchageOffered attribute
+     * @return cardExchangeOffered attribute
+     */
     public boolean isCardExchangeOffered() {
         return cardExchangeOffered;
     }
 
+    /**
+     * Setter of the cardExchangeOffered attribute
+     * @param cardExchangeOffered boolean that determines if exchange was offered
+     */
     public void setCardExchangeOffered(boolean cardExchangeOffered) {
         this.cardExchangeOffered = cardExchangeOffered;
     }
 
     /**
+     * Setter of the strategy
      * @param strategy the strategy to set
      */
     public void setStrategy(Strategy strategy) {
         this.strategy = strategy;
     }
 
+    /**
+     * Exchange cards according strategy
+     * @return true if it is success
+     */
     boolean exchangeCardsToArmies() {
         return strategy.exchangeCardsToArmies(this.game);
     }
 
+    /**
+     * Defense according to strategy
+     */
     public void defense() {
         strategy.defense(this.game);
     }
 
+    /**
+     * Move armies according to strategy
+     */
     public void moveArmies() {
         strategy.moveArmies(this.game);
     }
@@ -262,7 +283,7 @@ public class PlayerModel extends Observable {
     /**
      * This method is for set the game
      *
-     * @param game the game which is gonna be setted
+     * @param game the game which is gonna be setter
      */
     void setGame(RiskModel game) {
         this.game = game;
@@ -640,6 +661,7 @@ public class PlayerModel extends Observable {
     }
 
     /**
+     * Getter of the handed attribute
      * @return the handed
      */
     public boolean isHanded() {
@@ -647,6 +669,7 @@ public class PlayerModel extends Observable {
     }
 
     /**
+     * Setter of handed attribute
      * @param handed the handed to set
      */
     public void setHanded(boolean handed) {
@@ -673,10 +696,18 @@ public class PlayerModel extends Observable {
         notifyObservers();
     }
 
+    /**
+     * Set the dice number in attack movement
+     * @param diceAttack number of dice for attack
+     */
     public void setAttackValues(int diceAttack) {
         this.getCurrentAttack().setNbDiceAttack(diceAttack);
     }
 
+    /**
+     * Set the dice number in defense movement
+     * @param diceAttacked number of dice for defense
+     */
     public void setDefenseValues(int diceAttacked) {
         this.getCurrentAttack().setNbDiceDefense(diceAttacked);
     }
@@ -896,17 +927,21 @@ public class PlayerModel extends Observable {
 
     }
 
+    /**
+     * Move armies for conquering a territory
+     */
     public void moveArmiesAI() {
-        System.out.println("MOVER LOS BATALLONES" + this.getCurrentAttack());
         if (this.getCurrentAttack() != null) {
             if (this.getCurrentAttack().getDest().getNumArmies() == 0) {
-                System.out.println("Numero de dados : " + this.getCurrentAttack().getNbDiceAttack());
                 int diceAttack = this.getCurrentAttack().getNbDiceAttack();
                 this.game.moveArmiesToConqueredTerritory(diceAttack);
             }
         }
     }
-
+    
+    /**
+     * Defense movement for computer players
+     */
     public void defenseAI() {
         this.game.getCurrentPlayer().setDefenseValues(2);
         this.game.performAttack(this.game.getCurrentPlayer());
@@ -915,6 +950,10 @@ public class PlayerModel extends Observable {
         this.game.executeAttack();
     }
 
+    /**
+     * Card exchange for computer players
+     * @return true success
+     */
     public boolean exchangeCardsToArmiesAI() {
         int[] cardDuplicates = this.getHand().getCardDuplicates();
 
