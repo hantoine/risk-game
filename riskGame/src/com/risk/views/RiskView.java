@@ -15,7 +15,7 @@ import com.risk.views.game.MapPanel;
 import com.risk.views.game.PhaseAuxiliar;
 import com.risk.views.game.PhaseView;
 import com.risk.views.menu.MenuView;
-import com.risk.views.menu.NewGamePanel;
+import com.risk.views.menu.PlayerPanel;
 import com.risk.views.menu.StartMenuView;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -186,7 +186,8 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
      *
      * @param message Text to be displayed in the message dialog
      */
-    void showMessage(String message) {
+    @Override
+    public void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
 
@@ -323,11 +324,23 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     /**
      * Getter of the new game panel inside the menu panel
      *
-     * @return the new panel
+     * @return the map path for the new game panel
      */
     @Override
-    public NewGamePanel getNewGamePanel() {
-        return this.getMenuPanel().getStartMenu().getNewGamePanel();
+    public String getMapPathForNewGame() {
+        return this.getMenuPanel().getStartMenu().getNewGamePanel()
+                .getSelectFileTextField().getText();
+    }
+
+    /**
+     * Getter of the player list for the new game
+     *
+     * @return the player list for the new game
+     */
+    @Override
+    public LinkedList<PlayerPanel> getPlayersForNewGame() {
+        return this.getMenuPanel().getStartMenu().getNewGamePanel()
+                .getPlayersPanel().getPlayersArray();
     }
 
     /**

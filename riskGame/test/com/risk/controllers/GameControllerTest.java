@@ -10,9 +10,10 @@ import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
 import com.risk.views.RiskViewInterface;
-import com.risk.views.menu.NewGamePanel;
+import com.risk.views.menu.PlayerPanel;
 import java.awt.Color;
 import java.lang.reflect.Method;
+import java.util.LinkedList;
 import java.util.Observable;
 import static org.junit.Assert.assertEquals;
 import org.junit.AssumptionViolatedException;
@@ -391,11 +392,6 @@ public class GameControllerTest {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        @Override
-        public NewGamePanel getNewGamePanel() {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
         public String getMessage() {
             return this.message;
         }
@@ -405,6 +401,21 @@ public class GameControllerTest {
             if (o instanceof RiskModel && o1 instanceof String) {
                 this.message = (String) o1;
             }
+        }
+
+        @Override
+        public String getMapPathForNewGame() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public LinkedList<PlayerPanel> getPlayersForNewGame() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public void showMessage(String message) {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
     }
 }
