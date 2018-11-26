@@ -122,6 +122,11 @@ public class TournamentModel extends Observable implements TableModel {
     }
 
     public void setMaximumTurnPerGame(int maximumTurnPerGame) {
+        if (maximumTurnPerGame > 50) {
+            throw new IllegalStateException("Cannot set the maximum number of "
+                    + "turn per game, it cannot exceed 50 turns.");
+        }
+
         this.maximumTurnPerGame = maximumTurnPerGame;
 
         setChanged();
