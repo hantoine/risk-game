@@ -30,7 +30,7 @@ public class AttackMove extends Observable implements Serializable {
      */
     private PlayerModel attacker;
     /**
-     * 
+     *
      */
     private PlayerModel defensePlayer;
     /**
@@ -43,8 +43,6 @@ public class AttackMove extends Observable implements Serializable {
      */
     private int nbDiceDefense;
 
-
-
     /**
      * Constructor
      *
@@ -53,10 +51,10 @@ public class AttackMove extends Observable implements Serializable {
      * @param dest destiny of the attack
      */
     public AttackMove(PlayerModel attacker, TerritoryModel source, TerritoryModel dest) {
-        
+
         this.source = source;
         this.dest = dest;
-        this.defensePlayer=dest.getOwner();
+        this.defensePlayer = dest.getOwner();
         this.attacker = attacker;
         this.nbDiceAttack = -1;
         this.nbDiceDefense = 100;
@@ -106,31 +104,33 @@ public class AttackMove extends Observable implements Serializable {
      */
     public void battle(int diceAttack, int diceAttacked) {
         String looser1 = null, looser2 = null;
-        
+
         int[] attack = createDice(diceAttack);
         int[] defense = createDice(diceAttacked);
-        
+
         Arrays.sort(attack);
         Arrays.sort(defense);
 
-        if(diceAttack>= diceAttacked){
+        if (diceAttack >= diceAttacked) {
             if (diceAttacked == 1) {
-                looser1 = compareDice(attack, defense, attack.length - 1, 0);
+                looser1 = compareDice(attack[attack.length - 1], defense[0]);
             } else {
-                looser1 = compareDice(attack, defense, attack.length - 1, 1);
-                looser2 = compareDice(attack, defense, attack.length - 2, 0);
+                looser1 = compareDice(attack[attack.length - 1], defense[1]);
+                looser2 = compareDice(attack[attack.length - 2], defense[0]);
             }
         }
-        if(diceAttack<diceAttacked && diceAttacked!=100){
-            looser1 = compareDice(attack, defense, 0, 1);
+        if (diceAttack < diceAttacked && diceAttacked != 100) {
+            looser1 = compareDice(attack[0], defense[1]);
         }
 
-        if(this.attacker.getGame()!=null)
+        if (this.attacker.getGame() != null) {
             this.attacker.addNewLogEvent(getBattleLogMsg(looser1, looser2));
+        }
     }
 
     /**
      * this method is to get battle log message
+     *
      * @param firstLooser the first looser
      * @param secondLooser the second looser
      * @return the message
@@ -183,14 +183,12 @@ public class AttackMove extends Observable implements Serializable {
     /**
      * Compare results of rolling the dices
      *
-     * @param attacker attacker dices results
-     * @param defense defense dices results
-     * @param j position for attacker
-     * @param i position for defense
+     * @param attackerDiceValue the value of the dice of the attacker
+     * @param defenseDiceValue the value of the dice of the defense
      * @return the loosing territory name
      */
-    public String compareDice(int[] attacker, int[] defense, int j, int i) {
-        if (attacker[j] <= defense[i]) {
+    public String compareDice(int attackerDiceValue, int defenseDiceValue) {
+        if (attackerDiceValue <= defenseDiceValue) {
             this.getSource().setNumArmies(this.getSource().getNumArmies() - 1);
             return this.getSource().getName();
         } else {
@@ -295,7 +293,5 @@ public class AttackMove extends Observable implements Serializable {
     public void setDefensePlayer(PlayerModel defensePlayer) {
         this.defensePlayer = defensePlayer;
     }
-
-    
 
 }
