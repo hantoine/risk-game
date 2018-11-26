@@ -54,7 +54,7 @@ public class MenuListenerTest {
 
         instance.playButton();
 
-        assertEquals("Error reading the file", rv.getMessage());
+        assertEquals("Error reading the file for map nonexistentmapfile", rv.getMessage());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class MenuListenerTest {
 
         instance.playButton();
 
-        assertEquals("Error in parameters to configurate the map.", rv.getMessage());
+        assertEquals("Error in parameters to configurate the map errorInConfigInfos", rv.getMessage());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class MenuListenerTest {
 
         instance.playButton();
 
-        assertEquals("Error in continent information.", rv.getMessage());
+        assertEquals("Error in continent information for map errorInContinentInfos", rv.getMessage());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class MenuListenerTest {
 
         instance.playButton();
 
-        assertEquals("Error in territory information.", rv.getMessage());
+        assertEquals("Error in territory information for map continentmissing", rv.getMessage());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class MenuListenerTest {
 
         instance.playButton();
 
-        assertEquals("No territories separator in file.", rv.getMessage());
+        assertEquals("No territories separator in file for map noterritoryTAG", rv.getMessage());
     }
 
     @Test
@@ -109,7 +109,7 @@ public class MenuListenerTest {
 
         instance.playButton();
 
-        assertEquals("No continents separator in file.", rv.getMessage());
+        assertEquals("No continents separator in file for map noContinentTag", rv.getMessage());
     }
 
     @Test
@@ -119,7 +119,7 @@ public class MenuListenerTest {
 
         instance.playButton();
 
-        assertEquals("The map is not valid.", rv.getMessage());
+        assertEquals("The map Twin Volcano is not valid.", rv.getMessage());
     }
 
     /**

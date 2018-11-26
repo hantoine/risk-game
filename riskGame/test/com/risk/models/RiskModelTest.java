@@ -133,7 +133,7 @@ public class RiskModelTest {
      */
     @Test
     public void testInitializePlayersArmies4() {
-        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow);
         riskModel.initializePlayersArmies();
 
         assertTrue(riskModel.getPlayerList().stream()
@@ -145,8 +145,8 @@ public class RiskModelTest {
      */
     @Test
     public void testInitializePlayersArmies5() {
-        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
-        riskModel.addPlayerToPlayerList("player 5", Color.black, true);
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow);
+        riskModel.addPlayerToPlayerList("player 5", Color.black);
         riskModel.initializePlayersArmies();
 
         assertTrue(riskModel.getPlayerList().stream()
@@ -158,9 +158,9 @@ public class RiskModelTest {
      */
     @Test
     public void testInitializePlayersArmies6() {
-        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
-        riskModel.addPlayerToPlayerList("player 5", Color.black, true);
-        riskModel.addPlayerToPlayerList("player 6", Color.ORANGE, true);
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow);
+        riskModel.addPlayerToPlayerList("player 5", Color.black);
+        riskModel.addPlayerToPlayerList("player 6", Color.ORANGE);
         riskModel.initializePlayersArmies();
 
         assertTrue(riskModel.getPlayerList().stream()
@@ -323,7 +323,7 @@ public class RiskModelTest {
                         (t) -> (t.getOwner() != null)
                 )
         );
-        assertEquals("Player 1 starts its turn", dummyObserver.getMessage());
+        assertEquals("Player 1 startup move", dummyObserver.getMessage());
         assertTrue(riskModel.getCurrentPlayer().isCurrentPlayer());
         riskModel.getPlayerList().forEach((p) -> {
             assertEquals(

@@ -35,9 +35,9 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testGetMapsPaths() {
-        Set<String> expResult = new HashSet<>();
+        Set<MapPath> expResult = new HashSet<>();
 
-        Set<String> result = instance.getMapsPaths();
+        Set<MapPath> result = instance.getMapsPaths();
 
         assertEquals(expResult, result);
     }
@@ -47,7 +47,9 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testAddMapsPath() {
-        String mapPath = Paths.get("maps", "Europe.map").toString();
+        MapPath mapPath = new MapPath(
+                Paths.get("maps", "Europe.map").toString()
+        );
 
         instance.addMapsPath(mapPath);
 
@@ -61,12 +63,24 @@ public class TournamentMenuModelTest {
     @Test(expected = IllegalStateException.class)
     public void testAddMapsPathMax() {
         System.out.println("addMapsPath");
-        String mapPath1 = Paths.get("maps", "Europe.map").toString();
-        String mapPath2 = Paths.get("maps", "Old Yorkshire.map").toString();
-        String mapPath3 = Paths.get("maps", "Di'Mul_Jar.map").toString();
-        String mapPath4 = Paths.get("maps", "Twin Volcano valid.map").toString();
-        String mapPath5 = Paths.get("maps", "USA.map").toString();
-        String mapPath6 = Paths.get("maps", "Polygons.map").toString();
+        MapPath mapPath1 = new MapPath(
+                Paths.get("maps", "Europe.map").toString()
+        );
+        MapPath mapPath2 = new MapPath(
+                Paths.get("maps", "Old Yorkshire.map").toString()
+        );
+        MapPath mapPath3 = new MapPath(
+                Paths.get("maps", "Di'Mul_Jar.map").toString()
+        );
+        MapPath mapPath4 = new MapPath(
+                Paths.get("maps", "Twin Volcano valid.map").toString()
+        );
+        MapPath mapPath5 = new MapPath(
+                Paths.get("maps", "USA.map").toString()
+        );
+        MapPath mapPath6 = new MapPath(
+                Paths.get("maps", "Polygons.map").toString()
+        );
 
         instance.addMapsPath(mapPath1);
         instance.addMapsPath(mapPath2);
@@ -83,7 +97,9 @@ public class TournamentMenuModelTest {
     @Test
     public void testAddMapsPathOnce() {
         System.out.println("addMapsPath");
-        String mapPath = Paths.get("maps", "Europe.map").toString();
+        MapPath mapPath = new MapPath(
+                Paths.get("maps", "Europe.map").toString()
+        );
 
         instance.addMapsPath(mapPath);
         instance.addMapsPath(mapPath);
@@ -98,8 +114,9 @@ public class TournamentMenuModelTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testAddMapsPathMapFileNotExist() {
-        String mapPath = Paths.get("maps", "TestCaseNonExistantMapFile.map")
-                .toString();
+        MapPath mapPath = new MapPath(
+                Paths.get("maps", "TestCaseNonExistantMapFile.map").toString()
+        );
 
         instance.addMapsPath(mapPath);
     }
@@ -110,8 +127,10 @@ public class TournamentMenuModelTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testAddMapsPathMapFileInvalid() {
-        String mapPath = Paths.get("maps", "presentation", "noterritoryTAG.map")
-                .toString();
+        MapPath mapPath = new MapPath(
+                Paths.get("maps", "presentation", "noterritoryTAG.map")
+                        .toString()
+        );
 
         instance.addMapsPath(mapPath);
     }
@@ -121,7 +140,9 @@ public class TournamentMenuModelTest {
      */
     @Test
     public void testRemoveMapsPath() {
-        String mapPath = Paths.get("maps", "Europe.map").toString();
+        MapPath mapPath = new MapPath(
+                Paths.get("maps", "Europe.map").toString()
+        );
         instance.addMapsPath(mapPath);
 
         instance.removeMapsPath(mapPath);

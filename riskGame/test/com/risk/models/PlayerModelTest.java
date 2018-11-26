@@ -34,7 +34,7 @@ public class PlayerModelTest {
      */
     @Before
     public void setUp() {
-        player = new PlayerModel("Player 1", Color.yellow, null);
+        player = new PlayerModel("Player 1", Color.yellow);
         LinkedList<TerritoryModel> territories = new LinkedList<>();
         LinkedList<ContinentModel> continents = new LinkedList<>();
         TerritoryModel source = new TerritoryModel("Venezuela");
