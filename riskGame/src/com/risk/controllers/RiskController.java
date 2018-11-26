@@ -9,6 +9,14 @@ import com.risk.models.MapModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
 import com.risk.views.editor.MapEditorView;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import javax.imageio.ImageIO;
 
 /**
  * It is the Game-driver
@@ -135,5 +143,61 @@ public final class RiskController {
      */
     public GameController getGameController() {
         return gameController;
+    }
+
+    /**
+     * Method to save the state of the current game being played
+     * @param filePath
+     */
+    public void saveGame(String filePath) {
+        if(this.modelRisk.getCurrentPlayer().getCurrentAttack() != null) {
+            this.viewRisk.showError("Cannot save while a battle is in progress");
+            return;
+        }
+        this.modelRisk.setSavedLogs(this.viewRisk.getLogs());
+        
+        try (FileOutputStream fileOut = new FileOutputStream(filePath); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            out.writeObject(this.modelRisk);
+        } catch (IOException e) {
+            this.viewRisk.showError("An error occured while attempting to save the game.");
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * Load a new game from backup file
+     * @param filePath path to the file containing a saved game to load
+     */
+    public void loadGame(String filePath) {
+        //load the saved model
+        RiskModel newModel;
+        BufferedImage image;
+        try (FileInputStream fileIn = new FileInputStream(filePath); ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            newModel = (RiskModel) in.readObject();
+
+            //load buffered image as it is not serializable
+            String imagePath = newModel.getMap().getConfigurationInfo().getImagePath();
+            System.out.println(imagePath);
+            image = ImageIO.read(new File("maps/" + imagePath));
+            
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e);
+            this.viewRisk.showError("An error occured while attempting to load the game.");
+            return;
+        }
+
+        //if all went well, update model
+        this.modelRisk = newModel;
+        this.modelRisk.getMap().setImage(image);
+
+        //setup listeners
+        this.territoryListener = new MapListener(this);
+        this.menuListener = new MenuListener(getModelRisk(), getViewRisk(), this);
+        this.gameController = new GameController(getModelRisk());
+
+        //setup observers + update the view
+        this.viewRisk.observeModel(getModelRisk());
+        viewRisk.setController(this);
+        viewRisk.setLogs(getModelRisk().getLogs());
     }
 }

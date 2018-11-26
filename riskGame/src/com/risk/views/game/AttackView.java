@@ -7,6 +7,7 @@ package com.risk.views.game;
 
 import com.risk.controllers.GameController;
 import com.risk.models.AttackMove;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JButton;
@@ -93,6 +94,15 @@ public class AttackView extends JPanel implements Observer {
      */
     public void setListeners(GameController gc) {
 
+        
+        //remove old listeners      
+        Arrays.stream(options).forEach((o) -> {
+            Arrays.stream(o.getActionListeners()).forEach((a)->{
+                o.removeActionListener(a);
+            });
+        });
+
+        
         options[0].addActionListener(e -> {
             gc.addObserverToAttack(this);
             gc.clickAttack(1);
@@ -112,7 +122,6 @@ public class AttackView extends JPanel implements Observer {
 
         options[3].addActionListener(e -> {
             gc.clickAttack(-1);
-
         });
     }
 
