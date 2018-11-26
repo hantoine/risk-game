@@ -201,21 +201,12 @@ public class AttackMove extends Observable implements Serializable {
             int nbArmiesInSrc = this.getSource().getNumArmies();
             int defenseArmies;
 
-            //refactor possible here: nbArmiesInSrc = nbArmiesInSrc > 3 ? 4 : nbArmiesInSrc;
-            if (nbArmiesInSrc > 3) {
-                attacker.setAttackValues(3);
-                defenseArmies = min(this.getDest().getNumArmies(), this.getNbDiceAttack());
-                defenseArmies = min(defenseArmies, 2);
-                attacker.setDefenseValues(defenseArmies);
-                battle(3, defenseArmies);
-            } else {
-                attacker.setAttackValues(nbArmiesInSrc - 1);
-                defenseArmies = min(this.getDest().getNumArmies(), this.getNbDiceAttack());
-                defenseArmies = min(defenseArmies, 2);
-                attacker.setDefenseValues(defenseArmies);
-                battle((nbArmiesInSrc - 1), defenseArmies);
-            }
-
+            nbArmiesInSrc = nbArmiesInSrc > 3 ? 4 : nbArmiesInSrc;
+            attacker.setAttackValues(nbArmiesInSrc - 1);
+            defenseArmies = min(this.getDest().getNumArmies(), this.getNbDiceAttack());
+            defenseArmies = min(defenseArmies, 2);
+            attacker.setDefenseValues(defenseArmies);
+            battle((nbArmiesInSrc - 1), defenseArmies);
         }
     }
 
