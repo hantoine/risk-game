@@ -105,8 +105,8 @@ public class AttackMove extends Observable implements Serializable {
     public void battle(int diceAttack, int diceAttacked) {
         String looser1 = null, looser2 = null;
 
-        int[] attack = createDice(diceAttack);
-        int[] defense = createDice(diceAttacked);
+        int[] attack = rollDices(diceAttack);
+        int[] defense = rollDices(diceAttacked);
 
         Arrays.sort(attack);
         Arrays.sort(defense);
@@ -231,12 +231,12 @@ public class AttackMove extends Observable implements Serializable {
      * @param dice number of dices
      * @return the array
      */
-    public int[] createDice(int dice) {
+    public int[] rollDices(int dice) {
         int[] dices = new int[dice];
         int i = 0;
 
         while (i < dices.length) {
-            dices[i] = roolDice();
+            dices[i] = rollDice();
             i++;
         }
         return dices;
@@ -247,7 +247,7 @@ public class AttackMove extends Observable implements Serializable {
      *
      * @return random value
      */
-    int roolDice() {
+    int rollDice() {
         int range = 6;
         return (int) (Math.random() * range) + 1;
     }
