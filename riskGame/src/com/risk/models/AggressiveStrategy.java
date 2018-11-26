@@ -89,7 +89,6 @@ public class AggressiveStrategy implements Strategy {
      */
     @Override
     public void fortification(RiskModel rm) {
-        System.out.println("AGRESIVO FORTI");
 
         TerritoryModel dest = null;
         for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {

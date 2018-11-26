@@ -6,6 +6,8 @@
 package com.risk.views.game;
 
 import com.risk.models.RiskModel;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BorderFactory;
@@ -95,6 +97,9 @@ public class PhaseView extends JPanel implements Observer {
                 + rm.getCurrentPlayer().getName());
         playerName.setForeground(rm.getCurrentPlayer().getColor());
         phaseName.setForeground(rm.getCurrentPlayer().getColor());
+
+        this.revalidate();
+        this.repaint();
     }
 
     /**
@@ -110,4 +115,24 @@ public class PhaseView extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Return current logs
+     * @return linked list of logs being currently displayed
+     */
+    public LinkedList<String> getLogs(){
+        LinkedList<String> logsBackup = new LinkedList();
+        logsBackup.addAll(Arrays.asList(actions.getText().split("\\n")));
+        return logsBackup;
+    }
+    
+    /**
+     * Setter for action attribute
+     * @param logs 
+     */
+    public void setLogs(LinkedList<String> logs){
+        actions.setText("");
+        logs.stream().forEach((l)->{
+            actions.append(l + "\n");
+        });
+    }
 }

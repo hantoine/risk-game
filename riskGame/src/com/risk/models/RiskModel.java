@@ -9,49 +9,58 @@ import com.risk.views.game.AttackView;
 import java.awt.Color;
 import static java.lang.Integer.max;
 import static java.lang.Integer.min;
+import java.awt.event.ActionEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
-import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 /**
  * Represents the model of the game
  *
  * @author Nellybett
  */
-public final class RiskModel extends Observable {
+public final class RiskModel extends Observable implements Serializable {
 
     /**
      * map a reference to the map of the game
      */
     private MapModel map;
+
     /**
      * players the list of players of the game
      */
     private LinkedList<PlayerModel> players;
+
     /**
      * turn reference with the player current turn
      */
     private int turn;
+
     /**
      * winningPlayer a reference to the player who won
      */
     private PlayerModel winningPlayer;
+
     /**
      * phase the current phase of the game
      */
     private GamePhase phase;
+
     /**
      * maxNbOfPlayers max number of players
      */
     static Integer maxNbOfPlayers = 6;
+
     /**
      * currentPlayer the player with the turn
      */
     private PlayerModel currentPlayer;
+
     /**
      * deck the deck of cards of the game
      */
@@ -61,23 +70,41 @@ public final class RiskModel extends Observable {
      */
     private boolean attackPhase;
     /**
-     * log of messages
+     * Contains the log message for events that happened in this event
      */
     private LogModel log;
+
+    /**
+     * Waiting time between computer played phases
+     */
+    private int interPhaseTime;
+
+    /**
+     * Number of turn left before draw;
+     */
+    int nbTurnBeforeDraw;
+
+    /**
+     * To restore logs when loading a game from file
+     */
+    private LinkedList<String> logsBackup;
 
     /**
      * Constructor of the model It includes son random players
      */
     public RiskModel() {
+        logsBackup = new LinkedList<>();
         this.players = new LinkedList<>();
         this.turn = 0;
         this.phase = GamePhase.STARTUP;
         this.attackPhase = true;
-        addPlayerToPlayerList("Player 1", Color.red, true);
-        addPlayerToPlayerList("Player 2", Color.green, true);
-        addPlayerToPlayerList("Player 3", Color.blue, true);
+        addPlayerToPlayerList("Player 1", Color.red);
+        addPlayerToPlayerList("Player 2", Color.green);
+        addPlayerToPlayerList("Player 3", Color.blue);
         this.currentPlayer = this.players.getFirst();
         this.log = new LogModel();
+        this.interPhaseTime = 600;
+        this.nbTurnBeforeDraw = Integer.MAX_VALUE;
 
     }
 
@@ -86,12 +113,34 @@ public final class RiskModel extends Observable {
      */
     public void reset() {
         this.players.clear();
-        addPlayerToPlayerList("Player 1", Color.red, true);
-        addPlayerToPlayerList("Player 2", Color.green, true);
-        addPlayerToPlayerList("Player 3", Color.blue, true);
+        addPlayerToPlayerList("Player 1", Color.red);
+        addPlayerToPlayerList("Player 2", Color.green);
+        addPlayerToPlayerList("Player 3", Color.blue);
         this.currentPlayer = this.players.getFirst();
         this.turn = 0;
         this.phase = GamePhase.STARTUP;
+    }
+
+    public void setNbTurnBeforeDraw(int nbTurnBeforeDraw) {
+        this.nbTurnBeforeDraw = nbTurnBeforeDraw;
+    }
+
+    /**
+     * Set logs to be saved into the model before serializing the model
+     *
+     * @param logsBackup
+     */
+    public void setSavedLogs(LinkedList<String> logsBackup) {
+        this.logsBackup = logsBackup;
+    }
+
+    /**
+     * Get saved logs of a game being loaded
+     *
+     * @return
+     */
+    public LinkedList<String> getLogs() {
+        return this.logsBackup;
     }
 
     /**
@@ -99,11 +148,12 @@ public final class RiskModel extends Observable {
      *
      * @param name the name of the player
      * @param color color of the player
-     * @param isHuman true if it is human
      */
-    public void addPlayerToPlayerList(String name, Color color, boolean isHuman) {
+    public void addPlayerToPlayerList(String name, Color color) {
 
-        players.add(PlayerFactory.getPlayer("HUMAN", name, color, this));
+        PlayerModel pl = PlayerFactory.getPlayer("HUMAN", name, color);
+        pl.setGame(this);
+        players.add(pl);
 
         setChanged();
         notifyObservers();
@@ -146,6 +196,10 @@ public final class RiskModel extends Observable {
         this.players = playerList;
         this.currentPlayer = playerList.getFirst();
 
+        this.players.forEach(p -> {
+            p.setGame(this);
+        });
+
         setChanged();
         notifyObservers();
     }
@@ -179,6 +233,13 @@ public final class RiskModel extends Observable {
      */
     public MapModel getMap() {
         return map;
+    }
+
+    /**
+     * Return true if the game finished with a draw
+     */
+    public boolean isDraw() {
+        return this.nbTurnBeforeDraw <= 0;
     }
 
     /**
@@ -352,7 +413,8 @@ public final class RiskModel extends Observable {
 
     /**
      * Intent of reinforcement
-     * @param selectedTerritory the territory to place an army 
+     *
+     * @param selectedTerritory the territory to place an army
      */
     public void reinforcementIntent(TerritoryModel selectedTerritory) {
         try {
@@ -367,10 +429,11 @@ public final class RiskModel extends Observable {
 
     /**
      * Intent of startup move
-     * @param territoryClicked the territory to place an army 
+     *
+     * @param territoryClicked the territory to place an army
      */
-    public void startupMove(TerritoryModel territoryClicked){
-        try{
+    public void startupMove(TerritoryModel territoryClicked) {
+        try {
             placeArmy(this.currentPlayer, territoryClicked);
             nextTurn();
             executeBeginningOfPhaseSteps();
@@ -381,9 +444,10 @@ public final class RiskModel extends Observable {
             addNewEvent(ex.getReason());
         }
     }
-    
+
     /**
      * Intent of fortification
+     *
      * @param source source territory
      * @param dest destination territory
      */
@@ -401,12 +465,13 @@ public final class RiskModel extends Observable {
 
     /**
      * Intent of attack
+     *
      * @param sourceTerritory source of the attack
      * @param destTerritory destiny of the attack
      */
     public void attackIntent(TerritoryModel sourceTerritory, TerritoryModel destTerritory) {
         int result = getCurrentPlayer().validateAttack(sourceTerritory, destTerritory);
-        
+
         if (result == 0) {
             attackMove(sourceTerritory, destTerritory);
         } else {
@@ -418,7 +483,6 @@ public final class RiskModel extends Observable {
                     this.addNewEvent("You are already attacking.");
                     break;
                 case -3:
-                    System.out.println("LA CAGO ESTE GUEVON"+getCurrentPlayer().getName()+"FUENTE"+sourceTerritory.getOwner().getName()+"destino"+destTerritory.getOwner().getName());
                     this.addNewEvent("Invalid movement");
                     break;
                 case -4:
@@ -436,6 +500,11 @@ public final class RiskModel extends Observable {
     public void nextTurn() {
         this.setTurn((this.getTurn() + 1) % this.getPlayerList().size());
         this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
+
+        // Integer.MAX_VALUE means no limit for the number of turn
+        if (this.nbTurnBeforeDraw != Integer.MAX_VALUE) {
+            this.nbTurnBeforeDraw--;
+        }
     }
 
     /**
@@ -616,7 +685,10 @@ public final class RiskModel extends Observable {
 
         executeEndOfPhaseSteps();
         this.nextPhase();
-        executeBeginningOfPhaseSteps();
+
+        if (this.nbTurnBeforeDraw > 0) {
+            executeBeginningOfPhaseSteps();
+        }
 
         setChanged();
         notifyObservers();
@@ -630,16 +702,20 @@ public final class RiskModel extends Observable {
     }
 
     /**
-     * Select a random territory from a list 
+     * Select a random territory from a list
+     *
      * @param listTerritories the list of territories
      * @return a territory from the list
      */
-    public TerritoryModel randomTerritory(List<TerritoryModel> listTerritories){
-        
+    public TerritoryModel randomTerritory(List<TerritoryModel> listTerritories) {
+        if (listTerritories.isEmpty()) {
+            return null;
+        }
+
         int range = listTerritories.size();
         return listTerritories.get((int) (Math.random() * range));
-        
     }
+
     /**
      * Final steps after finishing a phase
      */
@@ -693,25 +769,15 @@ public final class RiskModel extends Observable {
      * Beginning of phase with delay
      */
     void executeBeginningOfPhaseStepsLater() {
-        class ExecuteBeginningOfPhaseStepsLaterRunnable implements Runnable {
-
-            RiskModel rm;
-
-            ExecuteBeginningOfPhaseStepsLaterRunnable(RiskModel rm) {
-                this.rm = rm;
-            }
-
-            public void run() {
-                try {
-                    Thread.sleep(300);
-                    rm.executeBeginningOfPhaseStepsNow();
-                } catch (InterruptedException ex) {
-                }
-            }
-        }
-        ExecuteBeginningOfPhaseStepsLaterRunnable ebopslt
-                = new ExecuteBeginningOfPhaseStepsLaterRunnable(this);
-        SwingUtilities.invokeLater(ebopslt);
+        Timer timer = new Timer(
+                (this.phase != GamePhase.STARTUP)
+                        ? this.interPhaseTime
+                        : (int) (this.interPhaseTime * 0.1),
+                (ActionEvent ae) -> {
+                    this.executeBeginningOfPhaseStepsNow();
+                });
+        timer.setRepeats(false);
+        timer.start();
     }
 
     /**
@@ -740,6 +806,10 @@ public final class RiskModel extends Observable {
 
         setChanged();
         notifyObservers();
+    }
+
+    public void setInterPhaseTime(int interPhaseTime) {
+        this.interPhaseTime = interPhaseTime;
     }
 
     /**
@@ -832,7 +902,7 @@ public final class RiskModel extends Observable {
     public static class ArmyPlacementImpossible extends Exception {
 
         /**
-         *Reason why an army placement is not possible
+         * Reason why an army placement is not possible
          */
         private final String reason;
 
@@ -1000,10 +1070,12 @@ public final class RiskModel extends Observable {
             this.setAttackPhase(false);
         }
     }
+
     /**
-    * Getter of the log 
-    * @return log 
-    */
+     * Getter of the log
+     *
+     * @return log
+     */
     public String getLogContent() {
         return this.log.getContent();
     }

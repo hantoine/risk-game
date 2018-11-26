@@ -6,6 +6,7 @@
 package com.risk.models;
 
 import java.awt.Color;
+import java.io.Serializable;
 import static java.lang.Math.floor;
 import static java.lang.Math.max;
 import java.util.Collection;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
  *
  * @author n_irahol
  */
-public class PlayerModel extends Observable {
+public class PlayerModel extends Observable implements Serializable {
 
     /**
      * name the name of the player color the color of the player contriesOwned
@@ -35,15 +36,15 @@ public class PlayerModel extends Observable {
     /**
      * cardsOwned cards owned by a player
      */
-    public List<TerritoryModel> territoryOwned;
+     public List<TerritoryModel> territoryOwned;
     /**
      * continents owned by a player
      */
-    public List<ContinentModel> continentsOwned;
+     public List<ContinentModel> continentsOwned;
     /**
      * hand of the player
      */
-    private HandModel hand;
+     private HandModel hand;
     /**
      * The number of armies available to place returnedCards
      */
@@ -55,15 +56,15 @@ public class PlayerModel extends Observable {
     /**
      * the model of the game
      */
-    protected RiskModel game;
+     protected RiskModel game;
     /**
      * the current movement in the fortification phase
      */
-    private FortificationMove currentFortificationMove;
+     private FortificationMove currentFortificationMove;
     /**
      * The current attack in the attack phase
      */
-    private AttackMove currentAttack;
+     private AttackMove currentAttack;
     /**
      * the current player
      */
@@ -88,9 +89,8 @@ public class PlayerModel extends Observable {
      *
      * @param name name of a player
      * @param color color of a player
-     * @param game Game in which this player belongs
      */
-    public PlayerModel(String name, Color color, RiskModel game) {
+    public PlayerModel(String name, Color color) {
         this.name = name;
         this.color = color;
         this.territoryOwned = new LinkedList<>();
@@ -99,7 +99,6 @@ public class PlayerModel extends Observable {
         this.hand.setOwner(this);
         this.numArmiesAvailable = 0;
         this.returnedCards = 0;
-        this.game = game;
         this.currentAttack = null;
         this.currentPlayer = false;
     }

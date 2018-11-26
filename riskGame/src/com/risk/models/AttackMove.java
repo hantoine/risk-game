@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
 import static java.lang.Integer.min;
 import java.util.Arrays;
 import java.util.Observable;
@@ -14,7 +15,7 @@ import java.util.Observable;
  *
  * @author Nellybett
  */
-public class AttackMove extends Observable {
+public class AttackMove extends Observable implements Serializable {
 
     /**
      * Source of the attack
