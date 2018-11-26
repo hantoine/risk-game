@@ -104,7 +104,7 @@ public class AttackMove extends Observable implements Serializable {
      * @param diceAttack number of dices selected by the attacker
      * @param diceAttacked number of dices selected by the attacked
      */
-    private void battle(int diceAttack, int diceAttacked) {
+    public void battle(int diceAttack, int diceAttacked) {
         String looser1 = null, looser2 = null;
         
         int[] attack = createDice(diceAttack);
@@ -113,8 +113,6 @@ public class AttackMove extends Observable implements Serializable {
         Arrays.sort(attack);
         Arrays.sort(defense);
 
-        
-        
         if(diceAttack>= diceAttacked){
             if (diceAttacked == 1) {
                 looser1 = compareDice(attack, defense, attack.length - 1, 0);
@@ -127,7 +125,8 @@ public class AttackMove extends Observable implements Serializable {
             looser1 = compareDice(attack, defense, 0, 1);
         }
 
-        this.attacker.addNewLogEvent(getBattleLogMsg(looser1, looser2));
+        if(this.attacker.getGame()!=null)
+            this.attacker.addNewLogEvent(getBattleLogMsg(looser1, looser2));
     }
 
     /**

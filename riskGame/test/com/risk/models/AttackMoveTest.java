@@ -100,5 +100,37 @@ public class AttackMoveTest {
         assertTrue((result <= 6 && result > 0));
 
     }
-
+    
+    /**
+     * Test battle method
+     * One defense dice and two attack dice
+     */
+    public void testBattle(){
+        System.out.println("battle");
+        attack.getDest().setNumArmies(4);
+        attack.battle(2,1);
+        assertTrue(attack.getSource().getNumArmies()==6 || attack.getDest().getNumArmies()==3);
+    }
+    
+    /**
+     * Test battle method
+     * Two defense dice
+     */
+    public void testBattle1(){
+        System.out.println("battle");
+        attack.getDest().setNumArmies(4);
+        attack.battle(3,2);
+        assertTrue(attack.getSource().getNumArmies()==5 || attack.getDest().getNumArmies()==2);
+    }
+    
+    /**
+     * Test battle method
+     * Two defense dice one attack dice
+     */
+    public void testBattle2(){
+        System.out.println("battle");
+        attack.getDest().setNumArmies(4);
+        attack.battle(1,2);
+        assertTrue(attack.getSource().getNumArmies()==6 || attack.getDest().getNumArmies()==3);
+    }
 }

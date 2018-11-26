@@ -124,7 +124,6 @@ public class RandomStrategy implements Strategy {
         rm.finishPhase();
     }
 
-
     /**
      * Move armies after conquering a territory
      *
