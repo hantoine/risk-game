@@ -18,11 +18,11 @@ import org.junit.Test;
  *
  * @author hantoine
  */
-public class TournamentMenuModelTest {
+public class TournamentModelTest {
 
     TournamentModel instance;
 
-    public TournamentMenuModelTest() {
+    public TournamentModelTest() {
     }
 
     @Before
