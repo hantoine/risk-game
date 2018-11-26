@@ -76,7 +76,6 @@ public class AggressiveStrategy implements Strategy {
                 rm.continueAttack(numDice);
 
             } else {
-                System.out.println("SE ACABO EL ATAQUE AGRESIVO");
                 rm.executeAttack();
             }
         } else {

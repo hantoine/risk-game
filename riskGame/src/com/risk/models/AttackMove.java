@@ -211,16 +211,16 @@ public class AttackMove extends Observable {
             int defenseArmies;
 
             if (nbArmiesInSrc > 3) {
-                this.setNbDiceAttack(3);
+                attacker.setAttackValues(3);
                 defenseArmies = min(this.getDest().getNumArmies(), this.getNbDiceAttack());
                 defenseArmies = min(defenseArmies, 2);
-                this.setNbDiceDefense(defenseArmies);
+                attacker.setDefenseValues(defenseArmies);
                 battle(3, defenseArmies);
             } else {
-                this.setNbDiceAttack(nbArmiesInSrc - 1);
+                attacker.setAttackValues(nbArmiesInSrc - 1);
                 defenseArmies = min(this.getDest().getNumArmies(), this.getNbDiceAttack());
                 defenseArmies = min(defenseArmies, 2);
-                this.setNbDiceDefense(defenseArmies);
+                attacker.setDefenseValues(defenseArmies);
                 battle((nbArmiesInSrc - 1), defenseArmies);
             }
 

@@ -7,6 +7,8 @@ package com.risk.models;
 
 import com.risk.views.game.AttackView;
 import java.awt.Color;
+import static java.lang.Integer.max;
+import static java.lang.Integer.min;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -985,6 +987,7 @@ public final class RiskModel extends Observable {
 
             this.getCurrentPlayer().setAttackValues(nbDice);
             this.getCurrentPlayer().setDefenseValues(1);
+            
             this.performAttack(this.getCurrentPlayer());
 
             this.getCurrentPlayer().moveArmies();
