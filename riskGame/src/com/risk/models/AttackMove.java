@@ -103,39 +103,32 @@ public class AttackMove extends Observable implements Serializable {
      * @param diceAttacked number of dices selected by the attacked
      */
     public void battle(int diceAttack, int diceAttacked) {
-        String looser1 = null, looser2 = null;
-
         int[] attack = rollDices(diceAttack);
         int[] defense = rollDices(diceAttacked);
+        int nbDiceToCompare = min(diceAttack, diceAttacked);
+        String[] lossingTerrNames = new String[nbDiceToCompare];
 
         Arrays.sort(attack);
         Arrays.sort(defense);
-
-        if (diceAttack >= diceAttacked) {
-            if (diceAttacked == 1) {
-                looser1 = compareDice(attack[attack.length - 1], defense[0]);
-            } else {
-                looser1 = compareDice(attack[attack.length - 1], defense[1]);
-                looser2 = compareDice(attack[attack.length - 2], defense[0]);
-            }
-        }
-        if (diceAttack < diceAttacked && diceAttacked != 100) {
-            looser1 = compareDice(attack[0], defense[1]);
+        for (int i = 0; i < nbDiceToCompare; i++) {
+            lossingTerrNames[i] = compareDice(
+                    attack[attack.length - 1 - i],
+                    defense[defense.length - 1 - i]
+            );
         }
 
         if (this.attacker.getGame() != null) {
-            this.attacker.addNewLogEvent(getBattleLogMsg(looser1, looser2));
+            this.attacker.addNewLogEvent(getBattleLogMsg(lossingTerrNames));
         }
     }
 
     /**
      * this method is to get battle log message
      *
-     * @param firstLooser the first looser
-     * @param secondLooser the second looser
+     * @param loosers array of the names of territories loosing armies
      * @return the message
      */
-    private String getBattleLogMsg(String firstLooser, String secondLooser) {
+    private String getBattleLogMsg(String[] loosers) {
         String logMessage = String.format(
                 "%s launch battle between %s and %s",
                 this.attacker.getName(),
@@ -143,18 +136,18 @@ public class AttackMove extends Observable implements Serializable {
                 this.dest.getName()
         );
 
-        if (secondLooser == null) {
+        if (loosers.length == 1) {
             logMessage += String.format(
                     ", %s loose 1 army",
-                    firstLooser
+                    loosers[0]
             );
             return logMessage;
         }
 
-        if (firstLooser.equals(secondLooser)) {
+        if (loosers[0].equals(loosers[1])) {
             logMessage += String.format(
                     ", %s loose 2 armies",
-                    firstLooser
+                    loosers[0]
             );
 
         } else {
@@ -208,6 +201,7 @@ public class AttackMove extends Observable implements Serializable {
             int nbArmiesInSrc = this.getSource().getNumArmies();
             int defenseArmies;
 
+            //refactor possible here: nbArmiesInSrc = nbArmiesInSrc > 3 ? 4 : nbArmiesInSrc;
             if (nbArmiesInSrc > 3) {
                 attacker.setAttackValues(3);
                 defenseArmies = min(this.getDest().getNumArmies(), this.getNbDiceAttack());
