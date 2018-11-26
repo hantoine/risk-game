@@ -87,7 +87,7 @@ public final class RiskModel extends Observable {
         this.currentPlayer = this.players.getFirst();
         this.log = new LogModel();
         this.interPhaseTime = 300;
-        this.nbTurnBeforeDraw = 2 << 31;
+        this.nbTurnBeforeDraw = Integer.MAX_VALUE;
 
     }
 
@@ -385,8 +385,8 @@ public final class RiskModel extends Observable {
         }
     }
 
-    public void startupMove(TerritoryModel territoryClicked){
-        try{
+    public void startupMove(TerritoryModel territoryClicked) {
+        try {
             placeArmy(this.currentPlayer, territoryClicked);
             nextTurn();
             executeBeginningOfPhaseSteps();
@@ -397,7 +397,7 @@ public final class RiskModel extends Observable {
             addNewEvent(ex.getReason());
         }
     }
-    
+
     public void fortificationIntent(TerritoryModel source, TerritoryModel dest) {
 
         try {
@@ -423,7 +423,7 @@ public final class RiskModel extends Observable {
                     this.addNewEvent("You are already attacking.");
                     break;
                 case -3:
-                    System.out.println("LA CAGO ESTE GUEVON"+getCurrentPlayer().getName()+"FUENTE"+sourceTerritory.getOwner().getName()+"destino"+destTerritory.getOwner().getName());
+                    System.out.println("LA CAGO ESTE GUEVON" + getCurrentPlayer().getName() + "FUENTE" + sourceTerritory.getOwner().getName() + "destino" + destTerritory.getOwner().getName());
                     this.addNewEvent("Invalid movement");
                     break;
                 case -4:
@@ -443,7 +443,7 @@ public final class RiskModel extends Observable {
         this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
 
         System.out.println(this.nbTurnBeforeDraw);
-        if (this.nbTurnBeforeDraw != 2 << 31) { // 2 << 31 means no limit
+        if (this.nbTurnBeforeDraw != Integer.MAX_VALUE) { // 2 << 31 means no limit
             this.nbTurnBeforeDraw--;
         }
     }
@@ -639,12 +639,13 @@ public final class RiskModel extends Observable {
         this.currentPlayer.attack(this);
     }
 
-    public TerritoryModel randomTerritory(List<TerritoryModel> listTerritories){
-        
+    public TerritoryModel randomTerritory(List<TerritoryModel> listTerritories) {
+
         int range = listTerritories.size();
         return listTerritories.get((int) (Math.random() * range));
-        
+
     }
+
     /**
      * Final steps after finishing a phase
      */
