@@ -7,6 +7,8 @@ package com.risk.models;
 
 import com.risk.views.game.AttackView;
 import java.awt.Color;
+import static java.lang.Integer.max;
+import static java.lang.Integer.min;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -469,6 +471,7 @@ public final class RiskModel extends Observable implements Serializable {
      */
     public void attackIntent(TerritoryModel sourceTerritory, TerritoryModel destTerritory) {
         int result = getCurrentPlayer().validateAttack(sourceTerritory, destTerritory);
+
         if (result == 0) {
             attackMove(sourceTerritory, destTerritory);
         } else {
@@ -865,7 +868,7 @@ public final class RiskModel extends Observable implements Serializable {
     }
 
     /**
-     * Exception for fortification movement
+     * Exception for fortification movement 
      */
     public static class FortificationMoveImpossible extends Exception {
 
@@ -1054,6 +1057,7 @@ public final class RiskModel extends Observable implements Serializable {
 
             this.getCurrentPlayer().setAttackValues(nbDice);
             this.getCurrentPlayer().setDefenseValues(1);
+            
             this.performAttack(this.getCurrentPlayer());
 
             this.getCurrentPlayer().moveArmies();

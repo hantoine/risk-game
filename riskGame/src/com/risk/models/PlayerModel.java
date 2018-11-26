@@ -89,7 +89,6 @@ public class PlayerModel extends Observable implements Serializable {
      *
      * @param name name of a player
      * @param color color of a player
-     *
      */
     public PlayerModel(String name, Color color) {
         this.name = name;
@@ -701,6 +700,16 @@ public class PlayerModel extends Observable implements Serializable {
      * @param diceAttack number of dice for attack
      */
     public void setAttackValues(int diceAttack) {
+        
+        String diceStr=Integer.toString(diceAttack);
+        if(diceAttack==-1)
+            diceStr="Battle all";
+        
+        addNewLogEvent(String.format(
+                    "Attacker player %s selects %s dice to attack",
+                    this.getName(),
+                    diceStr
+            ));
         this.getCurrentAttack().setNbDiceAttack(diceAttack);
     }
 
@@ -709,6 +718,16 @@ public class PlayerModel extends Observable implements Serializable {
      * @param diceAttacked number of dice for defense
      */
     public void setDefenseValues(int diceAttacked) {
+        
+        String diceStr=Integer.toString(diceAttacked);
+        if(this.getCurrentAttack().getNbDiceAttack()==-1)
+            diceStr="Battle all";
+        
+        addNewLogEvent(String.format(
+                    "Attacked player %s selects %s dice as defense",
+                    this.getCurrentAttack().getDefensePlayer().getName(),
+                    diceStr
+            ));
         this.getCurrentAttack().setNbDiceDefense(diceAttacked);
     }
 
