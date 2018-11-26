@@ -5,12 +5,14 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
+
 /**
  * It represents a card in the game
  *
  * @author l_yixu
  */
-public class CardModel {
+public class CardModel implements Serializable {
 
     /**
      * territoryName There is as many cards as territories in the game

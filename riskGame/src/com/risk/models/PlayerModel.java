@@ -6,6 +6,7 @@
 package com.risk.models;
 
 import java.awt.Color;
+import java.io.Serializable;
 import static java.lang.Math.floor;
 import static java.lang.Math.max;
 import java.util.Collection;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
  *
  * @author n_irahol
  */
-public abstract class PlayerModel extends Observable {
+public class PlayerModel extends Observable implements Serializable {
 
     /**
      * name the name of the player color the color of the player contriesOwned
@@ -35,15 +36,15 @@ public abstract class PlayerModel extends Observable {
     /**
      * cardsOwned cards owned by a player
      */
-    public List<TerritoryModel> territoryOwned;
+     public List<TerritoryModel> territoryOwned;
     /**
      * continents owned by a player
      */
-    public List<ContinentModel> continentsOwned;
+     public List<ContinentModel> continentsOwned;
     /**
      * hand of the player
      */
-    private HandModel hand;
+     private HandModel hand;
     /**
      * The number of armies available to place returnedCards
      */
@@ -55,34 +56,42 @@ public abstract class PlayerModel extends Observable {
     /**
      * the model of the game
      */
-    protected RiskModel game;
+     protected RiskModel game;
     /**
      * the current movement in the fortification phase
      */
-    private FortificationMove currentFortificationMove;
+     private FortificationMove currentFortificationMove;
     /**
      * The current attack in the attack phase
      */
-    private AttackMove currentAttack;
+     private AttackMove currentAttack;
     /**
      * the current player
      */
     private boolean currentPlayer;
 
     /**
-     *
+     *If a player conquer a territory
      */
     private boolean conquered;
+
+    /**
+     * Strategy of the player
+     */
+    private Strategy strategy;
+    /**
+     *If a card exchange is offered
+     */
+    private boolean cardExchangeOffered;
 
     /**
      * Constructor
      *
      * @param name name of a player
      * @param color color of a player
-     * @param isHuman true if the player is human
-     * @param game Game in which this player belongs
+     *
      */
-    public PlayerModel(String name, Color color, boolean isHuman, RiskModel game) {
+    public PlayerModel(String name, Color color) {
         this.name = name;
         this.color = color;
         this.territoryOwned = new LinkedList<>();
@@ -91,7 +100,6 @@ public abstract class PlayerModel extends Observable {
         this.hand.setOwner(this);
         this.numArmiesAvailable = 0;
         this.returnedCards = 0;
-        this.game = game;
         this.currentAttack = null;
         this.currentPlayer = false;
     }
@@ -105,7 +113,26 @@ public abstract class PlayerModel extends Observable {
      * @param playGame GameController reference used to access game informations
      * and methods
      */
-    public abstract void reinforcement(RiskModel playGame);
+    public void reinforcement(RiskModel playGame) {
+        addNewLogEvent(String.format(
+                "%s starts its reinforcement phase",
+                getName()
+        ));
+        this.setCardExchangeOffered(false);
+        strategy.reinforcement(playGame);
+    }
+    
+    /**
+     * Startup movement
+     * @param playGame risk model 
+     */
+    public void startup(RiskModel playGame) {
+        addNewLogEvent(String.format(
+                "%s startup move",
+                getName()
+        ));
+        strategy.startup(playGame);
+    }
 
     /**
      * Definition of the fortification phase. Called at the beginning of the
@@ -116,18 +143,74 @@ public abstract class PlayerModel extends Observable {
      * @param playGame GameController reference used to access game informations
      * and methods
      */
-    public abstract void fortification(RiskModel playGame);
+    public void fortification(RiskModel playGame) {
+        addNewLogEvent(String.format(
+                "%s starts its fortification phase",
+                getName()
+        ));
+        strategy.fortification(playGame);
+    }
 
     /**
-     * Definition of the attack phase. Called at the beginning of the phase.
-     * Depending on the type of player it will either initialize and update the
-     * UI for the human player to play or execute the action with the artificial
-     * intelligence
-     *
      * @param playGame GameController reference used to access game informations
      * and methods
      */
-    public abstract void attack(RiskModel playGame);
+    public void attack(RiskModel playGame) {
+        strategy.attack(playGame);
+    }
+
+    /**
+     * @return the strategy
+     */
+    public Strategy getStrategy() {
+        return strategy;
+    }
+
+    /**
+     * Getter of the cardExchageOffered attribute
+     * @return cardExchangeOffered attribute
+     */
+    public boolean isCardExchangeOffered() {
+        return cardExchangeOffered;
+    }
+
+    /**
+     * Setter of the cardExchangeOffered attribute
+     * @param cardExchangeOffered boolean that determines if exchange was offered
+     */
+    public void setCardExchangeOffered(boolean cardExchangeOffered) {
+        this.cardExchangeOffered = cardExchangeOffered;
+    }
+
+    /**
+     * Setter of the strategy
+     * @param strategy the strategy to set
+     */
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    /**
+     * Exchange cards according strategy
+     * @return true if it is success
+     */
+    boolean exchangeCardsToArmies() {
+        return strategy.exchangeCardsToArmies(this.game);
+    }
+
+    /**
+     * Defense according to strategy
+     */
+    public void defense() {
+        strategy.defense(this.game);
+    }
+
+    /**
+     * Move armies according to strategy
+     */
+    public void moveArmies() {
+        strategy.moveArmies(this.game);
+    }
 
     /**
      * Getter of the name attribute
@@ -172,7 +255,7 @@ public abstract class PlayerModel extends Observable {
             addNewLogEvent(String.format(
                     "%s starts its turn",
                     getName()
-            ));
+            ), true);
         } else {
             setChanged();
             notifyObservers();
@@ -200,7 +283,7 @@ public abstract class PlayerModel extends Observable {
     /**
      * This method is for set the game
      *
-     * @param game the game which is gonna be setted
+     * @param game the game which is gonna be setter
      */
     void setGame(RiskModel game) {
         this.game = game;
@@ -536,8 +619,6 @@ public abstract class PlayerModel extends Observable {
      *
      * @return true if the cards are equal or different; false in other case
      */
-    abstract boolean exchangeCardsToArmies();
-
     /**
      * Adds a card to the player's hand from the deck
      */
@@ -580,6 +661,7 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
+     * Getter of the handed attribute
      * @return the handed
      */
     public boolean isHanded() {
@@ -587,6 +669,7 @@ public abstract class PlayerModel extends Observable {
     }
 
     /**
+     * Setter of handed attribute
      * @param handed the handed to set
      */
     public void setHanded(boolean handed) {
@@ -611,6 +694,22 @@ public abstract class PlayerModel extends Observable {
 
         setChanged();
         notifyObservers();
+    }
+
+    /**
+     * Set the dice number in attack movement
+     * @param diceAttack number of dice for attack
+     */
+    public void setAttackValues(int diceAttack) {
+        this.getCurrentAttack().setNbDiceAttack(diceAttack);
+    }
+
+    /**
+     * Set the dice number in defense movement
+     * @param diceAttacked number of dice for defense
+     */
+    public void setDefenseValues(int diceAttacked) {
+        this.getCurrentAttack().setNbDiceDefense(diceAttacked);
     }
 
     /**
@@ -785,8 +884,7 @@ public abstract class PlayerModel extends Observable {
      * @param clear true if this event should clear previous log messages
      */
     protected void addNewLogEvent(String logMessage, boolean clear) {
-        setChanged();
-        notifyObservers(new LogEvent(logMessage, clear));
+        this.getGame().addNewLogEvent(logMessage, clear);
     }
 
     /**
@@ -798,5 +896,77 @@ public abstract class PlayerModel extends Observable {
         killedPlayer.getHand().getCards().forEach((c) -> {
             this.getHand().addCardToPlayerHand(c);
         });
+    }
+
+    /**
+     * Exchange selected cards
+     *
+     * @return true success; false error
+     */
+    public boolean exchangeCardsToArmiesHuman() {
+        List<String> selectedCards = this.getHand().getSelectedCards();
+        LinkedList<String> typeOfArmie = new LinkedList<>();
+        this.getHand().getCards().stream()
+                .filter(c -> selectedCards.contains(c.getTerritoryName()))
+                .forEach(cs -> typeOfArmie.add(cs.getTypeOfArmie()));
+
+        boolean areEqual = typeOfArmie.stream()
+                .allMatch(a -> a.equals(typeOfArmie.getFirst()));
+        boolean different = !(typeOfArmie.get(0).equals(typeOfArmie.get(1))) && !(typeOfArmie.get(0).equals(typeOfArmie.get(2))) && !(typeOfArmie.get(2).equals(typeOfArmie.get(1)));
+
+        if (areEqual || different) {
+            this.setHanded(true);
+            this.getHand().removeCards(selectedCards, this.game.getDeck());
+            armiesCardAssignation();
+            this.setChanged();
+            this.notifyObservers(this.game);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
+     * Move armies for conquering a territory
+     */
+    public void moveArmiesAI() {
+        if (this.getCurrentAttack() != null) {
+            if (this.getCurrentAttack().getDest().getNumArmies() == 0) {
+                int diceAttack = this.getCurrentAttack().getNbDiceAttack();
+                this.game.moveArmiesToConqueredTerritory(diceAttack);
+            }
+        }
+    }
+    
+    /**
+     * Defense movement for computer players
+     */
+    public void defenseAI() {
+        this.game.getCurrentPlayer().setDefenseValues(2);
+        this.game.performAttack(this.game.getCurrentPlayer());
+        this.game.getCurrentPlayer().moveArmies();
+        this.game.setAttackPhase(true);
+        this.game.executeAttack();
+    }
+
+    /**
+     * Card exchange for computer players
+     * @return true success
+     */
+    public boolean exchangeCardsToArmiesAI() {
+        int[] cardDuplicates = this.getHand().getCardDuplicates();
+
+        if (cardDuplicates[0] >= 3) {
+            this.getHand().removeCards("infantry", this.game.getDeck());
+        } else if (cardDuplicates[1] >= 3) {
+            this.getHand().removeCards("cavalry", this.game.getDeck());
+        } else if (cardDuplicates[2] >= 3) {
+            this.getHand().removeCards("artillery", this.game.getDeck());
+        } else {
+            this.getHand().removeCards("different", this.game.getDeck());
+        }
+        armiesCardAssignation();
+        return true;
     }
 }

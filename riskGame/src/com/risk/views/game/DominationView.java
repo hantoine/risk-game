@@ -36,7 +36,8 @@ public class DominationView extends JPanel implements Observer {
 
     /**
      * This method is for update the view
-     * @param rm  the risk model
+     *
+     * @param rm the risk model
      */
     public void updateView(RiskModel rm) {
         rm.getPlayerList().stream().forEach((pl) -> {
@@ -58,10 +59,14 @@ public class DominationView extends JPanel implements Observer {
             this.remove(playerGameInfoPanels.get(pl));
             playerGameInfoPanels.remove(pl);
         });
+
+        this.revalidate();
+        this.repaint();
     }
 
     /**
      * This method is for update the view
+     *
      * @param o Observable
      * @param o1 Object
      */

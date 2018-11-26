@@ -133,7 +133,7 @@ public class RiskModelTest {
      */
     @Test
     public void testInitializePlayersArmies4() {
-        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow);
         riskModel.initializePlayersArmies();
 
         assertTrue(riskModel.getPlayerList().stream()
@@ -145,8 +145,8 @@ public class RiskModelTest {
      */
     @Test
     public void testInitializePlayersArmies5() {
-        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
-        riskModel.addPlayerToPlayerList("player 5", Color.black, true);
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow);
+        riskModel.addPlayerToPlayerList("player 5", Color.black);
         riskModel.initializePlayersArmies();
 
         assertTrue(riskModel.getPlayerList().stream()
@@ -158,9 +158,9 @@ public class RiskModelTest {
      */
     @Test
     public void testInitializePlayersArmies6() {
-        riskModel.addPlayerToPlayerList("player 4", Color.yellow, true);
-        riskModel.addPlayerToPlayerList("player 5", Color.black, true);
-        riskModel.addPlayerToPlayerList("player 6", Color.ORANGE, true);
+        riskModel.addPlayerToPlayerList("player 4", Color.yellow);
+        riskModel.addPlayerToPlayerList("player 5", Color.black);
+        riskModel.addPlayerToPlayerList("player 6", Color.ORANGE);
         riskModel.initializePlayersArmies();
 
         assertTrue(riskModel.getPlayerList().stream()
@@ -323,7 +323,7 @@ public class RiskModelTest {
                         (t) -> (t.getOwner() != null)
                 )
         );
-        assertEquals("The game starts", dummyObserver.getMessage());
+        assertEquals("Player 1 startup move", dummyObserver.getMessage());
         assertTrue(riskModel.getCurrentPlayer().isCurrentPlayer());
         riskModel.getPlayerList().forEach((p) -> {
             assertEquals(
@@ -332,18 +332,6 @@ public class RiskModelTest {
             );
         }
         );
-    }
-
-    /**
-     * Test finish phase to check that the end of game is detected
-     */
-    public void testFinishPhaseEndOfGame() {
-        riskModel.removePlayer(0);
-        riskModel.removePlayer(0);
-
-        boolean res = riskModel.finishPhase();
-
-        assertEquals(false, res);
     }
 
     /**
@@ -396,8 +384,9 @@ public class RiskModelTest {
 
         @Override
         public void update(Observable o, Object o1) {
-            if (o1 instanceof LogEvent) {
-                message = ((LogEvent) o1).toString();
+            if (o instanceof RiskModel) {
+                RiskModel rm = (RiskModel) o;
+                message = rm.getLogContent();
             }
         }
 

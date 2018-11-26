@@ -10,7 +10,7 @@ package com.risk.models;
  *
  * @author hantoine
  */
-public class LogEvent {
+public class LogEvent  {
 
     /**
      * The message

@@ -5,8 +5,9 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.AttackMove;
 import com.risk.models.GamePhase;
+import com.risk.models.HandModel;
+import com.risk.models.HumanStrategy;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
@@ -14,6 +15,8 @@ import com.risk.views.game.AttackView;
 import com.risk.views.game.CardExchangeView;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * It represents the game process. It contains all methods corresponding to the
@@ -21,7 +24,7 @@ import java.awt.Toolkit;
  *
  * @author Nellybett
  */
-public class GameController {
+public class GameController implements Observer {
 
     /**
      * modelRisk It is an attribute that represents a reference to the model
@@ -32,7 +35,7 @@ public class GameController {
      */
     private CardExchangeView exchangeView;
     /**
-     *
+     * Card exchange listener
      */
     private CardExchangeListener cardExchangeListener;
 
@@ -43,6 +46,7 @@ public class GameController {
      */
     public GameController(RiskModel riskModel) {
         this.rm = riskModel;
+        this.rm.addObserver(this);
     }
 
     /**
@@ -58,25 +62,10 @@ public class GameController {
 
         switch (this.rm.getPhase()) {
             case STARTUP:
-                try {
-                    this.rm.placeArmy(currentPlayer, territoryClicked);
-                    this.rm.nextTurn();
-                    if (currentPlayer.getNbArmiesAvailable() == 0 && rm.getTurn() == 0) {
-                        this.rm.finishPhase();
-                    }
-                } catch (RiskModel.ArmyPlacementImpossible ex) {
-                    this.rm.addNewEvent(ex.getReason());
-                }
+                rm.startupMove(territoryClicked);
                 break;
             case REINFORCEMENT:
-                try {
-                    this.rm.placeArmy(currentPlayer, territoryClicked);
-                    if (currentPlayer.getNbArmiesAvailable() == 0) {
-                        this.rm.finishPhase();
-                    }
-                } catch (RiskModel.ArmyPlacementImpossible ex) {
-                    this.rm.addNewEvent(ex.getReason());
-                }
+                rm.reinforcementIntent(territoryClicked);
                 break;
         }
     }
@@ -97,48 +86,13 @@ public class GameController {
 
         switch (this.rm.getPhase()) {
             case FORTIFICATION:
-                try {
-                    this.rm.tryFortificationMove(sourceTerritory, destTerritory);
-                } catch (RiskModel.FortificationMoveImpossible ex) {
-                    if (ex.getReason() != null) {
-                        this.rm.addNewEvent(ex.getReason());
-                    }
-                }
+                rm.fortificationIntent(sourceTerritory, destTerritory);
                 break;
             case ATTACK:
-                int result = rm.getCurrentPlayer().validateAttack(sourceTerritory, destTerritory);
-                if (result == 0) {
-                    this.rm.attackMove(sourceTerritory, destTerritory);
-                } else {
-                    exceptionManagerAttack(result);
-                }
+                rm.attackIntent(sourceTerritory, destTerritory);
                 break;
         }
 
-    }
-
-    /**
-     * Function that shows errors from an attack
-     *
-     * @param e event to manage
-     */
-    public void exceptionManagerAttack(int e) {
-        switch (e) {
-            case -1:
-                this.rm.addNewEvent("The territory is not adjacent.");
-                break;
-            case -2:
-                this.rm.addNewEvent("You are already attacking.");
-                break;
-            case -3:
-                this.rm.addNewEvent("Invalid movement");
-                break;
-            case -4:
-                this.rm.addNewEvent("You can't attack with only one armie");
-                break;
-            default:
-                break;
-        }
     }
 
     /**
@@ -147,24 +101,22 @@ public class GameController {
      * @param nbDice the number of dices
      */
     public void clickAttack(int nbDice) {
-        AttackMove attackMove = rm.getCurrentPlayer().getCurrentAttack();
+        this.rm.continueAttack(nbDice);
+    }
 
-        if (attackMove.getNbDiceAttack() != -1
-                || nbDice == -1
-                || attackMove.getDest().getNumArmies() == 1) {
+    /**
+     * Defense movement
+     * @param nbDice number of dice selected
+     */
+    public void clickDefense(int nbDice) {
+        rm.getCurrentPlayer().setDefenseValues(nbDice);
+        rm.performAttack(this.rm.getCurrentPlayer());
 
-            if (attackMove.getNbDiceAttack() != -1) {
-                attackMove.setNbDiceDefense(nbDice);
-            } else {
-                attackMove.setNbDiceAttack(nbDice);
-                attackMove.setNbDiceDefense(1);
-            }
-            rm.performAttack(this.rm.getCurrentPlayer());
-        } else {
-            attackMove.setNbDiceAttack(nbDice);
-            attackMove.setChoiceNbDefenseDiceNeeded(true);
+        rm.getCurrentPlayer().moveArmies();
+        rm.setAttackPhase(true);
+        if (rm.getPhase() == GamePhase.ATTACK) {
+            rm.executeAttack();
         }
-
     }
 
     /**
@@ -184,24 +136,29 @@ public class GameController {
      */
     public void endPhaseButtonPressed() {
         this.rm.finishPhase();
-        if (this.rm.getPhase() == GamePhase.REINFORCEMENT
-                && this.rm.getCurrentPlayer().getHand().cardHandingPossible()) {
-            openCardExchangeView();
-        }
     }
 
     /**
      * Destroy card exchange view
      */
-    void closeCardExchangeView() {
-        this.exchangeView.setVisible(false);
-        this.exchangeView = null;
+    public void closeCardExchangeView() {
+        HandModel hand = rm.getCurrentPlayer().getHand();
+        if (this.exchangeView != null) {
+            this.exchangeView.setVisible(false);
+            this.exchangeView = null;
+            hand.unselectAllCards();
+            rm.getCurrentPlayer().setHanded(false);
+        }
+
     }
 
     /**
      * Shows and creates a card exchange view
      */
     void openCardExchangeView() {
+        if (this.exchangeView != null) {
+            return;
+        }
         this.exchangeView = new CardExchangeView();
         this.exchangeView.updateView(this.rm.getCurrentPlayer().getHand());
         this.exchangeView.observe(rm);
@@ -217,10 +174,26 @@ public class GameController {
 
     /**
      * This method is for add the observer
+     *
      * @param attackView the view which is added to observer
      */
     public void addObserverToAttack(AttackView attackView) {
 
         rm.addObserverToAttack(attackView);
+    }
+    /**
+    * Observe the risk model 
+    * @param o observable
+    * @param o1 parameters
+    */
+    @Override
+    public void update(Observable o, Object o1) {
+        PlayerModel currentPlayer = this.rm.getCurrentPlayer();
+        if (this.rm.getPhase() == GamePhase.REINFORCEMENT
+                && currentPlayer.getHand().cardHandingPossible()
+                && currentPlayer.getStrategy() instanceof HumanStrategy
+                && !currentPlayer.isCardExchangeOffered()) {
+            openCardExchangeView();
+        }
     }
 }

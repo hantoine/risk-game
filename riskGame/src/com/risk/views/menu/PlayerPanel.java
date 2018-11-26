@@ -6,6 +6,7 @@
 package com.risk.views.menu;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -32,6 +33,8 @@ public class PlayerPanel extends JPanel {
      * delButton the button to delete a player from the menu
      */
     private DeletableButton delButton;
+    
+    private JComboBox playerType;
 
     public PlayerPanel() {
         setSize(200, 500);
@@ -109,4 +112,19 @@ public class PlayerPanel extends JPanel {
         this.delButton = delButton;
     }
 
+    /**
+     * @return the playerType
+     */
+    public JComboBox getPlayerType() {
+        return playerType;
+    }
+
+    /**
+     * @param playerType the playerType to set
+     */
+    public void setPlayerType(JComboBox playerType) {
+        this.playerType = playerType;
+    }
+
+    
 }

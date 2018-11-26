@@ -5,9 +5,9 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.HumanPlayerModel;
 import com.risk.models.MapFileManagement;
 import com.risk.models.MapModel;
+import com.risk.models.PlayerFactory;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
@@ -80,30 +81,36 @@ public class MenuListener extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         JComponent c = (JComponent) e.getSource();
-        JButton addPlayer = (JButton) c;
-        switch (addPlayer.getText()) {
-            case "+":
-                this.getPlayerList().addElement(this.getPlayerList().getNewPlayerName(), this.getPlayerList().getNewColor());
-                break;
-            case "-":
-                minusButton(addPlayer);
-                break;
-            case "    ":
-                Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
-                if (this.getPlayerList().getColorUsed().contains(selectedColor)) {
-                    this.getRiskView().showMessage("This color is already used");
-                } else {
-                    this.getPlayerList().getColorUsed().remove(addPlayer.getBackground());
-                    this.getPlayerList().getColorUsed().add(selectedColor);
-                    addPlayer.setBackground(selectedColor);
+        if (c instanceof JButton) {
+            JButton addPlayer = (JButton) c;
+            switch (addPlayer.getText()) {
+                case "+":
+                    this.getPlayerList().addElement(this.getPlayerList().getNewPlayerName(), this.getPlayerList().getNewColor());
+                    break;
+                case "-":
+                    minusButton(addPlayer);
+                    break;
+                case "    ":
+                    Color selectedColor = JColorChooser.showDialog(null, "Choose a color", Color.RED);
+                    if (this.getPlayerList().getColorUsed().contains(selectedColor)) {
+                        this.getRiskView().showMessage("This color is already used");
+                    } else {
+                        this.getPlayerList().getColorUsed().remove(addPlayer.getBackground());
+                        this.getPlayerList().getColorUsed().add(selectedColor);
+                        addPlayer.setBackground(selectedColor);
 
-                }
-                break;
-            case "PLAY":
-                playButton();
-                break;
-            default:
-                break;
+                    }
+                    break;
+                case "PLAY":
+                    playButton();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            JComboBox typeOfPlayer = (JComboBox) c;
+            String playerType = (String) typeOfPlayer.getSelectedItem();
+            typeOfPlayer.setSelectedItem(playerType);
         }
     }
 
@@ -162,10 +169,9 @@ public class MenuListener extends MouseAdapter {
         LinkedList<PlayerModel> listPlayers = new LinkedList<>();
         for (int i = 0; i < listPlayerPanels.size(); i++) {
             PlayerPanel player = listPlayerPanels.get(i);
-            PlayerModel playerGame = new HumanPlayerModel(
+            PlayerModel playerGame = PlayerFactory.getPlayer((String) player.getPlayerType().getSelectedItem(),
                     player.getPlayerNameTextField().getText(),
-                    player.getColorButton().getBackground(),
-                    this.getRiskModel()
+                    player.getColorButton().getBackground()
             );
             listPlayers.add(playerGame);
 

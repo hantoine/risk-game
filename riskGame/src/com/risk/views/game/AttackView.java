@@ -7,6 +7,7 @@ package com.risk.views.game;
 
 import com.risk.controllers.GameController;
 import com.risk.models.AttackMove;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JButton;
@@ -18,7 +19,7 @@ import javax.swing.JPanel;
  *
  * @author Nellybett
  */
-public class AttackView extends JPanel implements Observer {
+public class AttackView extends JPanel {
 
     /**
      * Panel with the different buttons
@@ -93,46 +94,32 @@ public class AttackView extends JPanel implements Observer {
      */
     public void setListeners(GameController gc) {
 
+        
+        //remove old listeners      
+        Arrays.stream(options).forEach((o) -> {
+            Arrays.stream(o.getActionListeners()).forEach((a)->{
+                o.removeActionListener(a);
+            });
+        });
+
+        
         options[0].addActionListener(e -> {
-            gc.addObserverToAttack(this);
             gc.clickAttack(1);
         });
 
         options[1].addActionListener(e -> {
-            gc.addObserverToAttack(this);
             gc.clickAttack(2);
 
         });
 
         options[2].addActionListener(e -> {
-            gc.addObserverToAttack(this);
             gc.clickAttack(3);
 
         });
 
         options[3].addActionListener(e -> {
             gc.clickAttack(-1);
-
         });
     }
 
-    /**
-     * This method is for set the observer
-     *
-     * @param o Observable
-     * @param arg Object
-     */
-    @Override
-    public void update(Observable o, Object arg) {
-        AttackMove attack = (AttackMove) o;
-        if (attack.getChoiceNbDefenseDiceNeeded() == true) {
-            int armiesDest = attack.getDest().getNumArmies();
-            int attackDice = attack.getNbDiceAttack();
-
-            options[3].setVisible(false);
-            options[2].setVisible(false);
-            options[1].setEnabled(armiesDest > 1);
-            actionSubject.setText("Attacked");
-        }
-    }
 }

@@ -5,15 +5,15 @@
  */
 package com.risk.views.menu;
 
-import com.risk.controllers.MenuListener;
 import com.risk.models.PlayerModel;
-import com.risk.models.RiskModel;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -63,18 +63,16 @@ public class PlayerListPanel extends JPanel {
     /**
      * menuListener a reference to the controller that manages the events
      */
-    MenuListener menuListener;
+    MouseAdapter menuListener;
+    JButton addPlayerButton;
 
     /**
      * Constructor
      *
-     * @param riskModel model
-     * @param menuAction mouse action listener for the menu
      */
-    public PlayerListPanel(RiskModel riskModel, MenuListener menuAction) {
+    public PlayerListPanel() {
         //setup PlayersPanel panel
         this.playersArray = new LinkedList<>();
-        this.menuListener = menuAction;
         this.setSize(400, 300);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -82,24 +80,22 @@ public class PlayerListPanel extends JPanel {
 
         this.nbBots = 0;
         this.uniqueID = 1;
-        this.maxNbPlayers = riskModel.getMaxNumberOfPlayers();
-        this.colorUsed = new LinkedList<Color>();
+        this.colorUsed = new LinkedList<>();
 
-        menuAction.setPlayerList(this);
-        JButton addPlayerButton = new JButton("+");
+        this.addPlayerButton = new JButton("+");
 
         BoxLayout layout = new BoxLayout(addPlayerPanel, BoxLayout.X_AXIS);
         addPlayerPanel.setLayout(layout);
         this.addPlayerPanel.add(addPlayerButton);
-        addPlayerButton.addMouseListener(menuAction);
-
-        //initialize players list
-        List<PlayerModel> playerList = riskModel.getPlayerList();
 
         //add content to panel
         this.add(addPlayerPanel);
-        this.initializePlayers(playerList);
         this.setBackground(Color.white);
+    }
+
+    public void setMouseListener(MouseAdapter listener) {
+        addPlayerButton.addMouseListener(listener);
+        this.menuListener = listener;
     }
 
     /**
@@ -114,6 +110,10 @@ public class PlayerListPanel extends JPanel {
             this.addElement(player.getName(), aux);
 
         }
+    }
+
+    public void setMaxNbPlayers(int maxNbPlayers) {
+        this.maxNbPlayers = maxNbPlayers;
     }
 
     /**
@@ -206,6 +206,14 @@ public class PlayerListPanel extends JPanel {
         newPlayer.getDelButton().addMouseListener(this.menuListener);
         newPlayer.add(newPlayer.getDelButton());
         this.getPlayersArray().add(newPlayer);
+
+        //JComboBox
+        String[] listPlayersType = {"HUMAN", "AGGRESSIVE", "CHEATER", "BENEVOLENT", "RANDOM"};
+        JComboBox typePlayer = new JComboBox(listPlayersType);
+        typePlayer.setSelectedIndex(0);
+        typePlayer.addMouseListener(this.menuListener);
+        newPlayer.setPlayerType(typePlayer);
+        newPlayer.add(typePlayer);
 
         this.add(newPlayer);
 
