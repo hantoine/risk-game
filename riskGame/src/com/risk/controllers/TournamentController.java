@@ -9,11 +9,16 @@ import com.risk.models.MapFileManagement;
 import com.risk.models.MapPath;
 import com.risk.models.Strategy;
 import com.risk.models.TournamentModel;
+import com.risk.views.LogViewer;
 import com.risk.views.TournamentResultsView;
 import com.risk.views.menu.MapPathListPanel.MapPathListPanelListener;
 import com.risk.views.menu.StrategyListPanel.StrategyListPanelListener;
 import com.risk.views.menu.TournamentMenuView;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import javax.swing.Timer;
 
 /**
@@ -66,6 +71,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
             trv = new TournamentResultsView(tm);
             tmv.setVisible(false);
             tmv.dispose();
+            trv.setController(this);
         } else {
             Timer timer = new Timer(300, (ActionEvent ae) -> {
                 this.checkTournamentFinished();
@@ -81,6 +87,23 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
 
     public void nbGamePerMapChanged(int value) {
         tm.setNbGamePerMap(value);
+    }
+
+    public void clickResultCell(int i, int j) {
+        if (i == 0 || j == 0) {
+            return;
+        }
+        //create view from file
+
+        List<String> logs;
+        try {
+            logs = Files.readAllLines(
+                    Paths.get("logs", tm.getLogFile(j - 1, i - 1))
+            );
+            LogViewer lv = new LogViewer(logs);
+        } catch (IOException ex) {
+            this.tmv.showError("Failed to open log file");
+        }
     }
 
 }

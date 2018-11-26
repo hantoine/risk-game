@@ -5,6 +5,7 @@
  */
 package com.risk.controllers;
 
+import com.risk.models.LogWriter;
 import com.risk.models.HumanStrategy;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
@@ -27,11 +28,8 @@ import javax.imageio.ImageIO;
 public final class RiskController {
 
     /**
-     * viewRisk it is a reference to the view of the game
-     *
-     *
-     *
-     * mapEditorView the reference to the map editor
+     * viewRisk it is a reference to the view of the game mapEditorView the
+     * reference to the map editor
      */
     private RiskView viewRisk;
     /**
@@ -75,7 +73,6 @@ public final class RiskController {
 
     /**
      * Display the NewGame Menu Called when user press on New Game MenuItem.
-     *
      */
     public void newGameMenuItemPressed() {
         this.modelRisk.reset();
@@ -87,6 +84,9 @@ public final class RiskController {
      * after setting the players and board information
      */
     void playGame() {
+        LogWriter newLogWriter = new LogWriter();
+        this.modelRisk.setLogWriter(newLogWriter);
+        newLogWriter.openFile();
         this.viewRisk.observeModel(modelRisk);
         this.modelRisk.startGame();
     }
