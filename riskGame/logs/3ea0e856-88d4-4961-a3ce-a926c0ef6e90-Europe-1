@@ -1,0 +1,270 @@
+Territories are assigned randomly to players
+Players receive 30 armies each
+The game starts
+AGGRESSIVE starts its turn
+AGGRESSIVE startup move
+AGGRESSIVE place one army on territory Sicily
+BENEVOLENT starts its turn
+AGGRESSIVE place one army on territory Ireland
+AGGRESSIVE place one army on territory Belarus
+AGGRESSIVE place one army on territory Romania
+AGGRESSIVE place one army on territory Ireland
+AGGRESSIVE place one army on territory Belarus
+AGGRESSIVE place one army on territory Southern Finland
+AGGRESSIVE place one army on territory Romania
+AGGRESSIVE place one army on territory Corsica
+AGGRESSIVE place one army on territory West Germany
+AGGRESSIVE place one army on territory West Germany
+AGGRESSIVE place one army on territory Belarus
+AGGRESSIVE place one army on territory Ukraine
+AGGRESSIVE place one army on territory Ireland
+AGGRESSIVE place one army on territory West Germany
+AGGRESSIVE place one army on territory West Germany
+AGGRESSIVE place one army on territory Ireland
+AGGRESSIVE place one army on territory Corsica
+AGGRESSIVE place one army on territory Sicily
+AGGRESSIVE place one army on territory Northern Finland
+AGGRESSIVE place one army on territory Ukraine
+AGGRESSIVE place one army on territory Southern Finland
+AGGRESSIVE place one army on territory Corsica
+AGGRESSIVE place one army on territory Ukraine
+AGGRESSIVE place one army on territory Ukraine
+AGGRESSIVE place one army on territory Belarus
+AGGRESSIVE place one army on territory Southern Finland
+AGGRESSIVE place one army on territory Ukraine
+AGGRESSIVE place one army on territory Turkey
+AGGRESSIVE place one army on territory Ireland
+BENEVOLENT place one army on territory Albania
+BENEVOLENT place one army on territory Albania
+BENEVOLENT place one army on territory Sardinia
+BENEVOLENT place one army on territory Switzerland
+BENEVOLENT place one army on territory Slovakia
+BENEVOLENT place one army on territory Sardinia
+BENEVOLENT place one army on territory Greece
+BENEVOLENT place one army on territory Albania
+BENEVOLENT place one army on territory Southern Sweden
+BENEVOLENT place one army on territory Northern Sweden
+BENEVOLENT place one army on territory Switzerland
+BENEVOLENT place one army on territory Southern Sweden
+BENEVOLENT place one army on territory Slovakia
+BENEVOLENT place one army on territory Switzerland
+BENEVOLENT place one army on territory Southern Italy
+BENEVOLENT place one army on territory Switzerland
+BENEVOLENT place one army on territory Northern Italy
+BENEVOLENT place one army on territory Albania
+BENEVOLENT place one army on territory Northern Sweden
+BENEVOLENT place one army on territory Macedonia
+BENEVOLENT place one army on territory Albania
+BENEVOLENT place one army on territory Albania
+BENEVOLENT place one army on territory Southern Sweden
+BENEVOLENT place one army on territory Albania
+BENEVOLENT place one army on territory Slovakia
+BENEVOLENT place one army on territory Southern Spain
+BENEVOLENT place one army on territory Greece
+BENEVOLENT place one army on territory Slovakia
+BENEVOLENT place one army on territory Macedonia
+BENEVOLENT place one army on territory Northern England
+RANDOM place one army on territory Latvia
+RANDOM place one army on territory Western France
+RANDOM place one army on territory Moldova
+RANDOM place one army on territory Lithuania
+RANDOM place one army on territory Western France
+RANDOM place one army on territory Lithuania
+RANDOM place one army on territory Poland
+RANDOM place one army on territory Wales
+RANDOM place one army on territory Latvia
+RANDOM place one army on territory Moldova
+RANDOM place one army on territory Poland
+RANDOM place one army on territory Estonia
+RANDOM place one army on territory Czech Republic
+RANDOM place one army on territory Norway
+RANDOM place one army on territory Czech Republic
+RANDOM place one army on territory Lithuania
+RANDOM place one army on territory Wales
+RANDOM place one army on territory Scotland
+RANDOM place one army on territory Slovenia
+RANDOM place one army on territory Estonia
+RANDOM place one army on territory Latvia
+RANDOM place one army on territory Latvia
+RANDOM place one army on territory Estonia
+RANDOM place one army on territory Portugal
+RANDOM place one army on territory Norway
+RANDOM place one army on territory Poland
+RANDOM place one army on territory Norway
+RANDOM place one army on territory Lithuania
+RANDOM place one army on territory Czech Republic
+RANDOM place one army on territory Moldova
+CHEATER place one army on territory Eastern France
+CHEATER place one army on territory Bosnia
+CHEATER place one army on territory Yugoslavia
+CHEATER place one army on territory Eastern France
+CHEATER place one army on territory Northern Ireland
+CHEATER place one army on territory Belgium
+CHEATER place one army on territory Denmark
+CHEATER place one army on territory Southern Russia
+CHEATER place one army on territory Eastern France
+CHEATER place one army on territory Austria
+CHEATER place one army on territory Northern Ireland
+CHEATER place one army on territory Belgium
+CHEATER place one army on territory Belgium
+CHEATER place one army on territory Bosnia
+CHEATER place one army on territory Eastern France
+CHEATER place one army on territory Northern Russia
+CHEATER place one army on territory Northern Spain
+CHEATER place one army on territory Croatia
+CHEATER place one army on territory Southern Russia
+CHEATER place one army on territory Belgium
+CHEATER place one army on territory Eastern France
+CHEATER place one army on territory Denmark
+CHEATER place one army on territory Denmark
+CHEATER place one army on territory Northern Ireland
+CHEATER place one army on territory Yugoslavia
+CHEATER place one army on territory East Germany
+CHEATER place one army on territory Denmark
+CHEATER place one army on territory Northern Russia
+CHEATER place one army on territory Yugoslavia
+CHEATER place one army on territory Southern Russia
+BENEVOLENT starts its reinforcement phase
+BENEVOLENT receives 4 new armies
+BENEVOLENT place one army on territory Netherlands
+BENEVOLENT place one army on territory Netherlands
+BENEVOLENT place one army on territory Northern England
+BENEVOLENT place one army on territory Southern Italy
+BENEVOLENT starts its attack phase
+BENEVOLENT starts its fortification phase
+BENEVOLENT moves one army from territory Switzerland to territory Northern Italy
+BENEVOLENT moves one army from territory Switzerland to territory Northern Italy
+BENEVOLENT moves one army from territory Switzerland to territory Northern Italy
+BENEVOLENT moves one army from territory Switzerland to territory Northern Italy
+RANDOM starts its turn
+RANDOM starts its reinforcement phase
+RANDOM receives 4 new armies
+RANDOM place one army on territory Moldova
+RANDOM place one army on territory Western France
+RANDOM place one army on territory Lithuania
+RANDOM place one army on territory Slovenia
+RANDOM starts its attack phase
+RANDOM attacks the territory Ireland from the territory Wales
+RANDOM launch battle between Wales and Ireland, Wales loose 2 armies
+RANDOM attacks the territory Northern Ireland from the territory Scotland
+RANDOM launch battle between Scotland and Northern Ireland, Scotland loose 1 army
+RANDOM attacks the territory Belarus from the territory Latvia
+RANDOM launch battle between Latvia and Belarus, Belarus loose 2 armies
+RANDOM attacks the territory Belarus from the territory Lithuania
+RANDOM launch battle between Lithuania and Belarus, both territories loose 1 army
+RANDOM attacks the territory Southern Sweden from the territory Poland
+RANDOM launch battle between Poland and Southern Sweden, both territories loose 1 army
+RANDOM attacks the territory Northern Italy from the territory Slovenia
+RANDOM launch battle between Slovenia and Northern Italy, both territories loose 1 army
+RANDOM attacks the territory Southern Spain from the territory Portugal
+RANDOM launch battle between Portugal and Southern Spain, Southern Spain loose 1 army
+RANDOM attacks the territory Northern Spain from the territory Western France
+RANDOM launch battle between Western France and Northern Spain, Western France loose 2 armies
+RANDOM attacks the territory East Germany from the territory Czech Republic
+RANDOM launch battle between Czech Republic and East Germany, both territories loose 1 army
+RANDOM attacks the territory Southern Spain from the territory Portugal
+RANDOM launch battle between Portugal and Southern Spain, Portugal loose 1 army
+RANDOM attacks the territory Southern Finland from the territory Estonia
+RANDOM launch battle between Estonia and Southern Finland, Southern Finland loose 2 armies
+RANDOM attacks the territory Belarus from the territory Lithuania
+RANDOM launch battle between Lithuania and Belarus, Belarus loose 2 armies
+RANDOM conquered the territory Belarus
+RANDOM move 3 armies to the newly conquered territory
+RANDOM attacks the territory East Germany from the territory Czech Republic
+RANDOM launch battle between Czech Republic and East Germany, Czech Republic loose 1 army
+RANDOM attacks the territory Northern Italy from the territory Slovenia
+RANDOM launch battle between Slovenia and Northern Italy, Slovenia loose 1 army
+RANDOM attacks the territory Northern Spain from the territory Western France
+RANDOM launch battle between Western France and Northern Spain, Western France loose 1 army
+RANDOM attacks the territory Southern Finland from the territory Estonia
+RANDOM launch battle between Estonia and Southern Finland, both territories loose 1 army
+RANDOM attacks the territory Romania from the territory Moldova
+RANDOM launch battle between Moldova and Romania, both territories loose 1 army
+RANDOM attacks the territory Ukraine from the territory Belarus
+RANDOM launch battle between Belarus and Ukraine, Belarus loose 2 armies
+RANDOM attacks the territory Southern Sweden from the territory Norway
+RANDOM launch battle between Norway and Southern Sweden, Southern Sweden loose 2 armies
+RANDOM attacks the territory East Germany from the territory Czech Republic
+RANDOM launch battle between Czech Republic and East Germany, Czech Republic loose 1 army
+RANDOM attacks the territory Romania from the territory Moldova
+RANDOM launch battle between Moldova and Romania, Moldova loose 2 armies
+RANDOM attacks the territory Southern Sweden from the territory Norway
+RANDOM launch battle between Norway and Southern Sweden, Southern Sweden loose 1 army
+RANDOM conquered the territory Southern Sweden
+RANDOM move 3 armies to the newly conquered territory
+RANDOM attacks the territory Romania from the territory Moldova
+RANDOM launch battle between Moldova and Romania, Moldova loose 1 army
+RANDOM attacks the territory Denmark from the territory Southern Sweden
+RANDOM launch battle between Southern Sweden and Denmark, both territories loose 1 army
+RANDOM attacks the territory East Germany from the territory Poland
+RANDOM launch battle between Poland and East Germany, Poland loose 1 army
+RANDOM attacks the territory East Germany from the territory Poland
+RANDOM launch battle between Poland and East Germany, Poland loose 1 army
+RANDOM attacks the territory Southern Russia from the territory Latvia
+RANDOM launch battle between Latvia and Southern Russia, Latvia loose 2 armies
+RANDOM attacks the territory Southern Finland from the territory Estonia
+RANDOM launch battle between Estonia and Southern Finland, Southern Finland loose 1 army
+RANDOM conquered the territory Southern Finland
+RANDOM move 2 armies to the newly conquered territory
+RANDOM attacks the territory Northern Russia from the territory Southern Finland
+RANDOM launch battle between Southern Finland and Northern Russia, Southern Finland loose 1 army
+RANDOM attacks the territory Southern Russia from the territory Latvia
+RANDOM launch battle between Latvia and Southern Russia, both territories loose 1 army
+RANDOM attacks the territory Denmark from the territory Southern Sweden
+RANDOM launch battle between Southern Sweden and Denmark, Southern Sweden loose 1 army
+RANDOM attacks the territory Southern Russia from the territory Latvia
+RANDOM launch battle between Latvia and Southern Russia, Latvia loose 1 army
+RANDOM receives a new card
+CHEATER starts its turn
+CHEATER starts its reinforcement phase
+CHEATER starts its attack phase
+CHEATER starts its fortification phase
+AGGRESSIVE starts its turn
+AGGRESSIVE starts its reinforcement phase
+AGGRESSIVE receives 3 new armies
+AGGRESSIVE place one army on territory Sicily
+AGGRESSIVE place one army on territory Sicily
+AGGRESSIVE place one army on territory Sicily
+AGGRESSIVE starts its attack phase
+AGGRESSIVE attacks the territory Sardinia from the territory Sicily
+AGGRESSIVE launch battle between Sicily and Sardinia, Sardinia loose 2 armies
+AGGRESSIVE attacks the territory Sardinia from the territory Sicily
+AGGRESSIVE launch battle between Sicily and Sardinia, Sicily loose 2 armies
+AGGRESSIVE attacks the territory Sardinia from the territory Sicily
+AGGRESSIVE launch battle between Sicily and Sardinia, both territories loose 1 army
+AGGRESSIVE attacks the territory Sardinia from the territory Sicily
+AGGRESSIVE launch battle between Sicily and Sardinia, Sicily loose 2 armies
+AGGRESSIVE attacks the territory Ukraine from the territory Turkey
+AGGRESSIVE launch battle between Turkey and Ukraine, Turkey loose 1 army
+BENEVOLENT starts its turn
+BENEVOLENT starts its reinforcement phase
+BENEVOLENT receives 3 new armies
+BENEVOLENT place one army on territory Northern England
+BENEVOLENT place one army on territory Southern Italy
+BENEVOLENT place one army on territory Northern Sweden
+BENEVOLENT starts its attack phase
+BENEVOLENT starts its fortification phase
+RANDOM starts its turn
+RANDOM starts its reinforcement phase
+RANDOM receives 3 new armies
+RANDOM place one army on territory Lithuania
+RANDOM place one army on territory Wales
+RANDOM place one army on territory Wales
+RANDOM starts its attack phase
+RANDOM attacks the territory Ireland from the territory Wales
+RANDOM launch battle between Wales and Ireland, Ireland loose 2 armies
+RANDOM attacks the territory Poland from the territory Lithuania
+RANDOM launch battle between Lithuania and Poland, Lithuania loose 2 armies
+RANDOM attacks the territory Ireland from the territory Wales
+RANDOM launch battle between Wales and Ireland, Wales loose 2 armies
+CHEATER starts its turn
+CHEATER starts its reinforcement phase
+CHEATER starts its attack phase
+AGGRESSIVE has no more territories, it is eliminated from the game
+BENEVOLENT has no more territories, it is eliminated from the game
+CHEATER win the game
+RANDOM has no more territories, it is eliminated from the game
+CHEATER starts its attack phase
+CHEATER starts its attack phase
+CHEATER starts its attack phase
+CHEATER starts its attack phase

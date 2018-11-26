@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
+import java.util.UUID;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -44,7 +45,12 @@ public class TournamentModel extends Observable implements TableModel {
     int maximumTurnPerGame;
 
     /**
-     *
+     * Prefix for all log file produced during this tournament
+     */
+    String logFileIdentifier;
+
+    /**
+     * Map containing RiskModels for each game of the tournament
      */
     Map<MapPath, List<RiskModel>> games;
 
@@ -56,6 +62,7 @@ public class TournamentModel extends Observable implements TableModel {
         playerStategies = new LinkedHashSet<>();
         nbGamePerMap = 4;
         maximumTurnPerGame = 40;
+        logFileIdentifier = UUID.randomUUID().toString();
     }
 
     public Set<MapPath> getMapsPaths() {
@@ -133,13 +140,13 @@ public class TournamentModel extends Observable implements TableModel {
         List<RiskModel> gamesOnMap = new ArrayList<>(this.nbGamePerMap);
 
         while (gamesOnMap.size() < this.nbGamePerMap) {
-            gamesOnMap.add(this.playGame(mapPath));
+            gamesOnMap.add(this.playGame(mapPath, gamesOnMap.size()));
         }
 
         return gamesOnMap;
     }
 
-    private RiskModel playGame(MapPath mapPath)
+    private RiskModel playGame(MapPath mapPath, int index)
             throws MapFileManagement.MapFileManagementException {
         RiskModel rm = new RiskModel();
 
@@ -150,10 +157,22 @@ public class TournamentModel extends Observable implements TableModel {
         rm.setPlayerList(preparePlayers());
         rm.setInterPhaseTime(0);
         rm.setNbTurnBeforeDraw(this.maximumTurnPerGame);
+
+        LogWriter newLogWriter = new LogWriter(String.format("%s-%s-%d",
+                logFileIdentifier, mapPath.toString(), index));
+        rm.setLogWriter(newLogWriter);
+        newLogWriter.openFile();
+
         rm.startGame();
         rm.finishPhase(); //skip startup phase
 
         return rm;
+    }
+
+    public String getLogFile(int i, int j) {
+        String mapName = this.mapsPaths.stream().skip(i).findFirst().get()
+                .toString();
+        return String.format("%s-%s-%d", logFileIdentifier, mapName, j);
     }
 
     private LinkedList<PlayerModel> preparePlayers() {

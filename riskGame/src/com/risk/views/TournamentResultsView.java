@@ -9,6 +9,8 @@ import com.risk.controllers.TournamentController;
 import com.risk.models.TournamentModel;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -22,10 +24,8 @@ public class TournamentResultsView extends JFrame {
     JTable results;
 
     public TournamentResultsView(TournamentModel tm) {
-        this.setResizable(false);
+        //this.setResizable(false);
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        this.centerWindow();
-        this.setVisible(true);
         results = new JTable(tm);
 
         GroupLayout gl = new GroupLayout(this.getContentPane());
@@ -40,8 +40,9 @@ public class TournamentResultsView extends JFrame {
                 .addComponent(results)
         );
 
-        this.setSize(this.getPreferredSize());
         this.setTitle("Tournament Result");
+        this.setSize(this.getPreferredSize().width, this.getPreferredSize().height + 25);
+        this.centerWindow();
         this.setVisible(true);
     }
 
@@ -51,7 +52,15 @@ public class TournamentResultsView extends JFrame {
     }
 
     public void setController(TournamentController ctrl) {
-
+        JTable table = this.results;
+        this.results.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                int r = table.rowAtPoint(me.getPoint());
+                int c = table.columnAtPoint(me.getPoint());
+                ctrl.clickResultCell(c, r);
+            }
+        });
     }
 
 }

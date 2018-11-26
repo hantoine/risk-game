@@ -6,7 +6,6 @@
 package com.risk.controllers;
 
 import com.risk.models.LogWriter;
-import com.risk.models.MapModel;
 import com.risk.models.HumanStrategy;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
@@ -29,8 +28,8 @@ import javax.imageio.ImageIO;
 public final class RiskController {
 
     /**
-     * viewRisk it is a reference to the view of the game
-     * mapEditorView the reference to the map editor
+     * viewRisk it is a reference to the view of the game mapEditorView the
+     * reference to the map editor
      */
     private RiskView viewRisk;
     /**
@@ -86,7 +85,7 @@ public final class RiskController {
      */
     void playGame() {
         LogWriter newLogWriter = new LogWriter();
-        this.modelRisk.addObserver(newLogWriter);
+        this.modelRisk.setLogWriter(newLogWriter);
         newLogWriter.openFile();
         this.viewRisk.observeModel(modelRisk);
         this.modelRisk.startGame();

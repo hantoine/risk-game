@@ -1,0 +1,352 @@
+Territories are assigned randomly to players
+Players receive 30 armies each
+The game starts
+AGGRESSIVE starts its turn
+AGGRESSIVE startup move
+AGGRESSIVE place one army on territory H6
+BENEVOLENT starts its turn
+AGGRESSIVE place one army on territory L6
+AGGRESSIVE place one army on territory H4
+AGGRESSIVE place one army on territory F5
+AGGRESSIVE place one army on territory H4
+AGGRESSIVE place one army on territory A2
+AGGRESSIVE place one army on territory C3
+AGGRESSIVE place one army on territory H5
+AGGRESSIVE place one army on territory H4
+AGGRESSIVE place one army on territory F5
+AGGRESSIVE place one army on territory L7
+AGGRESSIVE place one army on territory E1
+AGGRESSIVE place one army on territory L6
+AGGRESSIVE place one army on territory F5
+AGGRESSIVE place one army on territory C3
+AGGRESSIVE place one army on territory F5
+AGGRESSIVE place one army on territory D5
+AGGRESSIVE place one army on territory G3
+AGGRESSIVE place one army on territory A2
+AGGRESSIVE place one army on territory F2
+AGGRESSIVE place one army on territory F2
+AGGRESSIVE place one army on territory B3
+AGGRESSIVE place one army on territory F5
+AGGRESSIVE place one army on territory H5
+AGGRESSIVE place one army on territory H4
+AGGRESSIVE place one army on territory G3
+AGGRESSIVE place one army on territory E1
+AGGRESSIVE place one army on territory H4
+AGGRESSIVE place one army on territory D5
+AGGRESSIVE place one army on territory H6
+BENEVOLENT place one army on territory D6
+BENEVOLENT place one army on territory J3
+BENEVOLENT place one army on territory L5
+BENEVOLENT place one army on territory K2
+BENEVOLENT place one army on territory J2
+BENEVOLENT place one army on territory D3
+BENEVOLENT place one army on territory D6
+BENEVOLENT place one army on territory D3
+BENEVOLENT place one army on territory A1
+BENEVOLENT place one army on territory J2
+BENEVOLENT place one army on territory F1
+BENEVOLENT place one army on territory A4
+BENEVOLENT place one army on territory E2
+BENEVOLENT place one army on territory L5
+BENEVOLENT place one army on territory C4
+BENEVOLENT place one army on territory C4
+BENEVOLENT place one army on territory L5
+BENEVOLENT place one army on territory D3
+BENEVOLENT place one army on territory F1
+BENEVOLENT place one army on territory J2
+BENEVOLENT place one army on territory C4
+BENEVOLENT place one army on territory A4
+BENEVOLENT place one army on territory J3
+BENEVOLENT place one army on territory D6
+BENEVOLENT place one army on territory K2
+BENEVOLENT place one army on territory C4
+BENEVOLENT place one army on territory C4
+BENEVOLENT place one army on territory E3
+BENEVOLENT place one army on territory L1
+BENEVOLENT place one army on territory A4
+RANDOM place one army on territory G4
+RANDOM place one army on territory K3
+RANDOM place one army on territory C1
+RANDOM place one army on territory G5
+RANDOM place one army on territory D4
+RANDOM place one army on territory F4
+RANDOM place one army on territory B7
+RANDOM place one army on territory D4
+RANDOM place one army on territory F4
+RANDOM place one army on territory F4
+RANDOM place one army on territory B7
+RANDOM place one army on territory B2
+RANDOM place one army on territory H1
+RANDOM place one army on territory J1
+RANDOM place one army on territory H1
+RANDOM place one army on territory J1
+RANDOM place one army on territory C1
+RANDOM place one army on territory D4
+RANDOM place one army on territory G1
+RANDOM place one army on territory F4
+RANDOM place one army on territory A5
+RANDOM place one army on territory F4
+RANDOM place one army on territory D4
+RANDOM place one army on territory B2
+RANDOM place one army on territory L3
+RANDOM place one army on territory C1
+RANDOM place one army on territory D2
+RANDOM place one army on territory L3
+RANDOM place one army on territory J1
+RANDOM place one army on territory D4
+CHEATER place one army on territory F6
+CHEATER place one army on territory H2
+CHEATER place one army on territory D1
+CHEATER place one army on territory H3
+CHEATER place one army on territory A3
+CHEATER place one army on territory L4
+CHEATER place one army on territory K1
+CHEATER place one army on territory L2
+CHEATER place one army on territory B6
+CHEATER place one army on territory H3
+CHEATER place one army on territory F7
+CHEATER place one army on territory L2
+CHEATER place one army on territory G2
+CHEATER place one army on territory F6
+CHEATER place one army on territory G2
+CHEATER place one army on territory G2
+CHEATER place one army on territory G2
+CHEATER place one army on territory G6
+CHEATER place one army on territory G6
+CHEATER place one army on territory L4
+CHEATER place one army on territory A3
+CHEATER place one army on territory G6
+CHEATER place one army on territory F3
+CHEATER place one army on territory G2
+CHEATER place one army on territory L2
+CHEATER place one army on territory K1
+CHEATER place one army on territory G6
+CHEATER place one army on territory H2
+CHEATER place one army on territory A3
+CHEATER place one army on territory K1
+BENEVOLENT starts its reinforcement phase
+BENEVOLENT receives 4 new armies
+BENEVOLENT place one army on territory B1
+BENEVOLENT place one army on territory B1
+BENEVOLENT place one army on territory E3
+BENEVOLENT place one army on territory A1
+BENEVOLENT starts its attack phase
+BENEVOLENT starts its fortification phase
+BENEVOLENT moves one army from territory E3 to territory E2
+BENEVOLENT moves one army from territory E3 to territory E2
+RANDOM starts its turn
+RANDOM starts its reinforcement phase
+RANDOM receives 4 new armies
+RANDOM place one army on territory G1
+RANDOM place one army on territory C1
+RANDOM place one army on territory F4
+RANDOM place one army on territory K3
+RANDOM starts its attack phase
+RANDOM attacks the territory J2 from the territory J1
+RANDOM launch battle between J1 and J2, J1 loose 2 armies
+RANDOM attacks the territory H4 from the territory H1
+RANDOM launch battle between H1 and H4, both territories loose 1 army
+RANDOM attacks the territory B1 from the territory B2
+RANDOM launch battle between B2 and B1, B2 loose 2 armies
+RANDOM attacks the territory G6 from the territory G5
+RANDOM launch battle between G5 and G6, G5 loose 1 army
+RANDOM attacks the territory A3 from the territory A5
+RANDOM launch battle between A5 and A3, A5 loose 1 army
+RANDOM attacks the territory F1 from the territory F4
+RANDOM launch battle between F4 and F1, both territories loose 1 army
+RANDOM attacks the territory J2 from the territory J1
+RANDOM launch battle between J1 and J2, J1 loose 1 army
+RANDOM attacks the territory B4 from the territory B7
+RANDOM launch battle between B7 and B4, B4 loose 1 army
+RANDOM conquered the territory B4
+RANDOM move 2 armies to the newly conquered territory
+RANDOM attacks the territory F1 from the territory F4
+RANDOM launch battle between F4 and F1, F1 loose 2 armies
+RANDOM conquered the territory F1
+RANDOM move 3 armies to the newly conquered territory
+RANDOM attacks the territory F2 from the territory F1
+RANDOM launch battle between F1 and F2, F1 loose 2 armies
+RANDOM attacks the territory G2 from the territory G4
+RANDOM launch battle between G4 and G2, G4 loose 1 army
+RANDOM attacks the territory B3 from the territory B4
+RANDOM launch battle between B4 and B3, B4 loose 1 army
+RANDOM attacks the territory C2 from the territory C1
+RANDOM launch battle between C1 and C2, C2 loose 1 army
+RANDOM conquered the territory C2
+RANDOM move 3 armies to the newly conquered territory
+RANDOM attacks the territory B5 from the territory C2
+RANDOM launch battle between C2 and B5, B5 loose 1 army
+RANDOM conquered the territory B5
+RANDOM move 2 armies to the newly conquered territory
+RANDOM attacks the territory L1 from the territory L3
+RANDOM launch battle between L3 and L1, L1 loose 2 armies
+RANDOM conquered the territory L1
+RANDOM move 2 armies to the newly conquered territory
+RANDOM attacks the territory F5 from the territory F4
+RANDOM launch battle between F4 and F5, F4 loose 2 armies
+RANDOM attacks the territory B3 from the territory B5
+RANDOM launch battle between B5 and B3, B5 loose 1 army
+RANDOM attacks the territory L2 from the territory L1
+RANDOM launch battle between L1 and L2, L2 loose 1 army
+RANDOM attacks the territory D5 from the territory D4
+RANDOM launch battle between D4 and D5, D5 loose 2 armies
+RANDOM attacks the territory D1 from the territory D2
+RANDOM launch battle between D2 and D1, D2 loose 1 army
+RANDOM attacks the territory L2 from the territory L1
+RANDOM launch battle between L1 and L2, L1 loose 1 army
+RANDOM attacks the territory C3 from the territory C1
+RANDOM launch battle between C1 and C3, C1 loose 1 army
+RANDOM attacks the territory K1 from the territory K3
+RANDOM launch battle between K3 and K1, both territories loose 1 army
+RANDOM attacks the territory G2 from the territory G1
+RANDOM launch battle between G1 and G2, both territories loose 1 army
+RANDOM attacks the territory D5 from the territory D4
+RANDOM launch battle between D4 and D5, D5 loose 1 army
+RANDOM conquered the territory D5
+RANDOM move 3 armies to the newly conquered territory
+RANDOM attacks the territory K1 from the territory K3
+RANDOM launch battle between K3 and K1, K3 loose 1 army
+RANDOM attacks the territory H4 from the territory H1
+RANDOM launch battle between H1 and H4, H1 loose 1 army
+RANDOM attacks the territory G2 from the territory G1
+RANDOM launch battle between G1 and G2, G1 loose 1 army
+RANDOM attacks the territory D6 from the territory D4
+RANDOM launch battle between D4 and D6, D4 loose 2 armies
+RANDOM attacks the territory D3 from the territory D5
+RANDOM launch battle between D5 and D3, D5 loose 2 armies
+RANDOM receives a new card
+CHEATER starts its turn
+CHEATER starts its reinforcement phase
+CHEATER starts its attack phase
+CHEATER starts its fortification phase
+AGGRESSIVE starts its turn
+AGGRESSIVE starts its reinforcement phase
+AGGRESSIVE receives 3 new armies
+AGGRESSIVE place one army on territory C3
+AGGRESSIVE place one army on territory C3
+AGGRESSIVE place one army on territory C3
+AGGRESSIVE starts its attack phase
+AGGRESSIVE attacks the territory C1 from the territory C3
+AGGRESSIVE launch battle between C3 and C1, both territories loose 1 army
+AGGRESSIVE attacks the territory C1 from the territory C3
+AGGRESSIVE launch battle between C3 and C1, C3 loose 1 army
+AGGRESSIVE attacks the territory C1 from the territory C3
+AGGRESSIVE launch battle between C3 and C1, C1 loose 1 army
+AGGRESSIVE conquered the territory C1
+AGGRESSIVE move 3 armies to the newly conquered territory
+AGGRESSIVE attacks the territory H1 from the territory H5
+AGGRESSIVE launch battle between H5 and H1, H1 loose 1 army
+AGGRESSIVE conquered the territory H1
+AGGRESSIVE move 2 armies to the newly conquered territory
+AGGRESSIVE attacks the territory E2 from the territory E1
+AGGRESSIVE launch battle between E1 and E2, E2 loose 2 armies
+AGGRESSIVE attacks the territory E2 from the territory E1
+AGGRESSIVE launch battle between E1 and E2, E1 loose 2 armies
+AGGRESSIVE attacks the territory G1 from the territory H6
+AGGRESSIVE launch battle between H6 and G1, G1 loose 2 armies
+AGGRESSIVE conquered the territory G1
+AGGRESSIVE move 2 armies to the newly conquered territory
+AGGRESSIVE attacks the territory L5 from the territory L6
+AGGRESSIVE launch battle between L6 and L5, L6 loose 2 armies
+AGGRESSIVE attacks the territory C2 from the territory C1
+AGGRESSIVE launch battle between C1 and C2, C2 loose 1 army
+AGGRESSIVE conquered the territory C2
+AGGRESSIVE move 2 armies to the newly conquered territory
+AGGRESSIVE attacks the territory L3 from the territory L7
+AGGRESSIVE launch battle between L7 and L3, L7 loose 1 army
+AGGRESSIVE attacks the territory A5 from the territory B3
+AGGRESSIVE launch battle between B3 and A5, A5 loose 1 army
+AGGRESSIVE attacks the territory A5 from the territory B3
+AGGRESSIVE launch battle between B3 and A5, B3 loose 1 army
+AGGRESSIVE attacks the territory H4 from the territory H1
+AGGRESSIVE launch battle between H1 and H4, H1 loose 1 army
+AGGRESSIVE attacks the territory G2 from the territory G1
+AGGRESSIVE launch battle between G1 and G2, G1 loose 1 army
+AGGRESSIVE attacks the territory B5 from the territory C2
+AGGRESSIVE launch battle between C2 and B5, B5 loose 1 army
+AGGRESSIVE conquered the territory B5
+AGGRESSIVE move 1 armies to the newly conquered territory
+AGGRESSIVE receives a new card
+AGGRESSIVE starts its fortification phase
+BENEVOLENT starts its turn
+BENEVOLENT starts its reinforcement phase
+BENEVOLENT receives 3 new armies
+BENEVOLENT place one army on territory E3
+BENEVOLENT place one army on territory E3
+BENEVOLENT place one army on territory E2
+BENEVOLENT starts its attack phase
+BENEVOLENT starts its fortification phase
+BENEVOLENT moves one army from territory E2 to territory E3
+BENEVOLENT moves one army from territory E2 to territory E3
+RANDOM starts its turn
+RANDOM starts its reinforcement phase
+RANDOM receives 3 new armies
+RANDOM place one army on territory D4
+RANDOM place one army on territory D5
+RANDOM place one army on territory F1
+RANDOM starts its attack phase
+RANDOM attacks the territory D2 from the territory D4
+RANDOM launch battle between D4 and D2, D4 loose 1 army
+RANDOM attacks the territory D3 from the territory D5
+RANDOM launch battle between D5 and D3, D5 loose 1 army
+RANDOM attacks the territory F2 from the territory F1
+RANDOM launch battle between F1 and F2, F1 loose 1 army
+CHEATER starts its turn
+CHEATER starts its reinforcement phase
+CHEATER starts its attack phase
+RANDOM has no more territories, it is eliminated from the game
+CHEATER starts its fortification phase
+AGGRESSIVE starts its turn
+AGGRESSIVE starts its reinforcement phase
+AGGRESSIVE receives 3 new armies
+AGGRESSIVE place one army on territory C3
+AGGRESSIVE place one army on territory C3
+AGGRESSIVE place one army on territory C3
+AGGRESSIVE starts its attack phase
+AGGRESSIVE attacks the territory C1 from the territory C3
+AGGRESSIVE launch battle between C3 and C1, C3 loose 2 armies
+AGGRESSIVE attacks the territory C1 from the territory C3
+AGGRESSIVE launch battle between C3 and C1, C1 loose 1 army
+AGGRESSIVE attacks the territory C1 from the territory C3
+AGGRESSIVE launch battle between C3 and C1, C3 loose 1 army
+AGGRESSIVE starts its fortification phase
+BENEVOLENT starts its turn
+BENEVOLENT starts its reinforcement phase
+BENEVOLENT receives 3 new armies
+BENEVOLENT place one army on territory E2
+BENEVOLENT place one army on territory E2
+BENEVOLENT place one army on territory E2
+BENEVOLENT starts its attack phase
+BENEVOLENT starts its fortification phase
+BENEVOLENT moves one army from territory E3 to territory E2
+BENEVOLENT moves one army from territory E3 to territory E2
+BENEVOLENT moves one army from territory E3 to territory E2
+BENEVOLENT moves one army from territory E3 to territory E2
+CHEATER starts its turn
+CHEATER starts its reinforcement phase
+CHEATER starts its attack phase
+AGGRESSIVE has no more territories, it is eliminated from the game
+CHEATER starts its fortification phase
+BENEVOLENT starts its turn
+BENEVOLENT starts its reinforcement phase
+BENEVOLENT receives 3 new armies
+BENEVOLENT place one army on territory E3
+BENEVOLENT place one army on territory E3
+BENEVOLENT place one army on territory E3
+BENEVOLENT starts its attack phase
+BENEVOLENT starts its fortification phase
+BENEVOLENT moves one army from territory E2 to territory E3
+BENEVOLENT moves one army from territory E2 to territory E3
+BENEVOLENT moves one army from territory E2 to territory E3
+BENEVOLENT moves one army from territory E2 to territory E3
+BENEVOLENT moves one army from territory E2 to territory E3
+BENEVOLENT moves one army from territory E2 to territory E3
+BENEVOLENT moves one army from territory E2 to territory E3
+CHEATER starts its turn
+CHEATER starts its reinforcement phase
+CHEATER starts its attack phase
+CHEATER win the game
+BENEVOLENT has no more territories, it is eliminated from the game
+CHEATER starts its attack phase
+CHEATER starts its attack phase
+CHEATER starts its attack phase

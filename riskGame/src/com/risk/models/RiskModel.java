@@ -88,6 +88,11 @@ public final class RiskModel extends Observable implements Serializable {
     private LinkedList<String> logsBackup;
 
     /**
+     * In charge of writing all logs from this game to a log file
+     */
+    private LogWriter logWriter;
+
+    /**
      * Constructor of the model It includes son random players
      */
     public RiskModel() {
@@ -1027,6 +1032,15 @@ public final class RiskModel extends Observable implements Serializable {
     }
 
     /**
+     * Setter for logWriter attribute
+     *
+     * @param logWriter log writer to set
+     */
+    public void setLogWriter(LogWriter logWriter) {
+        this.logWriter = logWriter;
+    }
+
+    /**
      * Notify observer of a new event that can be displayed in the logs
      *
      * @param logMessage Message describing this event
@@ -1037,6 +1051,9 @@ public final class RiskModel extends Observable implements Serializable {
             log.clear();
         }
         log.addLogEntry(logMessage);
+        if (logWriter != null) {
+            logWriter.log(logMessage);
+        }
         setChanged();
         notifyObservers();
     }

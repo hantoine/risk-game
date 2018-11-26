@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author user
  */
-public class LogWriter implements Observer {
+public class LogWriter {
 
     /**
      * Path to the file where the log will be written.
@@ -37,7 +35,19 @@ public class LogWriter implements Observer {
      * Constructor creates a log file.
      */
     public LogWriter() {
-        this.pathToFile = Paths.get("logs", ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME) + ".log").toString();
+        this.pathToFile = Paths.get("logs",
+                ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME)
+                + ".log").toString();
+        out = null;
+    }
+
+    /**
+     * Constructor creates a log file with the given file name
+     *
+     * @param filename Name of the log file to use
+     */
+    public LogWriter(String filename) {
+        this.pathToFile = Paths.get("logs", filename).toString();
         out = null;
     }
 
@@ -46,35 +56,31 @@ public class LogWriter implements Observer {
      */
     public void openFile() {
         try {
+            // true implies the "append" mode
             this.out = new BufferedWriter(
-                    new FileWriter(this.pathToFile, true)); //true implies the "append" mode
+                    new FileWriter(this.pathToFile, true));
         } catch (IOException ex) {
-            Logger.getLogger(LogWriter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LogWriter.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 
     /**
      * Add the new log to the log file.
      *
-     * @param o Class of the object sending the log. Here it is the risk model.
-     * @param o1 Log to be written
+     * @param msg Log message to write to the file
      */
-    @Override
-    public void update(Observable o, Object o1) {
-        if (this.out != null) { //if file open
-            if (o1 instanceof LogEvent) { //and the object is a log
-                LogEvent le = (LogEvent) o1;
-                if (!le.isClear()) //if the log is not empty,
-                {
-                    try {
-                        out.write(le + "\n"); //write the log
-                        out.flush();
-                    } catch (IOException ex) {
-                        //else print exception;
-                        Logger.getLogger(LogWriter.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
+    public void log(String msg) {
+        if (msg.isEmpty()) {
+            return;
+        }
+        try {
+            out.write(msg + "\n"); //write the log
+            out.flush();
+        } catch (IOException ex) {
+            //else print exception;
+            Logger.getLogger(LogWriter.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 
