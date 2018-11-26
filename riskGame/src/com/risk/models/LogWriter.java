@@ -37,7 +37,7 @@ public class LogWriter implements Observer {
      * Constructor creates a log file.
      */
     public LogWriter() {
-        this.pathToFile = Paths.get("logs", ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME)+ ".txt").toString();
+        this.pathToFile = Paths.get("logs", ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME) + ".log").toString();
         out = null;
     }
 
@@ -63,8 +63,9 @@ public class LogWriter implements Observer {
     public void update(Observable o, Object o1) {
         if (this.out != null) { //if file open
             if (o1 instanceof LogEvent) { //and the object is a log
-                LogEvent le = (LogEvent) o1; 
-                if (!le.isClear()) //if the log is not empty, 
+                LogEvent le = (LogEvent) o1;
+                if (!le.isClear()) //if the log is not empty,
+                {
                     try {
                         out.write(le + "\n"); //write the log
                         out.flush();
@@ -72,21 +73,29 @@ public class LogWriter implements Observer {
                         //else print exception;
                         Logger.getLogger(LogWriter.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                }
             }
         }
     }
 
     /**
      * Close the file currently opened.
+     *
+     * @throws java.lang.Throwable
      */
     @Override
-    public void finalize() {
-        if (this.out != null) {
-            try {
-                out.close();
-            } catch (IOException ex) {
-                Logger.getLogger(LogWriter.class.getName()).log(Level.SEVERE, null, ex);
+    public void finalize() throws Throwable {
+        try {
+            if (this.out != null) {
+                try {
+                    out.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(LogWriter.class.getName())
+                            .log(Level.SEVERE, null, ex);
+                }
             }
+        } finally {
+            super.finalize();
         }
     }
 }
