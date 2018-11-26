@@ -35,7 +35,7 @@ public class MapEditorControllerTest {
                 + "maps" + File.separator + "testcases" + File.separator
                 + "nonexistentmapfile.map", dmv);
 
-        assertEquals("Error reading the file", dmv.getMessage());
+        assertEquals("Error reading the file for map nonexistentmapfile", dmv.getMessage());
     }
 
     @Test
@@ -44,7 +44,7 @@ public class MapEditorControllerTest {
                 + "maps" + File.separator + "testcases" + File.separator
                 + "errorInConfigInfos.map", dmv);
 
-        assertEquals("Error in parameters to configurate the map.",
+        assertEquals("Error in parameters to configurate the map errorInConfigInfos",
                 dmv.getMessage());
     }
 
@@ -54,7 +54,7 @@ public class MapEditorControllerTest {
                 + "maps" + File.separator + "testcases" + File.separator
                 + "errorInContinentInfos.map", dmv);
 
-        assertEquals("Error in continent information.",
+        assertEquals("Error in continent information for map errorInContinentInfos",
                 dmv.getMessage());
     }
 
@@ -64,7 +64,7 @@ public class MapEditorControllerTest {
                 + "maps" + File.separator + "testcases" + File.separator
                 + "continentmissing.map", dmv);
 
-        assertEquals("Error in territory information.",
+        assertEquals("Error in territory information for map continentmissing",
                 dmv.getMessage());
     }
 
@@ -74,7 +74,7 @@ public class MapEditorControllerTest {
                 + "maps" + File.separator + "testcases" + File.separator
                 + "noterritoryTAG.map", dmv);
 
-        assertEquals("No territories separator in file.",
+        assertEquals("No territories separator in file for map noterritoryTAG",
                 dmv.getMessage());
     }
 
@@ -84,7 +84,7 @@ public class MapEditorControllerTest {
                 + "maps" + File.separator + "testcases" + File.separator
                 + "noContinentTag.map", dmv);
 
-        assertEquals("No continents separator in file.",
+        assertEquals("No continents separator in file for map noContinentTag",
                 dmv.getMessage());
     }
 

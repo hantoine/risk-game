@@ -472,7 +472,6 @@ public final class MapModel extends Observable implements Serializable {
         this.graphContinents.remove(continentName);
         setChanged();
         notifyObservers(MapUpdateTypes.REMOVE_CONTINENT);
-        System.out.println("nb continents : " + Integer.toString(this.getContinentList().size()));
 
         //if there is no continent, add one by default
         if (this.graphContinents.isEmpty()) {

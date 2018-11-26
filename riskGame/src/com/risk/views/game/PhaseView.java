@@ -5,7 +5,6 @@
  */
 package com.risk.views.game;
 
-import com.risk.models.LogEvent;
 import com.risk.models.RiskModel;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -84,6 +83,7 @@ public class PhaseView extends JPanel implements Observer {
     public void updateView(RiskModel rm) {
         setVisible(true);
 
+        actions.setText(rm.getLogContent());
         if (rm.getWinningPlayer() != null) {
             phaseName.setVisible(false);
             playerName.setText("Winner : "
@@ -97,6 +97,9 @@ public class PhaseView extends JPanel implements Observer {
                 + rm.getCurrentPlayer().getName());
         playerName.setForeground(rm.getCurrentPlayer().getColor());
         phaseName.setForeground(rm.getCurrentPlayer().getColor());
+
+        this.revalidate();
+        this.repaint();
     }
 
     /**
@@ -109,13 +112,6 @@ public class PhaseView extends JPanel implements Observer {
     public void update(Observable o, Object o1) {
         if (o instanceof RiskModel) {
             this.updateView((RiskModel) o);
-        }
-        if (o1 instanceof LogEvent) {
-            LogEvent le = (LogEvent) o1;
-            if (le.isClear()) {
-                actions.setText("");
-            }
-            actions.append(le + "\n");
         }
     }
 
