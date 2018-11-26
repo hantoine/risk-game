@@ -10,11 +10,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
+ * Cheater Strategy
  * @author Nellybett
  */
 public class CheaterStrategy implements Strategy {
 
+    /**
+     * Multiplies number of armies by two
+     * @param rm risk model
+     */
     @Override
     public void reinforcement(RiskModel rm) {
 
@@ -24,6 +28,10 @@ public class CheaterStrategy implements Strategy {
         rm.finishPhase();
     }
 
+    /**
+     * Conquers all adjacent territories
+     * @param rm 
+     */
     @Override
     public void attack(RiskModel rm) {
 
@@ -42,6 +50,10 @@ public class CheaterStrategy implements Strategy {
         rm.finishPhase();
     }
 
+    /**
+     * Doubles the number of armies for territories with neighbors own by other player  
+     * @param rm risk model
+     */
     @Override
     public void fortification(RiskModel rm) {
         for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
@@ -53,21 +65,38 @@ public class CheaterStrategy implements Strategy {
         rm.finishPhase();
     }
 
+   /**
+     * Move armies after conquering a territory
+     * @param rm risk model 
+     */
     @Override
     public void moveArmies(RiskModel rm) {
         rm.getCurrentPlayer().moveArmiesAI();
     }
 
+    /**
+     * Exchange card for computer players
+     * @param rm risk model
+     * @return true if it is successful
+     */
     @Override
     public boolean exchangeCardsToArmies(RiskModel rm) {
         return rm.getCurrentPlayer().exchangeCardsToArmiesAI();
     }
 
+    /**
+     * Defense for computer player
+     * @param rm risk model 
+     */
     @Override
     public void defense(RiskModel rm) {
         rm.getCurrentPlayer().defenseAI();
     }
 
+    /**
+     * Startup movement
+     * @param rm risk model 
+     */
     @Override
     public void startup(RiskModel rm) {
         TerritoryModel territoryClicked=rm.randomTerritory((List < TerritoryModel >)rm.getMap().getTerritories().stream()
