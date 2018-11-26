@@ -97,6 +97,9 @@ public class PhaseView extends JPanel implements Observer {
                 + rm.getCurrentPlayer().getName());
         playerName.setForeground(rm.getCurrentPlayer().getColor());
         phaseName.setForeground(rm.getCurrentPlayer().getColor());
+
+        this.revalidate();
+        this.repaint();
     }
 
     /**
