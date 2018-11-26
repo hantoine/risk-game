@@ -5,12 +5,14 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
+
 /**
  * This class represents the different phases of the game
  *
  * @author hantoine
  */
-public enum GamePhase {
+public enum GamePhase  implements Serializable  {
     STARTUP,
     REINFORCEMENT,
     ATTACK,

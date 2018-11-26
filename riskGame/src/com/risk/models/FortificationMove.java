@@ -5,12 +5,14 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
+
 /**
  * This class represents a fortification move
  *
  * @author hantoine
  */
-class FortificationMove {
+class FortificationMove implements Serializable  {
 
     /**
      * territorySource the territory with the armies

@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -81,9 +82,14 @@ public class MapPanel extends JPanel implements Observer {
     /**
      * Attach the listener to the map
      *
-     * @param territoryListener the mousselistener of the territory
+     * @param territoryListener the mouselistener of the territory
      */
     public void setListener(MouseListener territoryListener) {
+        Arrays.stream(this.getMouseListeners())
+                .forEach((m)->{
+            this.removeMouseListener(m);
+        });
+        
         this.addMouseListener(territoryListener);
     }
 
