@@ -88,7 +88,7 @@ public class LogWriter {
     /**
      * Close the file currently opened.
      *
-     * @throws java.lang.Throwable
+     * @throws Throwable Throwable exception
      */
     @Override
     public void finalize() throws Throwable {

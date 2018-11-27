@@ -36,7 +36,6 @@ public class MapPanel extends JPanel implements Observer {
 
     /**
      * Constructor
-     *
      */
     public MapPanel() {
         super(null);
@@ -86,10 +85,10 @@ public class MapPanel extends JPanel implements Observer {
      */
     public void setListener(MouseListener territoryListener) {
         Arrays.stream(this.getMouseListeners())
-                .forEach((m)->{
-            this.removeMouseListener(m);
-        });
-        
+                .forEach((m) -> {
+                    this.removeMouseListener(m);
+                });
+
         this.addMouseListener(territoryListener);
     }
 
@@ -167,6 +166,7 @@ public class MapPanel extends JPanel implements Observer {
 
     /**
      * This method is to attach the observeer
+     *
      * @param o the observable
      * @param o1 the object
      */

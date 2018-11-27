@@ -11,7 +11,6 @@ import com.risk.models.HumanStrategy;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.models.TerritoryModel;
-import com.risk.views.game.AttackView;
 import com.risk.views.game.CardExchangeView;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -106,6 +105,7 @@ public class GameController implements Observer {
 
     /**
      * Defense movement
+     *
      * @param nbDice number of dice selected
      */
     public void clickDefense(int nbDice) {
@@ -173,19 +173,11 @@ public class GameController implements Observer {
     }
 
     /**
-     * This method is for add the observer
+     * Observe the risk model
      *
-     * @param attackView the view which is added to observer
+     * @param o observable
+     * @param o1 parameters
      */
-    public void addObserverToAttack(AttackView attackView) {
-
-        rm.addObserverToAttack(attackView);
-    }
-    /**
-    * Observe the risk model 
-    * @param o observable
-    * @param o1 parameters
-    */
     @Override
     public void update(Observable o, Object o1) {
         PlayerModel currentPlayer = this.rm.getCurrentPlayer();

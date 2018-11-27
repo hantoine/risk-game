@@ -5,22 +5,41 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
+
 /**
+ * This class represents the log of the game
  *
  * @author hantoine
  */
-public class LogModel {
+public class LogModel implements Serializable {
 
+    /**
+     * Log content
+     */
     String content;
 
+    /**
+     * Constructor
+     */
     public LogModel() {
         this.content = "";
     }
 
+    /**
+     * Getter of content
+     *
+     * @return content
+     */
     public String getContent() {
         return content;
     }
 
+    /**
+     * Add log
+     *
+     * @param msg log entry
+     */
     void addLogEntry(String msg) {
         if (!content.equals("")) {
             content += "\n";
@@ -28,6 +47,9 @@ public class LogModel {
         content += msg;
     }
 
+    /**
+     * Remove the log content
+     */
     void clear() {
         content = "";
     }

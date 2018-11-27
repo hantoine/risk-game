@@ -5,7 +5,6 @@
  */
 package com.risk.models;
 
-import com.risk.views.game.AttackView;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
@@ -131,7 +130,7 @@ public final class RiskModel extends Observable implements Serializable {
     /**
      * Set logs to be saved into the model before serializing the model
      *
-     * @param logsBackup
+     * @param logsBackup list of backup logs
      */
     public void setSavedLogs(LinkedList<String> logsBackup) {
         this.logsBackup = logsBackup;
@@ -140,7 +139,7 @@ public final class RiskModel extends Observable implements Serializable {
     /**
      * Get saved logs of a game being loaded
      *
-     * @return
+     * @return list of logs being currently displayed
      */
     public LinkedList<String> getLogs() {
         return this.logsBackup;
@@ -240,6 +239,8 @@ public final class RiskModel extends Observable implements Serializable {
 
     /**
      * Return true if the game finished with a draw
+     *
+     * @return boolean
      */
     public boolean isDraw() {
         return this.nbTurnBeforeDraw <= 0;
@@ -277,15 +278,6 @@ public final class RiskModel extends Observable implements Serializable {
         }
 
         addNewLogEvent("Territories are assigned randomly to players");
-    }
-
-    /**
-     * This method is to add the observer
-     *
-     * @param attackView the view which is gonna be added
-     */
-    public void addObserverToAttack(AttackView attackView) {
-        // this.getCurrentPlayer().getCurrentAttack().addObserver(attackView);
     }
 
     /**

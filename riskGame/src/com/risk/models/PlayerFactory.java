@@ -9,6 +9,7 @@ import java.awt.Color;
 
 /**
  * Class for the creation of players
+ *
  * @author Nellybett
  */
 public class PlayerFactory {
@@ -18,9 +19,10 @@ public class PlayerFactory {
      */
     private PlayerFactory() {
     }
-    
+
     /**
      * Creation of player with different strategies
+     *
      * @param typeOfPlayer type of player
      * @param name name of player
      * @param color color of player

@@ -11,12 +11,14 @@ import java.util.stream.Collectors;
 
 /**
  * Benevolent Strategy
+ *
  * @author Nellybett
  */
 public class BenevolentStrategy implements Strategy {
 
     /**
      * Reinforces the weakest territory
+     *
      * @param rm risk model
      */
     @Override
@@ -41,6 +43,7 @@ public class BenevolentStrategy implements Strategy {
 
     /**
      * No attack move
+     *
      * @param rm risk model
      */
     @Override
@@ -50,6 +53,7 @@ public class BenevolentStrategy implements Strategy {
 
     /**
      * Fortifies the weakest territory
+     *
      * @param rm risk model
      */
     @Override
@@ -87,7 +91,8 @@ public class BenevolentStrategy implements Strategy {
 
     /**
      * Move armies after conquering a territory
-     * @param rm risk model 
+     *
+     * @param rm risk model
      */
     @Override
     public void moveArmies(RiskModel rm) {
@@ -96,6 +101,7 @@ public class BenevolentStrategy implements Strategy {
 
     /**
      * Exchange card for computer players
+     *
      * @param rm risk model
      * @return true if it is successful
      */
@@ -106,7 +112,8 @@ public class BenevolentStrategy implements Strategy {
 
     /**
      * Defense for computer player
-     * @param rm risk model 
+     *
+     * @param rm risk model
      */
     @Override
     public void defense(RiskModel rm) {
@@ -115,14 +122,15 @@ public class BenevolentStrategy implements Strategy {
 
     /**
      * Startup movement
-     * @param rm risk model 
+     *
+     * @param rm risk model
      */
     @Override
     public void startup(RiskModel rm) {
-       
-        TerritoryModel territoryClicked=rm.randomTerritory((List < TerritoryModel >)rm.getMap().getTerritories().stream()
-                                                                                                            .filter(t -> t.getOwner()==null || t.getOwner()==rm.getCurrentPlayer())
-                                                                                                            .collect(Collectors.toCollection(LinkedList::new)));
+
+        TerritoryModel territoryClicked = rm.randomTerritory((List< TerritoryModel>) rm.getMap().getTerritories().stream()
+                .filter(t -> t.getOwner() == null || t.getOwner() == rm.getCurrentPlayer())
+                .collect(Collectors.toCollection(LinkedList::new)));
         rm.startupMove(territoryClicked);
     }
 

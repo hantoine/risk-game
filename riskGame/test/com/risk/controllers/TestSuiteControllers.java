@@ -14,7 +14,9 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    GameControllerTest.class
+    GameControllerTest.class,
+    MapEditorControllerTest.class,
+    MenuListener.class
 })
 
 /**

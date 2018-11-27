@@ -16,13 +16,22 @@ import javax.swing.JFrame;
 import javax.swing.JTable;
 
 /**
+ * This class represents the result of tournament
  *
  * @author hantoine
  */
 public class TournamentResultsView extends JFrame {
 
+    /**
+     * Table of tournament result
+     */
     JTable results;
 
+    /**
+     * Constructor
+     *
+     * @param tm Tournament model
+     */
     public TournamentResultsView(TournamentModel tm) {
         //this.setResizable(false);
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -46,11 +55,19 @@ public class TournamentResultsView extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Set the window in the center
+     */
     private void centerWindow() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
 
+    /**
+     * Add listener and show result log when clicking the result cell
+     *
+     * @param ctrl Tournament controller
+     */
     public void setController(TournamentController ctrl) {
         JTable table = this.results;
         this.results.addMouseListener(new MouseAdapter() {

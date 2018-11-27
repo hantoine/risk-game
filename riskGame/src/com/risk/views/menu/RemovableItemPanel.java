@@ -12,16 +12,31 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
+ * Removable item for MapPathListPanel and StrategyListPanel in tournament mode
  *
  * @author hantoine
- * @param <T>
+ * @param <T> type of removable item
  */
 public class RemovableItemPanel<T> extends JPanel {
 
+    /**
+     * Strategy name or map name
+     */
     private final JLabel name;
+    /**
+     * Remove button
+     */
     private final JButton removeButton;
+    /**
+     * Removable item
+     */
     private T item;
 
+    /**
+     * Constructor
+     *
+     * @param item removable item
+     */
     public RemovableItemPanel(T item) {
         name = new JLabel(item.toString());
         removeButton = new JButton("-");
@@ -42,18 +57,36 @@ public class RemovableItemPanel<T> extends JPanel {
         this.setAlignmentX(Component.LEFT_ALIGNMENT);
     }
 
+    /**
+     * Getter of removable item
+     *
+     * @return Removable item
+     */
     public T getItem() {
         return item;
     }
 
+    /**
+     * Set listener for remove button
+     *
+     * @param listener RemovableItemPanelListener
+     */
     public void setListener(RemovableItemPanelListener<T> listener) {
         removeButton.addActionListener(al -> {
             listener.removed();
         });
     }
 
+    /**
+     * Interface for listener for removable item
+     *
+     * @param <T> type of removable item
+     */
     public static interface RemovableItemPanelListener<T> {
 
+        /**
+         * Remove the item
+         */
         public void removed();
     }
 }

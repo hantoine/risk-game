@@ -121,7 +121,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     /**
      * Interface with phase view to set the logs being displayed
      *
-     * @param logs
+     * @param logs list of logs
      */
     public void setLogs(LinkedList<String> logs) {
         this.phaseView.setLogs(logs);

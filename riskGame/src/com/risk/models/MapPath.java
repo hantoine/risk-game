@@ -8,24 +8,44 @@ package com.risk.models;
 import java.nio.file.Paths;
 
 /**
+ * This class represents map path
  *
  * @author hantoine
  */
 public class MapPath {
 
+    /**
+     * Map path
+     */
     final private String path;
 
+    /**
+     * Constructor
+     *
+     * @param path map path
+     */
     public MapPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Getter of path
+     *
+     * @return path
+     */
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * Get the map path plus the map name
+     *
+     * @return map path and map name
+     */
     @Override
     public String toString() {
         return Paths.get(path).getFileName()
                 .toString().replaceFirst("[.][^.]+$", "");
     }
 
-    public String getPath() {
-        return path;
-    }
 }

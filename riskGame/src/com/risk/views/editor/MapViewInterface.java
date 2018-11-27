@@ -6,6 +6,7 @@
 package com.risk.views.editor;
 
 /**
+ * Interface for map view
  *
  * @author hantoine
  */

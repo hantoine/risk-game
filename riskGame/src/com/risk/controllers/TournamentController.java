@@ -22,30 +22,61 @@ import java.util.List;
 import javax.swing.Timer;
 
 /**
+ * Tournament mode controller
  *
  * @author hantoine
  */
 public class TournamentController implements StrategyListPanelListener, MapPathListPanelListener {
 
+    /**
+     * View of tournament mode
+     */
     TournamentMenuView tmv;
+    /**
+     * Attribute of tournament mode
+     */
     TournamentModel tm;
+    /**
+     * Show the tournament result view
+     */
     TournamentResultsView trv;
 
+    /**
+     * Constructor
+     *
+     * @param tm model of tournament mode
+     * @param tmv view of tournament mode
+     */
     public TournamentController(TournamentModel tm, TournamentMenuView tmv) {
         this.tm = tm;
         this.tmv = tmv;
     }
 
+    /**
+     * Add strategy to tournament players
+     *
+     * @param strategyType strategy of player
+     */
     @Override
     public void strategyAdded(Strategy.Type strategyType) {
         tm.addPlayerStategies(strategyType);
     }
 
+    /**
+     * Remove strategy from tournament players
+     *
+     * @param strategyType strategy of player
+     */
     @Override
     public void strategyRemoved(Strategy.Type strategyType) {
         tm.removePlayerStategies(strategyType);
     }
 
+    /**
+     * Choose maps that players will play
+     *
+     * @param mapPath map path
+     */
     @Override
     public void mapAdded(MapPath mapPath) {
         try {
@@ -55,11 +86,19 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
         }
     }
 
+    /**
+     * Remove maps
+     *
+     * @param mapPath map path
+     */
     @Override
     public void mapRemoved(MapPath mapPath) {
         tm.removeMapsPath(mapPath);
     }
 
+    /**
+     * Play the tournament
+     */
     public void playTournament() {
         try {
             tm.playTournament();
@@ -70,6 +109,10 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
         }
     }
 
+    /**
+     * Check if tournament is finished every 300 milliseconds if finished, show
+     * the result view
+     */
     private void checkTournamentFinished() {
         if (tm.isTournamentFinished()) {
             trv = new TournamentResultsView(tm);
@@ -85,20 +128,36 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
         }
     }
 
+    /**
+     * Set maximum number of turn in a game
+     *
+     * @param value number of turn per map
+     */
     public void nbMaximumTurnPerGameChanged(int value) {
         tm.setMaximumTurnPerGame(value);
     }
 
+    /**
+     * Set number of game for each map
+     *
+     * @param value number of game per map
+     */
     public void nbGamePerMapChanged(int value) {
         tm.setNbGamePerMap(value);
     }
 
+    /**
+     * click the result cell and check the log of the game
+     *
+     * @param i row number
+     * @param j column number
+     */
     public void clickResultCell(int i, int j) {
         if (i == 0 || j == 0) {
             return;
         }
-        //create view from file
 
+        //create view from file
         List<String> logs;
         try {
             logs = Files.readAllLines(

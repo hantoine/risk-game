@@ -11,12 +11,14 @@ import java.util.stream.Collectors;
 
 /**
  * Cheater Strategy
+ *
  * @author Nellybett
  */
 public class CheaterStrategy implements Strategy {
 
     /**
      * Multiplies number of armies by two
+     *
      * @param rm risk model
      */
     @Override
@@ -30,7 +32,8 @@ public class CheaterStrategy implements Strategy {
 
     /**
      * Conquers all adjacent territories
-     * @param rm 
+     *
+     * @param rm risk model
      */
     @Override
     public void attack(RiskModel rm) {
@@ -51,7 +54,9 @@ public class CheaterStrategy implements Strategy {
     }
 
     /**
-     * Doubles the number of armies for territories with neighbors own by other player  
+     * Doubles the number of armies for territories with neighbors own by other
+     * player
+     *
      * @param rm risk model
      */
     @Override
@@ -65,9 +70,10 @@ public class CheaterStrategy implements Strategy {
         rm.finishPhase();
     }
 
-   /**
+    /**
      * Move armies after conquering a territory
-     * @param rm risk model 
+     *
+     * @param rm risk model
      */
     @Override
     public void moveArmies(RiskModel rm) {
@@ -76,6 +82,7 @@ public class CheaterStrategy implements Strategy {
 
     /**
      * Exchange card for computer players
+     *
      * @param rm risk model
      * @return true if it is successful
      */
@@ -86,7 +93,8 @@ public class CheaterStrategy implements Strategy {
 
     /**
      * Defense for computer player
-     * @param rm risk model 
+     *
+     * @param rm risk model
      */
     @Override
     public void defense(RiskModel rm) {
@@ -95,13 +103,14 @@ public class CheaterStrategy implements Strategy {
 
     /**
      * Startup movement
-     * @param rm risk model 
+     *
+     * @param rm risk model
      */
     @Override
     public void startup(RiskModel rm) {
-        TerritoryModel territoryClicked=rm.randomTerritory((List < TerritoryModel >)rm.getMap().getTerritories().stream()
-                                                                                                            .filter(t -> t.getOwner()==null || t.getOwner()==rm.getCurrentPlayer())
-                                                                                                            .collect(Collectors.toCollection(LinkedList::new)));
+        TerritoryModel territoryClicked = rm.randomTerritory((List< TerritoryModel>) rm.getMap().getTerritories().stream()
+                .filter(t -> t.getOwner() == null || t.getOwner() == rm.getCurrentPlayer())
+                .collect(Collectors.toCollection(LinkedList::new)));
         rm.startupMove(territoryClicked);
     }
 
