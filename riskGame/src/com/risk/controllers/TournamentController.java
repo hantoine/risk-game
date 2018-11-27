@@ -47,7 +47,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
     /**
      * Period between to savings in player per map per max turn per nbGamePerMap
      */
-    static final int SAVING_PERIOD = 1;
+    static final float SAVING_PERIOD = 0.1f;
     /**
      * Number of attempt since last saving
      */
@@ -193,11 +193,11 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
         }
 
         nbSaveAttempts++;
-        int totalSaveEvery = SAVING_PERIOD
+        int totalSaveEvery = (int) (SAVING_PERIOD
                 * this.tm.getMapsPaths().size()
                 * this.tm.getNbGamePerMap()
                 * this.tm.getPlayerStategies().size()
-                * this.tm.getMaximumTurnPerGame();
+                * this.tm.getMaximumTurnPerGame());
         if (nbSaveAttempts % totalSaveEvery == 0) {
             return;
         }
