@@ -5,7 +5,6 @@
  */
 package com.risk.models;
 
-import com.risk.views.game.AttackView;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
@@ -277,15 +276,6 @@ public final class RiskModel extends Observable implements Serializable {
         }
 
         addNewLogEvent("Territories are assigned randomly to players");
-    }
-
-    /**
-     * This method is to add the observer
-     *
-     * @param attackView the view which is gonna be added
-     */
-    public void addObserverToAttack(AttackView attackView) {
-        // this.getCurrentPlayer().getCurrentAttack().addObserver(attackView);
     }
 
     /**
