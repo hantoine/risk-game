@@ -71,9 +71,10 @@ public class LogWriter {
      * @param msg Log message to write to the file
      */
     public void log(String msg) {
-        if (msg.isEmpty()) {
+        if (msg.isEmpty() || out == null) {
             return;
         }
+
         try {
             out.write(msg + "\n"); //write the log
             out.flush();
@@ -92,16 +93,24 @@ public class LogWriter {
     @Override
     public void finalize() throws Throwable {
         try {
-            if (this.out != null) {
-                try {
-                    out.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(LogWriter.class.getName())
-                            .log(Level.SEVERE, null, ex);
-                }
-            }
+            this.close();
         } finally {
             super.finalize();
+        }
+    }
+
+    /**
+     * Close the file currently opened.
+     */
+    public void close() {
+        if (this.out != null) {
+            try {
+                out.close();
+                out = null;
+            } catch (IOException ex) {
+                Logger.getLogger(LogWriter.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

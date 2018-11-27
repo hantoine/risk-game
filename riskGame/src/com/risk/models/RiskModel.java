@@ -7,8 +7,6 @@ package com.risk.models;
 
 import com.risk.views.game.AttackView;
 import java.awt.Color;
-import static java.lang.Integer.max;
-import static java.lang.Integer.min;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -92,7 +90,7 @@ public final class RiskModel extends Observable implements Serializable {
     /**
      * In charge of writing all logs from this game to a log file
      */
-    private LogWriter logWriter;
+    transient private LogWriter logWriter;
 
     /**
      * Constructor of the model It includes son random players
@@ -503,6 +501,11 @@ public final class RiskModel extends Observable implements Serializable {
      * Assigns turn to a player from the list
      */
     public void nextTurn() {
+        if (this.getWinningPlayer() != null || this.nbTurnBeforeDraw <= 1) {
+            this.nbTurnBeforeDraw--;
+            return;
+        }
+
         this.setTurn((this.getTurn() + 1) % this.getPlayerList().size());
         this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
 
@@ -661,6 +664,9 @@ public final class RiskModel extends Observable implements Serializable {
         if (winningPlayer != null) {
             addNewEvent(this.getWinningPlayer().getName() + " win the game");
             addNewLogEvent(this.getWinningPlayer().getName() + " win the game");
+            if (this.logWriter != null) {
+                this.logWriter.close();
+            }
         } else {
             setChanged();
             notifyObservers();
@@ -691,8 +697,13 @@ public final class RiskModel extends Observable implements Serializable {
         executeEndOfPhaseSteps();
         this.nextPhase();
 
-        if (this.nbTurnBeforeDraw > 0) {
+        if (this.getWinningPlayer() == null && this.nbTurnBeforeDraw > 0) {
             executeBeginningOfPhaseSteps();
+        } else {
+            this.addNewLogEvent("No player has won before the maximum number of turn, this game is a draw");
+            if (this.logWriter != null) {
+                this.logWriter.close();
+            }
         }
 
         setChanged();
@@ -826,13 +837,13 @@ public final class RiskModel extends Observable implements Serializable {
         previousPlayerList.stream()
                 .filter(p -> p.getNbTerritoriesOwned() == 0)
                 .forEach((p) -> {
-                    this.removePlayer(p);
                     this.currentPlayer.stealCardsFrom(p);
                     addNewLogEvent(String.format(
                             "%s has no more territories, "
                             + "it is eliminated from the game",
                             p.getName()
                     ));
+                    this.removePlayer(p);
                 });
 
         /*
@@ -873,7 +884,7 @@ public final class RiskModel extends Observable implements Serializable {
     }
 
     /**
-     * Exception for fortification movement 
+     * Exception for fortification movement
      */
     public static class FortificationMoveImpossible extends Exception {
 
@@ -1074,7 +1085,7 @@ public final class RiskModel extends Observable implements Serializable {
 
             this.getCurrentPlayer().setAttackValues(nbDice);
             this.getCurrentPlayer().setDefenseValues(1);
-            
+
             this.performAttack(this.getCurrentPlayer());
 
             this.getCurrentPlayer().moveArmies();
