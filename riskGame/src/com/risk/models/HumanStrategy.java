@@ -5,14 +5,18 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
+
 /**
  * Human strategy
+ *
  * @author Nellybett
  */
-public class HumanStrategy implements Strategy{
+public class HumanStrategy implements Strategy, Serializable {
 
     /**
      * Reinforcement for human
+     *
      * @param rm risk model
      */
     @Override
@@ -23,33 +27,37 @@ public class HumanStrategy implements Strategy{
 
     /**
      * Depends on events
+     *
      * @param playGame risk model
      */
     @Override
     public void attack(RiskModel playGame) {
-        
+
     }
 
     /**
      * Depends on events
+     *
      * @param playGame risk model
      */
     @Override
     public void fortification(RiskModel playGame) {
-        
+
     }
 
     /**
      * Depends on events
+     *
      * @param rm risk model
      */
     @Override
     public void moveArmies(RiskModel rm) {
-        
+
     }
 
     /**
      * Exchange cards for human
+     *
      * @param rm risk model
      * @return true if cards were exchange
      */
@@ -60,20 +68,22 @@ public class HumanStrategy implements Strategy{
 
     /**
      * Depends on events
+     *
      * @param rm risk model
      */
     @Override
     public void defense(RiskModel rm) {
-        
+
     }
 
     /**
      * Depends on events
+     *
      * @param playGame risk model
      */
     @Override
     public void startup(RiskModel playGame) {
-        
+
     }
-    
+
 }

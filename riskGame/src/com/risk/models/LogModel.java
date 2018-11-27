@@ -5,11 +5,13 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
+
 /**
  *
  * @author hantoine
  */
-public class LogModel {
+public class LogModel implements Serializable {
 
     String content;
 

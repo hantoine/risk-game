@@ -17,7 +17,9 @@ import org.junit.runners.Suite;
     MapFileManagementTest.class,
     PlayerModelTest.class,
     AttackMoveTest.class,
-    MapModelTest.class
+    MapModelTest.class,
+    RiskModelTest.class,
+    TournamentModelTest.class
 })
 
 /**
