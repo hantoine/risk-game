@@ -25,6 +25,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -297,10 +298,32 @@ public class MapEditorController {
 
     }
 
+    /**
+     * Make the edited map model identical to the given map
+     *
+     * @param newMap Map to load in the editor
+     */
     private void loadMapIntoMapEditorModel(MapModel newMap) {
         //clear existing map
         this.editedMap.clearMap();
 
+        //set new image
+        if (newMap.getImage() != null) {
+            this.editedMap.setImage(newMap.getImage(), new Dimension(200, 50));
+        }
+
+        loadContIntoMapEditorModel(newMap.getContinents());
+        loadTerrIntoMapEditorModel(newMap.getTerritories());
+
+        updateConfigurationInfo(newMap);
+    }
+
+    /**
+     * Remove all continents from the current editedMap and load the given ones
+     *
+     * @param cont Continents to load in the edited map
+     */
+    private void loadContIntoMapEditorModel(Collection<ContinentModel> cont) {
         //get the default continent to delete
         List<String> remainingContinents = this.editedMap.getContinentList();
         if (remainingContinents.size() != 1) {
@@ -308,13 +331,8 @@ public class MapEditorController {
         }
         String continentToDelete = remainingContinents.get(0);
 
-        //set new image
-        if (newMap.getImage() != null) {
-            this.editedMap.setImage(newMap.getImage(), new Dimension(200, 50));
-        }
-
         //add continents
-        for (ContinentModel c : newMap.getContinents()) {
+        for (ContinentModel c : cont) {
             if (c.getName().equals(continentToDelete)) {
                 Map<String, String> data = new HashMap<>();
                 data.put("name", c.getName());
@@ -330,19 +348,28 @@ public class MapEditorController {
         if (!continentToDelete.equals("")) {
             this.editedMap.removeContinent(continentToDelete);
         }
+    }
 
-        //add territories
-        newMap.getTerritories().forEach((t) -> {
-            this.editedMap.loadTerritory(t.getPositionX(), t.getPositionY(), t.getName(), t.getContinentName());
+    /**
+     * Remove all territories from the current editedMap and load the given ones
+     *
+     * @param terr Territories to load in the edited map
+     */
+    private void loadTerrIntoMapEditorModel(Collection<TerritoryModel> terr) {
+        terr.forEach((t) -> {
+            this.editedMap.loadTerritory(
+                    t.getPositionX(),
+                    t.getPositionY(),
+                    t.getName(),
+                    t.getContinentName()
+            );
         });
 
-        newMap.getTerritories().forEach((t) -> {
+        terr.forEach((t) -> {
             t.getAdj().stream().forEach((ta) -> {
                 this.editedMap.addLink(t.getName(), ta.getName());
             });
         });
-
-        updateConfigurationInfo(newMap);
     }
 
     /**
