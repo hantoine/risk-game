@@ -6,7 +6,9 @@
 package com.risk.models;
 
 import static java.lang.Integer.min;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -25,6 +27,9 @@ public class RandomStrategy implements Strategy {
      */
     private boolean firstAttack = true;
 
+    TerritoryModel selectedTerritoryAttack;
+    TerritoryModel selectedAttacked;
+        
     /**
      * Reinforces a random territory
      *
@@ -32,13 +37,14 @@ public class RandomStrategy implements Strategy {
      */
     @Override
     public void reinforcement(RiskModel rm) {
+        System.out.println("random reinforcement");
         rm.aIReinforcement();
         int armiesReinforcement = rm.getCurrentPlayer().getNbArmiesAvailable();
 
         while (armiesReinforcement > 0) {
             TerritoryModel territorySelected = rm.randomTerritory(rm.getCurrentPlayer().getTerritoryOwned());
             rm.reinforcementIntent(territorySelected);
-            armiesReinforcement = armiesReinforcement - 1;
+            armiesReinforcement--;
         }
 
     }
@@ -50,46 +56,29 @@ public class RandomStrategy implements Strategy {
      */
     @Override
     public void attack(RiskModel rm) {
-
-        setRandom(getTotalAttacks(rm));
-
-        TerritoryModel selectedTerritoryAttack = null;
-        LinkedList<TerritoryModel> aux = new LinkedList<TerritoryModel>();
-
-        for (TerritoryModel terAux : rm.getCurrentPlayer().getTerritoryOwned()) {
-            if (terAux.getAdj().stream()
-                    .anyMatch(ta -> !(rm.getCurrentPlayer().getTerritoryOwned().contains(ta))) && terAux.getNumArmies() > 1) {
-                aux.add(terAux);
-            }
-        }
-
-        if (!aux.isEmpty()) {
-            selectedTerritoryAttack = rm.randomTerritory(aux);
-        }
-
+        System.out.println("random attack");
+        setRandom(min(getTotalAttacks(rm),15));
+        selectTerritory(rm);
         if (selectedTerritoryAttack != null) {
-            TerritoryModel dest = selectedTerritoryAttack.getAdj().stream()
-                    .filter(ad -> !(rm.getCurrentPlayer().getTerritoryOwned().contains(ad)))
-                    .findAny()
-                    .orElse(null);
-
-            if (selectedTerritoryAttack.getNumArmies() > 1 && dest != null) {
-                setRandomNumber(getRandomNumber() - 1);
-                int numDice = min(selectedTerritoryAttack.getNumArmies() - 1, 3);
-                rm.attackIntent(selectedTerritoryAttack, dest);
-                rm.continueAttack(numDice);
-
-                if (getRandomNumber() == 0) {
-                    setFirstAttack(true);
+            //If not last attack
+            if (selectedTerritoryAttack.getNumArmies() > 1) {
+                this.randomNumber--;
+                //If max random number of attacks are done 
+                if (this.randomNumber == 0) {
+                    this.firstAttack=true;
                     rm.finishPhase();
+                }else{
+                    int numDice = min(selectedTerritoryAttack.getNumArmies() - 1, 3);
+                    rm.attackIntent(selectedTerritoryAttack, selectedAttacked);
+                    rm.continueAttack(numDice);
                 }
-
+            //Last attack
             } else {
                 rm.executeAttack();
             }
 
         } else {
-            setFirstAttack(true);
+            this.firstAttack=true;
             rm.finishPhase();
         }
 
@@ -102,21 +91,32 @@ public class RandomStrategy implements Strategy {
      */
     @Override
     public void fortification(RiskModel rm) {
-
-        TerritoryModel dest = rm.randomTerritory(rm.getCurrentPlayer().getTerritoryOwned().stream()
-                .filter(t -> t.getAdj().stream()
-                .anyMatch(ta -> rm.getCurrentPlayer().getTerritoryOwned().contains(ta)))
-                .collect(Collectors.toCollection(LinkedList::new)));
-
+        System.out.println("random fortification");
+        TerritoryModel dest = null;
         TerritoryModel source = null;
-        if (dest != null) {
-            for (TerritoryModel t : dest.getAdj()) {
-                if (rm.getCurrentPlayer().getTerritoryOwned().contains(t) && (source == null || source.getNumArmies() < t.getNumArmies())) {
-                    source = t;
-                }
-            }
 
-            while (source != null && source.getNumArmies() > 1) {
+        List<TerritoryModel> sortedTerrs = 
+                new LinkedList<>(rm.getCurrentPlayer().getTerritoryOwned());
+        Collections.shuffle(sortedTerrs);
+        
+        
+        for (TerritoryModel d : sortedTerrs) {
+            TerritoryModel s = 
+                    rm.getCurrentPlayer().getTerritoryOwned().stream()
+                            .filter((t) -> t.getAdj().contains(d) && t.getNumArmies()>1 && !t.getName().equals(d.getName()))
+                            .findFirst().orElse(null);
+           
+            if(s != null) {
+                source = s;
+                dest = d;
+                break;
+            }
+            
+        }
+
+        // no fortification move possible
+        if(source != null) {
+            while (source.getNumArmies() > 1) {
                 rm.fortificationIntent(source, dest);
             }
         }
@@ -174,10 +174,11 @@ public class RandomStrategy implements Strategy {
      * @param range the possible number of attacks
      */
     private void setRandom(int range) {
-        if (isFirstAttack()) {
-            this.setRandomNumber((int) (Math.random() * range + 1));
-            setFirstAttack(false);
+        if (this.firstAttack) {
+            this.randomNumber=((int) (Math.random() * range + 1));
+            this.firstAttack=false;
         }
+        
     }
 
     /**
@@ -188,9 +189,12 @@ public class RandomStrategy implements Strategy {
      */
     private int getTotalAttacks(RiskModel rm) {
         int numberAttacks = 0;
-        LinkedList<TerritoryModel> possibleAttackers = rm.getCurrentPlayer().getTerritoryOwned().stream()
-                .filter(t -> t.getAdj().stream()
-                .anyMatch(ta -> !rm.getCurrentPlayer().getTerritoryOwned().contains(ta)))
+        LinkedList<TerritoryModel> possibleAttackers = 
+                rm.getCurrentPlayer().getTerritoryOwned().stream()
+                .filter(t-> (t.getAdj().stream()
+                                      .filter(ta -> !rm.getCurrentPlayer().getTerritoryOwned().contains(ta))
+                                      .findAny()
+                                      .orElse(null))!=null)
                 .collect(Collectors.toCollection(LinkedList::new));
 
         for (TerritoryModel t : possibleAttackers) {
@@ -199,33 +203,34 @@ public class RandomStrategy implements Strategy {
 
         return numberAttacks;
     }
-
+    
     /**
-     * @return the randomNumber
-     */
-    public int getRandomNumber() {
-        return randomNumber;
-    }
+     * Select the territory for the attack
+     * @param rm risk model
+    */
+    public void selectTerritory(RiskModel rm) {
 
-    /**
-     * @param randomNumber the randomNumber to set
-     */
-    public void setRandomNumber(int randomNumber) {
-        this.randomNumber = randomNumber;
-    }
-
-    /**
-     * @return the firstAttack
-     */
-    public boolean isFirstAttack() {
-        return firstAttack;
-    }
-
-    /**
-     * @param firstAttack the firstAttack to set
-     */
-    public void setFirstAttack(boolean firstAttack) {
-        this.firstAttack = firstAttack;
+        selectedTerritoryAttack = null;
+        selectedAttacked=null;
+        TerritoryModel aux;
+        List<TerritoryModel> sortedTerr = new LinkedList<>(rm.getCurrentPlayer().getTerritoryOwned());
+        Collections.shuffle(sortedTerr);
+        
+        for (TerritoryModel t : sortedTerr) {
+            aux=null;
+            if (t.getNumArmies() > 1){
+                aux=t.getAdj().stream()
+                            .filter(ta -> (!(rm.getCurrentPlayer().getTerritoryOwned().contains(ta))))
+                            .findAny()
+                            .orElse(null);
+            }
+                    
+            if (aux!=null) {
+                selectedTerritoryAttack = t;
+                selectedAttacked=aux;
+            }
+        }
+        
     }
 
 }

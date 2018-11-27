@@ -953,7 +953,7 @@ public class PlayerModel extends Observable implements Serializable {
         if (this.getCurrentAttack() != null) {
             if (this.getCurrentAttack().getDest().getNumArmies() == 0) {
                 int diceAttack = this.getCurrentAttack().getNbDiceAttack();
-                this.game.moveArmiesToConqueredTerritory(diceAttack);
+                this.game.moveArmiesToConqueredTerritory(max(diceAttack,this.currentAttack.getSource().getNumArmies()-1));
             }
         }
     }
