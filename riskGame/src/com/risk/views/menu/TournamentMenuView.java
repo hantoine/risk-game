@@ -10,16 +10,19 @@ import com.risk.models.TournamentModel;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * This class represents the tournament view
@@ -58,6 +61,12 @@ public class TournamentMenuView extends JFrame implements Observer {
     JButton playButton;
 
     /**
+     * Load tournament button
+     *
+     */
+    JButton loadButton;
+
+    /**
      * Constructor
      *
      * @throws HeadlessException HeadlessException
@@ -79,6 +88,7 @@ public class TournamentMenuView extends JFrame implements Observer {
         nbMaximumTurnPerGame = new JSpinner(
                 new SpinnerNumberModel(30, 10, 50, 1));
         playButton = new JButton("Play");
+        loadButton = new JButton("Load");
 
         GroupLayout gl = new GroupLayout(this.getContentPane());
         this.getContentPane().setLayout(gl);
@@ -102,7 +112,10 @@ public class TournamentMenuView extends JFrame implements Observer {
                                 GroupLayout.DEFAULT_SIZE,
                                 GroupLayout.PREFERRED_SIZE)
                 )
-                .addComponent(playButton)
+                .addGroup(gl.createParallelGroup()
+                        .addComponent(playButton)
+                        .addComponent(loadButton)
+                )
         );
         gl.setHorizontalGroup(gl.createParallelGroup()
                 .addGroup(gl.createSequentialGroup()
@@ -121,8 +134,11 @@ public class TournamentMenuView extends JFrame implements Observer {
                                 GroupLayout.DEFAULT_SIZE,
                                 GroupLayout.PREFERRED_SIZE)
                 )
-                .addComponent(playButton,
-                        0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(gl.createSequentialGroup()
+                        .addComponent(playButton,
+                                0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(this.loadButton)
+                )
         );
 
         this.setVisible(true);
@@ -133,7 +149,10 @@ public class TournamentMenuView extends JFrame implements Observer {
      */
     private void centerWindow() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
+        setLocation(
+                dimension.width / 2 - this.getSize().width / 2,
+                dimension.height / 2 - this.getSize().height / 2
+        );
     }
 
     /**
@@ -148,11 +167,33 @@ public class TournamentMenuView extends JFrame implements Observer {
             ctrl.playTournament();
         });
         this.nbMaximumTurnPerGame.addChangeListener((ChangeEvent ce) -> {
-            ctrl.nbMaximumTurnPerGameChanged((int) ((JSpinner) ce.getSource()).getValue());
+            ctrl.nbMaximumTurnPerGameChanged(
+                    (int) ((JSpinner) ce.getSource()).getValue());
         });
 
         this.nbGamePerMap.addChangeListener((ChangeEvent ce) -> {
-            ctrl.nbGamePerMapChanged((int) ((JSpinner) ce.getSource()).getValue());
+            ctrl.nbGamePerMapChanged(
+                    (int) ((JSpinner) ce.getSource()).getValue());
+        });
+
+        this.loadButton.addActionListener((al) -> {
+            //create a new file chooser
+            JFileChooser fileChooser;
+            fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "saved tournament model",
+                    "ser"
+            );
+            fileChooser.setFileFilter(filter);
+            fileChooser.setCurrentDirectory(new File("." + File.separator));
+
+            //handle selection on file chooser
+            if (fileChooser.showOpenDialog(null)
+                    == JFileChooser.APPROVE_OPTION) {
+                ctrl.loadTournament(
+                        fileChooser.getSelectedFile().getAbsolutePath());
+
+            }
         });
     }
 

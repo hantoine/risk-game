@@ -15,7 +15,11 @@ import com.risk.views.menu.MapPathListPanel.MapPathListPanelListener;
 import com.risk.views.menu.StrategyListPanel.StrategyListPanelListener;
 import com.risk.views.menu.TournamentMenuView;
 import java.awt.event.ActionEvent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -26,7 +30,7 @@ import javax.swing.Timer;
  *
  * @author hantoine
  */
-public class TournamentController implements StrategyListPanelListener, MapPathListPanelListener {
+public class TournamentController implements StrategyListPanelListener, MapPathListPanelListener, TournamentSaverInterface {
 
     /**
      * View of tournament mode
@@ -40,6 +44,14 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
      * Show the tournament result view
      */
     TournamentResultsView trv;
+    /**
+     * Period between to savings in player per map per max turn per nbGamePerMap
+     */
+    static final int SAVING_PERIOD = 1;
+    /**
+     * Number of attempt since last saving
+     */
+    int nbSaveAttempts;
 
     /**
      * Constructor
@@ -50,6 +62,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
     public TournamentController(TournamentModel tm, TournamentMenuView tmv) {
         this.tm = tm;
         this.tmv = tmv;
+        nbSaveAttempts = 0;
     }
 
     /**
@@ -100,6 +113,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
      * Play the tournament
      */
     public void playTournament() {
+        tm.setTournamentSaver(this);
         try {
             tm.playTournament();
             checkTournamentFinished();
@@ -166,6 +180,62 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
             LogViewer lv = new LogViewer(logs);
         } catch (IOException ex) {
             this.tmv.showError("Failed to open log file");
+        }
+    }
+
+    /**
+     * Save the tournament to a file
+     */
+    @Override
+    public void saveTournament() {
+        if (!this.tm.isSavable()) {
+            return;
+        }
+
+        nbSaveAttempts++;
+        int totalSaveEvery = SAVING_PERIOD
+                * this.tm.getMapsPaths().size()
+                * this.tm.getNbGamePerMap()
+                * this.tm.getPlayerStategies().size()
+                * this.tm.getMaximumTurnPerGame();
+        if (nbSaveAttempts % totalSaveEvery == 0) {
+            return;
+        }
+
+        String path = Paths.get(
+                "savedTournaments",
+                String.format(
+                        "%s-%d.ser",
+                        this.tm.getFileIdentifier(),
+                        nbSaveAttempts / totalSaveEvery
+                )
+        ).toString();
+        try (FileOutputStream fileOut = new FileOutputStream(path);
+                ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            out.writeObject(this.tm);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * Load the tournament and continue it
+     *
+     * @param path Path of the file containing the tournament to load
+     */
+    public void loadTournament(String path) {
+        try (FileInputStream fileIn = new FileInputStream(path);
+                ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            this.tm = (TournamentModel) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e);
+            return;
+        }
+
+        tm.setTournamentSaver(this);
+        this.checkTournamentFinished();
+        if (!this.tm.isTournamentFinished()) {
+            this.tm.resume();
         }
     }
 

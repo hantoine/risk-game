@@ -5,7 +5,9 @@
  */
 package com.risk.models;
 
+import com.risk.controllers.TournamentSaverInterface;
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,7 +26,7 @@ import javax.swing.table.TableModel;
  *
  * @author hantoine
  */
-public class TournamentModel extends Observable implements TableModel {
+public class TournamentModel extends Observable implements TableModel, Serializable {
 
     /**
      * Set of the paths of the map to use in the tournament
@@ -45,14 +47,19 @@ public class TournamentModel extends Observable implements TableModel {
     int maximumTurnPerGame;
 
     /**
-     * Prefix for all log file produced during this tournament
+     * Prefix for all file produced during this tournament
      */
-    String logFileIdentifier;
+    String fileIdentifier;
 
     /**
      * Map containing RiskModels for each game of the tournament
      */
     Map<MapPath, List<RiskModel>> games;
+
+    /**
+     * Object in charge of saving the tournament progress
+     */
+    transient TournamentSaverInterface tournamentSaver;
 
     /**
      * Constructor
@@ -62,7 +69,7 @@ public class TournamentModel extends Observable implements TableModel {
         playerStategies = new LinkedHashSet<>();
         nbGamePerMap = 4;
         maximumTurnPerGame = 40;
-        logFileIdentifier = UUID.randomUUID().toString();
+        fileIdentifier = UUID.randomUUID().toString();
     }
 
     /**
@@ -83,6 +90,11 @@ public class TournamentModel extends Observable implements TableModel {
         if (this.mapsPaths.size() >= 5) {
             throw new IllegalStateException("Cannot add map, the maximum "
                     + "number of map for a tournament is already reached");
+        }
+
+        if (this.mapsPaths.stream()
+                .anyMatch((mp) -> mp.getPath().equals(mapPath.getPath()))) {
+            throw new IllegalStateException("Cannot add the same map twice");
         }
 
         MapModel testMap = new MapModel();
@@ -208,7 +220,7 @@ public class TournamentModel extends Observable implements TableModel {
      */
     public void playTournament()
             throws MapFileManagement.MapFileManagementException {
-        
+
         if (this.mapsPaths.isEmpty() || this.playerStategies.size() < 2) {
             return;
         }
@@ -261,9 +273,10 @@ public class TournamentModel extends Observable implements TableModel {
         rm.setPlayerList(preparePlayers());
         rm.setInterPhaseTime(0);
         rm.setNbTurnBeforeDraw(this.maximumTurnPerGame);
+        rm.setTournamentSaver(this.tournamentSaver);
 
         LogWriter newLogWriter = new LogWriter(String.format("%s-%s-%d.log",
-                logFileIdentifier, mapPath.toString(), index));
+                fileIdentifier, mapPath.toString(), index));
         rm.setLogWriter(newLogWriter);
         newLogWriter.openFile();
 
@@ -284,7 +297,11 @@ public class TournamentModel extends Observable implements TableModel {
     public String getLogFile(int i, int j) {
         String mapName = this.mapsPaths.stream().skip(i).findFirst().get()
                 .toString();
-        return String.format("%s-%s-%d.log", logFileIdentifier, mapName, j);
+        return String.format("%s-%s-%d.log", fileIdentifier, mapName, j);
+    }
+
+    public String getFileIdentifier() {
+        return fileIdentifier;
     }
 
     /**
@@ -437,6 +454,41 @@ public class TournamentModel extends Observable implements TableModel {
                         (g) -> (g.getWinningPlayer() != null || g.isDraw())
                 )
         );
+    }
+
+    /**
+     * Return whether or not this tournament is in a consistent state and can be
+     * saved
+     *
+     * @return whether or not this tournament is in a consistent state and can
+     * be saved
+     */
+    public boolean isSavable() {
+        return this.games.values().stream().allMatch((lg)
+                -> (lg.stream().allMatch((g)
+                        -> (g.getCurrentPlayer().getCurrentAttack() == null)
+                ))
+        );
+    }
+
+    /**
+     * Setter for the tournament saver attribute
+     *
+     * @param tournamentSaver The tournament saver to be set
+     */
+    public void setTournamentSaver(TournamentSaverInterface tournamentSaver) {
+        this.tournamentSaver = tournamentSaver;
+    }
+
+    /**
+     * Resume the tournament
+     */
+    public void resume() {
+        this.games.values().forEach((lg) -> {
+            lg.stream().forEach((g) -> {
+                g.continueGame();
+            });
+        });
     }
 
 }

@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
 import static java.lang.Integer.min;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
  *
  * @author Nellybett
  */
-public class AggressiveStrategy implements Strategy {
+public class AggressiveStrategy implements Strategy, Serializable {
 
     /**
      * Territory selected to attack

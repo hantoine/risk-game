@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
  *
  * @author Nellybett
  */
-public class BenevolentStrategy implements Strategy {
+public class BenevolentStrategy implements Strategy, Serializable {
 
     /**
      * Reinforces the weakest territory
