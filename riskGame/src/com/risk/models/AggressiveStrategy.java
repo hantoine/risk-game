@@ -21,13 +21,15 @@ public class AggressiveStrategy implements Strategy {
      */
     TerritoryModel selectedTerritoryAttack;
     TerritoryModel selectedAttacked;
+    TerritoryModel selectDestFortification;
+    TerritoryModel selectSourceFortification;
     /**
      * Reinforces the territory with more armies that can attack 
      * @param rm risk model
      */
     @Override
     public void reinforcement(RiskModel rm) {
-        System.out.println("aggressive reinforcement");
+        
         rm.aIReinforcement();
         int armiesReinforcement = rm.getCurrentPlayer().getNbArmiesAvailable();
         TerritoryModel selectedTerritory = null;
@@ -67,15 +69,13 @@ public class AggressiveStrategy implements Strategy {
      */
     @Override
     public void attack(RiskModel rm) {
-        System.out.println("aggressive attack");
+            
         selectTerritory(rm);
         if (selectedTerritoryAttack != null) {
-            
             if (selectedTerritoryAttack.getNumArmies() > 1) {
                 int numDice = min(selectedTerritoryAttack.getNumArmies() - 1, 3);
                 rm.attackIntent(selectedTerritoryAttack, selectedAttacked);
                 rm.continueAttack(numDice);
-
             } else {
                 rm.executeAttack();
             }
@@ -90,34 +90,30 @@ public class AggressiveStrategy implements Strategy {
      */
     @Override
     public void fortification(RiskModel rm) {
-        System.out.println("aggressive fortification");
-        TerritoryModel dest = null;
-        TerritoryModel source = null;
-
+        
         
         List<TerritoryModel> sortedTerrs = 
                 new LinkedList<>(rm.getCurrentPlayer().getTerritoryOwned());
         sortedTerrs.sort((a,b) -> a.getNumArmies()==b.getNumArmies()?0: a.getNumArmies()< b.getNumArmies() ? 1 : -1);
         
         
-        for (TerritoryModel d : sortedTerrs) {
-            TerritoryModel s = 
-                    rm.getCurrentPlayer().getTerritoryOwned().stream()
-                            .filter((t) -> t.getAdj().contains(d) && t.getNumArmies() > 1 && !t.getName().equals(d.getName()))
-                            .findFirst().orElse(null);
-            
-            if(s != null) {
-                source = s;
-                dest = d;
-                break;
-            }
-            
-        }
-
+        List<TerritoryModel> sortedTerrsOp =sortedTerrs.stream()
+                                    .filter(tr -> (tr.getAdj().stream()
+                                          .filter(ta -> !rm.getCurrentPlayer().getTerritoryOwned().contains(ta))
+                                          .findAny()
+                                          .orElse(null))!=null)
+                                    .collect(Collectors.toCollection(LinkedList::new));
+        
+        
+        findSource(sortedTerrsOp, rm);
+        if(this.selectSourceFortification==null)
+            findSource(sortedTerrs, rm);
+                
+        
         // no fortification move possible
-        if(source != null) {
-            while (source.getNumArmies() > 1) {
-                rm.fortificationIntent(source, dest);
+        if(this.selectSourceFortification != null) {
+            while (this.selectSourceFortification.getNumArmies() > 1) {
+                rm.fortificationIntent(this.selectSourceFortification, this.selectDestFortification);
             }
         }
 
@@ -200,6 +196,31 @@ public class AggressiveStrategy implements Strategy {
         }
         
        rm.startupMove(territoryClicked);
+    }
+    
+    /**
+     *
+     * @param sorted
+     * @param rm
+     */
+    public void findSource(List<TerritoryModel> sorted, RiskModel rm){
+        selectSourceFortification=null;
+        selectDestFortification=null;
+                
+        for (TerritoryModel d : sorted) {
+            TerritoryModel s = 
+                    rm.getCurrentPlayer().getTerritoryOwned().stream()
+                            .filter((t) -> t.getAdj().contains(d) && t.getNumArmies() > 1 && !t.getName().equals(d.getName()))
+                            .findFirst().orElse(null);
+            
+            if(s != null) {
+                selectSourceFortification = s;
+                selectDestFortification = d;
+                break;
+            }
+            
+        }
+                
     }
 
 }

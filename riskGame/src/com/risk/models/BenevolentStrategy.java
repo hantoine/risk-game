@@ -72,8 +72,7 @@ public class BenevolentStrategy implements Strategy {
                 dest = d;
                 break;
             }
-            
-            System.out.println("Destination:"+d+"source: "+s);
+           
         }
 
         // no fortification move possible
