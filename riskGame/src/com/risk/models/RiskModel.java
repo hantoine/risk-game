@@ -131,7 +131,7 @@ public final class RiskModel extends Observable implements Serializable {
     /**
      * Set logs to be saved into the model before serializing the model
      *
-     * @param logsBackup
+     * @param logsBackup list of backup logs
      */
     public void setSavedLogs(LinkedList<String> logsBackup) {
         this.logsBackup = logsBackup;
@@ -140,7 +140,7 @@ public final class RiskModel extends Observable implements Serializable {
     /**
      * Get saved logs of a game being loaded
      *
-     * @return
+     * @return list of logs being currently displayed
      */
     public LinkedList<String> getLogs() {
         return this.logsBackup;
@@ -240,6 +240,8 @@ public final class RiskModel extends Observable implements Serializable {
 
     /**
      * Return true if the game finished with a draw
+     *
+     * @return boolean
      */
     public boolean isDraw() {
         return this.nbTurnBeforeDraw <= 0;

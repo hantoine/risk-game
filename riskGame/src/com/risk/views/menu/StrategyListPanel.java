@@ -24,11 +24,26 @@ import javax.swing.border.EtchedBorder;
  */
 public class StrategyListPanel extends JPanel {
 
+    /**
+     * Strategy combo box
+     */
     JComboBox<Strategy.Type> strategyCombo;
+    /**
+     * Button for add players
+     */
     JButton addButton;
+    /**
+     * Show strategy list
+     */
     JPanel strategiesList;
+    /**
+     * Strategy list panel listener
+     */
     StrategyListPanelListener listener;
 
+    /**
+     * Constructor
+     */
     public StrategyListPanel() {
         strategyCombo = new JComboBox<>(
                 Arrays.stream(Strategy.Type.values())
@@ -77,6 +92,11 @@ public class StrategyListPanel extends JPanel {
         ));
     }
 
+    /**
+     * Update strategy list panel
+     *
+     * @param tm tournament model
+     */
     public void updateView(TournamentModel tm) {
         this.strategiesList.removeAll();
 
@@ -105,6 +125,11 @@ public class StrategyListPanel extends JPanel {
         this.repaint();
     }
 
+    /**
+     * Set listener for strategy list panel
+     *
+     * @param listener StrategyListPanelListener
+     */
     public void setListener(StrategyListPanelListener listener) {
         this.addButton.addActionListener((ActionEvent ae) -> {
             listener.strategyAdded(
@@ -114,10 +139,23 @@ public class StrategyListPanel extends JPanel {
         this.listener = listener;
     }
 
+    /**
+     * Interface for strategy list panel listener
+     */
     public static interface StrategyListPanelListener {
 
+        /**
+         * Add strategy to strategy list panel
+         *
+         * @param strategyType strategy type
+         */
         void strategyAdded(Strategy.Type strategyType);
 
+        /**
+         * Remove strategy from strategy list panel
+         *
+         * @param strategyType strategy type
+         */
         void strategyRemoved(Strategy.Type strategyType);
 
     }

@@ -14,18 +14,30 @@ import com.risk.views.editor.MapEditorView;
 import com.risk.views.menu.TournamentMenuView;
 
 /**
+ * Main menu controller
  *
  * @author hantoine
  */
 public class MainMenuController {
 
+    /**
+     * Main menu view for choosing mode and map editor
+     */
     MainMenuView mmv;
 
+    /**
+     * Constructor
+     *
+     * @param mmv Main menu view
+     */
     public MainMenuController(MainMenuView mmv) {
         this.mmv = mmv;
         this.mmv.setVisible(true);
     }
 
+    /**
+     * Choose single game mode
+     */
     public void startSingleGameMode() {
         RiskModel riskModel = new RiskModel();
         RiskView riskView = new RiskView();
@@ -34,6 +46,9 @@ public class MainMenuController {
         this.mmv.close();
     }
 
+    /**
+     * Choose tournament mode
+     */
     public void startTournamentMode() {
         TournamentModel tm = new TournamentModel();
         TournamentMenuView tmv = new TournamentMenuView();
@@ -43,6 +58,9 @@ public class MainMenuController {
         this.mmv.close();
     }
 
+    /**
+     * Choose map editor
+     */
     public void startMapEditor() {
         MapModel newMap = new MapModel();
         MapEditorController editorController = new MapEditorController(newMap);

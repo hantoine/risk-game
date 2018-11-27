@@ -16,13 +16,22 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 /**
+ * Window of showing the log
  *
  * @author hantoine
  */
 public class LogViewer extends JFrame {
 
+    /**
+     * Log text
+     */
     JTextArea logTextArea;
 
+    /**
+     * Constructor
+     *
+     * @param logs List of logs
+     */
     public LogViewer(List<String> logs) {
         this.setResizable(false);
 
@@ -54,6 +63,9 @@ public class LogViewer extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Set log window in the center
+     */
     private void centerWindow() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);

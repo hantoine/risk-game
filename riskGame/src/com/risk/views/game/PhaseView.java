@@ -117,21 +117,23 @@ public class PhaseView extends JPanel implements Observer {
 
     /**
      * Return current logs
+     *
      * @return linked list of logs being currently displayed
      */
-    public LinkedList<String> getLogs(){
+    public LinkedList<String> getLogs() {
         LinkedList<String> logsBackup = new LinkedList();
         logsBackup.addAll(Arrays.asList(actions.getText().split("\\n")));
         return logsBackup;
     }
-    
+
     /**
      * Setter for action attribute
-     * @param logs 
+     *
+     * @param logs list of logs
      */
-    public void setLogs(LinkedList<String> logs){
+    public void setLogs(LinkedList<String> logs) {
         actions.setText("");
-        logs.stream().forEach((l)->{
+        logs.stream().forEach((l) -> {
             actions.append(l + "\n");
         });
     }

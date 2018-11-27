@@ -137,7 +137,7 @@ public final class RiskController {
     /**
      * Method to save the state of the current game being played
      *
-     * @param filePath
+     * @param filePath save file path
      */
     public void saveGame(String filePath) {
         PlayerModel currentPlayer = this.modelRisk.getCurrentPlayer();
