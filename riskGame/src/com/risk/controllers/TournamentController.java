@@ -47,7 +47,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
     /**
      * Period between to savings in player per map per max turn per nbGamePerMap
      */
-    static final float SAVING_PERIOD = 0.1f;
+    static final float SAVING_PERIOD = 0.01f;
     /**
      * Number of attempt since last saving
      */
@@ -116,7 +116,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
         tm.setTournamentSaver(this);
         try {
             tm.playTournament();
-            checkTournamentFinished();
+            displayResultWhenFinished();
 
         } catch (MapFileManagement.MapFileManagementException ex) {
             tmv.showError(ex.getMessage());
@@ -127,7 +127,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
      * Check if tournament is finished every 300 milliseconds if finished, show
      * the result view
      */
-    private void checkTournamentFinished() {
+    private void displayResultWhenFinished() {
         if (tm.isTournamentFinished()) {
             trv = new TournamentResultsView(tm);
             tmv.setVisible(false);
@@ -135,7 +135,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
             trv.setController(this);
         } else {
             Timer timer = new Timer(300, (ActionEvent ae) -> {
-                this.checkTournamentFinished();
+                this.displayResultWhenFinished();
             });
             timer.setRepeats(false); // Only execute once
             timer.start();
@@ -198,7 +198,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
                 * this.tm.getNbGamePerMap()
                 * this.tm.getPlayerStategies().size()
                 * this.tm.getMaximumTurnPerGame());
-        if (nbSaveAttempts % totalSaveEvery == 0) {
+        if (nbSaveAttempts % totalSaveEvery != 0) {
             return;
         }
 
@@ -233,7 +233,7 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
         }
 
         tm.setTournamentSaver(this);
-        this.checkTournamentFinished();
+        this.displayResultWhenFinished();
         if (!this.tm.isTournamentFinished()) {
             this.tm.resume();
         }

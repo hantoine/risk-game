@@ -484,9 +484,21 @@ public class TournamentModel extends Observable implements TableModel, Serializa
      * Resume the tournament
      */
     public void resume() {
+        for (MapPath mp : this.mapsPaths) {
+            int index = 0;
+            for (RiskModel rm : this.games.get(mp)) {
+                LogWriter newLogWriter = new LogWriter(String.format("%s-%s-%d.log",
+                        fileIdentifier, mp.toString(), index));
+                rm.setLogWriter(newLogWriter);
+                newLogWriter.openFile();
+                rm.continueGame();
+                index++;
+            }
+        }
+
         this.games.values().forEach((lg) -> {
             lg.stream().forEach((g) -> {
-                g.continueGame();
+
             });
         });
     }
