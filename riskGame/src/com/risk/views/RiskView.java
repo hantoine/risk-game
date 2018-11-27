@@ -83,7 +83,7 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
         super("Risk Game");
 
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        this.setResizable(false);
+        this.setResizable(true);
 
         this.phaseAuxiliarPanel = new PhaseAuxiliar();
 

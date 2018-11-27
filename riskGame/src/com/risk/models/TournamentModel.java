@@ -208,7 +208,7 @@ public class TournamentModel extends Observable implements TableModel {
      */
     public void playTournament()
             throws MapFileManagement.MapFileManagementException {
-        
+
         if (this.mapsPaths.isEmpty() || this.playerStategies.size() < 2) {
             return;
         }
@@ -314,6 +314,9 @@ public class TournamentModel extends Observable implements TableModel {
      * @return map of games
      */
     public Map<MapPath, List<RiskModel>> getGames() {
+        if (games == null) {
+            return games;
+        }
         return Collections.unmodifiableMap(games);
     }
 
@@ -345,7 +348,10 @@ public class TournamentModel extends Observable implements TableModel {
      */
     @Override
     public String getColumnName(int i) {
-        return String.format("Game %d", i + 1);
+        if (i == 0) {
+            return "Maps";
+        }
+        return String.format("Game %d", i);
     }
 
     /**
