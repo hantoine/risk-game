@@ -5,8 +5,8 @@
  */
 package com.risk.controllers;
 
-import com.risk.models.LogWriter;
 import com.risk.models.HumanStrategy;
+import com.risk.models.LogWriter;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
 import com.risk.views.RiskView;
@@ -190,6 +190,7 @@ public final class RiskController {
         this.gameController = new GameController(getModelRisk());
 
         //setup observers + update the view
+        this.modelRisk.setLogWriter(new LogWriter());
         this.viewRisk.observeModel(getModelRisk());
         viewRisk.setController(this);
         viewRisk.setLogs(getModelRisk().getLogs());

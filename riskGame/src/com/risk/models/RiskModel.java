@@ -90,7 +90,7 @@ public final class RiskModel extends Observable implements Serializable {
     /**
      * In charge of writing all logs from this game to a log file
      */
-    private LogWriter logWriter;
+    transient private LogWriter logWriter;
 
     /**
      * Constructor of the model It includes son random players
