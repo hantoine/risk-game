@@ -45,7 +45,7 @@ public class AttackMoveTest {
         attack.setNbDiceAttack(2);
         int j = 1;
         int i = 1;
-        attack.compareDice(attacker, defense, j, i);
+        attack.compareDice(attacker[j], defense[i]);
         Assert.assertEquals(0, attack.getDest().getNumArmies());
     }
 
@@ -61,7 +61,7 @@ public class AttackMoveTest {
         attack.getDest().setNumArmies(0);
         int j = 1;
         int i = 1;
-        attack.compareDice(attacker, defense, j, i);
+        attack.compareDice(attacker[j], defense[i]);
         Assert.assertEquals(0, attack.getDest().getNumArmies());
     }
 
@@ -75,7 +75,7 @@ public class AttackMoveTest {
         attack.setNbDiceAttack(2);
         int j = 1;
         int i = 1;
-        attack.compareDice(attacker, defense, j, i);
+        attack.compareDice(attacker[j], defense[i]);
         assertEquals(6, attack.getSource().getNumArmies());
     }
 
@@ -86,7 +86,7 @@ public class AttackMoveTest {
     @Test
     public void testCreateDice() {
         int dice = 1;
-        int[] result = attack.createDice(dice);
+        int[] result = attack.rollDices(dice);
         assertTrue((result[0] <= 6 && result[0] > 0) && result.length == 1);
 
     }
@@ -96,41 +96,38 @@ public class AttackMoveTest {
      */
     @Test
     public void testRoolDice() {
-        int result = attack.roolDice();
+        int result = attack.rollDice();
         assertTrue((result <= 6 && result > 0));
 
     }
-    
+
     /**
-     * Test battle method
-     * One defense dice and two attack dice
+     * Test battle method One defense dice and two attack dice
      */
-    public void testBattle(){
+    public void testBattle() {
         System.out.println("battle");
         attack.getDest().setNumArmies(4);
-        attack.battle(2,1);
-        assertTrue(attack.getSource().getNumArmies()==6 || attack.getDest().getNumArmies()==3);
+        attack.battle(2, 1);
+        assertTrue(attack.getSource().getNumArmies() == 6 || attack.getDest().getNumArmies() == 3);
     }
-    
+
     /**
-     * Test battle method
-     * Two defense dice
+     * Test battle method Two defense dice
      */
-    public void testBattle1(){
+    public void testBattle1() {
         System.out.println("battle");
         attack.getDest().setNumArmies(4);
-        attack.battle(3,2);
-        assertTrue(attack.getSource().getNumArmies()==5 || attack.getDest().getNumArmies()==2);
+        attack.battle(3, 2);
+        assertTrue(attack.getSource().getNumArmies() == 5 || attack.getDest().getNumArmies() == 2);
     }
-    
+
     /**
-     * Test battle method
-     * Two defense dice one attack dice
+     * Test battle method Two defense dice one attack dice
      */
-    public void testBattle2(){
+    public void testBattle2() {
         System.out.println("battle");
         attack.getDest().setNumArmies(4);
-        attack.battle(1,2);
-        assertTrue(attack.getSource().getNumArmies()==6 || attack.getDest().getNumArmies()==3);
+        attack.battle(1, 2);
+        assertTrue(attack.getSource().getNumArmies() == 6 || attack.getDest().getNumArmies() == 3);
     }
 }

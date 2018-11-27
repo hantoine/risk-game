@@ -30,7 +30,7 @@ public class AttackMove extends Observable implements Serializable {
      */
     private PlayerModel attacker;
     /**
-     * 
+     *
      */
     private PlayerModel defensePlayer;
     /**
@@ -43,8 +43,6 @@ public class AttackMove extends Observable implements Serializable {
      */
     private int nbDiceDefense;
 
-
-
     /**
      * Constructor
      *
@@ -53,10 +51,10 @@ public class AttackMove extends Observable implements Serializable {
      * @param dest destiny of the attack
      */
     public AttackMove(PlayerModel attacker, TerritoryModel source, TerritoryModel dest) {
-        
+
         this.source = source;
         this.dest = dest;
-        this.defensePlayer=dest.getOwner();
+        this.defensePlayer = dest.getOwner();
         this.attacker = attacker;
         this.nbDiceAttack = -1;
         this.nbDiceDefense = 100;
@@ -105,37 +103,32 @@ public class AttackMove extends Observable implements Serializable {
      * @param diceAttacked number of dices selected by the attacked
      */
     public void battle(int diceAttack, int diceAttacked) {
-        String looser1 = null, looser2 = null;
-        
-        int[] attack = createDice(diceAttack);
-        int[] defense = createDice(diceAttacked);
-        
+        int[] attack = rollDices(diceAttack);
+        int[] defense = rollDices(diceAttacked);
+        int nbDiceToCompare = min(diceAttack, diceAttacked);
+        String[] lossingTerrNames = new String[nbDiceToCompare];
+
         Arrays.sort(attack);
         Arrays.sort(defense);
-
-        if(diceAttack>= diceAttacked){
-            if (diceAttacked == 1) {
-                looser1 = compareDice(attack, defense, attack.length - 1, 0);
-            } else {
-                looser1 = compareDice(attack, defense, attack.length - 1, 1);
-                looser2 = compareDice(attack, defense, attack.length - 2, 0);
-            }
-        }
-        if(diceAttack<diceAttacked && diceAttacked!=100){
-            looser1 = compareDice(attack, defense, 0, 1);
+        for (int i = 0; i < nbDiceToCompare; i++) {
+            lossingTerrNames[i] = compareDice(
+                    attack[attack.length - 1 - i],
+                    defense[defense.length - 1 - i]
+            );
         }
 
-        if(this.attacker.getGame()!=null)
-            this.attacker.addNewLogEvent(getBattleLogMsg(looser1, looser2));
+        if (this.attacker.getGame() != null) {
+            this.attacker.addNewLogEvent(getBattleLogMsg(lossingTerrNames));
+        }
     }
 
     /**
      * this method is to get battle log message
-     * @param firstLooser the first looser
-     * @param secondLooser the second looser
+     *
+     * @param loosers array of the names of territories loosing armies
      * @return the message
      */
-    private String getBattleLogMsg(String firstLooser, String secondLooser) {
+    private String getBattleLogMsg(String[] loosers) {
         String logMessage = String.format(
                 "%s launch battle between %s and %s",
                 this.attacker.getName(),
@@ -143,18 +136,18 @@ public class AttackMove extends Observable implements Serializable {
                 this.dest.getName()
         );
 
-        if (secondLooser == null) {
+        if (loosers.length == 1) {
             logMessage += String.format(
                     ", %s loose 1 army",
-                    firstLooser
+                    loosers[0]
             );
             return logMessage;
         }
 
-        if (firstLooser.equals(secondLooser)) {
+        if (loosers[0].equals(loosers[1])) {
             logMessage += String.format(
                     ", %s loose 2 armies",
-                    firstLooser
+                    loosers[0]
             );
 
         } else {
@@ -183,14 +176,12 @@ public class AttackMove extends Observable implements Serializable {
     /**
      * Compare results of rolling the dices
      *
-     * @param attacker attacker dices results
-     * @param defense defense dices results
-     * @param j position for attacker
-     * @param i position for defense
+     * @param attackerDiceValue the value of the dice of the attacker
+     * @param defenseDiceValue the value of the dice of the defense
      * @return the loosing territory name
      */
-    public String compareDice(int[] attacker, int[] defense, int j, int i) {
-        if (attacker[j] <= defense[i]) {
+    public String compareDice(int attackerDiceValue, int defenseDiceValue) {
+        if (attackerDiceValue <= defenseDiceValue) {
             this.getSource().setNumArmies(this.getSource().getNumArmies() - 1);
             return this.getSource().getName();
         } else {
@@ -210,20 +201,12 @@ public class AttackMove extends Observable implements Serializable {
             int nbArmiesInSrc = this.getSource().getNumArmies();
             int defenseArmies;
 
-            if (nbArmiesInSrc > 3) {
-                attacker.setAttackValues(3);
-                defenseArmies = min(this.getDest().getNumArmies(), this.getNbDiceAttack());
-                defenseArmies = min(defenseArmies, 2);
-                attacker.setDefenseValues(defenseArmies);
-                battle(3, defenseArmies);
-            } else {
-                attacker.setAttackValues(nbArmiesInSrc - 1);
-                defenseArmies = min(this.getDest().getNumArmies(), this.getNbDiceAttack());
-                defenseArmies = min(defenseArmies, 2);
-                attacker.setDefenseValues(defenseArmies);
-                battle((nbArmiesInSrc - 1), defenseArmies);
-            }
-
+            nbArmiesInSrc = nbArmiesInSrc > 3 ? 4 : nbArmiesInSrc;
+            attacker.setAttackValues(nbArmiesInSrc - 1);
+            defenseArmies = min(this.getDest().getNumArmies(), this.getNbDiceAttack());
+            defenseArmies = min(defenseArmies, 2);
+            attacker.setDefenseValues(defenseArmies);
+            battle((nbArmiesInSrc - 1), defenseArmies);
         }
     }
 
@@ -233,12 +216,12 @@ public class AttackMove extends Observable implements Serializable {
      * @param dice number of dices
      * @return the array
      */
-    public int[] createDice(int dice) {
+    public int[] rollDices(int dice) {
         int[] dices = new int[dice];
         int i = 0;
 
         while (i < dices.length) {
-            dices[i] = roolDice();
+            dices[i] = rollDice();
             i++;
         }
         return dices;
@@ -249,7 +232,7 @@ public class AttackMove extends Observable implements Serializable {
      *
      * @return random value
      */
-    int roolDice() {
+    int rollDice() {
         int range = 6;
         return (int) (Math.random() * range) + 1;
     }
@@ -295,7 +278,5 @@ public class AttackMove extends Observable implements Serializable {
     public void setDefensePlayer(PlayerModel defensePlayer) {
         this.defensePlayer = defensePlayer;
     }
-
-    
 
 }
