@@ -21,8 +21,17 @@ public class AggressiveStrategy implements Strategy {
      * Territory selected to attack
      */
     TerritoryModel selectedTerritoryAttack;
+    /**
+     * Territory selected to be attacked
+     */
     TerritoryModel selectedAttacked;
+    /**
+     * Territory selected to fortify
+     */
     TerritoryModel selectDestFortification;
+    /**
+     * Territory selected to be fortified
+     */
     TerritoryModel selectSourceFortification;
     /**
      * Reinforces the territory with more armies that can attack
@@ -215,9 +224,9 @@ public class AggressiveStrategy implements Strategy {
     }
     
     /**
-     *
-     * @param sorted
-     * @param rm
+     * Find the territories for a fortification move
+     * @param sorted the list of territories
+     * @param rm risk model
      */
     public void findSource(List<TerritoryModel> sorted, RiskModel rm){
         selectSourceFortification=null;
