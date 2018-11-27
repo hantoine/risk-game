@@ -50,7 +50,7 @@ public class MapEditorController {
     /**
      * Model of the map that is edited.
      */
-    public MapModel newMap;
+    public MapModel editedMap;
 
     /**
      * Constructor
@@ -59,7 +59,7 @@ public class MapEditorController {
      * controller for updates.
      */
     public MapEditorController(MapModel mapModel) {
-        newMap = mapModel;
+        editedMap = mapModel;
     }
 
     /**
@@ -68,7 +68,7 @@ public class MapEditorController {
      * @return the map being edited
      */
     public MapModel getNewMap() {
-        return newMap;
+        return editedMap;
     }
 
     /**
@@ -77,7 +77,7 @@ public class MapEditorController {
      * @return the mouse listener of the view of the map being edited
      */
     public MapMouseController getMapMouseListener() {
-        return new MapMouseController(newMap);
+        return new MapMouseController(editedMap);
     }
 
     /**
@@ -86,7 +86,7 @@ public class MapEditorController {
      * @return the button listener used for the territories' buttons
      */
     public ButtonMouseController getTerritoryMouseListener() {
-        return new ButtonMouseController(newMap);
+        return new ButtonMouseController(editedMap);
     }
 
     /**
@@ -96,7 +96,7 @@ public class MapEditorController {
      * @return the listener of the button for adding new continents
      */
     public AddContinentButtonListener getAddContinentButtonListener() {
-        return new AddContinentButtonListener(newMap);
+        return new AddContinentButtonListener(editedMap);
     }
 
     /**
@@ -105,7 +105,7 @@ public class MapEditorController {
      * @return the mouse listener to edit or delete a continent from the list.
      */
     public ContinentMouseListener getContinentMouseListener() {
-        return new ContinentMouseListener(newMap);
+        return new ContinentMouseListener(editedMap);
     }
 
     /**
@@ -117,7 +117,7 @@ public class MapEditorController {
      * selected.
      */
     public selectBackImgListener getSelectBackImgListener(MapView mapPanel, MapEditorView editorPanel) {
-        return new selectBackImgListener(mapPanel, editorPanel, this.newMap);
+        return new selectBackImgListener(mapPanel, editorPanel, this.editedMap);
     }
 
     /**
@@ -125,7 +125,7 @@ public class MapEditorController {
      * updates the views too.
      */
     public void clearMapModel() {
-        this.newMap.clearMap();
+        this.editedMap.clearMap();
     }
 
     /**
@@ -284,60 +284,65 @@ public class MapEditorController {
      * @param view view of the map being edited
      */
     public void loadMapFromFile(String path, MapViewInterface view) {
-        MapModel map = new MapModel();
+        MapModel newMap = new MapModel();
 
         try {
-            MapFileManagement.createBoard(path, map);
+            MapFileManagement.createBoard(path, newMap);
         } catch (MapFileManagement.MapFileManagementException ex) {
             view.showError(ex.getMessage());
             return;
         }
 
+        this.loadMapIntoMapEditorModel(newMap);
+
+    }
+
+    private void loadMapIntoMapEditorModel(MapModel newMap) {
         //clear existing map
-        this.newMap.clearMap();
+        this.editedMap.clearMap();
 
         //get the default continent to delete
-        List<String> remainingContinents = this.newMap.getContinentList();
+        List<String> remainingContinents = this.editedMap.getContinentList();
         if (remainingContinents.size() != 1) {
             System.out.println("Wrong number of continents after the clear");
         }
         String continentToDelete = remainingContinents.get(0);
 
         //set new image
-        if (map.getImage() != null) {
-            this.newMap.setImage(map.getImage(), new Dimension(200, 50));
+        if (newMap.getImage() != null) {
+            this.editedMap.setImage(newMap.getImage(), new Dimension(200, 50));
         }
 
         //add continents
-        for (ContinentModel c : map.getContinents()) {
+        for (ContinentModel c : newMap.getContinents()) {
             if (c.getName().equals(continentToDelete)) {
                 Map<String, String> data = new HashMap<>();
                 data.put("name", c.getName());
                 data.put("newName", c.getName());
                 data.put("bonusScore", Integer.toString(c.getBonusScore()));
-                this.newMap.updateContinent(data);
+                this.editedMap.updateContinent(data);
                 continentToDelete = "";
             } else {
-                this.newMap.addContinent(c.getName(), c.getBonusScore());
+                this.editedMap.addContinent(c.getName(), c.getBonusScore());
             }
         }
 
         if (!continentToDelete.equals("")) {
-            this.newMap.removeContinent(continentToDelete);
+            this.editedMap.removeContinent(continentToDelete);
         }
 
         //add territories
-        map.getTerritories().forEach((t) -> {
-            this.newMap.loadTerritory(t.getPositionX(), t.getPositionY(), t.getName(), t.getContinentName());
+        newMap.getTerritories().forEach((t) -> {
+            this.editedMap.loadTerritory(t.getPositionX(), t.getPositionY(), t.getName(), t.getContinentName());
         });
 
-        map.getTerritories().forEach((t) -> {
+        newMap.getTerritories().forEach((t) -> {
             t.getAdj().stream().forEach((ta) -> {
-                this.newMap.addLink(t.getName(), ta.getName());
+                this.editedMap.addLink(t.getName(), ta.getName());
             });
         });
 
-        updateConfigurationInfo(map);
+        updateConfigurationInfo(newMap);
     }
 
     /**
@@ -346,11 +351,11 @@ public class MapEditorController {
      * @param map model of a map that contains the new configuration parameters
      */
     public void updateConfigurationInfo(MapModel map) {
-        this.newMap.setAuthorConfig(map.getConfigurationInfo().getAuthor());
-        this.newMap.setScrollConfig(map.getConfigurationInfo().getScroll());
-        this.newMap.setWarnConfig(map.getConfigurationInfo().isWarn());
-        this.newMap.setWrapConfig(map.getConfigurationInfo().isWrap());
-        this.newMap.setImagePath(map.getConfigurationInfo().getImagePath());
+        this.editedMap.setAuthorConfig(map.getConfigurationInfo().getAuthor());
+        this.editedMap.setScrollConfig(map.getConfigurationInfo().getScroll());
+        this.editedMap.setWarnConfig(map.getConfigurationInfo().isWarn());
+        this.editedMap.setWrapConfig(map.getConfigurationInfo().isWrap());
+        this.editedMap.setImagePath(map.getConfigurationInfo().getImagePath());
     }
 
     /**
@@ -358,11 +363,12 @@ public class MapEditorController {
      * file
      *
      * @param path path to the new file
-     * @throws com.risk.models.MapFileManagement.MapFileManagementException exception for the method
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
+     * exception for the method
      */
     public void saveMapToFile(String path)
             throws MapFileManagement.MapFileManagementException {
-        MapFileManagement.generateBoardFile(path, this.newMap);
+        MapFileManagement.generateBoardFile(path, this.editedMap);
     }
 
     /**
@@ -458,8 +464,8 @@ public class MapEditorController {
      * @param targetButton button of the territory on the map view
      */
     public void updateTerritory(String territoryName, TerritoryButton2 targetButton) {
-        List<String> continentList = newMap.getContinentList();
-        TerritoryModel territoryModel = newMap.getTerritoryByName(territoryName);
+        List<String> continentList = editedMap.getContinentList();
+        TerritoryModel territoryModel = editedMap.getTerritoryByName(territoryName);
         String formerContinent = territoryModel.getContinentName();
         String continentName = territoryModel.getContinentName();
 
@@ -471,7 +477,7 @@ public class MapEditorController {
         if (!data.isEmpty()) {
             data.put("name", territoryName);
             data.put("formerContinent", formerContinent);
-            this.newMap.updateTerritoryName(data);
+            this.editedMap.updateTerritoryName(data);
         }
     }
 
@@ -483,7 +489,7 @@ public class MapEditorController {
      * button of the territory
      */
     public void linkTerritory(String territoryName, MapView clickedPanel) {
-        String[] territoryList = newMap.getPotentialNeighbours(territoryName);
+        String[] territoryList = editedMap.getPotentialNeighbours(territoryName);
         String neighbourName;
 
         if (territoryList.length == 0) {
@@ -494,7 +500,7 @@ public class MapEditorController {
         neighbourName = clickedPanel.createLink(territoryList, territoryName);
 
         if (!"".equals(neighbourName) && neighbourName != null) {
-            newMap.addLink(territoryName, neighbourName);
+            editedMap.addLink(territoryName, neighbourName);
         }
     }
 
@@ -509,7 +515,7 @@ public class MapEditorController {
         String neighbourName;
 
         //get list of neighbours' names
-        List<TerritoryModel> neighbourList = newMap.getTerritoryByName(territoryName).getAdj();
+        List<TerritoryModel> neighbourList = editedMap.getTerritoryByName(territoryName).getAdj();
 
         if (neighbourList.isEmpty()) {
             clickedPanel.showError("No neighbour found for this territory");
@@ -523,7 +529,7 @@ public class MapEditorController {
 
         neighbourName = clickedPanel.removeLink(neighbourStringList);
         if (!"".equals(neighbourName) && neighbourName != null) {
-            newMap.removeLink(territoryName, neighbourName);
+            editedMap.removeLink(territoryName, neighbourName);
         }
     }
 
@@ -702,7 +708,7 @@ public class MapEditorController {
      * @return a WarnCheckBoxListener
      */
     public WarnCheckBoxListener getWarnCheckBoxListener() {
-        return new WarnCheckBoxListener(this.newMap);
+        return new WarnCheckBoxListener(this.editedMap);
     }
 
     /**
@@ -711,7 +717,7 @@ public class MapEditorController {
      * @return a WrapCheckBoxListener
      */
     public WrapCheckBoxListener getWrapCheckBoxListener() {
-        return new WrapCheckBoxListener(this.newMap);
+        return new WrapCheckBoxListener(this.editedMap);
     }
 
     /**
@@ -720,7 +726,7 @@ public class MapEditorController {
      * @return a ScrollBoxListener
      */
     public ScrollBoxListener getScrollBoxListener() {
-        return new ScrollBoxListener(this.newMap);
+        return new ScrollBoxListener(this.editedMap);
     }
 
     /**
@@ -729,7 +735,7 @@ public class MapEditorController {
      * @return a AuthorTextFieldListener
      */
     public AuthorTextFieldListener getAuthorTextFieldListener() {
-        return new AuthorTextFieldListener(this.newMap);
+        return new AuthorTextFieldListener(this.editedMap);
     }
 
     /**
