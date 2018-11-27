@@ -48,7 +48,11 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
 
     @Override
     public void mapAdded(MapPath mapPath) {
-        tm.addMapsPath(mapPath);
+        try {
+            tm.addMapsPath(mapPath);
+        } catch (IllegalStateException e) {
+            this.tmv.showError(e.getMessage());
+        }
     }
 
     @Override

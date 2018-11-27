@@ -70,6 +70,19 @@ public class TournamentModel extends Observable implements TableModel {
     }
 
     public void addMapsPath(MapPath mapPath) {
+        if (this.mapsPaths.size() >= 5) {
+            throw new IllegalStateException("Cannot add map, the maximum "
+                    + "number of map for a tournament is already reached");
+        }
+
+        MapModel testMap = new MapModel();
+        try {
+            MapFileManagement.createBoard(mapPath.getPath(), testMap);
+        } catch (MapFileManagement.MapFileManagementException ex) {
+            throw new IllegalStateException("The map file" + mapPath.toString()
+                    + " is not valid");
+        }
+
         this.mapsPaths.add(mapPath);
 
         setChanged();
@@ -88,6 +101,11 @@ public class TournamentModel extends Observable implements TableModel {
     }
 
     public void addPlayerStategies(Strategy.Type playerStategy) {
+        if (playerStategy == Strategy.Type.HUMAN) {
+            throw new IllegalStateException("The tournament mode does not "
+                    + "support the human strategy.");
+        }
+
         this.playerStategies.add(playerStategy);
 
         setChanged();
@@ -106,6 +124,10 @@ public class TournamentModel extends Observable implements TableModel {
     }
 
     public void setNbGamePerMap(int nbGamePerMap) {
+        if (nbGamePerMap > 5) {
+            throw new IllegalStateException("The number of games per map "
+                    + "cannot exceed 5.");
+        }
         this.nbGamePerMap = nbGamePerMap;
 
         setChanged();
@@ -117,6 +139,11 @@ public class TournamentModel extends Observable implements TableModel {
     }
 
     public void setMaximumTurnPerGame(int maximumTurnPerGame) {
+        if (maximumTurnPerGame > 50) {
+            throw new IllegalStateException("Cannot set the maximum number of "
+                    + "turn per game, it cannot exceed 50 turns.");
+        }
+
         this.maximumTurnPerGame = maximumTurnPerGame;
 
         setChanged();
