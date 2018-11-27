@@ -25,10 +25,22 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class MapPathListPanel extends JPanel {
 
+    /**
+     * Add a map button
+     */
     JButton addButton;
+    /**
+     * Show the list of map paths
+     */
     JPanel mapPathList;
+    /**
+     * Listener of MapPathList panel
+     */
     MapPathListPanelListener listener;
 
+    /**
+     * Constructor
+     */
     public MapPathListPanel() {
 
         addButton = new JButton("Add Map");
@@ -55,6 +67,11 @@ public class MapPathListPanel extends JPanel {
         ));
     }
 
+    /**
+     * Update map path list panel
+     *
+     * @param tm Tournament model
+     */
     public void updateView(TournamentModel tm) {
         this.mapPathList.removeAll();
 
@@ -73,6 +90,11 @@ public class MapPathListPanel extends JPanel {
         this.repaint();
     }
 
+    /**
+     * Set listener for map list panel
+     *
+     * @param listener MapPathListPanelListener
+     */
     public void setListener(MapPathListPanelListener listener) {
         this.addButton.addActionListener((ActionEvent ae) -> {
             JFileChooser fileChooser;
@@ -91,10 +113,23 @@ public class MapPathListPanel extends JPanel {
         this.listener = listener;
     }
 
+    /**
+     * Interface for map path list panel listener
+     */
     public static interface MapPathListPanelListener {
 
+        /**
+         * Add map to map list panel
+         *
+         * @param mapPath map resource path
+         */
         void mapAdded(MapPath mapPath);
 
+        /**
+         * Remove map from map list panel
+         *
+         * @param mapPath map resource path
+         */
         void mapRemoved(MapPath mapPath);
     }
 

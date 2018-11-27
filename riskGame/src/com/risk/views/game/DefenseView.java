@@ -11,10 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
+ * Defense view
  *
  * @author Nellybett
  */
-public class DefenseView  extends JPanel {
+public class DefenseView extends JPanel {
+
     /**
      * Panel with the different buttons
      */
@@ -34,7 +36,6 @@ public class DefenseView  extends JPanel {
 
     /**
      * Constructor
-     *
      */
     public DefenseView() {
 
@@ -42,19 +43,17 @@ public class DefenseView  extends JPanel {
         options = new JButton[2];
         options[0] = new JButton("1");
         options[1] = new JButton("2");
-   
+
         actionSubject = new JLabel("Attacked");
         territoriesInvolve = new JLabel("");
 
         options[0].setSize(50, 70);
         options[1].setSize(50, 70);
 
-
         defenseOptions.add(actionSubject);
         defenseOptions.add(territoriesInvolve);
         defenseOptions.add(options[0]);
         defenseOptions.add(options[1]);
-     
 
         this.add(defenseOptions);
         this.setVisible(false);
@@ -72,7 +71,7 @@ public class DefenseView  extends JPanel {
         territoriesInvolve.setText(src + " vs " + dest);
 
         for (int i = 0; i < 2; i++) {
-            options[i].setEnabled(armies>i+1);
+            options[i].setEnabled(armies > i + 1);
             options[i].setVisible(true);
         }
     }

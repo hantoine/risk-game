@@ -22,19 +22,46 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 
 /**
+ * This class represents the tournament view
  *
  * @author hantoine
  */
 public class TournamentMenuView extends JFrame implements Observer {
 
+    /**
+     * Panel for adding strategies
+     */
     StrategyListPanel strategyListPanel;
+    /**
+     * Panel for choosing the map path
+     */
     MapPathListPanel mapPathListPanel;
+    /**
+     * Number of game for each map
+     */
     JLabel nbGamePerMapLabel;
+    /**
+     * Number of game for each map
+     */
     JSpinner nbGamePerMap;
+    /**
+     * Maximum number of turn in a game
+     */
     JLabel nbMaximumTurnPerGameLabel;
+    /**
+     * Maximum number of turn in a game
+     */
     JSpinner nbMaximumTurnPerGame;
+    /**
+     * Play tournament button
+     */
     JButton playButton;
 
+    /**
+     * Constructor
+     *
+     * @throws HeadlessException HeadlessException
+     */
     public TournamentMenuView() throws HeadlessException {
         this.setSize(604, 432);
         this.setResizable(false);
@@ -101,11 +128,19 @@ public class TournamentMenuView extends JFrame implements Observer {
         this.setVisible(true);
     }
 
+    /**
+     * Set the window in the center
+     */
     private void centerWindow() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
 
+    /**
+     * Set and add listeners for strategy panel and maps panel
+     *
+     * @param ctrl Tournament controller
+     */
     public void setController(TournamentController ctrl) {
         strategyListPanel.setListener(ctrl);
         mapPathListPanel.setListener(ctrl);
@@ -121,6 +156,12 @@ public class TournamentMenuView extends JFrame implements Observer {
         });
     }
 
+    /**
+     * Observer method
+     *
+     * @param o a tournament model
+     * @param o1 object
+     */
     @Override
     public void update(Observable o, Object o1) {
         if (o instanceof TournamentModel) {
@@ -130,6 +171,11 @@ public class TournamentMenuView extends JFrame implements Observer {
         }
     }
 
+    /**
+     * Show error message
+     *
+     * @param message error message
+     */
     public void showError(String message) {
         JOptionPane.showMessageDialog(
                 null,

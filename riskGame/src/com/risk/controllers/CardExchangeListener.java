@@ -25,7 +25,7 @@ public class CardExchangeListener extends MouseAdapter {
      */
     RiskModel rm;
     /**
-     *
+     * Game controller
      */
     GameController gc;
 

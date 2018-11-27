@@ -16,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 /**
+ * This class represents the domination percentage of each player
  *
  * @author hantoine
  */

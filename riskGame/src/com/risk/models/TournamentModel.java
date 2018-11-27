@@ -65,10 +65,20 @@ public class TournamentModel extends Observable implements TableModel {
         logFileIdentifier = UUID.randomUUID().toString();
     }
 
+    /**
+     * Get collections of map paths
+     *
+     * @return Collections of map paths
+     */
     public Set<MapPath> getMapsPaths() {
         return Collections.unmodifiableSet(mapsPaths);
     }
 
+    /**
+     * Add a map to the set of map path
+     *
+     * @param mapPath map path
+     */
     public void addMapsPath(MapPath mapPath) {
         if (this.mapsPaths.size() >= 5) {
             throw new IllegalStateException("Cannot add map, the maximum "
@@ -89,6 +99,11 @@ public class TournamentModel extends Observable implements TableModel {
         notifyObservers();
     }
 
+    /**
+     * Remove a map from the set of map path
+     *
+     * @param mapPath Map path
+     */
     public void removeMapsPath(MapPath mapPath) {
         this.mapsPaths.remove(mapPath);
 
@@ -96,10 +111,20 @@ public class TournamentModel extends Observable implements TableModel {
         notifyObservers();
     }
 
+    /**
+     * Getter of set of player strategies
+     *
+     * @return Set of player strategies
+     */
     public Set<Strategy.Type> getPlayerStategies() {
         return Collections.unmodifiableSet(playerStategies);
     }
 
+    /**
+     * Add a computer player to the set of tournament player
+     *
+     * @param playerStategy Player strategy
+     */
     public void addPlayerStategies(Strategy.Type playerStategy) {
         if (playerStategy == Strategy.Type.HUMAN) {
             throw new IllegalStateException("The tournament mode does not "
@@ -112,6 +137,11 @@ public class TournamentModel extends Observable implements TableModel {
         notifyObservers();
     }
 
+    /**
+     * Remove a computer player
+     *
+     * @param playerStategy Player strategy
+     */
     public void removePlayerStategies(Strategy.Type playerStategy) {
         this.playerStategies.remove(playerStategy);
 
@@ -119,10 +149,20 @@ public class TournamentModel extends Observable implements TableModel {
         notifyObservers();
     }
 
+    /**
+     * Getter of number of games
+     *
+     * @return Number of games
+     */
     public int getNbGamePerMap() {
         return nbGamePerMap;
     }
 
+    /**
+     * Setter of number of games
+     *
+     * @param nbGamePerMap number of games
+     */
     public void setNbGamePerMap(int nbGamePerMap) {
         if (nbGamePerMap > 5) {
             throw new IllegalStateException("The number of games per map "
@@ -134,10 +174,20 @@ public class TournamentModel extends Observable implements TableModel {
         notifyObservers();
     }
 
+    /**
+     * Getter of maximum number of turn
+     *
+     * @return maximum number of turn
+     */
     public int getMaximumTurnPerGame() {
         return maximumTurnPerGame;
     }
 
+    /**
+     * Setter of maximum number of turn
+     *
+     * @param maximumTurnPerGame maximum number of turn
+     */
     public void setMaximumTurnPerGame(int maximumTurnPerGame) {
         if (maximumTurnPerGame > 50) {
             throw new IllegalStateException("Cannot set the maximum number of "
@@ -150,6 +200,12 @@ public class TournamentModel extends Observable implements TableModel {
         notifyObservers();
     }
 
+    /**
+     * Play the tournament
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
+     * MapFileManagementException
+     */
     public void playTournament()
             throws MapFileManagement.MapFileManagementException {
         
@@ -166,6 +222,14 @@ public class TournamentModel extends Observable implements TableModel {
         notifyObservers();
     }
 
+    /**
+     * Play each map
+     *
+     * @param mapPath Map path
+     * @return list of risk model
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
+     * MapFileManagementException
+     */
     private List<RiskModel> playGamesOnMap(MapPath mapPath)
             throws MapFileManagement.MapFileManagementException {
         List<RiskModel> gamesOnMap = new ArrayList<>(this.nbGamePerMap);
@@ -177,6 +241,15 @@ public class TournamentModel extends Observable implements TableModel {
         return gamesOnMap;
     }
 
+    /**
+     * Play each game
+     *
+     * @param mapPath map path
+     * @param index log identifier
+     * @return risk model
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
+     * MapFileManagementException
+     */
     private RiskModel playGame(MapPath mapPath, int index)
             throws MapFileManagement.MapFileManagementException {
         RiskModel rm = new RiskModel();
@@ -200,12 +273,25 @@ public class TournamentModel extends Observable implements TableModel {
         return rm;
     }
 
+    /**
+     * return the log file corresponding to the game with ith map and the jth
+     * game
+     *
+     * @param i the index of map
+     * @param j the index of game
+     * @return log file corresponding to the game with ith map and the jth
+     */
     public String getLogFile(int i, int j) {
         String mapName = this.mapsPaths.stream().skip(i).findFirst().get()
                 .toString();
         return String.format("%s-%s-%d.log", logFileIdentifier, mapName, j);
     }
 
+    /**
+     * Getter of list of players
+     *
+     * @return list of players
+     */
     private LinkedList<PlayerModel> preparePlayers() {
         LinkedList<PlayerModel> players = new LinkedList<>();
 
@@ -222,35 +308,76 @@ public class TournamentModel extends Observable implements TableModel {
         return players;
     }
 
+    /**
+     * Getter of map of games
+     *
+     * @return map of games
+     */
     public Map<MapPath, List<RiskModel>> getGames() {
         return Collections.unmodifiableMap(games);
     }
 
+    /**
+     * Getter of row number
+     *
+     * @return row number
+     */
     @Override
     public int getRowCount() {
         return this.mapsPaths.size() + 1;
     }
 
+    /**
+     * Getter of column count
+     *
+     * @return column number
+     */
     @Override
     public int getColumnCount() {
         return this.nbGamePerMap + 1;
     }
 
+    /**
+     * Getter of column name
+     *
+     * @param i column number
+     * @return column name
+     */
     @Override
     public String getColumnName(int i) {
         return String.format("Game %d", i + 1);
     }
 
+    /**
+     * Getter of type of values in the column
+     *
+     * @param i column number
+     * @return type of values in the column
+     */
     @Override
     public Class<?> getColumnClass(int i) {
         return String.class;
     }
 
+    /**
+     * If cell is editable
+     *
+     * @param i row number
+     * @param j column number
+     * @return if the cell is editable, return true, otherwise, return false
+     */
     @Override
     public boolean isCellEditable(int i, int j) {
         return false;
     }
 
+    /**
+     * Get the value of the cell
+     *
+     * @param i row number
+     * @param j column number
+     * @return value in the cell
+     */
     @Override
     public Object getValueAt(int i, int j) {
         if (i == 0 && j == 0) {
@@ -270,19 +397,40 @@ public class TournamentModel extends Observable implements TableModel {
         return winner != null ? winner.getName() : "DRAW";
     }
 
+    /**
+     * Set cell value
+     *
+     * @param o value
+     * @param i row number
+     * @param j column number
+     */
     @Override
-
     public void setValueAt(Object o, int i, int j) {
     }
 
+    /**
+     * Add table listener
+     *
+     * @param tl TableModelListener
+     */
     @Override
     public void addTableModelListener(TableModelListener tl) {
     }
 
+    /**
+     * Remove table listener
+     *
+     * @param tl TableModelListener
+     */
     @Override
     public void removeTableModelListener(TableModelListener tl) {
     }
 
+    /**
+     * If tournament is finished
+     *
+     * @return if the tournament is finished, return true, if not, return false
+     */
     public boolean isTournamentFinished() {
         return this.games.values().stream().allMatch(
                 (lg) -> lg.stream().allMatch(

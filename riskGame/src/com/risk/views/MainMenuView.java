@@ -13,16 +13,32 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 /**
+ * Main menu View of the game
  *
  * @author hantoine
  */
 public class MainMenuView extends JFrame {
 
+    /**
+     * Single mode game button
+     */
     JButton singleGameMode;
+    /**
+     * Tournament mode game button
+     */
     JButton tournamentMode;
+    /**
+     * Map editor button
+     */
     JButton mapEditor;
+    /**
+     * Main menu window
+     */
     JFrame backgroundWindow;
 
+    /**
+     * Constructor
+     */
     public MainMenuView() {
 
         singleGameMode = new JButton("Single Game Mode");
@@ -61,6 +77,11 @@ public class MainMenuView extends JFrame {
         backgroundWindow.setVisible(true);
     }
 
+    /**
+     * Setter of main menu controller
+     *
+     * @param ctrl Main menu controller
+     */
     public void setController(MainMenuController ctrl) {
         singleGameMode.addActionListener(e -> {
             ctrl.startSingleGameMode();
@@ -75,11 +96,17 @@ public class MainMenuView extends JFrame {
         });
     }
 
+    /**
+     * Set the main menu window in the center
+     */
     private void centerWindow() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dimension.width / 2 - this.getSize().width / 2, dimension.height / 2 - this.getSize().height / 2);
     }
 
+    /**
+     * Close the main menu window
+     */
     public void close() {
         this.backgroundWindow.setVisible(false);
         this.setVisible(false);
