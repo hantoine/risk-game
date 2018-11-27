@@ -20,21 +20,25 @@ public class AggressiveStrategy implements Strategy {
      * Territory selected to attack
      */
     TerritoryModel selectedTerritoryAttack;
-
+    TerritoryModel selectedAttacked;
     /**
      * Reinforces the territory with more armies that can attack 
      * @param rm risk model
      */
     @Override
     public void reinforcement(RiskModel rm) {
+        System.out.println("aggressive reinforcement");
         rm.aIReinforcement();
         int armiesReinforcement = rm.getCurrentPlayer().getNbArmiesAvailable();
         TerritoryModel selectedTerritory = null;
         
         for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
-            if (t.getAdj().stream()
-                    .anyMatch(ta -> !(rm.getCurrentPlayer().getTerritoryOwned().contains(ta)))) {
-                
+            TerritoryModel adj=t.getAdj().stream()
+                                    .filter(ta->!(rm.getCurrentPlayer().getTerritoryOwned().contains(ta)))
+                                    .findAny()
+                                    .orElse(null);
+                               
+            if (adj!=null) {
                 if(selectedTerritory==null || selectedTerritory.getNumArmies()<t.getNumArmies())
                     selectedTerritory = t;
             }
@@ -63,16 +67,13 @@ public class AggressiveStrategy implements Strategy {
      */
     @Override
     public void attack(RiskModel rm) {
+        System.out.println("aggressive attack");
         selectTerritory(rm);
         if (selectedTerritoryAttack != null) {
-            TerritoryModel dest = selectedTerritoryAttack.getAdj().stream()
-                    .filter(ad -> !(rm.getCurrentPlayer().getTerritoryOwned().contains(ad)))
-                    .findFirst()
-                    .orElse(null);
-
-            if (selectedTerritoryAttack.getNumArmies() > 1 && dest != null) {
+            
+            if (selectedTerritoryAttack.getNumArmies() > 1) {
                 int numDice = min(selectedTerritoryAttack.getNumArmies() - 1, 3);
-                rm.attackIntent(selectedTerritoryAttack, dest);
+                rm.attackIntent(selectedTerritoryAttack, selectedAttacked);
                 rm.continueAttack(numDice);
 
             } else {
@@ -89,28 +90,35 @@ public class AggressiveStrategy implements Strategy {
      */
     @Override
     public void fortification(RiskModel rm) {
-
+        System.out.println("aggressive fortification");
         TerritoryModel dest = null;
-        for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
-            if (((TerritoryModel) t).getAdj().stream()
-                    .anyMatch(ta -> rm.getCurrentPlayer().getTerritoryOwned().contains(ta))) {
-                if (dest == null || dest.getNumArmies() < t.getNumArmies()) {
-                    dest = t;
-                }
-            }
-        }
-
         TerritoryModel source = null;
-        if (dest != null) {
-            for (TerritoryModel t : dest.getAdj()) {
-                if (rm.getCurrentPlayer().getTerritoryOwned().contains(t) && (source == null || source.getNumArmies() < t.getNumArmies())) {
-                    source = t;
-                }
+
+        
+        List<TerritoryModel> sortedTerrs = 
+                new LinkedList<>(rm.getCurrentPlayer().getTerritoryOwned());
+        sortedTerrs.sort((a,b) -> a.getNumArmies()==b.getNumArmies()?0: a.getNumArmies()< b.getNumArmies() ? 1 : -1);
+        
+        
+        for (TerritoryModel d : sortedTerrs) {
+            TerritoryModel s = 
+                    rm.getCurrentPlayer().getTerritoryOwned().stream()
+                            .filter((t) -> t.getAdj().contains(d) && t.getNumArmies() > 1 && !t.getName().equals(d.getName()))
+                            .findFirst().orElse(null);
+            
+            if(s != null) {
+                source = s;
+                dest = d;
+                break;
             }
+            
         }
 
-        while (source != null && source.getNumArmies() > 1) {
-            rm.fortificationIntent(source, dest);
+        // no fortification move possible
+        if(source != null) {
+            while (source.getNumArmies() > 1) {
+                rm.fortificationIntent(source, dest);
+            }
         }
 
         rm.finishPhase();
@@ -123,14 +131,23 @@ public class AggressiveStrategy implements Strategy {
     public void selectTerritory(RiskModel rm) {
 
         selectedTerritoryAttack = null;
+        selectedAttacked=null;
+        TerritoryModel aux;
         for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
-            if (((TerritoryModel) t).getAdj().stream()
-                    .anyMatch(ta -> (!(rm.getCurrentPlayer().getTerritoryOwned().contains(ta)) && t.getNumArmies() > 1))) {
-                if (selectedTerritoryAttack == null || selectedTerritoryAttack.getNumArmies() < t.getNumArmies()) {
-                    selectedTerritoryAttack = t;
-                }
+            aux=null;
+            if (t.getNumArmies() > 1){
+                aux=t.getAdj().stream()
+                            .filter(ta -> (!(rm.getCurrentPlayer().getTerritoryOwned().contains(ta))))
+                            .findFirst()
+                            .orElse(null);
             }
+                    
+                if ((selectedTerritoryAttack == null || selectedTerritoryAttack.getNumArmies() < t.getNumArmies()) && aux!=null) {
+                    selectedTerritoryAttack = t;
+                    selectedAttacked=aux;
+                }
         }
+        
     }
 
     /**
@@ -178,8 +195,8 @@ public class AggressiveStrategy implements Strategy {
               
         if(territoryClicked==null){
             territoryClicked=rm.randomTerritory((List < TerritoryModel >)rm.getMap().getTerritories().stream()
-                                                                                                            .filter(t -> t.getOwner()==null || t.getOwner()==rm.getCurrentPlayer())
-                                                                                                            .collect(Collectors.toCollection(LinkedList::new)));
+                                                                                                     .filter(t -> t.getOwner()==null || t.getOwner()==rm.getCurrentPlayer())
+                                                                                                     .collect(Collectors.toCollection(LinkedList::new)));
         }
         
        rm.startupMove(territoryClicked);

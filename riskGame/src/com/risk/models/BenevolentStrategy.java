@@ -55,26 +55,32 @@ public class BenevolentStrategy implements Strategy {
     @Override
     public void fortification(RiskModel rm) {
         TerritoryModel dest = null;
-        for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
-            if (((TerritoryModel) t).getAdj().stream()
-                    .anyMatch(ta -> rm.getCurrentPlayer().getTerritoryOwned().contains(ta))) {
-                if (dest == null || dest.getNumArmies() > t.getNumArmies()) {
-                    dest = t;
-                }
-            }
-        }
-
         TerritoryModel source = null;
-        if (dest != null) {
-            for (TerritoryModel t : dest.getAdj()) {
-                if (rm.getCurrentPlayer().getTerritoryOwned().contains(t) && (source == null || source.getNumArmies() < t.getNumArmies())) {
-                    source = t;
-                }
+
+        List<TerritoryModel> sortedTerrs = 
+                new LinkedList<>(rm.getCurrentPlayer().getTerritoryOwned());
+        sortedTerrs.sort((a,b) -> a.getNumArmies()==b.getNumArmies()?0: a.getNumArmies()> b.getNumArmies() ? 1 : -1);
+        
+        for (TerritoryModel d : sortedTerrs) {
+            TerritoryModel s = 
+                    rm.getCurrentPlayer().getTerritoryOwned().stream()
+                            .filter((t) -> t.getAdj().contains(d) && t.getNumArmies() > 1 && !t.getName().equals(d.getName()))
+                            .findFirst().orElse(null);
+            
+            if(s != null) {
+                source = s;
+                dest = d;
+                break;
             }
+            
+            System.out.println("Destination:"+d+"source: "+s);
         }
 
-        while (source != null && dest != null && source.getNumArmies() > 1) {
-            rm.fortificationIntent(source, dest);
+        // no fortification move possible
+        if(source != null) {
+            while (source.getNumArmies() > 1) {
+                rm.fortificationIntent(source, dest);
+            }
         }
 
         rm.finishPhase();
