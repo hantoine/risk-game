@@ -115,7 +115,9 @@ public class TournamentController implements StrategyListPanelListener, MapPathL
     public void playTournament() {
         tm.setTournamentSaver(this);
         try {
-            tm.playTournament();
+            if (!tm.playTournament()) {
+                return;
+            }
             displayResultWhenFinished();
 
         } catch (MapFileManagement.MapFileManagementException ex) {
