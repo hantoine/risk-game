@@ -204,6 +204,7 @@ public class AttackMove extends Observable implements Serializable {
      * Create an array with different number of dices
      *
      * @param dice number of dices
+     * @param attack true if these dices are rolled for an attack
      * @return the array
      */
     public int[] rollDices(int dice, boolean attack) {
@@ -212,13 +213,15 @@ public class AttackMove extends Observable implements Serializable {
 
         while (i < dices.length) {
             dices[i] = rollDice();
-            this.attacker.addNewLogEvent(
-                    String.format(
-                            "%s roll a dice and get %d",
-                            attack ? this.attacker.getName()
-                                    : this.defensePlayer.getName(),
-                            dices[i]
-                    ));
+            if (this.attacker != null && this.defensePlayer != null) {
+                this.attacker.addNewLogEvent(
+                        String.format(
+                                "%s roll a dice and get %d",
+                                attack ? this.attacker.getName()
+                                        : this.defensePlayer.getName(),
+                                dices[i]
+                        ));
+            }
             i++;
         }
         return dices;

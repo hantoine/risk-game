@@ -95,9 +95,9 @@ public class TournamentModelTest {
 
     /**
      * Test of addMapsPath method, of class TournamentMenuModel. When a map path
-     * is added twice, it still appears only once
+     * is added twice, an exception is thrown
      */
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void testAddMapsPathOnce() {
         System.out.println("addMapsPath");
         MapPath mapPath = new MapPath(
@@ -106,9 +106,6 @@ public class TournamentModelTest {
 
         instance.addMapsPath(mapPath);
         instance.addMapsPath(mapPath);
-        instance.removeMapsPath(mapPath);
-
-        assertFalse(instance.getMapsPaths().contains(mapPath));
     }
 
     /**
