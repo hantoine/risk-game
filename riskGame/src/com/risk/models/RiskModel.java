@@ -319,6 +319,12 @@ public final class RiskModel extends Observable implements Serializable {
                 src.getName(),
                 dest.getName()
         ));
+
+        //automatically end fortification phase if no more move possible
+        if (src.getNumArmies() == 1
+                && this.currentPlayer.getStrategy() instanceof HumanStrategy) {
+            this.finishPhase();
+        }
     }
 
     /**
