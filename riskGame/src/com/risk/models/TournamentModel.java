@@ -281,7 +281,6 @@ public class TournamentModel extends Observable implements TableModel, Serializa
         newLogWriter.openFile();
 
         rm.startGame();
-        rm.finishPhase(); //skip startup phase
 
         return rm;
     }

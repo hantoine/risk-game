@@ -62,27 +62,27 @@ public class BenevolentStrategy implements Strategy, Serializable {
         TerritoryModel dest = null;
         TerritoryModel source = null;
 
-        List<TerritoryModel> sortedTerrs = 
-                new LinkedList<>(rm.getCurrentPlayer().getTerritoryOwned());
-        sortedTerrs.sort((a,b) -> a.getNumArmies()==b.getNumArmies()?0: a.getNumArmies()> b.getNumArmies() ? 1 : -1);
-        
+        List<TerritoryModel> sortedTerrs
+                = new LinkedList<>(rm.getCurrentPlayer().getTerritoryOwned());
+        sortedTerrs.sort((a, b) -> a.getNumArmies() == b.getNumArmies() ? 0 : a.getNumArmies() > b.getNumArmies() ? 1 : -1);
+
         for (TerritoryModel d : sortedTerrs) {
-            TerritoryModel s = 
-                    rm.getCurrentPlayer().getTerritoryOwned().stream()
+            TerritoryModel s
+                    = rm.getCurrentPlayer().getTerritoryOwned().stream()
                             .filter((t) -> t.getAdj().contains(d) && t.getNumArmies() > 1 && !t.getName().equals(d.getName()))
                             .findFirst().orElse(null);
-            
-            if(s != null) {
+
+            if (s != null) {
                 source = s;
                 dest = d;
                 break;
             }
-           
+
         }
 
         // no fortification move possible
-        if(source != null) {
-            while (source.getNumArmies() > 1) {
+        if (source != null && dest != null) {
+            while (source.getNumArmies() > dest.getNumArmies()) {
                 rm.fortificationIntent(source, dest);
             }
         }
