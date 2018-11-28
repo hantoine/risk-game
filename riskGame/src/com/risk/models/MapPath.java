@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
 import java.nio.file.Paths;
 
 /**
@@ -12,7 +13,7 @@ import java.nio.file.Paths;
  *
  * @author hantoine
  */
-public class MapPath {
+public class MapPath implements Serializable {
 
     /**
      * Map path

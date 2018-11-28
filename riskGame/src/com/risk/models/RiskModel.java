@@ -5,6 +5,7 @@
  */
 package com.risk.models;
 
+import com.risk.controllers.TournamentSaverInterface;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
@@ -90,6 +91,11 @@ public final class RiskModel extends Observable implements Serializable {
      * In charge of writing all logs from this game to a log file
      */
     transient private LogWriter logWriter;
+
+    /**
+     * Object in charge of saving the tournament progress
+     */
+    transient TournamentSaverInterface tournamentSaver;
 
     /**
      * Constructor of the model It includes son random players
@@ -689,10 +695,22 @@ public final class RiskModel extends Observable implements Serializable {
         executeEndOfPhaseSteps();
         this.nextPhase();
 
+        if (this.tournamentSaver != null) {
+            this.tournamentSaver.saveTournament();
+        }
+
+        continueGame();
+    }
+
+    /**
+     * Continue the execution of the game
+     */
+    public void continueGame() {
         if (this.getWinningPlayer() == null && this.nbTurnBeforeDraw > 0) {
             executeBeginningOfPhaseSteps();
         } else {
-            this.addNewLogEvent("No player has won before the maximum number of turn, this game is a draw");
+            this.addNewLogEvent("No player has won before the maximum number of"
+                    + " turn, this game is a draw");
             if (this.logWriter != null) {
                 this.logWriter.close();
             }
@@ -1098,5 +1116,14 @@ public final class RiskModel extends Observable implements Serializable {
      */
     public String getLogContent() {
         return this.log.getContent();
+    }
+
+    /**
+     * Setter for the tournament saver attribute
+     *
+     * @param tournamentSaver The tournament saver to be set
+     */
+    public void setTournamentSaver(TournamentSaverInterface tournamentSaver) {
+        this.tournamentSaver = tournamentSaver;
     }
 }

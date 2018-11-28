@@ -36,7 +36,7 @@ public class LogWriter {
      */
     public LogWriter() {
         this.pathToFile = Paths.get("logs",
-                ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME)
+                ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME).replace(':', '-')
                 + ".log").toString();
         out = null;
     }

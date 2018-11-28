@@ -5,12 +5,14 @@
  */
 package com.risk.models;
 
+import java.io.Serializable;
+
 /**
  * Interface for strategy implementation
  *
  * @author hantoine
  */
-public interface Strategy {
+public interface Strategy extends Serializable {
 
     /**
      * Strategy type
