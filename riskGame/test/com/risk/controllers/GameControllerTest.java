@@ -224,16 +224,16 @@ public class GameControllerTest {
         PlayerModel playerA = rm.getCurrentPlayer();
         addTerritoryOwned(playerA, territoryA);
         addTerritoryOwned(playerA, territoryB);
-        setNumArmies(territoryA, 1);
-        setNumArmies(territoryB, 2);
-        instance.dragNDropTerritory(destTerritoryName, sourceTerritoryName);
         setNumArmies(territoryA, 2);
-        setNumArmies(territoryB, 1);
+        setNumArmies(territoryB, 3);
+        instance.dragNDropTerritory(destTerritoryName, sourceTerritoryName);
+        setNumArmies(territoryA, 3);
+        setNumArmies(territoryB, 2);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
-        assertEquals(2, territoryA.getNumArmies());
-        assertEquals(1, territoryB.getNumArmies());
+        assertEquals(3, territoryA.getNumArmies());
+        assertEquals(2, territoryB.getNumArmies());
         assertEquals("You can only make one move !", drv.getMessage());
 
     }
@@ -255,16 +255,16 @@ public class GameControllerTest {
         PlayerModel playerA = rm.getCurrentPlayer();
         addTerritoryOwned(playerA, territoryA);
         addTerritoryOwned(playerA, territoryB);
-        setNumArmies(territoryA, 2);
-        setNumArmies(territoryB, 1);
+        setNumArmies(territoryA, 3);
+        setNumArmies(territoryB, 2);
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
-        setNumArmies(territoryA, 2);
-        setNumArmies(territoryB, 1);
+        setNumArmies(territoryA, 3);
+        setNumArmies(territoryB, 2);
 
         instance.dragNDropTerritory(sourceTerritoryName, destTerritoryName);
 
-        assertEquals(1, territoryA.getNumArmies());
-        assertEquals(2, territoryB.getNumArmies());
+        assertEquals(2, territoryA.getNumArmies());
+        assertEquals(3, territoryB.getNumArmies());
         assertEquals(null, drv.getMessage());
     }
 
