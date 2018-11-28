@@ -36,15 +36,15 @@ public class PlayerModel extends Observable implements Serializable {
     /**
      * cardsOwned cards owned by a player
      */
-     public List<TerritoryModel> territoryOwned;
+    public List<TerritoryModel> territoryOwned;
     /**
      * continents owned by a player
      */
-     public List<ContinentModel> continentsOwned;
+    public List<ContinentModel> continentsOwned;
     /**
      * hand of the player
      */
-     private HandModel hand;
+    private HandModel hand;
     /**
      * The number of armies available to place returnedCards
      */
@@ -56,22 +56,22 @@ public class PlayerModel extends Observable implements Serializable {
     /**
      * the model of the game
      */
-     protected RiskModel game;
+    protected RiskModel game;
     /**
      * the current movement in the fortification phase
      */
-     private FortificationMove currentFortificationMove;
+    private FortificationMove currentFortificationMove;
     /**
      * The current attack in the attack phase
      */
-     private AttackMove currentAttack;
+    private AttackMove currentAttack;
     /**
      * the current player
      */
     private boolean currentPlayer;
 
     /**
-     *If a player conquer a territory
+     * If a player conquer a territory
      */
     private boolean conquered;
 
@@ -80,7 +80,7 @@ public class PlayerModel extends Observable implements Serializable {
      */
     private Strategy strategy;
     /**
-     *If a card exchange is offered
+     * If a card exchange is offered
      */
     private boolean cardExchangeOffered;
 
@@ -120,10 +120,11 @@ public class PlayerModel extends Observable implements Serializable {
         this.setCardExchangeOffered(false);
         strategy.reinforcement(playGame);
     }
-    
+
     /**
      * Startup movement
-     * @param playGame risk model 
+     *
+     * @param playGame risk model
      */
     public void startup(RiskModel playGame) {
         addNewLogEvent(String.format(
@@ -167,6 +168,7 @@ public class PlayerModel extends Observable implements Serializable {
 
     /**
      * Getter of the cardExchageOffered attribute
+     *
      * @return cardExchangeOffered attribute
      */
     public boolean isCardExchangeOffered() {
@@ -175,7 +177,9 @@ public class PlayerModel extends Observable implements Serializable {
 
     /**
      * Setter of the cardExchangeOffered attribute
-     * @param cardExchangeOffered boolean that determines if exchange was offered
+     *
+     * @param cardExchangeOffered boolean that determines if exchange was
+     * offered
      */
     public void setCardExchangeOffered(boolean cardExchangeOffered) {
         this.cardExchangeOffered = cardExchangeOffered;
@@ -183,6 +187,7 @@ public class PlayerModel extends Observable implements Serializable {
 
     /**
      * Setter of the strategy
+     *
      * @param strategy the strategy to set
      */
     public void setStrategy(Strategy strategy) {
@@ -191,6 +196,7 @@ public class PlayerModel extends Observable implements Serializable {
 
     /**
      * Exchange cards according strategy
+     *
      * @return true if it is success
      */
     boolean exchangeCardsToArmies() {
@@ -661,6 +667,7 @@ public class PlayerModel extends Observable implements Serializable {
 
     /**
      * Getter of the handed attribute
+     *
      * @return the handed
      */
     public boolean isHanded() {
@@ -669,6 +676,7 @@ public class PlayerModel extends Observable implements Serializable {
 
     /**
      * Setter of handed attribute
+     *
      * @param handed the handed to set
      */
     public void setHanded(boolean handed) {
@@ -697,37 +705,41 @@ public class PlayerModel extends Observable implements Serializable {
 
     /**
      * Set the dice number in attack movement
+     *
      * @param diceAttack number of dice for attack
      */
     public void setAttackValues(int diceAttack) {
-        
-        String diceStr=Integer.toString(diceAttack);
-        if(diceAttack==-1)
-            diceStr="Battle all";
-        
+
+        String diceStr = Integer.toString(diceAttack);
+        if (diceAttack == -1) {
+            diceStr = "Battle all";
+        }
+
         addNewLogEvent(String.format(
-                    "Attacker player %s selects %s dice to attack",
-                    this.getName(),
-                    diceStr
-            ));
+                "%s selects %s dice to attack",
+                this.getName(),
+                diceStr
+        ));
         this.getCurrentAttack().setNbDiceAttack(diceAttack);
     }
 
     /**
      * Set the dice number in defense movement
+     *
      * @param diceAttacked number of dice for defense
      */
     public void setDefenseValues(int diceAttacked) {
-        
-        String diceStr=Integer.toString(diceAttacked);
-        if(this.getCurrentAttack().getNbDiceAttack()==-1)
-            diceStr="Battle all";
-        
+
+        String diceStr = Integer.toString(diceAttacked);
+        if (this.getCurrentAttack().getNbDiceAttack() == -1) {
+            diceStr = "Battle all";
+        }
+
         addNewLogEvent(String.format(
-                    "Attacked player %s selects %s dice as defense",
-                    this.getCurrentAttack().getDefensePlayer().getName(),
-                    diceStr
-            ));
+                "%s selects %s dice as defense",
+                this.getCurrentAttack().getDefensePlayer().getName(),
+                diceStr
+        ));
         this.getCurrentAttack().setNbDiceDefense(diceAttacked);
     }
 
@@ -953,11 +965,11 @@ public class PlayerModel extends Observable implements Serializable {
         if (this.getCurrentAttack() != null) {
             if (this.getCurrentAttack().getDest().getNumArmies() == 0) {
                 int diceAttack = this.getCurrentAttack().getNbDiceAttack();
-                this.game.moveArmiesToConqueredTerritory(max(diceAttack,this.currentAttack.getSource().getNumArmies()-1));
+                this.game.moveArmiesToConqueredTerritory(max(diceAttack, this.currentAttack.getSource().getNumArmies() - 1));
             }
         }
     }
-    
+
     /**
      * Defense movement for computer players
      */
@@ -971,6 +983,7 @@ public class PlayerModel extends Observable implements Serializable {
 
     /**
      * Card exchange for computer players
+     *
      * @return true success
      */
     public boolean exchangeCardsToArmiesAI() {

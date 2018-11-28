@@ -502,7 +502,9 @@ public final class RiskModel extends Observable implements Serializable {
         this.setCurrentPlayer(this.getPlayerList().get(this.getTurn()));
 
         // Integer.MAX_VALUE means no limit for the number of turn
-        if (this.nbTurnBeforeDraw != Integer.MAX_VALUE) {
+        if (this.nbTurnBeforeDraw != Integer.MAX_VALUE
+                // Startup phase does not count
+                && this.getPhase() != GamePhase.STARTUP) {
             this.nbTurnBeforeDraw--;
         }
     }

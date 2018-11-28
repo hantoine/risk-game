@@ -103,8 +103,8 @@ public class AttackMove extends Observable implements Serializable {
      * @param diceAttacked number of dices selected by the attacked
      */
     public void battle(int diceAttack, int diceAttacked) {
-        int[] attack = rollDices(diceAttack);
-        int[] defense = rollDices(diceAttacked);
+        int[] attack = rollDices(diceAttack, true);
+        int[] defense = rollDices(diceAttacked, false);
         int nbDiceToCompare = min(diceAttack, diceAttacked);
         String[] lossingTerrNames = new String[nbDiceToCompare];
 
@@ -129,32 +129,22 @@ public class AttackMove extends Observable implements Serializable {
      * @return the message
      */
     private String getBattleLogMsg(String[] loosers) {
-        String logMessage = String.format(
-                "%s launch battle between %s and %s",
-                this.attacker.getName(),
-                this.source.getName(),
-                this.dest.getName()
-        );
-
         if (loosers.length == 1) {
-            logMessage += String.format(
-                    ", %s loose 1 army",
+            return String.format(
+                    "The territory %s loose 1 army",
                     loosers[0]
             );
-            return logMessage;
         }
 
         if (loosers[0].equals(loosers[1])) {
-            logMessage += String.format(
-                    ", %s loose 2 armies",
+            return String.format(
+                    "The territory %s loose 2 armies",
                     loosers[0]
             );
 
         } else {
-            logMessage += String.format(", both territories loose 1 army");
+            return String.format("Both territories loose 1 army");
         }
-
-        return logMessage;
     }
 
     /**
@@ -216,12 +206,19 @@ public class AttackMove extends Observable implements Serializable {
      * @param dice number of dices
      * @return the array
      */
-    public int[] rollDices(int dice) {
+    public int[] rollDices(int dice, boolean attack) {
         int[] dices = new int[dice];
         int i = 0;
 
         while (i < dices.length) {
             dices[i] = rollDice();
+            this.attacker.addNewLogEvent(
+                    String.format(
+                            "%s roll a dice and get %d",
+                            attack ? this.attacker.getName()
+                                    : this.defensePlayer.getName(),
+                            dices[i]
+                    ));
             i++;
         }
         return dices;

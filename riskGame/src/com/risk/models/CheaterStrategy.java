@@ -27,6 +27,12 @@ public class CheaterStrategy implements Strategy {
         for (TerritoryModel t : rm.getCurrentPlayer().getTerritoryOwned()) {
             t.setNumArmies(t.getNumArmies() * 2);
         }
+
+        rm.getCurrentPlayer().addNewLogEvent(String.format(
+                "%s double the number of armies on all its territories",
+                rm.getCurrentPlayer().getName()
+        ));
+
         rm.finishPhase();
     }
 
@@ -48,6 +54,10 @@ public class CheaterStrategy implements Strategy {
         }
         auxiliar.stream()
                 .forEach(terr -> rm.getCurrentPlayer().addTerritoryOwned(terr));
+        rm.getCurrentPlayer().addNewLogEvent(String.format(
+                "%s conquer all territories accessible from his territories",
+                rm.getCurrentPlayer().getName()
+        ));
 
         rm.checkForDeadPlayers();
         rm.finishPhase();
@@ -67,6 +77,12 @@ public class CheaterStrategy implements Strategy {
                 t.setNumArmies(t.getNumArmies() * 2);
             }
         }
+        rm.getCurrentPlayer().addNewLogEvent(String.format(
+                "%s double the number of armies on all its territories  "
+                + "that have neighbors that belong to other players",
+                rm.getCurrentPlayer().getName()
+        ));
+
         rm.finishPhase();
     }
 

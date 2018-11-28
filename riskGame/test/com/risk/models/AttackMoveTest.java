@@ -86,7 +86,7 @@ public class AttackMoveTest {
     @Test
     public void testCreateDice() {
         int dice = 1;
-        int[] result = attack.rollDices(dice);
+        int[] result = attack.rollDices(dice, false);
         assertTrue((result[0] <= 6 && result[0] > 0) && result.length == 1);
 
     }

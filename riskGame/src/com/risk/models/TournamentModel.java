@@ -208,7 +208,7 @@ public class TournamentModel extends Observable implements TableModel {
      */
     public void playTournament()
             throws MapFileManagement.MapFileManagementException {
-        
+
         if (this.mapsPaths.isEmpty() || this.playerStategies.size() < 2) {
             return;
         }
@@ -268,7 +268,6 @@ public class TournamentModel extends Observable implements TableModel {
         newLogWriter.openFile();
 
         rm.startGame();
-        rm.finishPhase(); //skip startup phase
 
         return rm;
     }
