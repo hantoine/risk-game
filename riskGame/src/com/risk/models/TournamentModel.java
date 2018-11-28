@@ -331,6 +331,9 @@ public class TournamentModel extends Observable implements TableModel, Serializa
      * @return map of games
      */
     public Map<MapPath, List<RiskModel>> getGames() {
+        if (games == null) {
+            return games;
+        }
         return Collections.unmodifiableMap(games);
     }
 
@@ -362,7 +365,10 @@ public class TournamentModel extends Observable implements TableModel, Serializa
      */
     @Override
     public String getColumnName(int i) {
-        return String.format("Game %d", i + 1);
+        if (i == 0) {
+            return "Maps";
+        }
+        return String.format("Game %d", i);
     }
 
     /**

@@ -7,9 +7,12 @@ package com.risk.models;
 
 import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -283,4 +286,141 @@ public class TournamentModelTest {
         instance.setMaximumTurnPerGame(maximumTurnPerGame);
     }
 
+    /**
+     * Test of playTournament method, of class TournamentModel. Should not throw
+     * exception
+     *
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testPlayTournament() throws Exception {
+        playTestTournament();
+    }
+
+    /**
+     * Play a test tournament
+     */
+    private void playTestTournament() throws MapFileManagement.MapFileManagementException {
+        instance.addMapsPath(
+                new MapPath(Paths.get("maps", "Atlantis.map").toString()));
+        instance.addMapsPath(
+                new MapPath(Paths.get("maps", "Di'Mul_Jar.map").toString()));
+        instance.addPlayerStategies(Strategy.Type.CHEATER);
+        instance.addPlayerStategies(Strategy.Type.RANDOM);
+        instance.addPlayerStategies(Strategy.Type.BENEVOLENT);
+        instance.addPlayerStategies(Strategy.Type.AGGRESSIVE);
+        instance.setMaximumTurnPerGame(40);
+        instance.setNbGamePerMap(1);
+        instance.playTournament();
+    }
+
+    /**
+     * Test of getGames method, of class TournamentModel.
+     */
+    @Test
+    public void testGetGames() {
+        System.out.println("getGames");
+        Map<MapPath, List<RiskModel>> result = instance.getGames();
+        assertNull(result);
+    }
+
+    /**
+     * Test of getRowCount method, of class TournamentModel.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
+     */
+    @Test
+    public void testGetRowCount() throws MapFileManagement.MapFileManagementException {
+        playTestTournament();
+        int expResult = 3;
+        int result = instance.getRowCount();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getColumnCount method, of class TournamentModel.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
+     */
+    @Test
+    public void testGetColumnCount() throws MapFileManagement.MapFileManagementException {
+        playTestTournament();
+        int expResult = 2;
+        int result = instance.getColumnCount();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getColumnName method, of class TournamentModel.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
+     */
+    @Test
+    public void testGetColumnName() throws MapFileManagement.MapFileManagementException {
+        playTestTournament();
+        int i = 0;
+        String expResult = "Maps";
+        String result = instance.getColumnName(i);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getColumnName method, of class TournamentModel.
+     */
+    @Test
+    public void testGetColumnName2() {
+        int i = 1;
+        String expResult = "Game 1";
+        String result = instance.getColumnName(i);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getColumnClass method, of class TournamentModel.
+     */
+    @Test
+    public void testGetColumnClass() {
+        int i = 0;
+        Class expResult = String.class;
+        Class result = instance.getColumnClass(i);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of isCellEditable method, of class TournamentModel.
+     */
+    @Test
+    public void testIsCellEditable() {
+        int i = 0;
+        int j = 0;
+        boolean expResult = false;
+        boolean result = instance.isCellEditable(i, j);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getValueAt method, of class TournamentModel.
+     *
+     * @throws com.risk.models.MapFileManagement.MapFileManagementException
+     */
+    @Test
+    public void testGetValueAt() throws MapFileManagement.MapFileManagementException {
+        playTestTournament();
+        System.out.println("getValueAt");
+        int i = 1;
+        int j = 1;
+        Object result = instance.getValueAt(i, j);
+        assertTrue(result.equals("CHEATER") || result.equals("DRAW"));
+    }
+
+    /**
+     * Test of setValueAt method, of class TournamentModel.
+     */
+    @Test
+    public void testSetValueAt() {
+        Object o = null;
+        int i = 0;
+        int j = 0;
+        instance.setValueAt(o, i, j);
+    }
 }
