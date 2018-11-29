@@ -9,7 +9,7 @@ import com.risk.models.HumanStrategy;
 import com.risk.models.LogWriter;
 import com.risk.models.PlayerModel;
 import com.risk.models.RiskModel;
-import com.risk.views.RiskView;
+import com.risk.views.RiskViewInterface;
 import com.risk.views.editor.MapEditorView;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -31,7 +31,7 @@ public final class RiskController {
      * viewRisk it is a reference to the view of the game mapEditorView the
      * reference to the map editor
      */
-    private RiskView viewRisk;
+    private RiskViewInterface viewRisk;
     /**
      * modelRisk it is a reference to the model of the game
      */
@@ -60,7 +60,7 @@ public final class RiskController {
      * @param riskModel the model of the game
      * @param riskView the view of the game
      */
-    public RiskController(RiskModel riskModel, RiskView riskView) {
+    public RiskController(RiskModel riskModel, RiskViewInterface riskView) {
         this.modelRisk = riskModel;
         this.viewRisk = riskView;
 
@@ -80,15 +80,6 @@ public final class RiskController {
     }
 
     /**
-     * Function for tests 
-     * select a map for the user and press the play button to start a game.
-     */
-    public void pressPlayButtonRandomMap(){
-        this.viewRisk.setMapPath("maps/Atlantis.map");
-        this.menuListener.playButton();
-    }
-    
-    /**
      * It executes a thread with the different phases of the game. It is called
      * after setting the players and board information
      */
@@ -105,7 +96,7 @@ public final class RiskController {
      *
      * @return the viewRisk
      */
-    public RiskView getViewRisk() {
+    public RiskViewInterface getViewRisk() {
         return viewRisk;
     }
 

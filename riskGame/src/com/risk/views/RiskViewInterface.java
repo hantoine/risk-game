@@ -66,4 +66,32 @@ public interface RiskViewInterface extends Observer {
      * @param message Text to be displayed in the message dialog
      */
     public void showMessage(String message);
+
+    /**
+     * Make the view visible or not to the user
+     *
+     * @param b True if the view should be displayed
+     */
+    public void setVisible(boolean b);
+
+    /**
+     * Display an error to the user
+     *
+     * @param errorMsg Error message to display
+     */
+    public void showError(String errorMsg);
+
+    /**
+     * Return the log lines currently displayed
+     *
+     * @return the log lines currently displayed
+     */
+    public LinkedList<String> getLogs();
+
+    /**
+     * Set the log lines that should be displayed
+     *
+     * @param logs the log lines that should be displayed
+     */
+    public void setLogs(LinkedList<String> logs);
 }

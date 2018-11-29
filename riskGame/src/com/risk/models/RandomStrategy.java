@@ -28,7 +28,7 @@ public class RandomStrategy implements Strategy {
     private boolean firstAttack = true;
 
     public TerritoryModel selectedTerritoryAttack;
-    
+
     public TerritoryModel selectedAttacked;
 
     /**
@@ -230,41 +230,11 @@ public class RandomStrategy implements Strategy {
         }
 
     }
-    
-    /**
-     * Getter of randomNumber attribute
-     * @return 
-     */
-    public int getRandomNumber(){
-        return this.randomNumber;
-    }
-    
-    /**
-     * getter on firstAttack
-     * @return
-     */
-    private boolean getFirstAttack(){
-        return this.firstAttack;
-    }
 
     /**
-     * getter on selectedTerritoryAttack
-     * @return 
-     */
-    public TerritoryModel getSelectedTerritoryAttack(){
-        return this.selectedTerritoryAttack;
-    }
-    
-    /**
-     * Getter on selectedAttacked
-     * @return 
-     */
-    public TerritoryModel getSelectedAttacked(){
-        return this.selectedAttacked;
-    }
-    
-    /**
-     * Alias for the equal function in order to test equality between two objects of the same class.
+     * Alias for the equal function in order to test equality between two
+     * objects of the same class.
+     *
      * @param obj object of the same class we want to compare to this instance.
      * @return boolean to know if the objects are equal or not
      */
@@ -280,15 +250,20 @@ public class RandomStrategy implements Strategy {
             return false;
         }
         final RandomStrategy other = (RandomStrategy) obj;
-        
-        if(this.getFirstAttack() != other.getFirstAttack())
+
+        if (this.firstAttack != other.firstAttack) {
             return false;
-        if(this.getRandomNumber() != other.getRandomNumber())
+        }
+        if (this.randomNumber != other.randomNumber) {
             return false;
-        if(!this.getSelectedAttacked().identical(other.getSelectedAttacked()))
+        }
+        if (!this.selectedAttacked.identical(other.selectedAttacked)) {
             return false;
-        if(!this.getSelectedTerritoryAttack().identical(other.getSelectedTerritoryAttack()))
+        }
+        if (!this.selectedTerritoryAttack
+                .identical(other.selectedTerritoryAttack)) {
             return false;
+        }
         return true;
     }
 
