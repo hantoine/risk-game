@@ -297,6 +297,7 @@ public class MapEditorView extends javax.swing.JFrame implements Observer {
 
                 MapConfig newConfig = editorController.getNewMap().getConfigurationInfo();
                 this.mapConfigPanel.setView(newConfig);
+                this.imageSelectorPanel.setTextFieldMessage("No file selected.");
             }
         });
     }

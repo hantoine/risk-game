@@ -28,8 +28,6 @@ import java.util.stream.Stream;
  */
 public final class MapModel extends Observable implements Serializable {
 
-    
-
     /**
      * mapConfig configurations of the map like author, wrap, image, and others
      */
@@ -451,6 +449,7 @@ public final class MapModel extends Observable implements Serializable {
         this.setWrapConfig(false);
         this.setAuthorConfig("New Author");
         this.setImage(null, new Dimension(200, 50));
+        this.setImagePath(null);
     }
 
     /**
@@ -818,7 +817,7 @@ public final class MapModel extends Observable implements Serializable {
         setChanged();
         notifyObservers();
     }
-    
+
     /**
      * Alias for the equal function in order to test equality between two
      * objects of the same class.
@@ -847,7 +846,7 @@ public final class MapModel extends Observable implements Serializable {
             return false;
         }
 
-        //comparing graphcontinents : list of continents        
+        //comparing graphcontinents : list of continents
         List<String> otherList;
         otherList = new LinkedList<>();
         otherList.addAll(other.graphContinents.keySet());

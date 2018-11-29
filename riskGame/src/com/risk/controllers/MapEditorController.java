@@ -117,8 +117,8 @@ public class MapEditorController {
      * @return the listener that will tells the model if a new image has been
      * selected.
      */
-    public selectBackImgListener getSelectBackImgListener(MapView mapPanel, MapEditorView editorPanel) {
-        return new selectBackImgListener(mapPanel, editorPanel, this.editedMap);
+    public SelectBackImgListener getSelectBackImgListener(MapView mapPanel, MapEditorView editorPanel) {
+        return new SelectBackImgListener(mapPanel, editorPanel, this.editedMap);
     }
 
     /**
@@ -660,7 +660,7 @@ public class MapEditorController {
     /**
      * Listener of the background image selector for the map being edited
      */
-    public class selectBackImgListener implements DocumentListener {
+    public class SelectBackImgListener implements DocumentListener {
 
         /**
          * view for the edition of the map
@@ -685,7 +685,7 @@ public class MapEditorController {
          * mapPanel
          * @param mapModel map being edited
          */
-        public selectBackImgListener(MapView mapPanel, MapEditorView editorPanel, MapModel mapModel) {
+        public SelectBackImgListener(MapView mapPanel, MapEditorView editorPanel, MapModel mapModel) {
             this.mapPanel = mapPanel;
             this.editorPanel = editorPanel;
             this.mapModel = mapModel;
@@ -701,12 +701,15 @@ public class MapEditorController {
         public void insertUpdate(DocumentEvent e) {
             File sourceImage;
             try {
+                BufferedImage backgroundImage;
                 String imagePath = e.getDocument().getText(0, e.getDocument().getLength());
                 sourceImage = new File(imagePath);
-                if (sourceImage.getPath().equals("No file selected.")) {
-                    return;
+                if (!sourceImage.getPath().equals("No file selected.")) {
+                    backgroundImage = ImageIO.read(sourceImage);
+                } else {
+                    backgroundImage = null;
+                    imagePath = null;
                 }
-                BufferedImage backgroundImage = ImageIO.read(sourceImage);
 
                 Dimension buttonDim = mapPanel.getButtonDimension();
                 mapModel.setImage(backgroundImage, buttonDim);
