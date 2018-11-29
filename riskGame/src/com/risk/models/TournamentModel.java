@@ -215,14 +215,15 @@ public class TournamentModel extends Observable implements TableModel, Serializa
     /**
      * Play the tournament
      *
+     * @return True if the tournament has successfully been launched
      * @throws com.risk.models.MapFileManagement.MapFileManagementException
      * MapFileManagementException
      */
-    public void playTournament()
+    public boolean playTournament()
             throws MapFileManagement.MapFileManagementException {
 
         if (this.mapsPaths.isEmpty() || this.playerStategies.size() < 2) {
-            return;
+            return false;
         }
         games = new HashMap<>();
 
@@ -232,6 +233,8 @@ public class TournamentModel extends Observable implements TableModel, Serializa
 
         setChanged();
         notifyObservers();
+
+        return true;
     }
 
     /**
