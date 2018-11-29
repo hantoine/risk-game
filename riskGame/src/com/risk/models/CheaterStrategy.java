@@ -130,4 +130,25 @@ public class CheaterStrategy implements Strategy {
         rm.startupMove(territoryClicked);
     }
 
+    /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    @Override
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CheaterStrategy other = (CheaterStrategy) obj;
+        
+        return true;
+    }
+
 }

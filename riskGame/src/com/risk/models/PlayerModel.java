@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,8 @@ public class PlayerModel extends Observable implements Serializable {
      * name the name of the player color the color of the player contriesOwned
      */
     private String name;
+
+    
     /**
      * color of the player
      */
@@ -166,6 +169,98 @@ public class PlayerModel extends Observable implements Serializable {
         return strategy;
     }
 
+    /**
+     * Alias for the equal function in order to test equality between two
+     * objects of the same class.
+     *
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PlayerModel other = (PlayerModel) obj;
+        if (this.numArmiesAvailable != other.numArmiesAvailable) {
+            return false;
+        }
+        if (this.returnedCards != other.returnedCards) {
+            return false;
+        }
+        if (this.currentPlayer != other.currentPlayer) {
+            return false;
+        }
+        if (this.conquered != other.conquered) {
+            return false;
+        }
+        if (this.cardExchangeOffered != other.cardExchangeOffered) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.color, other.color)) {
+            return false;
+        }
+
+        //comparing territoryOwned : list of territories
+        if ((this.territoryOwned != null && other.territoryOwned != null) && !(this.territoryOwned.size() == other.territoryOwned.size())) {
+            return false;
+        }
+
+        LinkedList<String> thisList;
+        if(this.territoryOwned != null && other.territoryOwned != null) {
+            thisList = new LinkedList<>();
+        for (TerritoryModel t : this.territoryOwned) {
+            thisList.add(t.getName());
+        }
+        for (TerritoryModel t : other.territoryOwned) {
+            if (!thisList.contains(t.getName())) {
+                return false;
+            }
+        }
+        }
+        
+
+        //comparing continentsOwned : list of continents
+        if ((this.continentsOwned != null && other.continentsOwned != null) && !(this.continentsOwned.size() == other.continentsOwned.size())) {
+            return false;
+        }
+
+        if (this.continentsOwned != null && other.continentsOwned != null) {
+            thisList = new LinkedList<>();
+            for (ContinentModel t : this.continentsOwned) {
+                thisList.add(t.getName());
+            }
+            for (ContinentModel t : other.continentsOwned) {
+                if (!thisList.contains(t.getName())) {
+                    return false;
+                }
+            }
+        }
+
+        if ((this.hand != null && other.hand != null) && !this.hand.identical(other.hand)) {
+            return false;
+        }
+
+        if ((this.currentFortificationMove != null && other.currentFortificationMove != null) && !this.currentFortificationMove.identical(other.currentFortificationMove)) {
+            return false;
+        }
+        if ((this.currentAttack != null && other.currentAttack != null) && !this.currentAttack.identical(other.currentAttack)) {
+            return false;
+        }
+        if ((this.strategy != null && other.strategy != null) && !this.strategy.identical(other.strategy)) {
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * Getter of the cardExchageOffered attribute
      *

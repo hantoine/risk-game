@@ -9,13 +9,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * It represents a continent
  *
  * @author n_irahol
  */
-public class ContinentModel implements Serializable  {
+public class ContinentModel implements Serializable {
+
+    
 
     /**
      * members territories that are part of the continent
@@ -149,4 +152,49 @@ public class ContinentModel implements Serializable  {
                 });
     }
 
+    
+    /**
+     * Alias for the equal function in order to test equality between two
+     * objects of the same class.
+     *
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ContinentModel other = (ContinentModel) obj;
+        if (this.bonusScore != other.bonusScore) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+
+        //comparing members : list of territories
+        if ((this.members != null && other.members != null) && !(this.members.size() == other.members.size())) {
+            return false;
+        }
+
+        if (this.members != null && other.members != null) {
+            LinkedList thisList = new LinkedList<>();
+            for (TerritoryModel t : this.members) {
+                thisList.add(t.getName());
+            }
+            for (TerritoryModel t : other.members) {
+                if (!thisList.contains(t.getName())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

@@ -6,6 +6,7 @@
 package com.risk.models;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Class that contains all the configuration parameters for the map.
@@ -13,6 +14,8 @@ import java.io.Serializable;
  * @author timot
  */
 public class MapConfig  implements Serializable  {
+
+   
 
     /**
      * Wrap parameter of the map.
@@ -138,5 +141,39 @@ public class MapConfig  implements Serializable  {
      */
     void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+    
+     /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not.
+     */
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MapConfig other = (MapConfig) obj;
+        if (this.wrap != other.wrap) {
+            return false;
+        }
+        if (this.warn != other.warn) {
+            return false;
+        }
+        if (!Objects.equals(this.scroll, other.scroll)) {
+            return false;
+        }
+        if (!Objects.equals(this.author, other.author)) {
+            return false;
+        }
+        if (!Objects.equals(this.imagePath, other.imagePath)) {
+            return false;
+        }
+        return true;
     }
 }

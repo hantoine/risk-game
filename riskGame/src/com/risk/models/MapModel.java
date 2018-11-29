@@ -28,6 +28,8 @@ import java.util.stream.Stream;
  */
 public final class MapModel extends Observable implements Serializable {
 
+    
+
     /**
      * mapConfig configurations of the map like author, wrap, image, and others
      */
@@ -815,5 +817,82 @@ public final class MapModel extends Observable implements Serializable {
 
         setChanged();
         notifyObservers();
+    }
+    
+    /**
+     * Alias for the equal function in order to test equality between two
+     * objects of the same class.
+     *
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MapModel other = (MapModel) obj;
+        if (this.mapHeight != other.mapHeight) {
+            return false;
+        }
+        if (this.mapWidth != other.mapWidth) {
+            return false;
+        }
+        if ((this.mapConfig != null && other.mapConfig != null) && !this.mapConfig.identical(other.mapConfig)) {
+            return false;
+        }
+
+        //comparing graphcontinents : list of continents        
+        List<String> otherList;
+        otherList = new LinkedList<>();
+        otherList.addAll(other.graphContinents.keySet());
+        List<String> thisList;
+        thisList = new LinkedList<>();
+        thisList.addAll(this.graphContinents.keySet());
+
+        for (String key : thisList) {
+            if (!otherList.contains(key)) {
+                return false;
+            } else {
+                if (!this.graphContinents.get(key).identical(other.graphContinents.get(key))) {
+                    return false;
+                }
+            }
+        }
+
+        //comparing graphterritories : list of territories
+        otherList = new LinkedList<>();
+        otherList.addAll(other.graphTerritories.keySet());
+        thisList = new LinkedList<>();
+        thisList.addAll(this.graphTerritories.keySet());
+
+        for (String key : thisList) {
+            if (!otherList.contains(key)) {
+                return false;
+            } else {
+                if (!this.graphTerritories.get(key).identical(other.graphTerritories.get(key))) {
+                    return false;
+                }
+            }
+        }
+
+        //comparing lastUpdatedElement
+        Object tmp = this.lastUpdatedElement;
+        if (tmp != null && other.lastUpdatedElement != null) {
+            if (tmp instanceof ContinentModel) {
+                if (!((ContinentModel) this.lastUpdatedElement).identical((ContinentModel) other.lastUpdatedElement)) {
+                    return false;
+                }
+            } else if (!((TerritoryModel) this.lastUpdatedElement).identical((TerritoryModel) other.lastUpdatedElement)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -8,6 +8,7 @@ package com.risk.models;
 import java.io.Serializable;
 import static java.lang.Integer.min;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Observable;
 
 /**
@@ -16,6 +17,43 @@ import java.util.Observable;
  * @author Nellybett
  */
 public class AttackMove extends Observable implements Serializable {
+
+    /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AttackMove other = (AttackMove) obj;
+        if (this.nbDiceAttack != other.nbDiceAttack) {
+            return false;
+        }
+        if (this.nbDiceDefense != other.nbDiceDefense) {
+            return false;
+        }
+        if (!this.source.identical(other.source)) {
+            return false;
+        }
+        if (!this.dest.identical(other.dest)) {
+            return false;
+        }
+        if (!this.attacker.identical(other.attacker)) {
+            return false;
+        }
+        if (!this.defensePlayer.identical(other.defensePlayer)) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Source of the attack

@@ -27,8 +27,9 @@ public class RandomStrategy implements Strategy {
      */
     private boolean firstAttack = true;
 
-    TerritoryModel selectedTerritoryAttack;
-    TerritoryModel selectedAttacked;
+    public TerritoryModel selectedTerritoryAttack;
+
+    public TerritoryModel selectedAttacked;
 
     /**
      * Reinforces a random territory
@@ -228,6 +229,42 @@ public class RandomStrategy implements Strategy {
             }
         }
 
+    }
+
+    /**
+     * Alias for the equal function in order to test equality between two
+     * objects of the same class.
+     *
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    @Override
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RandomStrategy other = (RandomStrategy) obj;
+
+        if (this.firstAttack != other.firstAttack) {
+            return false;
+        }
+        if (this.randomNumber != other.randomNumber) {
+            return false;
+        }
+        if (!this.selectedAttacked.identical(other.selectedAttacked)) {
+            return false;
+        }
+        if (!this.selectedTerritoryAttack
+                .identical(other.selectedTerritoryAttack)) {
+            return false;
+        }
+        return true;
     }
 
 }
