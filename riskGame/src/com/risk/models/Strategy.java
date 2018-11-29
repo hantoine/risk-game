@@ -74,4 +74,11 @@ public interface Strategy extends Serializable {
      * @param rm risk model
      */
     public abstract void defense(RiskModel rm);
+    
+    /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    public abstract boolean identical(Object obj);
 }

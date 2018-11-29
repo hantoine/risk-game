@@ -386,6 +386,16 @@ public final class RiskView extends javax.swing.JFrame implements RiskViewInterf
     }
 
     /**
+     * Setter of the file path normally chosen by the user.
+     * Function useful for tests.
+     * @param filePath 
+     */
+    public void setMapPath(String filePath){
+        this.getMenuPanel().getStartMenu().getNewGamePanel()
+                .getSelectFileTextField().setText(filePath);
+    }
+    
+    /**
      * Getter of the menuPanel attribute
      *
      * @return the menuPanel

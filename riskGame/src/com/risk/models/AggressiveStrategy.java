@@ -249,4 +249,45 @@ public class AggressiveStrategy implements Strategy, Serializable {
                 
     }
 
+    /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    @Override
+    public boolean identical(Object obj) {
+        
+        if (this == obj) {
+            return true;
+        }
+        
+        if (obj == null) {
+            return false;
+        }
+        
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        final AggressiveStrategy other = (AggressiveStrategy) obj;
+        
+        if(!this.selectDestFortification.identical(other.selectDestFortification)){
+            return false;
+        }
+        
+        if(!this.selectSourceFortification.identical(other.selectSourceFortification)){
+            return false;
+        }
+        
+        if(!this.selectedAttacked.identical(other.selectedAttacked)){
+            return false;
+        }
+        
+        if(!this.selectedTerritoryAttack.identical(other.selectedTerritoryAttack)){
+            return false;
+        }
+        
+        return true;
+    }
+
 }

@@ -24,6 +24,8 @@ import javax.swing.Timer;
  */
 public final class RiskModel extends Observable implements Serializable {
 
+    
+
     /**
      * map a reference to the map of the game
      */
@@ -1133,5 +1135,89 @@ public final class RiskModel extends Observable implements Serializable {
      */
     public void setTournamentSaver(TournamentSaverInterface tournamentSaver) {
         this.tournamentSaver = tournamentSaver;
+    }
+    
+    /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        
+        if (obj == null) {
+            return false;
+        }
+        
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        final RiskModel other = (RiskModel) obj;
+        
+        if (this.turn != other.turn) {
+            return false;
+        }
+        
+        if ((this.attackPhase && other.attackPhase) && this.attackPhase != other.attackPhase) {
+            return false;
+        }
+        
+        if (this.interPhaseTime != other.interPhaseTime) {
+            return false;
+        }
+        
+        if (this.nbTurnBeforeDraw != other.nbTurnBeforeDraw) {
+            return false;
+        }
+        
+        if ((this.map != null && other.map!= null) && (!this.map.identical(other.map))) {
+            return false;
+        }
+        
+        if ((this.winningPlayer != null && other.winningPlayer!=null) && !this.winningPlayer.identical(other.winningPlayer)) {
+            return false;
+        }
+        
+        if ((this.phase != null && other.phase!= null) && this.phase != other.phase) {
+            return false;
+        }
+        
+        if ((this.currentPlayer != null && other.currentPlayer!= null) && !this.currentPlayer.identical(other.currentPlayer)) {
+            return false;
+        }
+        
+        if ((this.log != null && other.log!= null) && !this.log.identical(other.log)) {
+            return false;
+        }
+        
+        //comparing deck : list of cards
+        if((this.deck != null && other.deck!= null) && !(this.deck.size() == other.deck.size()))
+            return false;
+        
+        for(int i =0; i<this.deck.size(); i++)
+            if(!this.deck.get(i).identical(other.deck.get(i)))
+                return false;
+        
+        //comparing players: list of player
+        if(!(this.players.size() == other.players.size()))
+            return false;
+        
+        for(int i =0; i<this.players.size(); i++)
+            if(!this.players.get(i).identical(other.players.get(i)))
+                return false;
+        
+        //comparing logsbackup : list of strings (logs)
+        if((this.logsBackup != null && other.logsBackup!= null) && !(this.logsBackup.size() == other.logsBackup.size()))
+            return false;
+        
+        if(this.logsBackup != null && other.logsBackup!= null)
+            for(int i =0; i<this.logsBackup.size(); i++)
+                if(!this.logsBackup.get(i).equals(other.logsBackup.get(i))) //comparing strings -> can use the default equals
+                    return false;
+        
+        return true;
     }
 }

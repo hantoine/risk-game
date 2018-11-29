@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * It represents a territory in the map
@@ -16,6 +17,8 @@ import java.util.List;
  * @author n_irahol
  */
 public class TerritoryModel implements Serializable {
+
+ 
 
     /**
      * adj list of adjacent territories
@@ -85,6 +88,58 @@ public class TerritoryModel implements Serializable {
         this.adj.add(neighbour);
     }
 
+       /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TerritoryModel other = (TerritoryModel) obj;
+        if (this.positionX != other.positionX) {
+            return false;
+        }
+        if (this.positionY != other.positionY) {
+            return false;
+        }
+        if (this.numArmies != other.numArmies) {
+            return false;
+        }
+        if (!Objects.equals(this.continentName, other.continentName)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        
+        if ((this.owner != null && other.owner != null) && !this.owner.getName().equals(other.owner.getName())) {
+            return false;
+        }
+        
+        //comparing adj : list of territory
+        if((this.adj != null && other.adj != null) && !(this.adj.size() == other.adj.size()))
+            return false;
+        if(this.adj != null && other.adj != null){
+            LinkedList<String> thisAdj = new LinkedList<>();
+        for(TerritoryModel t:this.adj)
+            thisAdj.add(t.getName());
+        for(TerritoryModel t:other.getAdj())
+            if(!thisAdj.contains(t.getName()))
+                return false;
+        }
+        
+        
+        return true;
+    }
+    
     /**
      * Eliminates an adjacent territory
      *

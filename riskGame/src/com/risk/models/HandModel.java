@@ -20,6 +20,8 @@ import java.util.Observable;
  */
 public class HandModel extends Observable implements Serializable {
 
+    
+
     /**
      * cards it is the group of cards of the hand
      */
@@ -303,5 +305,52 @@ public class HandModel extends Observable implements Serializable {
 
         setChanged();
         notifyObservers();
+    }
+    
+    /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final HandModel other = (HandModel) obj;
+        if (this.current != other.current) {
+            return false;
+        }
+        if (this.handed != other.handed) {
+            return false;
+        }
+        
+        
+        if ((this.owner != null && other.owner != null) && !this.owner.getName().equals(other.owner.getName())) {
+            return false;
+        }
+        
+        //comparing cards : list of card
+        if(!(this.cards.size() == other.cards.size()))
+            return false;
+        
+        for(int i =0; i<this.cards.size(); i++)
+            if(!this.cards.get(i).identical(other.cards.get(i))) 
+                return false;
+        
+        //comparing selectedCards : list of string
+        if(!(this.selectedCards.size() == other.selectedCards.size()))
+            return false;
+        
+        for(int i =0; i<this.selectedCards.size(); i++)
+            if(!this.selectedCards.get(i).equals(other.selectedCards.get(i))) //comparing strings -> can use the default equals
+                return false;
+        
+        return true;
     }
 }

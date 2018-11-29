@@ -80,6 +80,15 @@ public final class RiskController {
     }
 
     /**
+     * Function for tests 
+     * select a map for the user and press the play button to start a game.
+     */
+    public void pressPlayButtonRandomMap(){
+        this.viewRisk.setMapPath("maps/Atlantis.map");
+        this.menuListener.playButton();
+    }
+    
+    /**
      * It executes a thread with the different phases of the game. It is called
      * after setting the players and board information
      */

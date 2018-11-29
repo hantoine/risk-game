@@ -6,6 +6,7 @@
 package com.risk.models;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * It represents a card in the game
@@ -13,6 +14,31 @@ import java.io.Serializable;
  * @author l_yixu
  */
 public class CardModel implements Serializable {
+
+    /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CardModel other = (CardModel) obj;
+        if (!Objects.equals(this.territoryName, other.territoryName)) {
+            return false;
+        }
+        if (!Objects.equals(this.typeOfArmie, other.typeOfArmie)) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * territoryName There is as many cards as territories in the game

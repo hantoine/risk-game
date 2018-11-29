@@ -27,8 +27,9 @@ public class RandomStrategy implements Strategy {
      */
     private boolean firstAttack = true;
 
-    TerritoryModel selectedTerritoryAttack;
-    TerritoryModel selectedAttacked;
+    public TerritoryModel selectedTerritoryAttack;
+    
+    public TerritoryModel selectedAttacked;
 
     /**
      * Reinforces a random territory
@@ -228,6 +229,67 @@ public class RandomStrategy implements Strategy {
             }
         }
 
+    }
+    
+    /**
+     * Getter of randomNumber attribute
+     * @return 
+     */
+    public int getRandomNumber(){
+        return this.randomNumber;
+    }
+    
+    /**
+     * getter on firstAttack
+     * @return
+     */
+    private boolean getFirstAttack(){
+        return this.firstAttack;
+    }
+
+    /**
+     * getter on selectedTerritoryAttack
+     * @return 
+     */
+    public TerritoryModel getSelectedTerritoryAttack(){
+        return this.selectedTerritoryAttack;
+    }
+    
+    /**
+     * Getter on selectedAttacked
+     * @return 
+     */
+    public TerritoryModel getSelectedAttacked(){
+        return this.selectedAttacked;
+    }
+    
+    /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    @Override
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RandomStrategy other = (RandomStrategy) obj;
+        
+        if(this.getFirstAttack() != other.getFirstAttack())
+            return false;
+        if(this.getRandomNumber() != other.getRandomNumber())
+            return false;
+        if(!this.getSelectedAttacked().identical(other.getSelectedAttacked()))
+            return false;
+        if(!this.getSelectedTerritoryAttack().identical(other.getSelectedTerritoryAttack()))
+            return false;
+        return true;
     }
 
 }

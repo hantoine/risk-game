@@ -6,6 +6,7 @@
 package com.risk.models;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * This class represents the log of the game
@@ -13,6 +14,28 @@ import java.io.Serializable;
  * @author hantoine
  */
 public class LogModel implements Serializable {
+
+    /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final LogModel other = (LogModel) obj;
+        if (!Objects.equals(this.content, other.content)) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Log content

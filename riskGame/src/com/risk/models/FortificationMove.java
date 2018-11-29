@@ -14,6 +14,8 @@ import java.io.Serializable;
  */
 class FortificationMove implements Serializable  {
 
+    
+    
     /**
      * territorySource the territory with the armies
      */
@@ -89,5 +91,31 @@ class FortificationMove implements Serializable  {
      */
     boolean compatible(FortificationMove last) {
         return last != null && !last.equals(this);
+    }
+    
+    /**
+     * Alias for the equal function in order to test equality between two objects of the same class.
+     * @param obj object of the same class we want to compare to this instance.
+     * @return boolean to know if the objects are equal or not
+     */
+    public boolean identical(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final FortificationMove other = (FortificationMove) obj;
+        if ((this.territorySource != null && other.territorySource != null) && !this.territorySource.identical(other.territorySource)) {
+            return false;
+        }
+        if ((this.territoryDest != null && other.territoryDest != null) && !this.territoryDest.identical(other.territoryDest) ){
+            return false;
+        }
+        
+        return true;
     }
 }
