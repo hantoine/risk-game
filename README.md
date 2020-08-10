@@ -1,2 +1,2 @@
-# SOEN6441-fall-2018
-Project for SOEN6441 course
+# Risk Game
+Course project for the Advanced Programming Practises course.
